@@ -1,0 +1,61 @@
+# Deployment Configuration
+# Used by Docker Compose, Kubernetes, and production scripts.
+# Sensitive values (passwords, keys) must be set via .env / Kubernetes Secrets.
+
+production:
+  api:
+    workers: 4
+    host: 0.0.0.0
+    port: 8000
+    log_level: warning
+    access_log: true
+
+  database:
+    # Set via DATABASE_URL environment variable
+    pool_size: 20
+    max_overflow: 10
+    pool_pre_ping: true
+    echo: false
+
+  model:
+    # Reload artifacts from disk if modified (hot-reload)
+    hot_reload: false
+    reload_check_interval_s: 60
+
+  security:
+    # Set to true to enforce auth on all endpoints
+    require_auth: false
+    # Set to true to block /api/v1/infer from external requests
+    shap_internal_only: true
+    # Add allowed CORS origins (restrict in production)
+    cors_origins:
+      - "https://xaisdn.example.com"
+    # Rate limits
+    alert_ingest_rate_limit: 5000    # alerts/minute per source IP
+    infer_rate_limit: 60             # requests/minute per IP
+
+  tls:
+    enabled: false
+    cert_path: /etc/ssl/certs/xaisdn.crt
+    key_path: /etc/ssl/private/xaisdn.key
+
+development:
+  api:
+    workers: 1
+    host: 0.0.0.0
+    port: 8000
+    log_level: debug
+    access_log: true
+    reload: true
+
+  database:
+    pool_size: 5
+    echo: true
+
+  security:
+    require_auth: false
+    shap_internal_only: false
+    cors_origins: ["*"]
+
+  tls:
+    enabled: false
