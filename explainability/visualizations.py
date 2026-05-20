@@ -17,15 +17,18 @@ import numpy as np
 
 try:
     import matplotlib
+
     matplotlib.use("Agg")
     import matplotlib.pyplot as plt
     import matplotlib.patches as mpatches
+
     MATPLOTLIB_AVAILABLE = True
 except ImportError:
     MATPLOTLIB_AVAILABLE = False
 
 try:
     import shap
+
     SHAP_AVAILABLE = True
 except ImportError:
     SHAP_AVAILABLE = False
@@ -54,10 +57,7 @@ def plot_global_importance(
     values = [v for _, v in sorted_feats]
 
     # Colour entropy features differently
-    colors = [
-        "coral" if name.startswith("H_") else "steelblue"
-        for name in names
-    ]
+    colors = ["coral" if name.startswith("H_") else "steelblue" for name in names]
 
     fig, ax = plt.subplots(figsize=(10, max(6, top_n * 0.4)))
     bars = ax.barh(names[::-1], values[::-1], color=colors[::-1])
@@ -118,7 +118,8 @@ def plot_local_waterfall(
     ax.set_xlabel("SHAP value (impact on model output)", fontsize=11)
     ax.set_title(
         f"Local Attribution — Predicted: {flow_label} (confidence: {confidence:.2%})",
-        fontsize=13, fontweight="bold",
+        fontsize=13,
+        fontweight="bold",
     )
     ax.grid(axis="x", alpha=0.3)
 
@@ -178,8 +179,11 @@ def plot_confusion_matrix(
     for i in range(cm.shape[0]):
         for j in range(cm.shape[1]):
             ax.text(
-                j, i, str(cm[i, j]),
-                ha="center", va="center",
+                j,
+                i,
+                str(cm[i, j]),
+                ha="center",
+                va="center",
                 color="white" if cm[i, j] > thresh else "black",
                 fontsize=8,
             )

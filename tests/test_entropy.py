@@ -70,9 +70,16 @@ class TestEntropyFeatureExtractor:
     def test_window_size_enforced(self):
         e = EntropyFeatureExtractor(window_size=5)
         records = [
-            {"src_ip": f"10.0.0.{i}", "dst_ip": "10.0.0.1", "dst_port": 80,
-             "protocol": 6, "pkt_len_mean": 100.0, "iat_mean": 500.0,
-             "tcp_flags": 2, "ttl": 64}
+            {
+                "src_ip": f"10.0.0.{i}",
+                "dst_ip": "10.0.0.1",
+                "dst_port": 80,
+                "protocol": 6,
+                "pkt_len_mean": 100.0,
+                "iat_mean": 500.0,
+                "tcp_flags": 2,
+                "ttl": 64,
+            }
             for i in range(10)
         ]
         for r in records:
@@ -88,13 +95,18 @@ class TestEntropyFeatureExtractor:
     def test_single_dst_ip_zero_entropy(self):
         e = EntropyFeatureExtractor(window_size=10)
         for i in range(10):
-            feats = e.update_and_compute({
-                "src_ip": f"10.0.0.{i}",
-                "dst_ip": "192.168.1.1",       # constant
-                "dst_port": 53, "protocol": 17,
-                "pkt_len_mean": 64.0, "iat_mean": 1000.0,
-                "tcp_flags": 0, "ttl": 64,
-            })
+            feats = e.update_and_compute(
+                {
+                    "src_ip": f"10.0.0.{i}",
+                    "dst_ip": "192.168.1.1",  # constant
+                    "dst_port": 53,
+                    "protocol": 17,
+                    "pkt_len_mean": 64.0,
+                    "iat_mean": 1000.0,
+                    "tcp_flags": 0,
+                    "ttl": 64,
+                }
+            )
         assert feats["H_dst_ip"] == 0.0
 
     def test_compute_as_array_shape(self, sample_records):
@@ -126,16 +138,18 @@ class TestEntropyFeatureExtractor:
         """UDP flood: all flows from same source → low H_src_ip."""
         e = EntropyFeatureExtractor(window_size=50)
         for _ in range(50):
-            feats = e.update_and_compute({
-                "src_ip": "10.0.1.100",   # single attacker
-                "dst_ip": "10.0.0.1",
-                "dst_port": 53,
-                "protocol": 17,
-                "pkt_len_mean": 64.0,
-                "iat_mean": 100.0,
-                "tcp_flags": 0,
-                "ttl": 64,
-            })
+            feats = e.update_and_compute(
+                {
+                    "src_ip": "10.0.1.100",  # single attacker
+                    "dst_ip": "10.0.0.1",
+                    "dst_port": 53,
+                    "protocol": 17,
+                    "pkt_len_mean": 64.0,
+                    "iat_mean": 100.0,
+                    "tcp_flags": 0,
+                    "ttl": 64,
+                }
+            )
         assert feats["H_src_ip"] == 0.0
         assert feats["H_dst_ip"] == 0.0
         assert feats["H_dst_port"] == 0.0
@@ -145,26 +159,30 @@ class TestEntropyFeatureExtractor:
         e_ddos = EntropyFeatureExtractor(window_size=50)
 
         for i in range(50):
-            e_benign.update_and_compute({
-                "src_ip": f"10.0.0.{i % 20}",
-                "dst_ip": f"10.0.1.{i % 10}",
-                "dst_port": [80, 443, 22, 53, 8080][i % 5],
-                "protocol": [6, 17][i % 2],
-                "pkt_len_mean": 200.0 + i,
-                "iat_mean": 1000.0,
-                "tcp_flags": i % 8,
-                "ttl": 64,
-            })
-            e_ddos.update_and_compute({
-                "src_ip": "10.0.1.100",
-                "dst_ip": "10.0.0.1",
-                "dst_port": 53,
-                "protocol": 17,
-                "pkt_len_mean": 64.0,
-                "iat_mean": 100.0,
-                "tcp_flags": 0,
-                "ttl": 64,
-            })
+            e_benign.update_and_compute(
+                {
+                    "src_ip": f"10.0.0.{i % 20}",
+                    "dst_ip": f"10.0.1.{i % 10}",
+                    "dst_port": [80, 443, 22, 53, 8080][i % 5],
+                    "protocol": [6, 17][i % 2],
+                    "pkt_len_mean": 200.0 + i,
+                    "iat_mean": 1000.0,
+                    "tcp_flags": i % 8,
+                    "ttl": 64,
+                }
+            )
+            e_ddos.update_and_compute(
+                {
+                    "src_ip": "10.0.1.100",
+                    "dst_ip": "10.0.0.1",
+                    "dst_port": 53,
+                    "protocol": 17,
+                    "pkt_len_mean": 64.0,
+                    "iat_mean": 100.0,
+                    "tcp_flags": 0,
+                    "ttl": 64,
+                }
+            )
 
         benign_feats = e_benign.compute_from_window(e_benign.window)
         ddos_feats = e_ddos.compute_from_window(e_ddos.window)
@@ -176,9 +194,16 @@ class TestEntropyFeatureExtractor:
 class TestOfflineBatchComputation:
     def test_output_shape(self):
         records = [
-            {"src_ip": f"10.0.0.{i%5}", "dst_ip": "10.0.0.1",
-             "dst_port": 80, "protocol": 6, "pkt_len_mean": 100.0,
-             "iat_mean": 500.0, "tcp_flags": 2, "ttl": 64}
+            {
+                "src_ip": f"10.0.0.{i%5}",
+                "dst_ip": "10.0.0.1",
+                "dst_port": 80,
+                "protocol": 6,
+                "pkt_len_mean": 100.0,
+                "iat_mean": 500.0,
+                "tcp_flags": 2,
+                "ttl": 64,
+            }
             for i in range(100)
         ]
         result = compute_entropy_features_offline(records, window_size=10)
@@ -186,9 +211,16 @@ class TestOfflineBatchComputation:
 
     def test_non_negative_values(self):
         records = [
-            {"src_ip": "1.1.1.1", "dst_ip": "2.2.2.2",
-             "dst_port": 443, "protocol": 6, "pkt_len_mean": 1500.0,
-             "iat_mean": 2000.0, "tcp_flags": 16, "ttl": 128}
+            {
+                "src_ip": "1.1.1.1",
+                "dst_ip": "2.2.2.2",
+                "dst_port": 443,
+                "protocol": 6,
+                "pkt_len_mean": 1500.0,
+                "iat_mean": 2000.0,
+                "tcp_flags": 16,
+                "ttl": 128,
+            }
             for _ in range(30)
         ]
         result = compute_entropy_features_offline(records, window_size=5)
@@ -197,12 +229,19 @@ class TestOfflineBatchComputation:
     def test_window_warmup_period(self):
         """First few rows should have lower entropy (smaller window fill)."""
         records = [
-            {"src_ip": f"10.0.0.{i}", "dst_ip": "10.0.0.1",
-             "dst_port": 80, "protocol": 6, "pkt_len_mean": 100.0,
-             "iat_mean": 500.0, "tcp_flags": 0, "ttl": 64}
+            {
+                "src_ip": f"10.0.0.{i}",
+                "dst_ip": "10.0.0.1",
+                "dst_port": 80,
+                "protocol": 6,
+                "pkt_len_mean": 100.0,
+                "iat_mean": 500.0,
+                "tcp_flags": 0,
+                "ttl": 64,
+            }
             for i in range(100)
         ]
         result = compute_entropy_features_offline(records, window_size=50)
         # Row 0 has only 1 record → H=0; row 49+ has 50 diverse records → H>0
-        assert result[0, 0] == 0.0          # H_src_ip for first flow = 0 (1 unique value)
-        assert result[99, 0] > 0.0          # H_src_ip for last flow should be positive
+        assert result[0, 0] == 0.0  # H_src_ip for first flow = 0 (1 unique value)
+        assert result[99, 0] > 0.0  # H_src_ip for last flow should be positive

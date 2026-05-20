@@ -53,9 +53,7 @@ async def infer_flow(
     t0 = time.perf_counter()
 
     try:
-        label_str, confidence, class_idx, x_scaled = state.predict(
-            request_body.feature_vector
-        )
+        label_str, confidence, class_idx, x_scaled = state.predict(request_body.feature_vector)
     except Exception as e:
         logger.error(f"Inference error: {e}")
         raise HTTPException(status_code=500, detail=f"Inference failed: {str(e)}")
@@ -71,6 +69,7 @@ async def infer_flow(
     if is_ddos and request_body.compute_shap and state.shap_ready:
         try:
             import numpy as np
+
             attribution = state.shap_explainer.format_alert_attribution(
                 x_scaled, class_idx, top_k=10
             )
@@ -117,6 +116,7 @@ async def get_model_info(request: Request):
     try:
         import json
         from pathlib import Path
+
         if Path(metrics_path).exists():
             with open(metrics_path) as f:
                 m = json.load(f)

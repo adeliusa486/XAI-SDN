@@ -7,6 +7,7 @@ from httpx import AsyncClient, ASGITransport
 
 # Use a test-only database
 import os
+
 os.environ["DATABASE_URL"] = "sqlite+aiosqlite:///data/test_alerts.db"
 
 
@@ -14,6 +15,7 @@ os.environ["DATABASE_URL"] = "sqlite+aiosqlite:///data/test_alerts.db"
 async def client():
     """Async test client for the FastAPI app."""
     from api.main import app
+
     transport = ASGITransport(app=app)
     async with AsyncClient(transport=transport, base_url="http://test") as c:
         yield c

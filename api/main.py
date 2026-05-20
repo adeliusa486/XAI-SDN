@@ -83,6 +83,7 @@ app.add_middleware(
 
 try:
     from prometheus_fastapi_instrumentator import Instrumentator
+
     Instrumentator().instrument(app).expose(app, endpoint="/metrics")
     logger.info("Prometheus metrics endpoint enabled at /metrics")
 except ImportError:
@@ -97,6 +98,7 @@ app.include_router(explanations.router, prefix="/api/v1", tags=["Explanations & 
 
 # ─── Root ─────────────────────────────────────────────────────────────────────
 
+
 @app.get("/", include_in_schema=False)
 async def root():
     return {
@@ -108,6 +110,7 @@ async def root():
 
 
 # ─── Global exception handler ─────────────────────────────────────────────────
+
 
 @app.exception_handler(Exception)
 async def global_exception_handler(request, exc: Exception):

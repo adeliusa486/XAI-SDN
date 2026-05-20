@@ -31,7 +31,6 @@ sys.path.insert(0, str(Path(__file__).parent.parent))
 
 from model.train import load_synthetic_data
 
-
 BASELINE_CONFIGS: Dict[str, Dict[str, Any]] = {
     "DecisionTree": {
         "model_class": "sklearn.tree.DecisionTreeClassifier",
@@ -266,6 +265,7 @@ def run_baselines(
         X, y, le = load_synthetic_data(n_samples=8000)
     else:
         from model.train import load_real_data
+
         X, y, le = load_real_data(data_dir)
 
     X_train, X_test, y_train, y_test = train_test_split(
@@ -301,7 +301,9 @@ def run_baselines(
     logger.info("\n" + "=" * 70)
     logger.info("BASELINE COMPARISON SUMMARY")
     logger.info("=" * 70)
-    header = f"{'Model':<20} {'Accuracy':>10} {'Macro F1':>10} {'Latency ms':>12} {'Throughput':>12}"
+    header = (
+        f"{'Model':<20} {'Accuracy':>10} {'Macro F1':>10} {'Latency ms':>12} {'Throughput':>12}"
+    )
     logger.info(header)
     logger.info("-" * 70)
     for r in results:

@@ -87,36 +87,36 @@ def _generate_class_samples(cls: str, n: int, rng: np.random.RandomState) -> pd.
 
     if cls == "Benign":
         # Legitimate traffic: high diversity → high entropy
-        X_cic[:, 0] = rng.choice([80, 443, 8080, 22, 53, 3306], size=n)      # dst_port
-        X_cic[:, 14] = rng.exponential(5e4, size=n)                           # bytes/s
-        X_cic[:, 2] = rng.randint(5, 200, size=n).astype(float)              # fwd packets
-        X_ent[:, 0] = rng.uniform(4.0, 7.0, size=n)    # H_src_ip  — high: many sources
-        X_ent[:, 1] = rng.uniform(3.5, 6.0, size=n)    # H_dst_ip
-        X_ent[:, 2] = rng.uniform(3.0, 5.5, size=n)    # H_dst_port — high: many ports
-        X_ent[:, 3] = rng.uniform(1.0, 2.5, size=n)    # H_proto
-        X_ent[:, 4] = rng.uniform(3.0, 5.0, size=n)    # H_pkt_len
-        X_ent[:, 5] = rng.uniform(2.5, 4.5, size=n)    # H_iat
-        X_ent[:, 6] = rng.uniform(1.5, 3.0, size=n)    # H_tcp_flags
-        X_ent[:, 7] = rng.uniform(2.0, 4.0, size=n)    # H_ttl
+        X_cic[:, 0] = rng.choice([80, 443, 8080, 22, 53, 3306], size=n)  # dst_port
+        X_cic[:, 14] = rng.exponential(5e4, size=n)  # bytes/s
+        X_cic[:, 2] = rng.randint(5, 200, size=n).astype(float)  # fwd packets
+        X_ent[:, 0] = rng.uniform(4.0, 7.0, size=n)  # H_src_ip  — high: many sources
+        X_ent[:, 1] = rng.uniform(3.5, 6.0, size=n)  # H_dst_ip
+        X_ent[:, 2] = rng.uniform(3.0, 5.5, size=n)  # H_dst_port — high: many ports
+        X_ent[:, 3] = rng.uniform(1.0, 2.5, size=n)  # H_proto
+        X_ent[:, 4] = rng.uniform(3.0, 5.0, size=n)  # H_pkt_len
+        X_ent[:, 5] = rng.uniform(2.5, 4.5, size=n)  # H_iat
+        X_ent[:, 6] = rng.uniform(1.5, 3.0, size=n)  # H_tcp_flags
+        X_ent[:, 7] = rng.uniform(2.0, 4.0, size=n)  # H_ttl
 
     elif cls == "DDoS-UDP":
         # UDP flood: single source cluster → low src_ip entropy, single port
-        X_cic[:, 0] = 53.0                                                    # DNS port
-        X_cic[:, 14] = rng.exponential(1e7, size=n)                          # very high bytes/s
+        X_cic[:, 0] = 53.0  # DNS port
+        X_cic[:, 14] = rng.exponential(1e7, size=n)  # very high bytes/s
         X_cic[:, 2] = rng.randint(500, 5000, size=n).astype(float)
-        X_ent[:, 0] = rng.uniform(0.1, 1.5, size=n)    # H_src_ip  — LOW: botnet
-        X_ent[:, 1] = rng.uniform(0.0, 0.5, size=n)    # H_dst_ip  — very low: single target
-        X_ent[:, 2] = rng.uniform(0.0, 0.8, size=n)    # H_dst_port — low: single port
-        X_ent[:, 3] = rng.uniform(0.0, 0.2, size=n)    # H_proto   — 0: only UDP
-        X_ent[:, 4] = rng.uniform(0.5, 1.5, size=n)    # H_pkt_len
-        X_ent[:, 5] = rng.uniform(0.2, 1.0, size=n)    # H_iat
-        X_ent[:, 6] = rng.uniform(0.0, 0.5, size=n)    # H_tcp_flags
-        X_ent[:, 7] = rng.uniform(0.1, 0.8, size=n)    # H_ttl
+        X_ent[:, 0] = rng.uniform(0.1, 1.5, size=n)  # H_src_ip  — LOW: botnet
+        X_ent[:, 1] = rng.uniform(0.0, 0.5, size=n)  # H_dst_ip  — very low: single target
+        X_ent[:, 2] = rng.uniform(0.0, 0.8, size=n)  # H_dst_port — low: single port
+        X_ent[:, 3] = rng.uniform(0.0, 0.2, size=n)  # H_proto   — 0: only UDP
+        X_ent[:, 4] = rng.uniform(0.5, 1.5, size=n)  # H_pkt_len
+        X_ent[:, 5] = rng.uniform(0.2, 1.0, size=n)  # H_iat
+        X_ent[:, 6] = rng.uniform(0.0, 0.5, size=n)  # H_tcp_flags
+        X_ent[:, 7] = rng.uniform(0.1, 0.8, size=n)  # H_ttl
 
     elif cls == "DDoS-TCP":
         # SYN flood: high SYN flags, low H_tcp_flags (only SYN)
         X_cic[:, 0] = rng.choice([80, 443, 22], size=n).astype(float)
-        X_cic[:, 43] = rng.randint(100, 1000, size=n).astype(float)         # SYN_Flag_Count
+        X_cic[:, 43] = rng.randint(100, 1000, size=n).astype(float)  # SYN_Flag_Count
         X_cic[:, 14] = rng.exponential(8e6, size=n)
         X_ent[:, 0] = rng.uniform(0.5, 2.0, size=n)
         X_ent[:, 1] = rng.uniform(0.0, 0.5, size=n)
@@ -124,31 +124,31 @@ def _generate_class_samples(cls: str, n: int, rng: np.random.RandomState) -> pd.
         X_ent[:, 3] = rng.uniform(0.0, 0.3, size=n)
         X_ent[:, 4] = rng.uniform(0.5, 1.5, size=n)
         X_ent[:, 5] = rng.uniform(0.1, 0.8, size=n)
-        X_ent[:, 6] = rng.uniform(0.0, 0.3, size=n)    # H_tcp_flags — very low (SYN only)
+        X_ent[:, 6] = rng.uniform(0.0, 0.3, size=n)  # H_tcp_flags — very low (SYN only)
         X_ent[:, 7] = rng.uniform(0.2, 1.0, size=n)
 
     elif cls == "DDoS-ICMP":
         X_cic[:, 14] = rng.exponential(9e6, size=n)
         X_ent[:, 0] = rng.uniform(0.8, 2.0, size=n)
         X_ent[:, 1] = rng.uniform(0.0, 0.5, size=n)
-        X_ent[:, 2] = rng.uniform(0.0, 0.2, size=n)    # No ports for ICMP
-        X_ent[:, 3] = rng.uniform(0.0, 0.1, size=n)    # Only ICMP
+        X_ent[:, 2] = rng.uniform(0.0, 0.2, size=n)  # No ports for ICMP
+        X_ent[:, 3] = rng.uniform(0.0, 0.1, size=n)  # Only ICMP
         X_ent[:, 4] = rng.uniform(0.8, 2.0, size=n)
         X_ent[:, 5] = rng.uniform(0.3, 1.0, size=n)
-        X_ent[:, 6] = rng.uniform(0.0, 0.0, size=n)    # No TCP flags
+        X_ent[:, 6] = rng.uniform(0.0, 0.0, size=n)  # No TCP flags
         X_ent[:, 7] = rng.uniform(0.5, 1.5, size=n)
 
     elif cls == "DDoS-SlowLoris":
         # Few packets, long duration, moderate diversity
-        X_cic[:, 2] = rng.randint(1, 5, size=n).astype(float)              # Very few fwd packets
-        X_cic[:, 1] = rng.exponential(3e7, size=n)                          # Long duration
+        X_cic[:, 2] = rng.randint(1, 5, size=n).astype(float)  # Very few fwd packets
+        X_cic[:, 1] = rng.exponential(3e7, size=n)  # Long duration
         X_cic[:, 0] = 80.0
-        X_ent[:, 0] = rng.uniform(2.5, 4.0, size=n)    # Moderate diversity
+        X_ent[:, 0] = rng.uniform(2.5, 4.0, size=n)  # Moderate diversity
         X_ent[:, 1] = rng.uniform(0.0, 0.5, size=n)
         X_ent[:, 2] = rng.uniform(2.0, 3.5, size=n)
         X_ent[:, 3] = rng.uniform(0.5, 1.5, size=n)
         X_ent[:, 4] = rng.uniform(1.0, 2.5, size=n)
-        X_ent[:, 5] = rng.uniform(0.1, 0.5, size=n)    # Low IAT entropy (slow)
+        X_ent[:, 5] = rng.uniform(0.1, 0.5, size=n)  # Low IAT entropy (slow)
         X_ent[:, 6] = rng.uniform(0.8, 2.0, size=n)
         X_ent[:, 7] = rng.uniform(1.0, 2.5, size=n)
 

@@ -17,6 +17,7 @@ async def health_check(request: Request):
     try:
         from sqlalchemy import select, func
         from api.dependencies import AlertDB
+
         async with state.session_factory() as session:
             result = await session.execute(select(func.count(AlertDB.id)))
             alert_count = result.scalar() or 0

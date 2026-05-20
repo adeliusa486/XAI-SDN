@@ -35,7 +35,7 @@ from features.cicflowmeter import CIC_FEATURE_NAMES
 from features.entropy import ENTROPY_FEATURE_NAMES
 from model.train import load_synthetic_data
 
-N_CIC = len(CIC_FEATURE_NAMES)   # 80
+N_CIC = len(CIC_FEATURE_NAMES)  # 80
 N_ENT = len(ENTROPY_FEATURE_NAMES)  # 8
 
 
@@ -53,6 +53,7 @@ def run_ablation(use_synthetic: bool, data_dir, output: str) -> None:
         X_full, y, le = load_synthetic_data(n_samples=8000)
     else:
         from model.train import load_real_data
+
         X_full, y, le = load_real_data(data_dir)
 
     X_train_f, X_test_f, y_train, y_test = train_test_split(
@@ -70,19 +71,22 @@ def run_ablation(use_synthetic: bool, data_dir, output: str) -> None:
         raise ValueError(f"Unknown feature mode: {mode}")
 
     RF_PARAMS = dict(
-        n_estimators=200, max_features="sqrt",
-        class_weight="balanced", random_state=42, n_jobs=-1
+        n_estimators=200, max_features="sqrt", class_weight="balanced", random_state=42, n_jobs=-1
     )
     SVM_PARAMS = dict(
-        kernel="rbf", C=1.0, gamma="scale",
-        class_weight="balanced", random_state=42, probability=True
+        kernel="rbf",
+        C=1.0,
+        gamma="scale",
+        class_weight="balanced",
+        random_state=42,
+        probability=True,
     )
 
     configs = [
-        {"name": "RF + CIC-only (80-dim)",       "features": "cic_only",    "model": "RF"},
-        {"name": "RF + Entropy-only (8-dim)",     "features": "entropy_only","model": "RF"},
-        {"name": "SVM + Full (88-dim)",           "features": "full",        "model": "SVM"},
-        {"name": "XAI-SDN: RF + Full (88-dim)",  "features": "full",        "model": "RF"},
+        {"name": "RF + CIC-only (80-dim)", "features": "cic_only", "model": "RF"},
+        {"name": "RF + Entropy-only (8-dim)", "features": "entropy_only", "model": "RF"},
+        {"name": "SVM + Full (88-dim)", "features": "full", "model": "SVM"},
+        {"name": "XAI-SDN: RF + Full (88-dim)", "features": "full", "model": "RF"},
     ]
 
     results = []

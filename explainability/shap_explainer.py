@@ -22,6 +22,7 @@ from loguru import logger
 # SHAP import with graceful degradation
 try:
     import shap
+
     SHAP_AVAILABLE = True
 except ImportError:
     SHAP_AVAILABLE = False
@@ -72,15 +73,14 @@ class SHAPExplainer:
             self._explainer = None
 
     @classmethod
-    def from_artifacts(
-        cls, artifacts_dir: Union[str, Path], **kwargs
-    ) -> "SHAPExplainer":
+    def from_artifacts(cls, artifacts_dir: Union[str, Path], **kwargs) -> "SHAPExplainer":
         """Load model and feature names from serialized artifacts.
 
         Args:
             artifacts_dir: Directory containing rf_model.pkl and feature_names.json.
         """
         import joblib
+
         artifacts_dir = Path(artifacts_dir)
         model = joblib.load(artifacts_dir / "rf_model.pkl")
         with open(artifacts_dir / "feature_names.json") as f:
@@ -126,10 +126,7 @@ class SHAPExplainer:
                 # Binary case — shap_values shape (n_samples, n_features)
                 phi = shap_values[0]
 
-            return {
-                name: float(val)
-                for name, val in zip(self.feature_names, phi)
-            }
+            return {name: float(val) for name, val in zip(self.feature_names, phi)}
 
         except Exception as e:
             logger.error(f"SHAP explanation failed: {e}")
@@ -157,10 +154,7 @@ class SHAPExplainer:
             return []
 
         ranked = sorted(
-            [
-                {"feature": k, "shap_value": v, "abs_shap": abs(v)}
-                for k, v in attribution.items()
-            ],
+            [{"feature": k, "shap_value": v, "abs_shap": abs(v)} for k, v in attribution.items()],
             key=lambda d: d["abs_shap"],
             reverse=True,
         )
@@ -253,9 +247,6 @@ class SHAPExplainer:
         full = self.explain_flow(x, predicted_class_idx)
         ranked = sorted(full.items(), key=lambda kv: abs(kv[1]), reverse=True)
         return {
-            "top_features": [
-                {"feature": k, "shap_value": round(v, 6)}
-                for k, v in ranked[:top_k]
-            ],
+            "top_features": [{"feature": k, "shap_value": round(v, 6)} for k, v in ranked[:top_k]],
             "full_attribution": {k: round(v, 6) for k, v in full.items()},
         }
