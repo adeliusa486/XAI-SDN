@@ -26,13 +26,17 @@ class AttackLabel(str, Enum):
 
 class SHAPFeatureAttribution(BaseModel):
     """Per-feature Shapley value attribution."""
+
     feature: str = Field(..., description="Feature name")
-    shap_value: float = Field(..., description="SHAP value (positive = toward DDoS, negative = toward Benign)")
+    shap_value: float = Field(
+        ..., description="SHAP value (positive = toward DDoS, negative = toward Benign)"
+    )
     abs_shap: float = Field(..., description="Absolute SHAP value (feature importance magnitude)")
 
 
 class AlertCreate(BaseModel):
     """Schema for creating/ingesting a new DDoS alert."""
+
     flow_id: str = Field(..., description="Unique flow identifier")
     src_ip: str = Field(..., description="Source IP address")
     dst_ip: str = Field(..., description="Destination IP address")
@@ -63,8 +67,7 @@ class AlertCreate(BaseModel):
     )
 
     timestamp: Optional[datetime] = Field(
-        default_factory=datetime.utcnow,
-        description="Alert generation timestamp (UTC)"
+        default_factory=datetime.utcnow, description="Alert generation timestamp (UTC)"
     )
 
     @field_validator("confidence")
@@ -77,6 +80,7 @@ class AlertCreate(BaseModel):
 
 class AlertResponse(AlertCreate):
     """Alert as returned from the API (includes DB-assigned ID)."""
+
     id: int = Field(..., description="Auto-assigned alert database ID")
     created_at: datetime = Field(..., description="Database insertion timestamp")
 
@@ -86,6 +90,7 @@ class AlertResponse(AlertCreate):
 
 class AlertListResponse(BaseModel):
     """Paginated list of alerts."""
+
     alerts: List[AlertResponse]
     total: int
     page: int
@@ -95,6 +100,7 @@ class AlertListResponse(BaseModel):
 
 class AlertFilterParams(BaseModel):
     """Query parameters for filtering alerts."""
+
     label: Optional[AttackLabel] = None
     min_confidence: float = Field(0.0, ge=0.0, le=1.0)
     src_ip: Optional[str] = None
@@ -107,6 +113,7 @@ class AlertFilterParams(BaseModel):
 
 class InferenceRequest(BaseModel):
     """Request schema for on-demand flow inference."""
+
     feature_vector: Dict[str, float] = Field(
         ..., description="Named feature values (88-dim CIC + entropy)"
     )
@@ -120,6 +127,7 @@ class InferenceRequest(BaseModel):
 
 class InferenceResponse(BaseModel):
     """Response from on-demand flow inference."""
+
     label: AttackLabel
     confidence: float
     is_ddos: bool
@@ -130,6 +138,7 @@ class InferenceResponse(BaseModel):
 
 class ModelInfo(BaseModel):
     """Model metadata for the /model/info endpoint."""
+
     model_type: str
     n_estimators: int
     n_features: int
@@ -143,6 +152,7 @@ class ModelInfo(BaseModel):
 
 class HealthResponse(BaseModel):
     """API health check response."""
+
     status: str
     version: str
     model_loaded: bool
@@ -154,6 +164,7 @@ class HealthResponse(BaseModel):
 
 class StatsResponse(BaseModel):
     """Alert statistics summary."""
+
     total_alerts: int
     alerts_last_hour: int
     alerts_last_24h: int

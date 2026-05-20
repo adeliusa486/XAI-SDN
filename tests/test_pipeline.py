@@ -42,8 +42,13 @@ class TestOpenFlowBridge:
         assert feats["Destination_Port"] == 53.0
 
     def test_zero_duration_handled(self):
-        stat = {"packet_count": 100, "byte_count": 6400,
-                 "duration_sec": 0, "duration_nsec": 0, "match": {}}
+        stat = {
+            "packet_count": 100,
+            "byte_count": 6400,
+            "duration_sec": 0,
+            "duration_nsec": 0,
+            "match": {},
+        }
         feats = extract_features_from_openflow(stat)
         assert feats["Flow_Bytes_s"] == 0.0  # Guard against div/0
 

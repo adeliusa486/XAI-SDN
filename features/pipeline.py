@@ -120,10 +120,7 @@ class OfflineFeaturePipeline:
 
         # Step 4: Concatenate
         logger.info("Step 4/5: Concatenating feature matrix (88-dim)...")
-        X_full = pd.concat(
-            [X_cic.reset_index(drop=True), entropy_df],
-            axis=1
-        )
+        X_full = pd.concat([X_cic.reset_index(drop=True), entropy_df], axis=1)
         # Ensure canonical feature order
         X_full = self._ensure_feature_columns(X_full)
 
@@ -150,9 +147,7 @@ class OfflineFeaturePipeline:
         )
         return X_train, X_test, y_train, y_test
 
-    def run_on_dataframe(
-        self, df: pd.DataFrame
-    ) -> Tuple[np.ndarray, np.ndarray]:
+    def run_on_dataframe(self, df: pd.DataFrame) -> Tuple[np.ndarray, np.ndarray]:
         """Run pipeline on a pre-loaded DataFrame (without split or scaling).
 
         Useful for adding entropy features to already-loaded data for
@@ -163,9 +158,7 @@ class OfflineFeaturePipeline:
         """
         X_cic, y_raw = self.cic_extractor.get_feature_matrix(df)
         flow_records = self._dataframe_to_flow_records(df, X_cic)
-        entropy_arr = compute_entropy_features_offline(
-            flow_records, window_size=self.window_size
-        )
+        entropy_arr = compute_entropy_features_offline(flow_records, window_size=self.window_size)
         entropy_df = pd.DataFrame(entropy_arr, columns=ENTROPY_FEATURE_NAMES)
         X_full = pd.concat([X_cic.reset_index(drop=True), entropy_df], axis=1)
         X_full = self._ensure_feature_columns(X_full)
@@ -175,24 +168,26 @@ class OfflineFeaturePipeline:
     # ── Private helpers ────────────────────────────────────────────────────
 
     @staticmethod
-    def _dataframe_to_flow_records(
-        df: pd.DataFrame, X_cic: pd.DataFrame
-    ) -> List[Dict[str, Any]]:
+    def _dataframe_to_flow_records(df: pd.DataFrame, X_cic: pd.DataFrame) -> List[Dict[str, Any]]:
         """Convert DataFrame rows to flow record dicts for entropy computation."""
         records = []
         for i in range(len(df)):
             row = df.iloc[i] if len(df) == len(X_cic) else X_cic.iloc[i]
             xrow = X_cic.iloc[i]
-            records.append({
-                "src_ip": str(df.iloc[i].get("Source_IP", f"10.0.0.{i % 254}")),
-                "dst_ip": str(df.iloc[i].get("Destination_IP", "10.0.0.1")),
-                "dst_port": int(xrow.get("Destination_Port", 0)),
-                "protocol": int(df.iloc[i].get("Protocol", xrow.get("Protocol", 0))),
-                "pkt_len_mean": float(xrow.get("Packet_Length_Mean", xrow.get("Fwd_Packet_Length_Mean", 0))),
-                "iat_mean": float(xrow.get("Flow_IAT_Mean", 0)),
-                "tcp_flags": int(xrow.get("SYN_Flag_Count", 0)),
-                "ttl": 64,  # TTL not available in CIC CSVs; use default
-            })
+            records.append(
+                {
+                    "src_ip": str(df.iloc[i].get("Source_IP", f"10.0.0.{i % 254}")),
+                    "dst_ip": str(df.iloc[i].get("Destination_IP", "10.0.0.1")),
+                    "dst_port": int(xrow.get("Destination_Port", 0)),
+                    "protocol": int(df.iloc[i].get("Protocol", xrow.get("Protocol", 0))),
+                    "pkt_len_mean": float(
+                        xrow.get("Packet_Length_Mean", xrow.get("Fwd_Packet_Length_Mean", 0))
+                    ),
+                    "iat_mean": float(xrow.get("Flow_IAT_Mean", 0)),
+                    "tcp_flags": int(xrow.get("SYN_Flag_Count", 0)),
+                    "ttl": 64,  # TTL not available in CIC CSVs; use default
+                }
+            )
         return records
 
     def _ensure_feature_columns(self, X: pd.DataFrame) -> pd.DataFrame:
@@ -244,6 +239,7 @@ class OnlineFeaturePipeline:
             **kwargs: Forwarded to __init__.
         """
         import joblib
+
         artifacts_dir = Path(artifacts_dir)
         scaler = joblib.load(artifacts_dir / "scaler.pkl")
         return cls(scaler=scaler, **kwargs)

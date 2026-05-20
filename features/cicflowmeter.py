@@ -274,8 +274,7 @@ class CICFlowMeterExtractor:
         label_col = "Label"
         if label_col not in df.columns:
             raise ValueError(
-                f"Label column '{label_col}' not found. "
-                f"Available: {df.columns.tolist()[:10]}"
+                f"Label column '{label_col}' not found. " f"Available: {df.columns.tolist()[:10]}"
             )
 
         if feature_names is not None:
@@ -289,10 +288,18 @@ class CICFlowMeterExtractor:
                 X[col] = 0.0
             X = X[feature_names]
         else:
-            non_feature_cols = {"Label", "Timestamp", "Flow_ID", "Source_IP",
-                                 "Source_Port", "Destination_IP", "Protocol_Name"}
+            non_feature_cols = {
+                "Label",
+                "Timestamp",
+                "Flow_ID",
+                "Source_IP",
+                "Source_Port",
+                "Destination_IP",
+                "Protocol_Name",
+            }
             feature_cols = [
-                c for c in df.columns
+                c
+                for c in df.columns
                 if c not in non_feature_cols and pd.api.types.is_numeric_dtype(df[c])
             ]
             X = df[feature_cols].copy()
@@ -396,11 +403,11 @@ def extract_features_from_openflow(stat: Dict[str, Any]) -> Dict[str, float]:
     features: Dict[str, float] = {
         "Destination_Port": dst_port,
         "Flow_Duration": duration_us,
-        "Total_Fwd_Packets": packet_count,          # Approximation: no direction split
-        "Total_Backward_Packets": 0.0,              # Not available from OF counters
+        "Total_Fwd_Packets": packet_count,  # Approximation: no direction split
+        "Total_Backward_Packets": 0.0,  # Not available from OF counters
         "Total_Length_of_Fwd_Packets": byte_count,  # Approximation
         "Total_Length_of_Bwd_Packets": 0.0,
-        "Fwd_Packet_Length_Max": avg_pkt_size,      # Approximation
+        "Fwd_Packet_Length_Max": avg_pkt_size,  # Approximation
         "Fwd_Packet_Length_Min": avg_pkt_size,
         "Fwd_Packet_Length_Mean": avg_pkt_size,
         "Fwd_Packet_Length_Std": 0.0,
@@ -442,8 +449,7 @@ def flow_record_from_openflow(stat: Dict[str, Any]) -> Dict[str, Any]:
     packet_count = max(float(stat.get("packet_count", 1)), 1)
     byte_count = float(stat.get("byte_count", 0))
     duration_us = (
-        float(stat.get("duration_sec", 0)) * 1e6
-        + float(stat.get("duration_nsec", 0)) / 1e3
+        float(stat.get("duration_sec", 0)) * 1e6 + float(stat.get("duration_nsec", 0)) / 1e3
     )
 
     return {
