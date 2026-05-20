@@ -12,7 +12,7 @@
 ## 🔑 Key Results
 
 | Metric | Value |
-|---|---|
+|---| --- |
 | Overall Accuracy | 99.2% |
 | Macro F1-Score | 99.1% |
 | False Positive Rate | 0.48% |
