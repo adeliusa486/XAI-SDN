@@ -1,0 +1,121 @@
+# XAI-SDN Master Configuration
+# Override any setting via environment variables: XAISDN__<SECTION>__<KEY>=value
+
+project:
+  name: "xai-sdn"
+  version: "0.1.0"
+  description: "Explainable DDoS Detection for SDN"
+  random_seed: 42
+
+# ─── Data ────────────────────────────────────────────────────────────────────
+data:
+  raw_dir: "data/raw"
+  processed_dir: "data/processed"
+  splits_dir: "data/splits"
+  synthetic_dir: "data/synthetic"
+  dataset_name: "CIC-DDoS2019"
+  # Known CIC-DDoS2019 attack CSV files
+  attack_files:
+    - "UDPFlood.csv"
+    - "TCPFlood.csv"
+    - "ICMP.csv"
+    - "SlowLoris.csv"
+    - "HTTPFlood.csv"
+  benign_file: "Benign.csv"
+  label_column: " Label"               # Note: CIC CSVs have leading space
+  timestamp_column: " Timestamp"
+  test_size: 0.30
+  val_size: 0.10                       # Fraction of train set for validation
+
+# ─── Features ────────────────────────────────────────────────────────────────
+features:
+  n_cic_features: 80
+  n_entropy_features: 8
+  n_total_features: 88
+  entropy:
+    window_size: 1000                  # Sliding window N
+    pkt_len_bin_size: 10               # Discretization bucket for packet length
+    iat_bin_size: 1000                 # Discretization bucket for IAT (microseconds)
+    ttl_bin_size: 5                    # Discretization bucket for TTL
+  # Features to drop due to inf/NaN or zero-variance issues
+  drop_features:
+    - "Flow Bytes/s"                   # Sometimes inf — replaced by computed version
+    - "Flow Packets/s"                 # Sometimes inf
+  # Highly correlated features to optionally prune (Pearson > 0.99)
+  correlated_features_optional_drop:
+    - "Avg Bwd Segment Size"           # ~1.0 corr with Bwd Packet Length Mean
+    - "Fwd Avg Bytes/Bulk"
+
+# ─── Model ───────────────────────────────────────────────────────────────────
+model:
+  type: "RandomForest"
+  artifacts_dir: "model/artifacts"
+  random_forest:
+    n_estimators: 200
+    max_depth: null                    # Fully grown
+    min_samples_split: 2
+    min_samples_leaf: 1
+    max_features: "sqrt"               # sqrt(88) ≈ 9 features per split
+    bootstrap: true
+    class_weight: "balanced"
+    n_jobs: -1
+    random_state: 42
+  detection_threshold: 0.70           # Minimum DDoS confidence for SHAP + alert
+
+# ─── SHAP ────────────────────────────────────────────────────────────────────
+shap:
+  enabled: true
+  # Only compute SHAP for detections above this threshold
+  confidence_threshold: 0.70
+  # Maximum flows to include in global SHAP summary (memory guard)
+  global_summary_max_samples: 5000
+  output_dir: "model/artifacts/shap"
+
+# ─── SDN Controller ──────────────────────────────────────────────────────────
+sdn:
+  controller:
+    host: "0.0.0.0"
+    port: 6653
+    poll_interval_ms: 500              # OpenFlow stats polling interval
+    batch_dispatch_interval_ms: 100    # Feature pipeline batch interval
+  flow_window_size: 1000              # Must match features.entropy.window_size
+  alert_rate_limit: 1000             # Max alerts/second (DoS guard)
+
+# ─── API ─────────────────────────────────────────────────────────────────────
+api:
+  host: "0.0.0.0"
+  port: 8000
+  workers: 1
+  log_level: "info"
+  cors_origins:
+    - "http://localhost:8501"          # Streamlit dashboard
+    - "http://localhost:3000"          # React dashboard dev server
+  database_url: "sqlite+aiosqlite:///data/alerts.db"
+  max_alerts_stored: 100000
+
+# ─── Dashboard ───────────────────────────────────────────────────────────────
+dashboard:
+  port: 8501
+  api_url: "http://localhost:8000"
+  refresh_interval_seconds: 5
+  max_displayed_alerts: 500
+
+# ─── Monitoring ──────────────────────────────────────────────────────────────
+monitoring:
+  prometheus:
+    enabled: true
+    port: 9090
+  alert_thresholds:
+    max_alert_rate_per_second: 1000
+    max_detection_latency_ms: 5.0
+    min_model_confidence_p50: 0.80
+    min_http_flood_recall_estimate: 0.95
+    max_kafka_consumer_lag: 10000
+
+# ─── Logging ─────────────────────────────────────────────────────────────────
+logging:
+  level: "INFO"
+  format: "{time:YYYY-MM-DD HH:mm:ss} | {level} | {name} | {message}"
+  rotation: "100 MB"
+  retention: "14 days"
+  log_dir: "logs"

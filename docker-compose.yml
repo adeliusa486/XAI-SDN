@@ -1,0 +1,126 @@
+version: "3.9"
+
+# XAI-SDN Docker Compose — Development & Demo Stack
+# Usage: docker compose up -d
+# Services: api, dashboard, prometheus, grafana
+# For production: use kubernetes manifests in deployment/k8s/
+
+name: xai-sdn
+
+volumes:
+  model_artifacts:
+  alert_db:
+  prometheus_data:
+  grafana_data:
+
+networks:
+  xaisdn_net:
+    driver: bridge
+
+services:
+  # ─── Model Trainer (one-shot job) ──────────────────────────────────────────
+  trainer:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: trainer
+    container_name: xaisdn_trainer
+    volumes:
+      - model_artifacts:/app/model/artifacts
+      - ./data:/app/data
+    environment:
+      - PYTHONPATH=/app
+    networks:
+      - xaisdn_net
+    profiles:
+      - train   # Only run with: docker compose --profile train up trainer
+
+  # ─── API Server ────────────────────────────────────────────────────────────
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: runtime
+    container_name: xaisdn_api
+    ports:
+      - "8000:8000"
+    volumes:
+      - model_artifacts:/app/model/artifacts
+      - alert_db:/app/data
+      - ./logs:/app/logs
+    environment:
+      - PYTHONPATH=/app
+      - API_HOST=0.0.0.0
+      - API_PORT=8000
+      - DATABASE_URL=sqlite+aiosqlite:///data/alerts.db
+      - MODEL_ARTIFACTS_DIR=model/artifacts
+      - DETECTION_THRESHOLD=0.70
+      - LOG_LEVEL=INFO
+    env_file:
+      - .env
+    healthcheck:
+      test: ["CMD", "python", "-c",
+             "import urllib.request; urllib.request.urlopen('http://localhost:8000/health')"]
+      interval: 30s
+      timeout: 10s
+      start_period: 40s
+      retries: 3
+    networks:
+      - xaisdn_net
+    restart: unless-stopped
+
+  # ─── Streamlit Dashboard ───────────────────────────────────────────────────
+  dashboard:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: dashboard
+    container_name: xaisdn_dashboard
+    ports:
+      - "8501:8501"
+    environment:
+      - PYTHONPATH=/app
+      - DASHBOARD_API_URL=http://api:8000
+      - DASHBOARD_REFRESH_INTERVAL=5
+    depends_on:
+      api:
+        condition: service_healthy
+    networks:
+      - xaisdn_net
+    restart: unless-stopped
+
+  # ─── Prometheus ────────────────────────────────────────────────────────────
+  prometheus:
+    image: prom/prometheus:v2.48.0
+    container_name: xaisdn_prometheus
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./monitoring/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - prometheus_data:/prometheus
+    command:
+      - "--config.file=/etc/prometheus/prometheus.yml"
+      - "--storage.tsdb.path=/prometheus"
+      - "--web.enable-lifecycle"
+    networks:
+      - xaisdn_net
+    restart: unless-stopped
+
+  # ─── Grafana ───────────────────────────────────────────────────────────────
+  grafana:
+    image: grafana/grafana:10.2.2
+    container_name: xaisdn_grafana
+    ports:
+      - "3000:3000"
+    volumes:
+      - grafana_data:/var/lib/grafana
+      - ./monitoring/grafana_dashboard.json:/var/lib/grafana/dashboards/xaisdn.json:ro
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=${GRAFANA_ADMIN_PASSWORD:-admin}
+      - GF_USERS_ALLOW_SIGN_UP=false
+      - GF_DASHBOARDS_DEFAULT_HOME_DASHBOARD_PATH=/var/lib/grafana/dashboards/xaisdn.json
+    depends_on:
+      - prometheus
+    networks:
+      - xaisdn_net
+    restart: unless-stopped

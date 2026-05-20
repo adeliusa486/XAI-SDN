@@ -1,0 +1,317 @@
+"""
+train.py — Random Forest Training Script for XAI-SDN.
+
+Usage:
+    python model/train.py --config configs/model_config.yaml
+    python model/train.py --config configs/model_config.yaml --use-synthetic
+    python model/train.py --data-dir data/raw --output-dir model/artifacts
+"""
+
+from __future__ import annotations
+
+import json
+import os
+import sys
+import time
+from pathlib import Path
+from typing import Any, Dict, Optional
+
+import click
+import joblib
+import numpy as np
+import yaml
+from loguru import logger
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.metrics import classification_report, f1_score
+from sklearn.model_selection import StratifiedKFold, cross_val_score, train_test_split
+from sklearn.preprocessing import LabelEncoder, StandardScaler
+
+# Add project root to path
+sys.path.insert(0, str(Path(__file__).parent.parent))
+
+from features.cicflowmeter import CIC_FEATURE_NAMES
+from features.entropy import ENTROPY_FEATURE_NAMES
+
+
+# ─── MLflow (optional) ────────────────────────────────────────────────────────
+
+try:
+    import mlflow
+    import mlflow.sklearn
+    MLFLOW_AVAILABLE = True
+except ImportError:
+    MLFLOW_AVAILABLE = False
+    logger.warning("MLflow not available — experiment tracking disabled.")
+
+
+# ─── CLI ──────────────────────────────────────────────────────────────────────
+
+
+@click.command()
+@click.option("--config", default="configs/model_config.yaml", help="Training config path.")
+@click.option("--data-dir", default="data/raw", help="Raw data directory (CIC CSVs).")
+@click.option("--output-dir", default="model/artifacts", help="Artifact output directory.")
+@click.option("--use-synthetic", is_flag=True, help="Use synthetic data (no real dataset needed).")
+@click.option("--n-estimators", default=None, type=int, help="Override n_estimators.")
+@click.option("--experiment-name", default=None, help="MLflow experiment name.")
+def train(
+    config: str,
+    data_dir: str,
+    output_dir: str,
+    use_synthetic: bool,
+    n_estimators: Optional[int],
+    experiment_name: Optional[str],
+) -> None:
+    """Train the XAI-SDN Random Forest classifier."""
+    # Load config
+    cfg = load_config(config)
+    rf_cfg = cfg.get("random_forest", {})
+
+    if n_estimators is not None:
+        rf_cfg["n_estimators"] = n_estimators
+
+    output_path = Path(output_dir)
+    output_path.mkdir(parents=True, exist_ok=True)
+
+    # Configure MLflow
+    if MLFLOW_AVAILABLE:
+        exp_name = experiment_name or cfg.get("training", {}).get("experiment_name", "xai-sdn")
+        mlflow.set_experiment(exp_name)
+
+    logger.info("=" * 60)
+    logger.info("XAI-SDN Model Training")
+    logger.info("=" * 60)
+
+    # ── Load data ──────────────────────────────────────────────────────────
+    if use_synthetic:
+        logger.info("Using synthetic data for training demo...")
+        X, y, label_encoder = load_synthetic_data()
+    else:
+        logger.info(f"Loading real data from {data_dir}...")
+        X, y, label_encoder = load_real_data(data_dir)
+
+    logger.info(f"Dataset: {X.shape[0]} samples, {X.shape[1]} features")
+    logger.info(f"Classes: {list(label_encoder.classes_)}")
+    logger.info(f"Class distribution:\n{_class_distribution(y, label_encoder)}")
+
+    # ── Train/test split ───────────────────────────────────────────────────
+    test_size = cfg.get("data", {}).get("test_size", 0.30)
+    random_state = rf_cfg.get("random_state", 42)
+
+    X_train, X_test, y_train, y_test = train_test_split(
+        X, y,
+        test_size=test_size,
+        stratify=y,
+        random_state=random_state,
+    )
+
+    # ── Normalize features ─────────────────────────────────────────────────
+    scaler = StandardScaler()
+    X_train_scaled = scaler.fit_transform(X_train)
+    X_test_scaled = scaler.transform(X_test)
+
+    logger.info(f"Train: {X_train_scaled.shape}, Test: {X_test_scaled.shape}")
+
+    # ── Cross-validation ───────────────────────────────────────────────────
+    logger.info("Running 5-fold stratified cross-validation...")
+    cv = StratifiedKFold(n_splits=5, shuffle=True, random_state=random_state)
+    clf_cv = RandomForestClassifier(**rf_cfg)
+    cv_scores = cross_val_score(clf_cv, X_train_scaled, y_train, cv=cv, scoring="f1_macro", n_jobs=-1)
+    logger.info(f"CV F1-macro: {cv_scores.mean():.4f} ± {cv_scores.std():.4f}")
+
+    # ── Train final model ──────────────────────────────────────────────────
+    logger.info(f"Training final model: RF({rf_cfg.get('n_estimators',200)} trees)...")
+    t0 = time.perf_counter()
+    clf = RandomForestClassifier(**rf_cfg)
+    clf.fit(X_train_scaled, y_train)
+    train_time = time.perf_counter() - t0
+    logger.info(f"Training time: {train_time:.1f}s")
+
+    # ── Evaluate ───────────────────────────────────────────────────────────
+    logger.info("Evaluating on test set...")
+    t0 = time.perf_counter()
+    y_pred = clf.predict(X_test_scaled)
+    inference_time = time.perf_counter() - t0
+
+    latency_ms = (inference_time / len(X_test)) * 1000
+    throughput = len(X_test) / inference_time
+
+    report = classification_report(
+        y_test, y_pred,
+        target_names=label_encoder.classes_,
+        output_dict=True,
+    )
+    macro_f1 = f1_score(y_test, y_pred, average="macro")
+    accuracy = report["accuracy"]
+
+    logger.info(f"\n{classification_report(y_test, y_pred, target_names=label_encoder.classes_)}")
+    logger.info(f"Macro F1:          {macro_f1:.4f}")
+    logger.info(f"Accuracy:          {accuracy:.4f}")
+    logger.info(f"Mean latency:      {latency_ms:.3f} ms/flow")
+    logger.info(f"Throughput:        {throughput:.0f} flows/s")
+
+    # ── Serialize artifacts ────────────────────────────────────────────────
+    logger.info(f"Saving artifacts to {output_path}...")
+    joblib.dump(clf, output_path / "rf_model.pkl")
+    joblib.dump(scaler, output_path / "scaler.pkl")
+    joblib.dump(label_encoder, output_path / "label_encoder.pkl")
+
+    feature_names_all = CIC_FEATURE_NAMES + ENTROPY_FEATURE_NAMES
+    with open(output_path / "feature_names.json", "w") as f:
+        json.dump(feature_names_all, f, indent=2)
+
+    metrics = {
+        "accuracy": float(accuracy),
+        "macro_f1": float(macro_f1),
+        "cv_f1_mean": float(cv_scores.mean()),
+        "cv_f1_std": float(cv_scores.std()),
+        "latency_ms": float(latency_ms),
+        "throughput_flows_s": float(throughput),
+        "train_time_s": float(train_time),
+        "n_train": int(X_train.shape[0]),
+        "n_test": int(X_test.shape[0]),
+        "n_features": int(X.shape[1]),
+        "classes": label_encoder.classes_.tolist(),
+    }
+    with open(output_path / "metrics.json", "w") as f:
+        json.dump(metrics, f, indent=2)
+
+    logger.info("Artifacts saved:")
+    logger.info(f"  rf_model.pkl, scaler.pkl, label_encoder.pkl, feature_names.json, metrics.json")
+
+    # ── MLflow logging ─────────────────────────────────────────────────────
+    if MLFLOW_AVAILABLE:
+        with mlflow.start_run():
+            mlflow.log_params(rf_cfg)
+            mlflow.log_metrics({
+                "accuracy": accuracy,
+                "macro_f1": macro_f1,
+                "cv_f1_mean": cv_scores.mean(),
+                "latency_ms": latency_ms,
+                "throughput_flows_s": throughput,
+            })
+            mlflow.sklearn.log_model(clf, "rf_model")
+            logger.info("MLflow run logged.")
+
+    logger.info("Training complete ✓")
+
+
+# ─── Data Loaders ────────────────────────────────────────────────────────────
+
+
+def load_synthetic_data(
+    n_samples: int = 10000,
+    n_features: int = 88,
+    random_state: int = 42,
+) -> tuple[np.ndarray, np.ndarray, LabelEncoder]:
+    """Generate synthetic DDoS/Benign data for smoke testing and demo.
+
+    Creates a linearly separable synthetic dataset that mimics the
+    distributional properties of CIC-DDoS2019 (class imbalance, feature ranges).
+
+    Returns:
+        (X, y_encoded, LabelEncoder)
+    """
+    rng = np.random.RandomState(random_state)
+    classes = ["Benign", "DDoS-UDP", "DDoS-TCP", "DDoS-ICMP", "DDoS-SlowLoris", "DDoS-HTTP"]
+    # Class proportions mirroring CIC-DDoS2019
+    class_props = [0.380, 0.200, 0.234, 0.183, 0.155, 0.016]
+    # Normalize to sum to 1
+    class_props = np.array(class_props)
+    class_props /= class_props.sum()
+
+    n_per_class = (class_props * n_samples).astype(int)
+    n_per_class[-1] = n_samples - n_per_class[:-1].sum()  # Fix rounding
+
+    X_parts, y_parts = [], []
+    for i, (cls, n) in enumerate(zip(classes, n_per_class)):
+        if n <= 0:
+            continue
+        # Each class has a distinct mean in entropy space (last 8 features)
+        # to make classification non-trivial but tractable
+        mean = np.zeros(n_features)
+
+        if cls == "Benign":
+            # High entropy across the board
+            mean[80:88] = [6.5, 5.0, 4.5, 1.5, 4.0, 3.5, 2.0, 3.0]
+            mean[0] = 443    # dst_port: HTTPS
+            mean[14] = 5e4   # flow_bytes_s
+        elif cls == "DDoS-UDP":
+            # Low src_ip entropy (botnet), low dst_port entropy (single port)
+            mean[80:88] = [0.5, 0.3, 0.2, 0.1, 0.8, 0.5, 0.1, 0.3]
+            mean[0] = 53     # DNS port
+            mean[14] = 1e7   # high bytes/s
+        elif cls == "DDoS-TCP":
+            mean[80:88] = [1.0, 0.4, 0.5, 0.2, 0.9, 0.6, 0.0, 0.2]
+            mean[43] = 5.0   # SYN_Flag_Count
+            mean[14] = 8e6
+        elif cls == "DDoS-ICMP":
+            mean[80:88] = [1.2, 0.5, 0.5, 0.0, 1.0, 0.4, 0.1, 0.4]
+            mean[14] = 9e6
+        elif cls == "DDoS-SlowLoris":
+            mean[80:88] = [3.5, 2.0, 2.5, 0.8, 1.5, 0.2, 1.2, 1.5]
+            mean[2] = 1      # Very few packets
+            mean[1] = 3e7    # Long duration
+        elif cls == "DDoS-HTTP":
+            mean[80:88] = [4.0, 1.0, 1.2, 1.0, 2.0, 1.5, 1.8, 2.0]
+            mean[0] = 80     # HTTP
+            mean[14] = 2e5
+
+        X_cls = rng.randn(n, n_features) * 0.3 + mean
+        X_parts.append(X_cls)
+        y_parts.extend([cls] * n)
+
+    X = np.vstack(X_parts).astype(np.float32)
+    y_raw = np.array(y_parts)
+
+    le = LabelEncoder()
+    y_enc = le.fit_transform(y_raw)
+
+    return X, y_enc, le
+
+
+def load_real_data(data_dir: str) -> tuple[np.ndarray, np.ndarray, LabelEncoder]:
+    """Load and preprocess real CIC-DDoS2019 data.
+
+    Args:
+        data_dir: Directory containing CIC-DDoS2019 CSV files.
+
+    Returns:
+        (X, y_encoded, LabelEncoder)
+    """
+    from features.pipeline import OfflineFeaturePipeline
+
+    pipeline = OfflineFeaturePipeline()
+    df = pipeline.cic_extractor.load_directory(data_dir)
+    X, y_enc = pipeline.run_on_dataframe(df)
+    return X, y_enc, pipeline.label_encoder
+
+
+# ─── Utilities ────────────────────────────────────────────────────────────────
+
+
+def load_config(config_path: str) -> Dict[str, Any]:
+    """Load YAML config file."""
+    path = Path(config_path)
+    if not path.exists():
+        logger.warning(f"Config not found at {path}; using defaults.")
+        return {}
+    with open(path) as f:
+        return yaml.safe_load(f) or {}
+
+
+def _class_distribution(y: np.ndarray, le: LabelEncoder) -> str:
+    unique, counts = np.unique(y, return_counts=True)
+    lines = []
+    for cls_id, cnt in zip(unique, counts):
+        cls_name = le.classes_[cls_id]
+        pct = cnt / len(y) * 100
+        lines.append(f"  {cls_name:20s} {cnt:6d}  ({pct:.1f}%)")
+    return "\n".join(lines)
+
+
+# ─── Entry Point ─────────────────────────────────────────────────────────────
+
+
+if __name__ == "__main__":
+    train()
