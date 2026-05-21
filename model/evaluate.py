@@ -73,6 +73,13 @@ def evaluate(
     with open(artifacts_path / "feature_names.json") as f:
         feature_names = json.load(f)
 
+    logger.info(
+        f"Loaded model: {type(clf).__name__} | "
+        f"n_estimators={clf.n_estimators} | "
+        f"max_features={clf.max_features} | "
+        f"class_weight={clf.class_weight}"
+    )
+
     # ── Load data ──────────────────────────────────────────────────────────
     if use_synthetic or data_dir is None:
         test_X_path = artifacts_path / "X_test.npy"
