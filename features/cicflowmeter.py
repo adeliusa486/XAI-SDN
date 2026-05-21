@@ -118,9 +118,9 @@ CIC_FEATURE_NAMES: List[str] = [
     "Idle_Std",
     "Idle_Max",
     "Idle_Min",
-    # Additional features to reach 80 (present in CICFlowMeter v3)
-    "Flow_IAT_Std_Fwd",
-    "Flow_IAT_Std_Bwd",
+    # Standard CICFlowMeter v3 columns — protocol and source port
+    "Protocol",
+    "Source_Port",
 ]
 
 # Label classes in CIC-DDoS2019

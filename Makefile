@@ -117,9 +117,6 @@ baselines:  ## Run baseline comparison
 ablation:  ## Run ablation study
 	$(PYTHON) model/ablation.py --use-synthetic
 
-shap-global:  ## Compute global SHAP importance
-	$(PYTHON) model/evaluate.py --artifacts-dir model/artifacts --use-synthetic --run-shap
-
 mlflow-ui:  ## Start MLflow UI for experiment tracking
 	mlflow ui --backend-store-uri mlruns --port 5000
 
