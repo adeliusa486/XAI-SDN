@@ -9,9 +9,12 @@ Usage:
 
 from __future__ import annotations
 
+import hashlib
 import json
 import os
+import platform
 import sys
+import importlib.metadata as importlib_metadata
 import time
 from pathlib import Path
 from typing import Any, Dict, Optional
@@ -206,6 +209,18 @@ def train(
     logger.info("Artifacts saved:")
     logger.info(f"  rf_model.pkl, scaler.pkl, label_encoder.pkl, feature_names.json, metrics.json")
 
+    data_hash = hash_dataset(data_dir, use_synthetic)
+    generate_reproducibility_manifest(
+        output_path=output_path,
+        metrics=metrics,
+        rf_cfg=rf_cfg,
+        n_train=int(X_train.shape[0]),
+        n_test=int(X_test.shape[0]),
+        random_state=random_state,
+        data_source="synthetic" if use_synthetic else data_dir,
+        data_hash=data_hash,
+    )
+
     # ── MLflow logging ─────────────────────────────────────────────────────
     if MLFLOW_AVAILABLE:
         with mlflow.start_run():
@@ -315,6 +330,64 @@ def load_real_data(data_dir: str) -> tuple[np.ndarray, np.ndarray, LabelEncoder]
 
 
 # ─── Utilities ────────────────────────────────────────────────────────────────
+
+
+def generate_reproducibility_manifest(
+    output_path: Path,
+    metrics: dict,
+    rf_cfg: dict,
+    n_train: int,
+    n_test: int,
+    random_state: int,
+    data_source: str,
+    data_hash: str | None = None,
+) -> dict:
+    """Generate a JSON manifest linking metrics to exact run conditions."""
+    def get_version(pkg: str) -> str:
+        try:
+            return importlib_metadata.version(pkg)
+        except Exception:
+            return "unknown"
+
+    manifest = {
+        "schema_version": "1.0",
+        "run_timestamp": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
+        "data_source": data_source,
+        "data_hash_sha256": data_hash,
+        "random_state": random_state,
+        "n_train": n_train,
+        "n_test": n_test,
+        "hyperparameters": rf_cfg,
+        "metrics": metrics,
+        "environment": {
+            "python": platform.python_version(),
+            "platform": platform.platform(),
+            "scikit_learn": get_version("scikit-learn"),
+            "numpy": get_version("numpy"),
+            "pandas": get_version("pandas"),
+            "joblib": get_version("joblib"),
+        },
+    }
+
+    manifest_path = output_path / "reproducibility_manifest.json"
+    with open(manifest_path, "w") as f:
+        json.dump(manifest, f, indent=2)
+
+    logger.info(f"Reproducibility manifest saved: {manifest_path}")
+    return manifest
+
+
+def hash_dataset(data_dir: str | None, use_synthetic: bool) -> str:
+    """Compute SHA-256 of training data for provenance."""
+    if use_synthetic:
+        return "SYNTHETIC-n10000-seed42"
+    if data_dir is None:
+        return "UNKNOWN"
+    h = hashlib.sha256()
+    for csv_path in sorted(Path(data_dir).glob("*.csv")):
+        with open(csv_path, "rb") as f:
+            h.update(f.read())
+    return h.hexdigest()
 
 
 def load_config(config_path: str) -> Dict[str, Any]:

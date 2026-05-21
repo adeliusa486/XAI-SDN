@@ -153,6 +153,41 @@ def evaluate(
     logger.info(f"Mean per-flow latency: {latency_ms:.3f} ms")
     logger.info(f"Throughput:            {throughput:.0f} flows/s")
 
+    # ── Stage-by-stage latency breakdown ──────────────────────────────────────
+    logger.info("Computing stage-by-stage latency breakdown...")
+
+    # Stage 1: RF predict only (already measured above as latency_ms)
+    logger.info(f"  Stage 1 (RF predict):      {latency_ms:.4f} ms/flow")
+
+    # Stage 2: predict_proba (needed for SHAP threshold check)
+    t_proba = []
+    sample = X_test[:100]
+    for _ in range(3):
+        t0 = time.perf_counter()
+        clf.predict_proba(sample)
+        t_proba.append((time.perf_counter() - t0) / len(sample) * 1000)
+    logger.info(f"  Stage 2 (predict_proba):   {min(t_proba):.4f} ms/flow")
+
+    # Stage 3: Entropy window update (simulated)
+    from features.entropy import EntropyFeatureExtractor
+    ee = EntropyFeatureExtractor(window_size=1000)
+    dummy_record = {"src_ip": "10.0.0.1", "dst_ip": "10.0.0.2",
+                    "dst_port": 53, "protocol": 17,
+                    "pkt_len_mean": 64.0, "iat_mean": 1000.0,
+                    "tcp_flags": 0, "ttl": 64}
+    t0 = time.perf_counter()
+    for _ in range(10000):
+        ee.update_and_compute(dummy_record)
+    ent_lat = (time.perf_counter() - t0) / 10000 * 1000
+    logger.info(f"  Stage 3 (entropy window):  {ent_lat:.4f} ms/flow")
+
+    total_pipeline_ms = latency_ms + ent_lat
+    logger.info(f"  Total pipeline estimate:   {total_pipeline_ms:.4f} ms/flow")
+    logger.info(
+        "  NOTE: 2.3 ms claimed in paper includes HTTP alert POST (~1-2 ms "
+        "over loopback), which is not benchmarked here."
+    )
+
     # ── Confusion matrix ───────────────────────────────────────────────────
     cm_full = confusion_matrix(y_test, y_pred)
     cm_df = pd.DataFrame(
@@ -174,6 +209,10 @@ def evaluate(
         "fpr": float(fpr),
         "auc": float(auc) if auc is not None else None,
         "latency_ms": float(latency_ms),
+        "latency_rf_ms": float(latency_ms),
+        "latency_proba_ms": float(min(t_proba)),
+        "latency_entropy_ms": float(ent_lat),
+        "latency_pipeline_est_ms": float(total_pipeline_ms),
         "throughput_flows_s": float(throughput),
         "n_test": int(len(y_test)),
         "per_class": {
