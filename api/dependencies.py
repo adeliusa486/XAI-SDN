@@ -22,7 +22,6 @@ from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column
 from sqlalchemy import Integer, Float, String, DateTime, Text, JSON
 from datetime import datetime
 
-
 # ─── Database Models ──────────────────────────────────────────────────────────
 
 
@@ -90,11 +89,14 @@ class AppState:
             self.label_encoder = joblib.load(le_path)
             with open(fn_path) as f:
                 self.feature_names = json.load(f)
-            logger.info(f"Model loaded: {type(self.clf).__name__}, {len(self.feature_names)} features")
+            logger.info(
+                f"Model loaded: {type(self.clf).__name__}, {len(self.feature_names)} features"
+            )
 
             # Initialize SHAP
             try:
                 from explainability.shap_explainer import SHAPExplainer
+
                 self.shap_explainer = SHAPExplainer(
                     model=self.clf,
                     feature_names=self.feature_names,
@@ -153,6 +155,7 @@ class AppState:
 
         from features.cicflowmeter import CIC_FEATURE_NAMES
         from features.entropy import ENTROPY_FEATURE_NAMES
+
         all_names = CIC_FEATURE_NAMES + ENTROPY_FEATURE_NAMES
 
         x = np.array([feature_vector.get(name, 0.0) for name in all_names], dtype=np.float64)

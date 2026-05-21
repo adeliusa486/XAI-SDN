@@ -6,6 +6,7 @@ Covers the subset of loguru used in this codebase:
     from loguru import logger
     logger.info / debug / warning / error / critical
 """
+
 import logging
 import sys
 

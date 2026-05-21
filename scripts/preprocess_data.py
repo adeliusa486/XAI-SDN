@@ -62,16 +62,20 @@ def main(data_dir: str = "data/raw", output_dir: str = "data/splits") -> None:
     flow_records = []
     for i in range(len(df)):
         row = X_cic.iloc[i]
-        flow_records.append({
-            "src_ip": str(df.iloc[i].get("Source_IP", f"10.0.0.{i%254}")),
-            "dst_ip": str(df.iloc[i].get("Destination_IP", "10.0.0.1")),
-            "dst_port": int(row.get("Destination_Port", 0)),
-            "protocol": int(df.iloc[i].get("Protocol", 0)),
-            "pkt_len_mean": float(row.get("Packet_Length_Mean", row.get("Fwd_Packet_Length_Mean", 0))),
-            "iat_mean": float(row.get("Flow_IAT_Mean", 0)),
-            "tcp_flags": int(row.get("SYN_Flag_Count", 0)),
-            "ttl": 64,
-        })
+        flow_records.append(
+            {
+                "src_ip": str(df.iloc[i].get("Source_IP", f"10.0.0.{i%254}")),
+                "dst_ip": str(df.iloc[i].get("Destination_IP", "10.0.0.1")),
+                "dst_port": int(row.get("Destination_Port", 0)),
+                "protocol": int(df.iloc[i].get("Protocol", 0)),
+                "pkt_len_mean": float(
+                    row.get("Packet_Length_Mean", row.get("Fwd_Packet_Length_Mean", 0))
+                ),
+                "iat_mean": float(row.get("Flow_IAT_Mean", 0)),
+                "tcp_flags": int(row.get("SYN_Flag_Count", 0)),
+                "ttl": 64,
+            }
+        )
 
     # Step 5: Compute entropy features
     logger.info("Computing entropy features (N=1000 window)...")
@@ -94,11 +98,12 @@ def main(data_dir: str = "data/raw", output_dir: str = "data/splits") -> None:
 
     # Step 9: Save
     np.save(out_path / "X_train.npy", X_train)
-    np.save(out_path / "X_test.npy",  X_test)
+    np.save(out_path / "X_test.npy", X_test)
     np.save(out_path / "y_train.npy", y_train)
-    np.save(out_path / "y_test.npy",  y_test)
+    np.save(out_path / "y_test.npy", y_test)
 
     import json, joblib
+
     joblib.dump(le, out_path / "label_encoder.pkl")
     with open(out_path / "feature_names.json", "w") as f:
         all_names = CIC_FEATURE_NAMES + ENTROPY_FEATURE_NAMES
@@ -107,7 +112,7 @@ def main(data_dir: str = "data/raw", output_dir: str = "data/splits") -> None:
     with open(out_path / "class_distribution.txt", "w") as f:
         for cls_id, cls_name in enumerate(le.classes_):
             n_train = int((y_train == cls_id).sum())
-            n_test  = int((y_test  == cls_id).sum())
+            n_test = int((y_test == cls_id).sum())
             f.write(f"{cls_name:20s}  train={n_train:6d}  test={n_test:5d}\n")
 
     logger.info(f"Splits saved to {out_path}/")
@@ -116,7 +121,7 @@ def main(data_dir: str = "data/raw", output_dir: str = "data/splits") -> None:
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument("--data-dir",   default="data/raw")
+    parser.add_argument("--data-dir", default="data/raw")
     parser.add_argument("--output-dir", default="data/splits")
     args = parser.parse_args()
     main(args.data_dir, args.output_dir)

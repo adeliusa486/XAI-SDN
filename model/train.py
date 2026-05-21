@@ -32,12 +32,12 @@ sys.path.insert(0, str(Path(__file__).parent.parent))
 from features.cicflowmeter import CIC_FEATURE_NAMES
 from features.entropy import ENTROPY_FEATURE_NAMES
 
-
 # ─── MLflow (optional) ────────────────────────────────────────────────────────
 
 try:
     import mlflow
     import mlflow.sklearn
+
     MLFLOW_AVAILABLE = True
 except ImportError:
     MLFLOW_AVAILABLE = False
@@ -99,7 +99,8 @@ def train(
     random_state = rf_cfg.get("random_state", 42)
 
     X_train, X_test, y_train, y_test = train_test_split(
-        X, y,
+        X,
+        y,
         test_size=test_size,
         stratify=y,
         random_state=random_state,
@@ -116,7 +117,9 @@ def train(
     logger.info("Running 5-fold stratified cross-validation...")
     cv = StratifiedKFold(n_splits=5, shuffle=True, random_state=random_state)
     clf_cv = RandomForestClassifier(**rf_cfg)
-    cv_scores = cross_val_score(clf_cv, X_train_scaled, y_train, cv=cv, scoring="f1_macro", n_jobs=-1)
+    cv_scores = cross_val_score(
+        clf_cv, X_train_scaled, y_train, cv=cv, scoring="f1_macro", n_jobs=-1
+    )
     logger.info(f"CV F1-macro: {cv_scores.mean():.4f} ± {cv_scores.std():.4f}")
 
     # ── Train final model ──────────────────────────────────────────────────
@@ -137,7 +140,8 @@ def train(
     throughput = len(X_test) / inference_time
 
     report = classification_report(
-        y_test, y_pred,
+        y_test,
+        y_pred,
         target_names=label_encoder.classes_,
         output_dict=True,
     )
@@ -183,13 +187,15 @@ def train(
     if MLFLOW_AVAILABLE:
         with mlflow.start_run():
             mlflow.log_params(rf_cfg)
-            mlflow.log_metrics({
-                "accuracy": accuracy,
-                "macro_f1": macro_f1,
-                "cv_f1_mean": cv_scores.mean(),
-                "latency_ms": latency_ms,
-                "throughput_flows_s": throughput,
-            })
+            mlflow.log_metrics(
+                {
+                    "accuracy": accuracy,
+                    "macro_f1": macro_f1,
+                    "cv_f1_mean": cv_scores.mean(),
+                    "latency_ms": latency_ms,
+                    "throughput_flows_s": throughput,
+                }
+            )
             mlflow.sklearn.log_model(clf, "rf_model")
             logger.info("MLflow run logged.")
 
@@ -234,27 +240,27 @@ def load_synthetic_data(
         if cls == "Benign":
             # High entropy across the board
             mean[80:88] = [6.5, 5.0, 4.5, 1.5, 4.0, 3.5, 2.0, 3.0]
-            mean[0] = 443    # dst_port: HTTPS
-            mean[14] = 5e4   # flow_bytes_s
+            mean[0] = 443  # dst_port: HTTPS
+            mean[14] = 5e4  # flow_bytes_s
         elif cls == "DDoS-UDP":
             # Low src_ip entropy (botnet), low dst_port entropy (single port)
             mean[80:88] = [0.5, 0.3, 0.2, 0.1, 0.8, 0.5, 0.1, 0.3]
-            mean[0] = 53     # DNS port
-            mean[14] = 1e7   # high bytes/s
+            mean[0] = 53  # DNS port
+            mean[14] = 1e7  # high bytes/s
         elif cls == "DDoS-TCP":
             mean[80:88] = [1.0, 0.4, 0.5, 0.2, 0.9, 0.6, 0.0, 0.2]
-            mean[43] = 5.0   # SYN_Flag_Count
+            mean[43] = 5.0  # SYN_Flag_Count
             mean[14] = 8e6
         elif cls == "DDoS-ICMP":
             mean[80:88] = [1.2, 0.5, 0.5, 0.0, 1.0, 0.4, 0.1, 0.4]
             mean[14] = 9e6
         elif cls == "DDoS-SlowLoris":
             mean[80:88] = [3.5, 2.0, 2.5, 0.8, 1.5, 0.2, 1.2, 1.5]
-            mean[2] = 1      # Very few packets
-            mean[1] = 3e7    # Long duration
+            mean[2] = 1  # Very few packets
+            mean[1] = 3e7  # Long duration
         elif cls == "DDoS-HTTP":
             mean[80:88] = [4.0, 1.0, 1.2, 1.0, 2.0, 1.5, 1.8, 2.0]
-            mean[0] = 80     # HTTP
+            mean[0] = 80  # HTTP
             mean[14] = 2e5
 
         X_cls = rng.randn(n, n_features) * 0.3 + mean

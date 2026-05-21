@@ -78,6 +78,7 @@ def evaluate(
     else:
         from model.train import load_real_data
         from sklearn.model_selection import train_test_split
+
         X_all, y_all, _ = load_real_data(data_dir)
         _, X_test_raw, _, y_test = train_test_split(
             X_all, y_all, test_size=0.30, stratify=y_all, random_state=42
@@ -169,7 +170,8 @@ def evaluate(
                 "f1": float(report_dict[cls]["f1-score"]),
                 "support": int(report_dict[cls]["support"]),
             }
-            for cls in le.classes_ if cls in report_dict
+            for cls in le.classes_
+            if cls in report_dict
         },
     }
     out_file = output_path / "evaluation_results.json"
@@ -186,6 +188,7 @@ def _compute_shap_global(clf, X_test, le, feature_names, output_path):
     """Compute and save global SHAP feature importance."""
     try:
         import shap
+
         # Subsample for speed
         max_samples = min(2000, len(X_test))
         X_sample = X_test[:max_samples]
@@ -201,12 +204,16 @@ def _compute_shap_global(clf, X_test, le, feature_names, output_path):
             )
         else:
             shap_arr = np.array(shap_values)
-            mean_abs_shap = np.abs(shap_arr).mean(axis=0) if shap_arr.ndim == 2 else shap_arr.mean(axis=0)
+            mean_abs_shap = (
+                np.abs(shap_arr).mean(axis=0) if shap_arr.ndim == 2 else shap_arr.mean(axis=0)
+            )
 
-        importance_df = pd.DataFrame({
-            "feature": feature_names[:len(mean_abs_shap)],
-            "mean_abs_shap": mean_abs_shap,
-        }).sort_values("mean_abs_shap", ascending=False)
+        importance_df = pd.DataFrame(
+            {
+                "feature": feature_names[: len(mean_abs_shap)],
+                "mean_abs_shap": mean_abs_shap,
+            }
+        ).sort_values("mean_abs_shap", ascending=False)
 
         importance_df.to_csv(output_path / "shap_global_importance.csv", index=False)
         logger.info(f"\nTop 10 SHAP features:\n{importance_df.head(10).to_string(index=False)}")
@@ -214,6 +221,7 @@ def _compute_shap_global(clf, X_test, le, feature_names, output_path):
         # Save SHAP summary plot
         try:
             import matplotlib
+
             matplotlib.use("Agg")
             import matplotlib.pyplot as plt
 
