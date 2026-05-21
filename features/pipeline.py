@@ -178,8 +178,16 @@ class OfflineFeaturePipeline:
             xrow = X_cic.iloc[i]
             records.append(
                 {
-                    "src_ip": str(df.iloc[i].get("Source_IP", f"10.0.0.{i % 254}")),
-                    "dst_ip": str(df.iloc[i].get("Destination_IP", "10.0.0.1")),
+                    "src_ip": str(
+                        df.iloc[i].get("Source IP") or df.iloc[i].get("Src IP") or 
+                        df.iloc[i].get("Source_IP") or df.iloc[i].get("Src_IP") or 
+                        f"10.0.0.{i % 254}"
+                    ),
+                    "dst_ip": str(
+                        df.iloc[i].get("Destination IP") or df.iloc[i].get("Dst IP") or 
+                        df.iloc[i].get("Destination_IP") or df.iloc[i].get("Dst_IP") or 
+                        "10.0.0.1"
+                    ),
                     "dst_port": int(xrow.get("Destination_Port", 0)),
                     "protocol": int(df.iloc[i].get("Protocol", xrow.get("Protocol", 0))),
                     "pkt_len_mean": float(

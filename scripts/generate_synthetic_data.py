@@ -43,6 +43,13 @@ def generate_synthetic_dataset(
     Returns:
         pd.DataFrame with 80 CIC features + 8 entropy features + Label column.
     """
+    logger.warning("==========================================================")
+    logger.warning("WARNING: SYNTHETIC DATA GENERATION")
+    logger.warning("This data is heavily engineered to be linearly separable")
+    logger.warning("for CI/CD smoke testing. Models will trivially achieve")
+    logger.warning("1.000 F1 scores. DO NOT report these metrics as real!")
+    logger.warning("==========================================================")
+    
     rng = np.random.RandomState(random_state)
 
     classes = ["Benign", "DDoS-UDP", "DDoS-TCP", "DDoS-ICMP", "DDoS-SlowLoris", "DDoS-HTTP"]
