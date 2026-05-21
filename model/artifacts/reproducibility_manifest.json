@@ -1,6 +1,6 @@
 {
   "schema_version": "1.0",
-  "run_timestamp": "2026-05-21T11:36:26Z",
+  "run_timestamp": "2026-05-21T15:58:20Z",
   "data_source": "synthetic",
   "data_hash_sha256": "SYNTHETIC-n10000-seed42",
   "random_state": 42,
@@ -22,9 +22,9 @@
     "macro_f1": 1.0,
     "cv_f1_mean": 1.0,
     "cv_f1_std": 0.0,
-    "latency_ms": 0.028905199995885294,
-    "throughput_flows_s": 34595.851270441024,
-    "train_time_s": 0.9073573998175561,
+    "latency_ms": 0.012796600038806599,
+    "throughput_flows_s": 78145.75722984457,
+    "train_time_s": 0.4305361998267472,
     "n_train": 7000,
     "n_test": 3000,
     "n_features": 88,
@@ -45,5 +45,5 @@
     "pandas": "2.3.3",
     "joblib": "1.5.3"
   },
-  "mlflow_run_id": "5d3ebdd7202f426196547655aa9d768f"
+  "mlflow_run_id": "ded67f43056a40cd9500a9dbd7297194"
 }
