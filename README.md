@@ -60,8 +60,11 @@ Services started:
 conda env create -f environment.yml
 conda activate xai-sdn
 
-# Or use pip
-pip install -r requirements.txt
+# Or use pip (recommended for dev):
+pip install -r requirements.txt -r requirements-dev.txt
+
+# Or install with hash verification for exact reproduction:
+pip install --require-hashes -r requirements-lock.txt
 
 # Generate synthetic data and train a demo model
 python scripts/generate_synthetic_data.py
@@ -205,6 +208,19 @@ The following files are **generated** (never committed):
 - `model/artifacts/*.pkl` — produced by `python model/train.py`
 - `model/artifacts/X_test.npy` — saved test split (produced by `model/train.py`)
 - `model/artifacts/metrics.json` — training metrics (produced by `model/train.py`)
+
+---
+
+## ⚙️ Environment Notes
+
+| File | Purpose |
+|------|---------|
+| `requirements.txt` | Runtime deps with version bounds |
+| `requirements-dev.txt` | Test and lint tools |
+| `requirements-lock.txt` | Hash-pinned exact lockfile for reproducibility |
+| `environment.yml` | Conda environment (delegates to pip) |
+
+**Ryu SDN controller** requires Python ≤ 3.8. See `docs/deployment_guide.md` for the separate `venv-ryu` setup.
 
 ---
 

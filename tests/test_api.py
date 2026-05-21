@@ -14,11 +14,12 @@ os.environ["DATABASE_URL"] = "sqlite+aiosqlite:///data/test_alerts.db"
 @pytest.fixture(scope="module")
 async def client():
     """Async test client for the FastAPI app."""
-    from api.main import app
+    from api.main import app, lifespan
 
     transport = ASGITransport(app=app)
-    async with AsyncClient(transport=transport, base_url="http://test") as c:
-        yield c
+    async with lifespan(app):
+        async with AsyncClient(transport=transport, base_url="http://test") as c:
+            yield c
 
 
 class TestHealthEndpoint:
