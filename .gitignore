@@ -76,3 +76,8 @@ docker-compose.override.yml
 # Generated
 SHAP_output/
 figures/
+
+# Generated result artifacts (do not commit — regenerate from CI)
+SMOKE_TEST_REPORT.md
+EVALUATION_REPORT.md
+model/artifacts/reproducibility_manifest.json
