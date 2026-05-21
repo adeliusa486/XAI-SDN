@@ -1,0 +1,275 @@
+{
+  "results": {
+    "RF + CIC-only (80-dim)": [
+      {
+        "seed": 42,
+        "name": "RF + CIC-only (80-dim)",
+        "features": "cic_only",
+        "model": "RF",
+        "n_features": 80,
+        "accuracy": 0.99875,
+        "macro_f1": 0.991988203489801,
+        "fpr": 0.0,
+        "latency_ms": 0.015282250048282243,
+        "train_time_s": 0.4185930001549423
+      },
+      {
+        "seed": 123,
+        "name": "RF + CIC-only (80-dim)",
+        "features": "cic_only",
+        "model": "RF",
+        "n_features": 80,
+        "accuracy": 0.9983333333333333,
+        "macro_f1": 0.989157620263942,
+        "fpr": 0.0,
+        "latency_ms": 0.015711666783317924,
+        "train_time_s": 0.4506096998229623
+      },
+      {
+        "seed": 456,
+        "name": "RF + CIC-only (80-dim)",
+        "features": "cic_only",
+        "model": "RF",
+        "n_features": 80,
+        "accuracy": 0.9975,
+        "macro_f1": 0.9832332126398947,
+        "fpr": 0.0,
+        "latency_ms": 0.01549329162420084,
+        "train_time_s": 0.4438712000846863
+      },
+      {
+        "seed": 789,
+        "name": "RF + CIC-only (80-dim)",
+        "features": "cic_only",
+        "model": "RF",
+        "n_features": 80,
+        "accuracy": 1.0,
+        "macro_f1": 1.0,
+        "fpr": 0.0,
+        "latency_ms": 0.01530062504267941,
+        "train_time_s": 0.4261924000456929
+      },
+      {
+        "seed": 1024,
+        "name": "RF + CIC-only (80-dim)",
+        "features": "cic_only",
+        "model": "RF",
+        "n_features": 80,
+        "accuracy": 0.99875,
+        "macro_f1": 0.991988203489801,
+        "fpr": 0.0,
+        "latency_ms": 0.015681583317928016,
+        "train_time_s": 0.4496665997430682
+      }
+    ],
+    "RF + Entropy-only (8-dim)": [
+      {
+        "seed": 42,
+        "name": "RF + Entropy-only (8-dim)",
+        "features": "entropy_only",
+        "model": "RF",
+        "n_features": 8,
+        "accuracy": 0.8508333333333333,
+        "macro_f1": 0.8601733929420186,
+        "fpr": 0.0,
+        "latency_ms": 0.014954833313822746,
+        "train_time_s": 0.25234859995543957
+      },
+      {
+        "seed": 123,
+        "name": "RF + Entropy-only (8-dim)",
+        "features": "entropy_only",
+        "model": "RF",
+        "n_features": 8,
+        "accuracy": 0.8583333333333333,
+        "macro_f1": 0.8673522395787417,
+        "fpr": 0.0,
+        "latency_ms": 0.015733708472301565,
+        "train_time_s": 0.2652123998850584
+      },
+      {
+        "seed": 456,
+        "name": "RF + Entropy-only (8-dim)",
+        "features": "entropy_only",
+        "model": "RF",
+        "n_features": 8,
+        "accuracy": 0.85875,
+        "macro_f1": 0.8663668365707377,
+        "fpr": 0.0,
+        "latency_ms": 0.015585041643741231,
+        "train_time_s": 0.2580633000470698
+      },
+      {
+        "seed": 789,
+        "name": "RF + Entropy-only (8-dim)",
+        "features": "entropy_only",
+        "model": "RF",
+        "n_features": 8,
+        "accuracy": 0.8525,
+        "macro_f1": 0.8613964813782088,
+        "fpr": 0.0,
+        "latency_ms": 0.015133375030321378,
+        "train_time_s": 0.2702766000293195
+      },
+      {
+        "seed": 1024,
+        "name": "RF + Entropy-only (8-dim)",
+        "features": "entropy_only",
+        "model": "RF",
+        "n_features": 8,
+        "accuracy": 0.8608333333333333,
+        "macro_f1": 0.8692748240261189,
+        "fpr": 0.0,
+        "latency_ms": 0.015026541659608483,
+        "train_time_s": 0.26892409985885024
+      }
+    ],
+    "SVM + Full (88-dim)": [
+      {
+        "seed": 42,
+        "name": "SVM + Full (88-dim)",
+        "features": "full",
+        "model": "SVM",
+        "n_features": 88,
+        "accuracy": 0.96375,
+        "macro_f1": 0.9631169066230548,
+        "fpr": 0.0,
+        "latency_ms": 0.3035232498465727,
+        "train_time_s": 3.9922747001983225
+      },
+      {
+        "seed": 123,
+        "name": "SVM + Full (88-dim)",
+        "features": "full",
+        "model": "SVM",
+        "n_features": 88,
+        "accuracy": 0.9691666666666666,
+        "macro_f1": 0.9685451638689049,
+        "fpr": 0.0,
+        "latency_ms": 0.31416733322354656,
+        "train_time_s": 3.932617099955678
+      },
+      {
+        "seed": 456,
+        "name": "SVM + Full (88-dim)",
+        "features": "full",
+        "model": "SVM",
+        "n_features": 88,
+        "accuracy": 0.9629166666666666,
+        "macro_f1": 0.9622563323283516,
+        "fpr": 0.0,
+        "latency_ms": 0.31367833338057,
+        "train_time_s": 3.993445299565792
+      },
+      {
+        "seed": 789,
+        "name": "SVM + Full (88-dim)",
+        "features": "full",
+        "model": "SVM",
+        "n_features": 88,
+        "accuracy": 0.97375,
+        "macro_f1": 0.9732540356839422,
+        "fpr": 0.0,
+        "latency_ms": 0.29326958329572034,
+        "train_time_s": 3.8348364997655153
+      },
+      {
+        "seed": 1024,
+        "name": "SVM + Full (88-dim)",
+        "features": "full",
+        "model": "SVM",
+        "n_features": 88,
+        "accuracy": 0.9704166666666667,
+        "macro_f1": 0.9698421051211265,
+        "fpr": 0.0,
+        "latency_ms": 0.28327762498520315,
+        "train_time_s": 3.8703502998687327
+      }
+    ],
+    "XAI-SDN: RF + Full (88-dim)": [
+      {
+        "seed": 42,
+        "name": "XAI-SDN: RF + Full (88-dim)",
+        "features": "full",
+        "model": "RF",
+        "n_features": 88,
+        "accuracy": 1.0,
+        "macro_f1": 1.0,
+        "fpr": 0.0,
+        "latency_ms": 0.015376791513214508,
+        "train_time_s": 0.38241650024428964
+      },
+      {
+        "seed": 123,
+        "name": "XAI-SDN: RF + Full (88-dim)",
+        "features": "full",
+        "model": "RF",
+        "n_features": 88,
+        "accuracy": 1.0,
+        "macro_f1": 1.0,
+        "fpr": 0.0,
+        "latency_ms": 0.01586295838933438,
+        "train_time_s": 0.3888806998729706
+      },
+      {
+        "seed": 456,
+        "name": "XAI-SDN: RF + Full (88-dim)",
+        "features": "full",
+        "model": "RF",
+        "n_features": 88,
+        "accuracy": 1.0,
+        "macro_f1": 1.0,
+        "fpr": 0.0,
+        "latency_ms": 0.015775416783678036,
+        "train_time_s": 0.37948969984427094
+      },
+      {
+        "seed": 789,
+        "name": "XAI-SDN: RF + Full (88-dim)",
+        "features": "full",
+        "model": "RF",
+        "n_features": 88,
+        "accuracy": 1.0,
+        "macro_f1": 1.0,
+        "fpr": 0.0,
+        "latency_ms": 0.015787583348962166,
+        "train_time_s": 0.3881910997442901
+      },
+      {
+        "seed": 1024,
+        "name": "XAI-SDN: RF + Full (88-dim)",
+        "features": "full",
+        "model": "RF",
+        "n_features": 88,
+        "accuracy": 1.0,
+        "macro_f1": 1.0,
+        "fpr": 0.0,
+        "latency_ms": 0.015703541769956548,
+        "train_time_s": 0.37987020006403327
+      }
+    ]
+  },
+  "significance": {
+    "RF + CIC-only (80-dim)": {
+      "wilcoxon_stat": 0.0,
+      "p_value": 0.125,
+      "significant_at_0.05": false,
+      "proposed_mean": 1.0,
+      "baseline_mean": 0.9986666666666666
+    },
+    "RF + Entropy-only (8-dim)": {
+      "wilcoxon_stat": 0.0,
+      "p_value": 0.0625,
+      "significant_at_0.05": false,
+      "proposed_mean": 1.0,
+      "baseline_mean": 0.85625
+    },
+    "SVM + Full (88-dim)": {
+      "wilcoxon_stat": 0.0,
+      "p_value": 0.0625,
+      "significant_at_0.05": false,
+      "proposed_mean": 1.0,
+      "baseline_mean": 0.968
+    }
+  }
+}
