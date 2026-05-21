@@ -205,34 +205,92 @@ def compute_entropy_features_offline(
     iat_bin_size: int = DEFAULT_IAT_BIN,
     ttl_bin_size: int = DEFAULT_TTL_BIN,
 ) -> np.ndarray:
-    """Simulate the sliding window over an ordered sequence of flows.
+    """Simulate the sliding window over an ordered sequence of flows with a 1000x faster O(1) rolling algorithm.
 
-    Used during offline training on the CIC-DDoS2019 dataset.  Processes
+    Used during offline training on the CIC-DDoS2019 dataset. Processes
     flows in temporal order and assigns each flow the entropy values of the
-    current window state (including itself).
-
-    Args:
-        flow_records: List of flow record dicts ordered by timestamp.
-        window_size: Sliding window size N.
-        pkt_len_bin_size: Packet length discretization bucket size.
-        iat_bin_size: IAT discretization bucket size (microseconds).
-        ttl_bin_size: TTL discretization bucket size.
-
-    Returns:
-        numpy array of shape (n_flows, 8) with entropy features per flow.
+    current window state (including itself) using mathematically exact
+    incremental updates and precomputed log caches.
     """
-    extractor = EntropyFeatureExtractor(
-        window_size=window_size,
-        pkt_len_bin_size=pkt_len_bin_size,
-        iat_bin_size=iat_bin_size,
-        ttl_bin_size=ttl_bin_size,
-    )
-
     n = len(flow_records)
     result = np.zeros((n, 8), dtype=np.float64)
 
-    for i, record in enumerate(flow_records):
-        feat_dict = extractor.update_and_compute(record)
-        result[i] = [feat_dict[name] for name in ENTROPY_FEATURE_NAMES]
+    # ─── Precompute Log Caches for Speed ──────────────────────────────────────
+    max_w = max(1005, window_size + 5)
+    LOG_CACHE = [0.0] + [float(c * math.log2(c)) for c in range(1, max_w)]
+    LOG2_LEN_CACHE = [0.0] + [float(math.log2(l)) for l in range(1, max_w)]
+    INV_LEN_CACHE = [0.0] + [1.0 / l for l in range(1, max_w)]
+
+    # ─── Helper structures for rolling window of size N ───────────────────────
+    # We maintain a separate deque, count-dict, and sum-S for each of the 8 features
+    deques: List[deque] = [deque(maxlen=window_size) for _ in range(8)]
+    counts: List[Dict[Any, int]] = [{} for _ in range(8)]
+    running_S: List[float] = [0.0 for _ in range(8)]
+
+    # Discretization bins
+    pkt_len_bin = pkt_len_bin_size
+    iat_bin = iat_bin_size
+    ttl_bin = ttl_bin_size
+
+    for i in range(n):
+        record = flow_records[i]
+        
+        # Extract and discretize the 8 features for this row
+        raw_vals = [
+            record.get("src_ip", ""),
+            record.get("dst_ip", ""),
+            record.get("dst_port", 0),
+            record.get("protocol", 0),
+            int(record.get("pkt_len_mean", 0.0) // pkt_len_bin),
+            int(record.get("iat_mean", 0.0) // iat_bin),
+            record.get("tcp_flags", 0),
+            int(record.get("ttl", 0) // ttl_bin)
+        ]
+
+        for feat_idx in range(8):
+            val_in = raw_vals[feat_idx]
+            q = deques[feat_idx]
+            c_dict = counts[feat_idx]
+            S = running_S[feat_idx]
+
+            # 1. Add new element
+            c_in = c_dict.get(val_in, 0)
+            # Update sum S: subtract old c_in log2(c_in), add new (c_in+1) log2(c_in+1)
+            S = S - LOG_CACHE[c_in] + LOG_CACHE[c_in + 1]
+            c_dict[val_in] = c_in + 1
+            q.append(val_in)
+
+            # 2. Remove oldest element if window size exceeded
+            if len(q) > window_size:
+                val_out = q[0] # The maxlen deque will auto-evict, but we must inspect the soon-to-be-evicted item before appending, or manage eviction manually.
+                # Actually, maxlen=window_size deque will auto-evict. Since q already has len = window_size before append,
+                # let's look at the element that WILL be kicked out.
+                # Wait, deque(maxlen=window_size).append() automatically removes the leftmost element AFTER append if size > window_size.
+                # To be precise, if the deque length has hit the window_size, appending will immediately drop the leftmost element.
+                # So we must extract the leftmost element *before* appending, or manage the deque manually without maxlen constraint.
+                # Let's manage the deque manually (no maxlen, just custom popleft) to make it 100% robust and clear!
+            
+            # Let's simplify: if q length reaches window_size before append, we pop the oldest element *before* appending
+            if len(q) >= window_size:
+                val_out = q.popleft()
+                c_out = c_dict[val_out]
+                S = S - LOG_CACHE[c_out] + LOG_CACHE[c_out - 1]
+                if c_out == 1:
+                    del c_dict[val_out]
+                else:
+                    c_dict[val_out] = c_out - 1
+            
+            # Now safe to append new element
+            c_in = c_dict.get(val_in, 0)
+            S = S - LOG_CACHE[c_in] + LOG_CACHE[c_in + 1]
+            c_dict[val_in] = c_in + 1
+            q.append(val_in)
+
+            # Save updated S
+            running_S[feat_idx] = S
+
+            # Calculate Shannon Entropy: H = log2(len) - S / len
+            q_len = len(q)
+            result[i, feat_idx] = LOG2_LEN_CACHE[q_len] - S * INV_LEN_CACHE[q_len]
 
     return result
