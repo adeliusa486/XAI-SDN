@@ -1,11 +1,11 @@
 {
   "schema_version": "1.0",
-  "run_timestamp": "2026-05-21T15:58:20Z",
-  "data_source": "synthetic",
-  "data_hash_sha256": "SYNTHETIC-n10000-seed42",
+  "run_timestamp": "2026-05-21T20:40:59Z",
+  "data_source": "data/raw",
+  "data_hash_sha256": "603648e7c56e9232b6d647470dc01b6451502c594a4ebf235b45103edb5e545a",
   "random_state": 42,
-  "n_train": 7000,
-  "n_test": 3000,
+  "n_train": 2514860,
+  "n_test": 1077798,
   "hyperparameters": {
     "n_estimators": 200,
     "max_depth": null,
@@ -18,23 +18,19 @@
     "random_state": 42
   },
   "metrics": {
-    "accuracy": 1.0,
-    "macro_f1": 1.0,
-    "cv_f1_mean": 1.0,
-    "cv_f1_std": 0.0,
-    "latency_ms": 0.012796600038806599,
-    "throughput_flows_s": 78145.75722984457,
-    "train_time_s": 0.4305361998267472,
-    "n_train": 7000,
-    "n_test": 3000,
+    "accuracy": 0.9999888661882839,
+    "macro_f1": 0.9996750965138379,
+    "cv_f1_mean": 0.9993504420238679,
+    "cv_f1_std": 0.00020556077850545767,
+    "latency_ms": 0.0023650040173174977,
+    "throughput_flows_s": 422832.26272666064,
+    "train_time_s": 106.97711149975657,
+    "n_train": 2514860,
+    "n_test": 1077798,
     "n_features": 88,
     "classes": [
       "Benign",
-      "DDoS-HTTP",
-      "DDoS-ICMP",
-      "DDoS-SlowLoris",
-      "DDoS-TCP",
-      "DDoS-UDP"
+      "Syn"
     ]
   },
   "environment": {
@@ -45,5 +41,5 @@
     "pandas": "2.3.3",
     "joblib": "1.5.3"
   },
-  "mlflow_run_id": "ded67f43056a40cd9500a9dbd7297194"
+  "mlflow_run_id": "d0e9534729e74083835e68f8e7e2ff57"
 }

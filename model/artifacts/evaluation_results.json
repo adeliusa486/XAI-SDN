@@ -1,51 +1,27 @@
 {
-  "accuracy": 1.0,
-  "macro_f1": 1.0,
-  "fpr": 0.0,
-  "auc": 1.0,
-  "latency_ms": 0.011934300108502308,
-  "latency_rf_ms": 0.011934300108502308,
-  "latency_proba_ms": 0.2550429990515113,
-  "latency_entropy_ms": 0.44878181000240147,
-  "latency_pipeline_est_ms": 0.4607161101109038,
-  "throughput_flows_s": 83792.09429194542,
-  "n_test": 3000,
+  "accuracy": 0.9999888661882839,
+  "macro_f1": 0.9996750965138379,
+  "fpr": 0.0003221995489206315,
+  "auc": 0.9999999833646314,
+  "latency_ms": 0.001669304823604872,
+  "latency_rf_ms": 0.001669304823604872,
+  "latency_proba_ms": 0.2608009986579418,
+  "latency_entropy_ms": 0.45819791001267735,
+  "latency_pipeline_est_ms": 0.45986721483628223,
+  "throughput_flows_s": 599051.7644587493,
+  "n_test": 1077798,
   "per_class": {
     "Benign": {
-      "precision": 1.0,
-      "recall": 1.0,
-      "f1": 1.0,
-      "support": 976
+      "precision": 0.9990340238274122,
+      "recall": 0.9996778004510793,
+      "f1": 0.9993558084603822,
+      "support": 9311
     },
-    "DDoS-HTTP": {
-      "precision": 1.0,
-      "recall": 1.0,
-      "f1": 1.0,
-      "support": 42
-    },
-    "DDoS-ICMP": {
-      "precision": 1.0,
-      "recall": 1.0,
-      "f1": 1.0,
-      "support": 470
-    },
-    "DDoS-SlowLoris": {
-      "precision": 1.0,
-      "recall": 1.0,
-      "f1": 1.0,
-      "support": 398
-    },
-    "DDoS-TCP": {
-      "precision": 1.0,
-      "recall": 1.0,
-      "f1": 1.0,
-      "support": 601
-    },
-    "DDoS-UDP": {
-      "precision": 1.0,
-      "recall": 1.0,
-      "f1": 1.0,
-      "support": 513
+    "Syn": {
+      "precision": 0.9999971922757634,
+      "recall": 0.99999157687459,
+      "f1": 0.9999943845672935,
+      "support": 1068487
     }
   }
 }
