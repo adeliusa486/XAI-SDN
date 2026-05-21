@@ -33,9 +33,9 @@ from typing import Dict, List
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
 RESULTS: List[Dict] = []
-PASS = "✅ PASS"
-FAIL = "❌ FAIL"
-SKIP = "⏭  SKIP"
+PASS = "[PASS]"
+FAIL = "[FAIL]"
+SKIP = "[SKIP]"
 
 
 def test(name: str):
@@ -219,7 +219,7 @@ def test_model_training():
     clf = RandomForestClassifier(n_estimators=10, random_state=42, n_jobs=-1)
     clf.fit(X_train_s, y_train)
     acc = clf.score(X_test_s, y_test)
-    assert acc > 0.70, f"Expected acc > 0.70, got {acc:.3f}"
+    assert acc > 0.95, f"Expected acc > 0.95, got {acc:.3f}"
     return f"acc={acc:.4f}"
 
 
@@ -420,9 +420,9 @@ def write_report():
         "",
         f"## Summary\n",
         f"- Total tests: {len(RESULTS)}",
-        f"- ✅ Passed:  {len(passed)}",
-        f"- ❌ Failed:  {len(failed)}",
-        f"- ⏭  Skipped: {len(skipped)}",
+        f"- [PASS] Passed:  {len(passed)}",
+        f"- [FAIL] Failed:  {len(failed)}",
+        f"- [SKIP] Skipped: {len(skipped)}",
         "",
         "## Test Results\n",
         "| Status | Test |",
@@ -430,14 +430,14 @@ def write_report():
     ]
 
     for r in RESULTS:
-        icon = {"PASS": "✅", "FAIL": "❌", "SKIP": "⏭"}.get(r["status"], "?")
+        icon = {"PASS": "[PASS]", "FAIL": "[FAIL]", "SKIP": "[SKIP]"}.get(r["status"], "?")
         lines.append(f"| {icon} {r['status']} | {r['test']} |")
 
     if failed:
         lines += ["", "## Failures\n"]
         for r in failed:
             lines += [
-                f"### ❌ {r['test']}",
+                f"### [FAIL] {r['test']}",
                 f"```",
                 r.get("detail", ""),
                 r.get("traceback", ""),
@@ -457,7 +457,7 @@ def write_report():
     ]
 
     report = "\n".join(lines)
-    with open("SMOKE_TEST_REPORT.md", "w") as f:
+    with open("SMOKE_TEST_REPORT.md", "w", encoding="utf-8") as f:
         f.write(report)
     print(f"\nSmoke test report saved: SMOKE_TEST_REPORT.md")
     return len(failed)

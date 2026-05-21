@@ -169,10 +169,25 @@ jobs:
           acc = m['accuracy']
           f1 = m['macro_f1']
           print(f'Accuracy: {acc:.4f}, Macro F1: {f1:.4f}')
-          assert acc > 0.70, f'Accuracy {acc:.4f} < 0.70 — training regression!'
-          assert f1 > 0.70, f'Macro F1 {f1:.4f} < 0.70 — training regression!'
+          assert acc > 0.95, f'Accuracy {acc:.4f} < 0.95 — training regression!'
+          assert f1 > 0.95, f'Macro F1 {f1:.4f} < 0.95 — training regression!'
           print('✅ Metrics pass threshold.')
           "
+
+      - name: Verify reproducibility manifest
+        run: |
+          python -c "
+          import json
+          with open('model/artifacts/reproducibility_manifest.json') as f:
+              m = json.load(f)
+          assert m['data_source'] == 'synthetic'
+          assert 'accuracy' in m['metrics']
+          assert m['metrics']['n_features'] == 88
+          print('✅ Reproducibility manifest verified.')
+          "
+
+      - name: Run multi-seed validation
+        run: bash scripts/run_multiseed.sh --synthetic --seeds "42 123"
 
       - name: Upload model artifacts
         uses: actions/upload-artifact@v4
