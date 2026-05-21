@@ -199,33 +199,77 @@ class OfflineFeaturePipeline:
     @staticmethod
     def _dataframe_to_flow_records(df: pd.DataFrame, X_cic: pd.DataFrame) -> List[Dict[str, Any]]:
         """Convert DataFrame rows to flow record dicts for entropy computation."""
-        records = []
-        for i in range(len(df)):
-            row = df.iloc[i] if len(df) == len(X_cic) else X_cic.iloc[i]
-            xrow = X_cic.iloc[i]
-            records.append(
-                {
-                    "src_ip": str(
-                        df.iloc[i].get("Source IP") or df.iloc[i].get("Src IP") or 
-                        df.iloc[i].get("Source_IP") or df.iloc[i].get("Src_IP") or 
-                        f"10.0.0.{i % 254}"
-                    ),
-                    "dst_ip": str(
-                        df.iloc[i].get("Destination IP") or df.iloc[i].get("Dst IP") or 
-                        df.iloc[i].get("Destination_IP") or df.iloc[i].get("Dst_IP") or 
-                        "10.0.0.1"
-                    ),
-                    "dst_port": int(xrow.get("Destination_Port", 0)),
-                    "protocol": int(df.iloc[i].get("Protocol", xrow.get("Protocol", 0))),
-                    "pkt_len_mean": float(
-                        xrow.get("Packet_Length_Mean", xrow.get("Fwd_Packet_Length_Mean", 0))
-                    ),
-                    "iat_mean": float(xrow.get("Flow_IAT_Mean", 0)),
-                    "tcp_flags": int(xrow.get("SYN_Flag_Count", 0)),
-                    "ttl": 64,  # TTL not available in CIC CSVs; use default
-                }
-            )
-        return records
+        n = len(df)
+        
+        # 1. Source IP
+        src_ip_col = None
+        for candidate in ["Source_IP", "Src_IP", "Source IP", "Src IP"]:
+            if candidate in df.columns:
+                src_ip_col = candidate
+                break
+        src_ips = df[src_ip_col].astype(str).values if src_ip_col is not None else [f"10.0.0.{i % 254}" for i in range(n)]
+
+        # 2. Destination IP
+        dst_ip_col = None
+        for candidate in ["Destination_IP", "Dst_IP", "Destination IP", "Dst IP"]:
+            if candidate in df.columns:
+                dst_ip_col = candidate
+                break
+        dst_ips = df[dst_ip_col].astype(str).values if dst_ip_col is not None else ["10.0.0.1"] * n
+
+        # 3. Destination Port
+        dst_port_col = None
+        for candidate in ["Destination_Port", "Destination Port"]:
+            if candidate in X_cic.columns:
+                dst_port_col = candidate
+                break
+        dst_ports = X_cic[dst_port_col].values.astype(int) if dst_port_col is not None else np.zeros(n, dtype=int)
+
+        # 4. Protocol
+        proto_col = None
+        for candidate in ["Protocol", "protocol", "Proto", "proto"]:
+            if candidate in df.columns:
+                proto_col = candidate
+                break
+        protocols = df[proto_col].values.astype(int) if proto_col is not None else np.zeros(n, dtype=int)
+
+        # 5. Packet Length Mean
+        pkt_len_col = None
+        for candidate in ["Packet_Length_Mean", "Fwd_Packet_Length_Mean", "Packet Length Mean", "Fwd Packet Length Mean"]:
+            if candidate in X_cic.columns:
+                pkt_len_col = candidate
+                break
+        pkt_lens = X_cic[pkt_len_col].values.astype(float) if pkt_len_col is not None else np.zeros(n, dtype=float)
+
+        # 6. Flow IAT Mean
+        iat_col = None
+        for candidate in ["Flow_IAT_Mean", "Flow IAT Mean"]:
+            if candidate in X_cic.columns:
+                iat_col = candidate
+                break
+        iats = X_cic[iat_col].values.astype(float) if iat_col is not None else np.zeros(n, dtype=float)
+
+        # 7. TCP Flags
+        tcp_col = None
+        for candidate in ["SYN_Flag_Count", "SYN Flag Count"]:
+            if candidate in X_cic.columns:
+                tcp_col = candidate
+                break
+        tcp_flags = X_cic[tcp_col].values.astype(int) if tcp_col is not None else np.zeros(n, dtype=int)
+
+        return [
+            {
+                "src_ip": src_ips[i],
+                "dst_ip": dst_ips[i],
+                "dst_port": int(dst_ports[i]),
+                "protocol": int(protocols[i]),
+                "pkt_len_mean": float(pkt_lens[i]),
+                "iat_mean": float(iats[i]),
+                "tcp_flags": int(tcp_flags[i]),
+                "ttl": 64,
+            }
+            for i in range(n)
+        ]
 
     def _ensure_feature_columns(self, X: pd.DataFrame) -> pd.DataFrame:
         """Ensure all 88 feature columns exist, adding zeros for missing."""

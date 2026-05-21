@@ -59,23 +59,33 @@ def main(data_dir: str = "data/raw", output_dir: str = "data/splits") -> None:
 
     # Step 4: Build flow records for entropy
     logger.info("Building flow records for entropy computation...")
-    flow_records = []
-    for i in range(len(df)):
-        row = X_cic.iloc[i]
-        flow_records.append(
-            {
-                "src_ip": str(df.iloc[i].get("Source_IP", f"10.0.0.{i%254}")),
-                "dst_ip": str(df.iloc[i].get("Destination_IP", "10.0.0.1")),
-                "dst_port": int(row.get("Destination_Port", 0)),
-                "protocol": int(df.iloc[i].get("Protocol", 0)),
-                "pkt_len_mean": float(
-                    row.get("Packet_Length_Mean", row.get("Fwd_Packet_Length_Mean", 0))
-                ),
-                "iat_mean": float(row.get("Flow_IAT_Mean", 0)),
-                "tcp_flags": int(row.get("SYN_Flag_Count", 0)),
-                "ttl": 64,
-            }
-        )
+    n = len(df)
+    
+    src_ips = df["Source_IP"].astype(str).values if "Source_IP" in df.columns else [f"10.0.0.{i%254}" for i in range(n)]
+    dst_ips = df["Destination_IP"].astype(str).values if "Destination_IP" in df.columns else ["10.0.0.1"] * n
+    protocols = df["Protocol"].values.astype(int) if "Protocol" in df.columns else np.zeros(n, dtype=int)
+    
+    dst_ports = X_cic["Destination_Port"].values.astype(int) if "Destination_Port" in X_cic.columns else np.zeros(n, dtype=int)
+    
+    pkt_len_col = "Packet_Length_Mean" if "Packet_Length_Mean" in X_cic.columns else ("Fwd_Packet_Length_Mean" if "Fwd_Packet_Length_Mean" in X_cic.columns else None)
+    pkt_len_means = X_cic[pkt_len_col].values.astype(float) if pkt_len_col is not None else np.zeros(n, dtype=float)
+    
+    flow_iat_means = X_cic["Flow_IAT_Mean"].values.astype(float) if "Flow_IAT_Mean" in X_cic.columns else np.zeros(n, dtype=float)
+    syn_flag_counts = X_cic["SYN_Flag_Count"].values.astype(int) if "SYN_Flag_Count" in X_cic.columns else np.zeros(n, dtype=int)
+
+    flow_records = [
+        {
+            "src_ip": src_ips[i],
+            "dst_ip": dst_ips[i],
+            "dst_port": int(dst_ports[i]),
+            "protocol": int(protocols[i]),
+            "pkt_len_mean": float(pkt_len_means[i]),
+            "iat_mean": float(flow_iat_means[i]),
+            "tcp_flags": int(syn_flag_counts[i]),
+            "ttl": 64,
+        }
+        for i in range(n)
+    ]
 
     # Step 5: Compute entropy features
     logger.info("Computing entropy features (N=1000 window)...")
