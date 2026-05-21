@@ -253,24 +253,7 @@ def compute_entropy_features_offline(
             c_dict = counts[feat_idx]
             S = running_S[feat_idx]
 
-            # 1. Add new element
-            c_in = c_dict.get(val_in, 0)
-            # Update sum S: subtract old c_in log2(c_in), add new (c_in+1) log2(c_in+1)
-            S = S - LOG_CACHE[c_in] + LOG_CACHE[c_in + 1]
-            c_dict[val_in] = c_in + 1
-            q.append(val_in)
-
-            # 2. Remove oldest element if window size exceeded
-            if len(q) > window_size:
-                val_out = q[0] # The maxlen deque will auto-evict, but we must inspect the soon-to-be-evicted item before appending, or manage eviction manually.
-                # Actually, maxlen=window_size deque will auto-evict. Since q already has len = window_size before append,
-                # let's look at the element that WILL be kicked out.
-                # Wait, deque(maxlen=window_size).append() automatically removes the leftmost element AFTER append if size > window_size.
-                # To be precise, if the deque length has hit the window_size, appending will immediately drop the leftmost element.
-                # So we must extract the leftmost element *before* appending, or manage the deque manually without maxlen constraint.
-                # Let's manage the deque manually (no maxlen, just custom popleft) to make it 100% robust and clear!
-            
-            # Let's simplify: if q length reaches window_size before append, we pop the oldest element *before* appending
+            # 1. Remove oldest element if window size is reached
             if len(q) >= window_size:
                 val_out = q.popleft()
                 c_out = c_dict[val_out]
@@ -280,7 +263,7 @@ def compute_entropy_features_offline(
                 else:
                     c_dict[val_out] = c_out - 1
             
-            # Now safe to append new element
+            # 2. Add new element
             c_in = c_dict.get(val_in, 0)
             S = S - LOG_CACHE[c_in] + LOG_CACHE[c_in + 1]
             c_dict[val_in] = c_in + 1
@@ -291,6 +274,6 @@ def compute_entropy_features_offline(
 
             # Calculate Shannon Entropy: H = log2(len) - S / len
             q_len = len(q)
-            result[i, feat_idx] = LOG2_LEN_CACHE[q_len] - S * INV_LEN_CACHE[q_len]
+            result[i, feat_idx] = max(0.0, LOG2_LEN_CACHE[q_len] - S * INV_LEN_CACHE[q_len])
 
     return result
