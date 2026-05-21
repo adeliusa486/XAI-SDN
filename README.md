@@ -191,6 +191,22 @@ python scripts/smoke_test.py
 
 ---
 
+## 🎲 Reproducibility
+
+All experiments use `--random-state 42` by default. To override:
+```bash
+XAI_SDN_SEED=123 python model/train.py --use-synthetic
+# or
+python model/train.py --use-synthetic --random-state 123
+```
+
+For multi-seed experiments (Phase 7), use:
+```bash
+bash scripts/run_multiseed.sh --seeds "42 123 456 789 1024"
+```
+
+---
+
 ## 📖 Documentation
 
 | Document | Description |

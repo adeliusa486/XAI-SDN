@@ -48,6 +48,7 @@ from model.train import load_synthetic_data
 @click.option("--output-dir", default="model/artifacts", help="Where to write evaluation results.")
 @click.option("--run-shap", is_flag=True, help="Compute global SHAP importance (slow).")
 @click.option("--latency-runs", default=3, type=int, help="Latency measurement repetitions.")
+@click.option("--random-state", default=42, type=int, help="Global random seed for reproducibility.")
 def evaluate(
     artifacts_dir: str,
     data_dir: Optional[str],
@@ -55,8 +56,11 @@ def evaluate(
     output_dir: str,
     run_shap: bool,
     latency_runs: int,
+    random_state: int,
 ) -> None:
     """Evaluate the trained XAI-SDN model."""
+    from utils.seed_utils import set_global_seed
+    set_global_seed(random_state)
     artifacts_path = Path(artifacts_dir)
     output_path = Path(output_dir)
     output_path.mkdir(parents=True, exist_ok=True)
@@ -85,7 +89,7 @@ def evaluate(
                 "Falling back to fresh synthetic data. "
                 "For correct evaluation, run: python model/train.py --use-synthetic first."
             )
-            X_all, y_raw, _ = load_synthetic_data(n_samples=5000, random_state=42)
+            X_all, y_raw, _ = load_synthetic_data(n_samples=5000, random_state=random_state)
             X_test = scaler.transform(X_all)
             y_test = le.transform(y_raw)
     else:
@@ -94,7 +98,7 @@ def evaluate(
 
         X_all, y_all, _ = load_real_data(data_dir)
         _, X_test_raw, _, y_test = train_test_split(
-            X_all, y_all, test_size=0.30, stratify=y_all, random_state=42
+            X_all, y_all, test_size=0.30, stratify=y_all, random_state=random_state
         )
         X_test = scaler.transform(X_test_raw)
 

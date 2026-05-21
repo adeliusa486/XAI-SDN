@@ -248,13 +248,17 @@ def train_pytorch_model(model, X_train, y_train, X_test, y_test, model_name, epo
 @click.option("--data-dir", default=None, help="Real data directory.")
 @click.option("--skip-deep", is_flag=True, help="Skip DNN/LSTM baselines.")
 @click.option("--output", default="model/artifacts/baseline_results.json", help="Output path.")
+@click.option("--random-state", default=42, type=int, help="Global random seed for reproducibility.")
 def run_baselines(
     use_synthetic: bool,
     data_dir: Optional[str],
     skip_deep: bool,
     output: str,
+    random_state: int,
 ) -> None:
     """Run all baseline classifiers and compare with XAI-SDN."""
+    from utils.seed_utils import set_global_seed
+    set_global_seed(random_state)
     import json
 
     logger.info("=" * 60)
@@ -262,14 +266,14 @@ def run_baselines(
     logger.info("=" * 60)
 
     if use_synthetic or data_dir is None:
-        X, y_raw, le = load_synthetic_data(n_samples=8000)
+        X, y_raw, le = load_synthetic_data(n_samples=8000, random_state=random_state)
     else:
         from model.train import load_real_data
 
         X, y_raw, le = load_real_data(data_dir)
 
     X_train, X_test, y_train_raw, y_test_raw = train_test_split(
-        X, y_raw, test_size=0.30, stratify=y_raw, random_state=42
+        X, y_raw, test_size=0.30, stratify=y_raw, random_state=random_state
     )
     le.fit(y_train_raw)
     y_train = le.transform(y_train_raw)
@@ -282,6 +286,8 @@ def run_baselines(
 
     # Sklearn baselines
     for name, cfg in BASELINE_CONFIGS.items():
+        if "random_state" in cfg["params"]:
+            cfg["params"]["random_state"] = random_state
         r = train_and_evaluate_sklearn(name, cfg, X_train_s, X_test_s, y_train, y_test, le)
         results.append(r)
 

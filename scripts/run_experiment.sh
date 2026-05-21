@@ -8,11 +8,13 @@ set -euo pipefail
 SYNTHETIC=0
 DATA_DIR="data/raw"
 ARTIFACTS_DIR="model/artifacts"
+SEED=42
 
 for arg in "$@"; do
   case $arg in
     --synthetic) SYNTHETIC=1 ;;
     --data-dir=*) DATA_DIR="${arg#*=}" ;;
+    --seed=*) SEED="${arg#*=}" ;;
   esac
 done
 
@@ -22,6 +24,7 @@ echo "================================================================"
 echo "Mode:         $([ $SYNTHETIC -eq 1 ] && echo 'Synthetic' || echo 'Real data')"
 echo "Data dir:     $DATA_DIR"
 echo "Artifacts:    $ARTIFACTS_DIR"
+echo "Seed:         $SEED"
 echo "================================================================"
 
 mkdir -p "$ARTIFACTS_DIR" logs data/synthetic
@@ -40,20 +43,20 @@ fi
 # Step 2: Train model
 echo; echo "[2/6] Training Random Forest (200 trees)..."
 python model/train.py --config configs/model_config.yaml $TRAIN_FLAG \
-  --output-dir "$ARTIFACTS_DIR"
+  --output-dir "$ARTIFACTS_DIR" --random-state "$SEED"
 
 # Step 3: Evaluate
 echo; echo "[3/6] Evaluating model (using saved test split)..."
 if [ $SYNTHETIC -eq 1 ]; then
   python model/evaluate.py \
     --artifacts-dir "$ARTIFACTS_DIR" \
-    --output-dir "$ARTIFACTS_DIR"
+    --output-dir "$ARTIFACTS_DIR" --random-state "$SEED"
 else
   python model/evaluate.py \
     --artifacts-dir "$ARTIFACTS_DIR" \
     --data-dir "$DATA_DIR" \
     --run-shap \
-    --output-dir "$ARTIFACTS_DIR"
+    --output-dir "$ARTIFACTS_DIR" --random-state "$SEED"
 fi
 
 # Step 4: Baseline comparison
@@ -61,13 +64,13 @@ echo; echo "[4/6] Running baseline comparison..."
 python model/baselines.py \
   $([ $SYNTHETIC -eq 1 ] && echo '--use-synthetic' || echo "--data-dir $DATA_DIR") \
   --skip-deep \
-  --output "$ARTIFACTS_DIR/baseline_results.json"
+  --output "$ARTIFACTS_DIR/baseline_results.json" --random-state "$SEED"
 
 # Step 5: Ablation study
 echo; echo "[5/6] Running ablation study..."
 python model/ablation.py \
   $([ $SYNTHETIC -eq 1 ] && echo '--use-synthetic' || echo "--data-dir $DATA_DIR") \
-  --output "$ARTIFACTS_DIR/ablation_results.json"
+  --output "$ARTIFACTS_DIR/ablation_results.json" --random-state "$SEED"
 
 # Step 6: Smoke test
 echo; echo "[6/6] Running smoke test..."
