@@ -27,6 +27,7 @@ try:
     from mininet.cli import CLI
     from mininet.log import setLogLevel
     from mininet.link import TCLink
+
     MININET_AVAILABLE = True
 except ImportError:
     pass
@@ -158,27 +159,32 @@ def run_attack(
 
 def main():
     parser = argparse.ArgumentParser(description="XAI-SDN Mininet Test Topology")
-    parser.add_argument("--controller", default="127.0.0.1:6653",
-                        help="Ryu controller address (default: 127.0.0.1:6653)")
-    parser.add_argument("--attack", default=None,
-                        choices=["udp", "tcp", "icmp", "http", "slowloris"],
-                        help="Start an attack after topology initialization")
-    parser.add_argument("--target", default="10.0.0.1",
-                        help="Attack target IP (default: 10.0.0.1)")
-    parser.add_argument("--duration", type=int, default=30,
-                        help="Attack duration in seconds (default: 30)")
-    parser.add_argument("--cli", action="store_true",
-                        help="Drop into Mininet CLI after setup")
+    parser.add_argument(
+        "--controller",
+        default="127.0.0.1:6653",
+        help="Ryu controller address (default: 127.0.0.1:6653)",
+    )
+    parser.add_argument(
+        "--attack",
+        default=None,
+        choices=["udp", "tcp", "icmp", "http", "slowloris"],
+        help="Start an attack after topology initialization",
+    )
+    parser.add_argument("--target", default="10.0.0.1", help="Attack target IP (default: 10.0.0.1)")
+    parser.add_argument(
+        "--duration", type=int, default=30, help="Attack duration in seconds (default: 30)"
+    )
+    parser.add_argument("--cli", action="store_true", help="Drop into Mininet CLI after setup")
     args = parser.parse_args()
 
     ctrl_ip, ctrl_port = args.controller.split(":")
 
-    print("\n" + "="*60)
+    print("\n" + "=" * 60)
     print("XAI-SDN Mininet Test Topology")
-    print("="*60)
+    print("=" * 60)
     print(f"Controller: {ctrl_ip}:{ctrl_port}")
     print(f"Attack:     {args.attack or 'none'}")
-    print("="*60 + "\n")
+    print("=" * 60 + "\n")
 
     net, c0, hosts, atk = build_topology(ctrl_ip, int(ctrl_port))
     net.start()

@@ -13,6 +13,7 @@ from sklearn.preprocessing import LabelEncoder, StandardScaler
 class TestSyntheticDataLoader:
     def test_load_synthetic_returns_correct_shapes(self):
         import sys
+
         sys.path.insert(0, str(Path(__file__).parent.parent))
         from model.train import load_synthetic_data
 
@@ -124,6 +125,7 @@ class TestModelSerialization:
 class TestConfigLoading:
     def test_load_model_config(self):
         import yaml
+
         cfg_path = Path("configs/model_config.yaml")
         assert cfg_path.exists()
         with open(cfg_path) as f:
@@ -134,6 +136,7 @@ class TestConfigLoading:
 
     def test_load_master_config(self):
         import yaml
+
         with open("configs/config.yaml") as f:
             cfg = yaml.safe_load(f)
         assert cfg["features"]["n_total_features"] == 88

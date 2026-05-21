@@ -34,18 +34,24 @@ REFRESH_INTERVAL = int(os.getenv("DASHBOARD_REFRESH_INTERVAL", "5"))
 MAX_ALERTS = int(os.getenv("DASHBOARD_MAX_ALERTS", "500"))
 
 LABEL_COLORS = {
-    "Benign":        "#2ecc71",
-    "DDoS-UDP":      "#e74c3c",
-    "DDoS-TCP":      "#e67e22",
-    "DDoS-ICMP":     "#9b59b6",
-    "DDoS-SlowLoris":"#1abc9c",
-    "DDoS-HTTP":     "#3498db",
-    "Unknown":       "#95a5a6",
+    "Benign": "#2ecc71",
+    "DDoS-UDP": "#e74c3c",
+    "DDoS-TCP": "#e67e22",
+    "DDoS-ICMP": "#9b59b6",
+    "DDoS-SlowLoris": "#1abc9c",
+    "DDoS-HTTP": "#3498db",
+    "Unknown": "#95a5a6",
 }
 
 ENTROPY_FEATURES = [
-    "H_src_ip", "H_dst_ip", "H_dst_port", "H_proto",
-    "H_pkt_len", "H_iat", "H_tcp_flags", "H_ttl",
+    "H_src_ip",
+    "H_dst_ip",
+    "H_dst_port",
+    "H_proto",
+    "H_pkt_len",
+    "H_iat",
+    "H_tcp_flags",
+    "H_ttl",
 ]
 
 # ─── Page config ─────────────────────────────────────────────────────────────
@@ -59,7 +65,8 @@ st.set_page_config(
 
 # ─── Custom CSS ───────────────────────────────────────────────────────────────
 
-st.markdown("""
+st.markdown(
+    """
 <style>
 .metric-card {
     background: #1e2130;
@@ -73,10 +80,13 @@ st.markdown("""
 .alert-info     { border-left: 4px solid #3498db; padding-left: 8px; }
 .stAlert        { border-radius: 6px; }
 </style>
-""", unsafe_allow_html=True)
+""",
+    unsafe_allow_html=True,
+)
 
 
 # ─── API Helpers ──────────────────────────────────────────────────────────────
+
 
 @st.cache_data(ttl=REFRESH_INTERVAL)
 def fetch_health() -> Dict:
@@ -84,8 +94,14 @@ def fetch_health() -> Dict:
         r = requests.get(f"{API_URL}/health", timeout=3)
         return r.json()
     except Exception:
-        return {"status": "unreachable", "model_loaded": False, "shap_ready": False,
-                "alert_count": 0, "uptime_seconds": 0, "database_connected": False}
+        return {
+            "status": "unreachable",
+            "model_loaded": False,
+            "shap_ready": False,
+            "alert_count": 0,
+            "uptime_seconds": 0,
+            "database_connected": False,
+        }
 
 
 @st.cache_data(ttl=REFRESH_INTERVAL)
@@ -98,8 +114,9 @@ def fetch_stats() -> Dict:
 
 
 @st.cache_data(ttl=REFRESH_INTERVAL)
-def fetch_alerts(page_size: int = MAX_ALERTS, label: Optional[str] = None,
-                 min_conf: float = 0.0) -> List[Dict]:
+def fetch_alerts(
+    page_size: int = MAX_ALERTS, label: Optional[str] = None, min_conf: float = 0.0
+) -> List[Dict]:
     params = {"page_size": page_size, "min_confidence": min_conf}
     if label and label != "All":
         params["label"] = label
@@ -168,7 +185,9 @@ with st.sidebar:
 # ─── Main Content ─────────────────────────────────────────────────────────────
 
 st.title("🛡️ XAI-SDN Security Operations Dashboard")
-st.caption(f"Real-time DDoS detection with Explainable AI · Last update: {datetime.utcnow().strftime('%H:%M:%S UTC')}")
+st.caption(
+    f"Real-time DDoS detection with Explainable AI · Last update: {datetime.utcnow().strftime('%H:%M:%S UTC')}"
+)
 
 # ─── KPI Row ─────────────────────────────────────────────────────────────────
 
@@ -204,7 +223,9 @@ with chart_col1:
             columns=["Label", "Count"],
         )
         fig_pie = px.pie(
-            df_dist, names="Label", values="Count",
+            df_dist,
+            names="Label",
+            values="Count",
             color="Label",
             color_discrete_map=LABEL_COLORS,
             hole=0.45,
@@ -220,7 +241,10 @@ with chart_col2:
     if top_ips:
         df_ips = pd.DataFrame(top_ips).head(10)
         fig_ips = px.bar(
-            df_ips, x="count", y="ip", orientation="h",
+            df_ips,
+            x="count",
+            y="ip",
+            orientation="h",
             color_discrete_sequence=["#e74c3c"],
         )
         fig_ips.update_layout(
@@ -236,8 +260,11 @@ with chart_col2:
 # ─── Alert Timeline ───────────────────────────────────────────────────────────
 
 st.subheader("Alert Timeline")
-alerts = fetch_alerts(page_size=MAX_ALERTS, label=label_filter if label_filter != "All" else None,
-                      min_conf=min_confidence)
+alerts = fetch_alerts(
+    page_size=MAX_ALERTS,
+    label=label_filter if label_filter != "All" else None,
+    min_conf=min_confidence,
+)
 
 if alerts:
     df_alerts = pd.DataFrame(alerts)
@@ -251,12 +278,16 @@ if alerts:
 
     if not df_time.empty:
         fig_timeline = px.area(
-            df_time, x="timestamp", y="count", color="label",
+            df_time,
+            x="timestamp",
+            y="count",
+            color="label",
             color_discrete_map=LABEL_COLORS,
             labels={"count": "Alerts/min", "timestamp": "Time"},
         )
         fig_timeline.update_layout(
-            margin=dict(t=10, b=10), height=250,
+            margin=dict(t=10, b=10),
+            height=250,
             legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="right", x=1),
         )
         st.plotly_chart(fig_timeline, use_container_width=True)
@@ -266,17 +297,37 @@ else:
 # ─── Alert Table + SHAP Details ───────────────────────────────────────────────
 
 st.subheader("Recent Alerts")
-tab_table, tab_shap, tab_entropy = st.tabs(["📋 Alert Feed", "🔍 SHAP Attribution", "📊 Entropy Analysis"])
+tab_table, tab_shap, tab_entropy = st.tabs(
+    ["📋 Alert Feed", "🔍 SHAP Attribution", "📊 Entropy Analysis"]
+)
 
 with tab_table:
     if alerts:
         df_display = pd.DataFrame(alerts)[
-            ["id", "timestamp", "label", "confidence", "src_ip", "dst_ip", "dst_port", "protocol", "switch_id"]
-        ].rename(columns={
-            "id": "ID", "timestamp": "Time", "label": "Label",
-            "confidence": "Conf.", "src_ip": "Src IP", "dst_ip": "Dst IP",
-            "dst_port": "Port", "protocol": "Proto", "switch_id": "Switch",
-        })
+            [
+                "id",
+                "timestamp",
+                "label",
+                "confidence",
+                "src_ip",
+                "dst_ip",
+                "dst_port",
+                "protocol",
+                "switch_id",
+            ]
+        ].rename(
+            columns={
+                "id": "ID",
+                "timestamp": "Time",
+                "label": "Label",
+                "confidence": "Conf.",
+                "src_ip": "Src IP",
+                "dst_ip": "Dst IP",
+                "dst_port": "Port",
+                "protocol": "Proto",
+                "switch_id": "Switch",
+            }
+        )
         df_display["Conf."] = df_display["Conf."].apply(lambda x: f"{x:.2%}")
         df_display["Time"] = pd.to_datetime(df_display["Time"]).dt.strftime("%H:%M:%S")
         st.dataframe(
@@ -309,15 +360,16 @@ with tab_shap:
             shap_feats = selected.get("shap_top_features", [])
             if shap_feats:
                 df_shap = pd.DataFrame(shap_feats).sort_values("abs_shap", ascending=True)
-                fig_shap = go.Figure(go.Bar(
-                    x=df_shap["shap_value"],
-                    y=df_shap["feature"],
-                    orientation="h",
-                    marker_color=[
-                        "#d73027" if v > 0 else "#4575b4"
-                        for v in df_shap["shap_value"]
-                    ],
-                ))
+                fig_shap = go.Figure(
+                    go.Bar(
+                        x=df_shap["shap_value"],
+                        y=df_shap["feature"],
+                        orientation="h",
+                        marker_color=[
+                            "#d73027" if v > 0 else "#4575b4" for v in df_shap["shap_value"]
+                        ],
+                    )
+                )
                 fig_shap.add_vline(x=0, line_width=1, line_color="white")
                 fig_shap.update_layout(
                     title=f"SHAP Attribution — {selected['label']} (p={selected['confidence']:.2%})",
@@ -328,7 +380,9 @@ with tab_shap:
                 )
                 st.plotly_chart(fig_shap, use_container_width=True)
 
-                st.caption("💡 Entropy features (H_*) highlighted — low entropy signals DDoS concentration.")
+                st.caption(
+                    "💡 Entropy features (H_*) highlighted — low entropy signals DDoS concentration."
+                )
         else:
             st.info("No SHAP data available. Ensure SHAP is enabled and model is loaded.")
     else:
@@ -363,7 +417,9 @@ with tab_entropy:
             fig_heat.update_layout(height=300)
             st.plotly_chart(fig_heat, use_container_width=True)
         else:
-            st.info("No feature vector data in stored alerts (requires feature_vector field in alerts).")
+            st.info(
+                "No feature vector data in stored alerts (requires feature_vector field in alerts)."
+            )
     else:
         st.info("No alerts to analyze.")
 

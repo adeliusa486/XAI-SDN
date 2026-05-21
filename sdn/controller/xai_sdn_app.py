@@ -50,6 +50,7 @@ try:
     from ryu.lib import hub
     from ryu.lib.packet import packet, ethernet, ipv4, tcp, udp, icmp
     from ryu.ofproto import ofproto_v1_3
+
     RYU_AVAILABLE = True
 except ImportError:
     RYU_AVAILABLE = False
@@ -57,16 +58,19 @@ except ImportError:
         "Ryu not available. Controller module loaded in stub mode. "
         "Install Ryu in Python 3.8 environment."
     )
+
     # Stub base class so the module can be imported and inspected
     class app_manager:
         class RyuApp:
             pass
+
     CONFIG_DISPATCHER = MAIN_DISPATCHER = None
     ofproto_v1_3 = None
 
     def set_ev_cls(*args, **kwargs):
         def decorator(func):
             return func
+
         return decorator
 
 
@@ -81,6 +85,7 @@ INSTALL_DROP_RULES = os.getenv("SDN_INSTALL_DROP_RULES", "0") == "1"
 
 
 # ─── Model Loader ─────────────────────────────────────────────────────────────
+
 
 class ModelBundle:
     """Holds the loaded ML artifacts for controller-side inference."""
@@ -114,8 +119,10 @@ class ModelBundle:
         # Load SHAP explainer
         try:
             import sys
+
             sys.path.insert(0, str(Path(__file__).parent.parent.parent))
             from explainability.shap_explainer import SHAPExplainer
+
             self.shap_explainer = SHAPExplainer(
                 model=self.clf,
                 feature_names=self.feature_names,
@@ -169,6 +176,7 @@ class XAISDNController(app_manager.RyuApp):
 
         # Online feature pipeline
         import sys
+
         sys.path.insert(0, str(Path(__file__).parent.parent.parent))
         from features.cicflowmeter import (
             CIC_FEATURE_NAMES,
@@ -176,6 +184,7 @@ class XAISDNController(app_manager.RyuApp):
             flow_record_from_openflow,
         )
         from features.entropy import EntropyFeatureExtractor, ENTROPY_FEATURE_NAMES
+
         self.CIC_FEATURE_NAMES = CIC_FEATURE_NAMES
         self.ENTROPY_FEATURE_NAMES = ENTROPY_FEATURE_NAMES
         self.extract_cic = extract_features_from_openflow
@@ -277,7 +286,9 @@ class XAISDNController(app_manager.RyuApp):
             )
             x = np.nan_to_num(
                 np.concatenate([cic_array, entropy_array]),
-                nan=0.0, posinf=0.0, neginf=0.0,
+                nan=0.0,
+                posinf=0.0,
+                neginf=0.0,
             )
 
             # Inference

@@ -61,11 +61,14 @@ async def create_alert(
         flow_duration_ms=alert.flow_duration_ms,
         packet_count=alert.packet_count,
         byte_count=alert.byte_count,
-        shap_top_features=json.dumps(
-            [f.model_dump() for f in alert.shap_top_features]
-        ) if alert.shap_top_features else None,
-        shap_full_attribution=json.dumps(alert.shap_full_attribution)
-        if alert.shap_full_attribution else None,
+        shap_top_features=(
+            json.dumps([f.model_dump() for f in alert.shap_top_features])
+            if alert.shap_top_features
+            else None
+        ),
+        shap_full_attribution=(
+            json.dumps(alert.shap_full_attribution) if alert.shap_full_attribution else None
+        ),
         feature_vector=json.dumps(alert.feature_vector) if alert.feature_vector else None,
         timestamp=alert.timestamp or datetime.utcnow(),
         created_at=datetime.utcnow(),
@@ -156,19 +159,14 @@ async def get_stats(db: AsyncSession = Depends(get_db_session)):
     total_r = await db.execute(select(func.count(AlertDB.id)))
     total = total_r.scalar() or 0
 
-    h1_r = await db.execute(
-        select(func.count(AlertDB.id)).where(AlertDB.timestamp >= hour_ago)
-    )
+    h1_r = await db.execute(select(func.count(AlertDB.id)).where(AlertDB.timestamp >= hour_ago))
     alerts_1h = h1_r.scalar() or 0
 
-    d1_r = await db.execute(
-        select(func.count(AlertDB.id)).where(AlertDB.timestamp >= day_ago)
-    )
+    d1_r = await db.execute(select(func.count(AlertDB.id)).where(AlertDB.timestamp >= day_ago))
     alerts_24h = d1_r.scalar() or 0
 
     label_r = await db.execute(
-        select(AlertDB.label, func.count(AlertDB.id))
-        .group_by(AlertDB.label)
+        select(AlertDB.label, func.count(AlertDB.id)).group_by(AlertDB.label)
     )
     by_label = {row[0]: row[1] for row in label_r.all()}
 

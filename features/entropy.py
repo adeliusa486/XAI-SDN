@@ -35,9 +35,9 @@ ENTROPY_FEATURE_NAMES = [
 ]
 
 DEFAULT_WINDOW_SIZE = 1000
-DEFAULT_PKT_LEN_BIN = 10       # Bytes per discretization bucket
-DEFAULT_IAT_BIN = 1000         # Microseconds per discretization bucket
-DEFAULT_TTL_BIN = 5            # TTL units per discretization bucket
+DEFAULT_PKT_LEN_BIN = 10  # Bytes per discretization bucket
+DEFAULT_IAT_BIN = 1000  # Microseconds per discretization bucket
+DEFAULT_TTL_BIN = 5  # TTL units per discretization bucket
 
 
 # ─── Core Entropy Function ────────────────────────────────────────────────────
@@ -133,9 +133,7 @@ class EntropyFeatureExtractor:
         self.window.append(flow_record)
         return self.compute_from_window(self.window)
 
-    def compute_from_window(
-        self, window: Sequence[Dict[str, Any]]
-    ) -> Dict[str, float]:
+    def compute_from_window(self, window: Sequence[Dict[str, Any]]) -> Dict[str, float]:
         """Compute entropy features from an arbitrary window of flow records.
 
         Args:
@@ -153,19 +151,10 @@ class EntropyFeatureExtractor:
         protocols = [f.get("protocol", 0) for f in window]
 
         # Discretize continuous features before entropy computation
-        pkt_lens = [
-            int(f.get("pkt_len_mean", 0) // self.pkt_len_bin_size)
-            for f in window
-        ]
-        iats = [
-            int(f.get("iat_mean", 0) // self.iat_bin_size)
-            for f in window
-        ]
+        pkt_lens = [int(f.get("pkt_len_mean", 0) // self.pkt_len_bin_size) for f in window]
+        iats = [int(f.get("iat_mean", 0) // self.iat_bin_size) for f in window]
         tcp_flags = [f.get("tcp_flags", 0) for f in window]
-        ttls = [
-            int(f.get("ttl", 0) // self.ttl_bin_size)
-            for f in window
-        ]
+        ttls = [int(f.get("ttl", 0) // self.ttl_bin_size) for f in window]
 
         return {
             "H_src_ip": shannon_entropy(src_ips),

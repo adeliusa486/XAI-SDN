@@ -6,6 +6,7 @@ Modules:
     entropy:      Shannon entropy feature computation over sliding windows.
     pipeline:     Full offline (batch) and online (streaming) feature pipelines.
 """
+
 from features.cicflowmeter import CICFlowMeterExtractor
 from features.entropy import EntropyFeatureExtractor, shannon_entropy
 from features.pipeline import FeaturePipeline

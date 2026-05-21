@@ -40,6 +40,7 @@ SKIP = "⏭  SKIP"
 
 def test(name: str):
     """Decorator for test functions."""
+
     def decorator(func):
         def wrapper(*args, **kwargs):
             try:
@@ -53,15 +54,19 @@ def test(name: str):
                 print(f"{FAIL}  {name}")
                 print(f"        {e}")
                 return None
+
         return wrapper
+
     return decorator
 
 
 # ─── Test functions ───────────────────────────────────────────────────────────
 
+
 @test("Import: features.entropy")
 def test_import_entropy():
     from features.entropy import shannon_entropy, EntropyFeatureExtractor, ENTROPY_FEATURE_NAMES
+
     assert len(ENTROPY_FEATURE_NAMES) == 8
     h = shannon_entropy(["a", "b", "c", "a"])
     assert 0 < h < 2.1, f"Expected entropy ~1.5, got {h}"
@@ -71,6 +76,7 @@ def test_import_entropy():
 @test("Import: features.cicflowmeter")
 def test_import_cic():
     from features.cicflowmeter import CIC_FEATURE_NAMES, CICFlowMeterExtractor
+
     assert len(CIC_FEATURE_NAMES) == 80
     return f"{len(CIC_FEATURE_NAMES)} features"
 
@@ -78,12 +84,14 @@ def test_import_cic():
 @test("Import: explainability.shap_explainer")
 def test_import_shap():
     from explainability.shap_explainer import SHAPExplainer
+
     return "OK"
 
 
 @test("Import: api.main")
 def test_import_api():
     from api.main import app
+
     assert app is not None
     return "FastAPI app imported"
 
@@ -91,12 +99,14 @@ def test_import_api():
 @test("Import: api.models.schemas")
 def test_import_schemas():
     from api.models.schemas import AlertCreate, AlertResponse, InferenceRequest, InferenceResponse
+
     return "All schemas imported"
 
 
 @test("Config: load master config")
 def test_config_loading():
     import yaml
+
     cfg_path = Path("configs/config.yaml")
     assert cfg_path.exists(), f"Config not found: {cfg_path}"
     with open(cfg_path) as f:
@@ -110,11 +120,19 @@ def test_config_loading():
 @test("Entropy: sliding window computation")
 def test_entropy_sliding_window():
     from features.entropy import EntropyFeatureExtractor, ENTROPY_FEATURE_NAMES
+
     extractor = EntropyFeatureExtractor(window_size=10)
     records = [
-        {"src_ip": f"10.0.0.{i % 3}", "dst_ip": "10.0.0.1", "dst_port": 53,
-         "protocol": 17, "pkt_len_mean": 64.0, "iat_mean": 1000.0,
-         "tcp_flags": 0, "ttl": 64}
+        {
+            "src_ip": f"10.0.0.{i % 3}",
+            "dst_ip": "10.0.0.1",
+            "dst_port": 53,
+            "protocol": 17,
+            "pkt_len_mean": 64.0,
+            "iat_mean": 1000.0,
+            "tcp_flags": 0,
+            "ttl": 64,
+        }
         for i in range(15)
     ]
     for rec in records:
@@ -122,8 +140,8 @@ def test_entropy_sliding_window():
 
     assert set(feats.keys()) == set(ENTROPY_FEATURE_NAMES)
     assert 0 <= feats["H_src_ip"] <= 10
-    assert feats["H_dst_port"] == 0.0   # Single destination port
-    assert len(extractor) == 10          # Window capped at 10
+    assert feats["H_dst_port"] == 0.0  # Single destination port
+    assert len(extractor) == 10  # Window capped at 10
     return f"H_src_ip={feats['H_src_ip']:.3f}"
 
 
@@ -131,10 +149,18 @@ def test_entropy_sliding_window():
 def test_entropy_offline():
     import numpy as np
     from features.entropy import compute_entropy_features_offline
+
     records = [
-        {"src_ip": f"10.0.0.{i%5}", "dst_ip": "10.0.0.1",
-         "dst_port": 80, "protocol": 6, "pkt_len_mean": 100.0,
-         "iat_mean": 500.0, "tcp_flags": 2, "ttl": 64}
+        {
+            "src_ip": f"10.0.0.{i%5}",
+            "dst_ip": "10.0.0.1",
+            "dst_port": 80,
+            "protocol": 6,
+            "pkt_len_mean": 100.0,
+            "iat_mean": 500.0,
+            "tcp_flags": 2,
+            "ttl": 64,
+        }
         for i in range(50)
     ]
     result = compute_entropy_features_offline(records, window_size=10)
@@ -146,13 +172,13 @@ def test_entropy_offline():
 def test_openflow_bridge():
     import numpy as np
     from features.cicflowmeter import extract_features_from_openflow, CIC_FEATURE_NAMES
+
     stat = {
         "packet_count": 1000,
         "byte_count": 64000,
         "duration_sec": 1,
         "duration_nsec": 0,
-        "match": {"ipv4_src": "10.0.0.100", "ipv4_dst": "10.0.0.1",
-                  "tp_dst": 53, "ip_proto": 17},
+        "match": {"ipv4_src": "10.0.0.100", "ipv4_dst": "10.0.0.1", "tp_dst": 53, "ip_proto": 17},
     }
     feats = extract_features_from_openflow(stat)
     assert len(feats) == len(CIC_FEATURE_NAMES)
@@ -165,6 +191,7 @@ def test_openflow_bridge():
 def test_synthetic_data():
     import numpy as np
     from model.train import load_synthetic_data
+
     X, y, le = load_synthetic_data(n_samples=500, random_state=0)
     assert X.shape == (500, 88), f"Expected (500, 88), got {X.shape}"
     assert len(np.unique(y)) >= 5
@@ -273,8 +300,11 @@ def test_api_schema_validation():
     # Test invalid confidence raises
     try:
         AlertCreate(
-            flow_id="x", src_ip="1.1.1.1", dst_ip="2.2.2.2",
-            label=AttackLabel.BENIGN, confidence=1.5,  # invalid
+            flow_id="x",
+            src_ip="1.1.1.1",
+            dst_ip="2.2.2.2",
+            label=AttackLabel.BENIGN,
+            confidence=1.5,  # invalid
         )
         assert False, "Should have raised ValidationError"
     except Exception:
@@ -286,7 +316,9 @@ def test_api_schema_validation():
 def test_api_startup_and_endpoints(skip_api: bool = False):
     """Start FastAPI in a subprocess and run HTTP checks."""
     if skip_api:
-        RESULTS.append({"test": "API: startup + endpoints", "status": "SKIP", "detail": "--skip-api"})
+        RESULTS.append(
+            {"test": "API: startup + endpoints", "status": "SKIP", "detail": "--skip-api"}
+        )
         print(f"{SKIP}  API: startup + endpoints")
         return
 
@@ -295,15 +327,26 @@ def test_api_startup_and_endpoints(skip_api: bool = False):
 
     # Check if already running on 8000
     with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
-        already_running = (s.connect_ex(("localhost", 8765)) == 0)
+        already_running = s.connect_ex(("localhost", 8765)) == 0
 
     # Start uvicorn on test port 8765
     proc = None
     if not already_running:
         proc = subprocess.Popen(
-            [sys.executable, "-m", "uvicorn", "api.main:app",
-             "--host", "127.0.0.1", "--port", "8765", "--log-level", "error"],
-            stdout=subprocess.PIPE, stderr=subprocess.PIPE,
+            [
+                sys.executable,
+                "-m",
+                "uvicorn",
+                "api.main:app",
+                "--host",
+                "127.0.0.1",
+                "--port",
+                "8765",
+                "--log-level",
+                "error",
+            ],
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
         )
         time.sleep(4)  # Wait for startup
 
@@ -314,7 +357,9 @@ def test_api_startup_and_endpoints(skip_api: bool = False):
         r = req.get(f"{BASE}/health", timeout=5)
         assert r.status_code == 200
         data = r.json()
-        RESULTS.append({"test": "API: /health", "status": "PASS", "detail": str(data.get("status"))})
+        RESULTS.append(
+            {"test": "API: /health", "status": "PASS", "detail": str(data.get("status"))}
+        )
         print(f"{PASS}  API: /health → {data.get('status')}")
 
         # Docs check
@@ -341,8 +386,9 @@ def test_api_startup_and_endpoints(skip_api: bool = False):
         }
         r4 = req.post(f"{BASE}/api/v1/alerts", json=alert_payload, timeout=5)
         assert r4.status_code in (200, 201, 503)
-        RESULTS.append({"test": "API: POST /alerts", "status": "PASS",
-                         "detail": f"status={r4.status_code}"})
+        RESULTS.append(
+            {"test": "API: POST /alerts", "status": "PASS", "detail": f"status={r4.status_code}"}
+        )
         print(f"{PASS}  API: POST /alerts → {r4.status_code}")
 
     except Exception as e:
@@ -356,6 +402,7 @@ def test_api_startup_and_endpoints(skip_api: bool = False):
 
 
 # ─── Report generation ────────────────────────────────────────────────────────
+
 
 def write_report():
     passed = [r for r in RESULTS if r["status"] == "PASS"]
@@ -413,6 +460,7 @@ def write_report():
 
 
 # ─── Main ─────────────────────────────────────────────────────────────────────
+
 
 def main():
     parser = argparse.ArgumentParser()
