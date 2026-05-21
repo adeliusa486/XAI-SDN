@@ -209,6 +209,21 @@ test results.
 
 ---
 
+## ⚖️ Baseline Fair Comparison
+
+XAI-SDN is evaluated against six baseline models (Decision Tree, SVM, Naive Bayes, XGBoost, DNN, and LSTM).
+To ensure fair comparison:
+1. **Shared Test Set**: All models are evaluated on the exact same test split saved by `model/train.py`.
+2. **Equivalent Tuning**: No models undergo exhaustive grid search (including the proposed RF). The number of estimators is matched (n=200) between Random Forest and XGBoost. All applicable models utilize `class_weight='balanced'`.
+
+Run baseline evaluations via:
+```bash
+python model/baselines.py --use-synthetic
+```
+Results are saved to `model/artifacts/baseline_results.json`.
+
+---
+
 ## 📈 Experiment Tracking
 
 All training runs are logged to MLflow:

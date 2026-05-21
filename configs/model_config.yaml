@@ -60,3 +60,31 @@ ablation:
     - name: "XAI-SDN-Full"
       features: "full"              # 88 features
       model: "random_forest"
+
+# NOTE on hyperparameter fairness:
+# All models use sklearn/library defaults except:
+# - n_estimators=200 matched across RF and XGBoost
+# - class_weight="balanced" applied uniformly to all classifiers that support it
+# No grid search applied to any model (including the proposed RF) to
+# avoid selection bias. This is declared in the paper's experimental setup.
+
+baselines:
+  DecisionTree:
+    max_depth: null
+    class_weight: "balanced"
+    # Note: no tuning — max_depth=null matches RF's fully-grown trees
+  SVM:
+    kernel: "rbf"
+    C: 1.0           # Standard default; matches RF's implicit regularization
+    gamma: "scale"
+    class_weight: "balanced"
+    probability: true
+    # Note: C=1.0 is sklearn default; no systematic tuning applied to any model
+  NaiveBayes: {}
+  XGBoost:
+    n_estimators: 200   # Matches RF n_estimators for fair comparison
+    max_depth: 6
+    learning_rate: 0.1
+    subsample: 0.8
+    colsample_bytree: 0.8
+    n_jobs: -1

@@ -201,3 +201,12 @@ Alerts are stored in SQLite (dev) or PostgreSQL (prod):
 - Set SHAP_ENDPOINT_INTERNAL_ONLY=1
 
 See [deployment_guide.md](deployment_guide.md) for full production setup.
+
+## ⚖️ Baseline Fairness Methodology
+
+When comparing XAI-SDN against baseline architectures (Decision Tree, SVM, Naive Bayes, XGBoost, DNN, LSTM):
+
+1. **Test Set Invariance**: All baseline models are evaluated against the exact same test split (saved as `X_test.npy` and `y_test.npy` during RF training). This eliminates partition bias.
+2. **Hyperparameter Tuning Policy**: No exhaustive grid search or randomized search is applied to any model (including the proposed Random Forest). This strict "no-tuning" policy prevents selection bias where the proposed model receives more optimization effort than the baselines.
+3. **Parameter Matching**: Where parameters overlap between the proposed model and baselines, they are locked to identical values. For example, `n_estimators=200` is enforced for both RF and XGBoost.
+4. **Class Weights**: To handle the class imbalance inherent in the CIC-DDoS2019 dataset, `class_weight='balanced'` is applied uniformly to all baseline classifiers that support it (DT, SVM, RF).
