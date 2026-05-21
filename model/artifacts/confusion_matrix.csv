@@ -1,7 +1,3 @@
-,Pred_Benign,Pred_DDoS-HTTP,Pred_DDoS-ICMP,Pred_DDoS-SlowLoris,Pred_DDoS-TCP,Pred_DDoS-UDP
-True_Benign,976,0,0,0,0,0
-True_DDoS-HTTP,0,42,0,0,0,0
-True_DDoS-ICMP,0,0,470,0,0,0
-True_DDoS-SlowLoris,0,0,0,398,0,0
-True_DDoS-TCP,0,0,0,0,601,0
-True_DDoS-UDP,0,0,0,0,0,513
+,Pred_Benign,Pred_Syn
+True_Benign,9308,3
+True_Syn,9,1068478

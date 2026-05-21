@@ -48,8 +48,9 @@ data/splits/
 # Exception: X_test.npy and y_test.npy MAY be committed for reproducibility
 model/artifacts/*.pkl
 model/artifacts/*.json
-# model/artifacts/X_test.npy   # Uncomment to exclude test split
-# model/artifacts/y_test.npy   # Uncomment to exclude test split
+model/artifacts/X_test.npy
+model/artifacts/y_test.npy
+*.npy
 *.pkl
 *.joblib
 *.pt

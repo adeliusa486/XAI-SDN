@@ -1,20 +1,16 @@
 {
-  "accuracy": 1.0,
-  "macro_f1": 1.0,
-  "cv_f1_mean": 1.0,
-  "cv_f1_std": 0.0,
-  "latency_ms": 0.012796600038806599,
-  "throughput_flows_s": 78145.75722984457,
-  "train_time_s": 0.4305361998267472,
-  "n_train": 7000,
-  "n_test": 3000,
+  "accuracy": 0.9999888661882839,
+  "macro_f1": 0.9996750965138379,
+  "cv_f1_mean": 0.9993504420238679,
+  "cv_f1_std": 0.00020556077850545767,
+  "latency_ms": 0.0023650040173174977,
+  "throughput_flows_s": 422832.26272666064,
+  "train_time_s": 106.97711149975657,
+  "n_train": 2514860,
+  "n_test": 1077798,
   "n_features": 88,
   "classes": [
     "Benign",
-    "DDoS-HTTP",
-    "DDoS-ICMP",
-    "DDoS-SlowLoris",
-    "DDoS-TCP",
-    "DDoS-UDP"
+    "Syn"
   ]
 }
