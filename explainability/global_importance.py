@@ -97,13 +97,20 @@ def compute_global_importance(
         shap_values = explainer.shap_values(X_test)
 
         if isinstance(shap_values, list) and len(shap_values) > 1:
-            # Multi-class: average over DDoS classes (exclude class 0 = Benign)
+            # Multi-class (older SHAP version returns list): average over DDoS classes (exclude class 0)
             mean_abs = np.mean(
                 [np.abs(shap_values[i]).mean(axis=0) for i in range(1, len(shap_values))],
                 axis=0,
             )
         else:
-            mean_abs = np.abs(np.array(shap_values)).mean(axis=0)
+            shap_array = np.array(shap_values)
+            if shap_array.ndim == 3:
+                # Multi-class (newer SHAP version returns shape: n_samples, n_features, n_classes)
+                # Average across DDoS classes (index 1 to n_classes-1) and then across samples
+                mean_abs = np.abs(shap_array[:, :, 1:]).mean(axis=0).mean(axis=1)
+            else:
+                # Binary classification
+                mean_abs = np.abs(shap_array).mean(axis=0)
 
         importance_df = pd.DataFrame({
             "feature": feature_names[:len(mean_abs)],
