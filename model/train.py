@@ -57,6 +57,7 @@ except ImportError:
 @click.option("--use-synthetic", is_flag=True, help="Use synthetic data (no real dataset needed).")
 @click.option("--n-estimators", default=None, type=int, help="Override n_estimators.")
 @click.option("--experiment-name", default=None, help="MLflow experiment name.")
+@click.option("--random-state", default=42, type=int, help="Global random seed for reproducibility.")
 def train(
     config: str,
     data_dir: str,
@@ -64,8 +65,11 @@ def train(
     use_synthetic: bool,
     n_estimators: Optional[int],
     experiment_name: Optional[str],
+    random_state: int,
 ) -> None:
     """Train the XAI-SDN Random Forest classifier."""
+    from utils.seed_utils import set_global_seed
+    set_global_seed(random_state)
     # Load config
     cfg = load_config(config)
     rf_cfg = cfg.get("random_forest", {})
@@ -88,7 +92,7 @@ def train(
     # ── Load data ──────────────────────────────────────────────────────────
     if use_synthetic:
         logger.info("Using synthetic data for training demo...")
-        X, y_raw, label_encoder = load_synthetic_data()
+        X, y_raw, label_encoder = load_synthetic_data(random_state=random_state)
     else:
         logger.info(f"Loading real data from {data_dir}...")
         X, y_raw, label_encoder = load_real_data(data_dir)
@@ -97,7 +101,7 @@ def train(
 
     # ── Train/test split ───────────────────────────────────────────────────
     test_size = cfg.get("data", {}).get("test_size", 0.30)
-    random_state = rf_cfg.get("random_state", 42)
+    # Using the global CLI random_state instead of config rf_cfg.get("random_state")
 
     X_train, X_test, y_train_raw, y_test_raw = train_test_split(
         X,

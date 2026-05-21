@@ -43,21 +43,24 @@ N_ENT = len(ENTROPY_FEATURE_NAMES)  # 8
 @click.option("--use-synthetic", is_flag=True, default=True)
 @click.option("--data-dir", default=None)
 @click.option("--output", default="model/artifacts/ablation_results.json")
-def run_ablation(use_synthetic: bool, data_dir, output: str) -> None:
+@click.option("--random-state", default=42, type=int, help="Global random seed for reproducibility.")
+def run_ablation(use_synthetic: bool, data_dir, output: str, random_state: int) -> None:
     """Run the ablation study comparing feature subsets and model variants."""
+    from utils.seed_utils import set_global_seed
+    set_global_seed(random_state)
     logger.info("=" * 60)
     logger.info("XAI-SDN Ablation Study")
     logger.info("=" * 60)
 
     if use_synthetic or data_dir is None:
-        X_full, y_raw, le = load_synthetic_data(n_samples=8000)
+        X_full, y_raw, le = load_synthetic_data(n_samples=8000, random_state=random_state)
     else:
         from model.train import load_real_data
 
         X_full, y_raw, le = load_real_data(data_dir)
 
     X_train_f, X_test_f, y_train_raw, y_test_raw = train_test_split(
-        X_full, y_raw, test_size=0.30, stratify=y_raw, random_state=42
+        X_full, y_raw, test_size=0.30, stratify=y_raw, random_state=random_state
     )
     
     le.fit(y_train_raw)
@@ -75,14 +78,14 @@ def run_ablation(use_synthetic: bool, data_dir, output: str) -> None:
         raise ValueError(f"Unknown feature mode: {mode}")
 
     RF_PARAMS = dict(
-        n_estimators=200, max_features="sqrt", class_weight="balanced", random_state=42, n_jobs=-1
+        n_estimators=200, max_features="sqrt", class_weight="balanced", random_state=random_state, n_jobs=-1
     )
     SVM_PARAMS = dict(
         kernel="rbf",
         C=1.0,
         gamma="scale",
         class_weight="balanced",
-        random_state=42,
+        random_state=random_state,
         probability=True,
     )
 
