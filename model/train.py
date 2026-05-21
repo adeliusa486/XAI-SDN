@@ -157,6 +157,20 @@ def train(
     t0 = time.perf_counter()
     clf = RandomForestClassifier(**rf_cfg)
     clf.fit(X_train_scaled, y_train)
+
+    # Verify model was trained with expected hyperparameters
+    expected_n_estimators = rf_cfg.get("n_estimators", 200)
+    assert clf.n_estimators == expected_n_estimators, (
+        f"RF trained with {clf.n_estimators} trees but config specifies "
+        f"{expected_n_estimators}."
+    )
+    assert clf.class_weight == "balanced", "class_weight must be 'balanced'"
+    assert clf.max_features == "sqrt", "max_features must be 'sqrt'"
+    logger.info(
+        f"Architecture verified: {clf.n_estimators} trees, "
+        f"max_features={clf.max_features}, class_weight={clf.class_weight}"
+    )
+
     train_time = time.perf_counter() - t0
     logger.info(f"Training time: {train_time:.1f}s")
 

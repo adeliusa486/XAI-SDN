@@ -148,7 +148,11 @@ jobs:
         run: mkdir -p data/synthetic model/artifacts logs
 
       - name: Train model on synthetic data
-        run: python model/train.py --use-synthetic --n-estimators 50
+        run: |
+          # NOTE: --n-estimators 50 is for CI speed only.
+          # Production training uses n_estimators=200 (configs/model_config.yaml).
+          # The 50-tree model is NOT the model whose metrics are reported in README.
+          python model/train.py --use-synthetic --n-estimators 50
 
       - name: Evaluate model
         run: python model/evaluate.py --use-synthetic
