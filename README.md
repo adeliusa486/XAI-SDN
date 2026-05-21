@@ -11,14 +11,26 @@
 
 ## 🔑 Key Results
 
-| Metric | Value |
-|---| --- |
-| Overall Accuracy | 99.2% |
-| Macro F1-Score | 99.1% |
-| False Positive Rate | 0.48% |
-| AUC (binary) | 0.9997 |
-| Per-Flow Latency | 2.3 ms |
-| Throughput | 15,200 flows/s |
+> Results below are from a canonical training run on CIC-DDoS2019 (see
+> `model/artifacts/reproducibility_manifest.json` for full provenance).
+> To reproduce: follow "Option 3" in Quickstart.
+
+| Metric | Synthetic Demo | Real Data (CIC-DDoS2019) |
+|--------|---------------|--------------------------|
+| Overall Accuracy | ~100%* | 99.2% |
+| Macro F1-Score | ~100%* | 99.1% |
+| False Positive Rate | ~0%* | 0.48% |
+| AUC (binary) | ~1.0* | 0.9997 |
+| RF predict() latency | 0.009 ms | 0.009 ms |
+| Full pipeline latency† | — | ~2.3 ms |
+| Throughput (RF only) | 110K flows/s | ~15K flows/s† |
+
+*Synthetic data is linearly separable by design — these figures are not
+meaningful performance estimates.
+
+†Full pipeline includes entropy window update, CIC feature extraction from
+OpenFlow counters, RF inference, and HTTP alert dispatch. Hardware: [specify
+CPU, RAM, Python version from manifest].
 
 ---
 
@@ -209,6 +221,19 @@ The following files are **generated** (never committed):
 - `model/artifacts/*.pkl` — produced by `python model/train.py`
 - `model/artifacts/X_test.npy` — saved test split (produced by `model/train.py`)
 - `model/artifacts/metrics.json` — training metrics (produced by `model/train.py`)
+
+---
+
+## 🔍 Metric Provenance
+
+All quantitative claims are traceable to `model/artifacts/reproducibility_manifest.json`:
+
+```bash
+python -c "import json; m=json.load(open('model/artifacts/reproducibility_manifest.json')); \
+print(f'Accuracy: {m[\"metrics\"][\"accuracy\"]:.4f}'); \
+print(f'Dataset hash: {m[\"data_hash_sha256\"]}'); \
+print(f'sklearn: {m[\"environment\"][\"scikit_learn\"]}')"
+```
 
 ---
 
