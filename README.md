@@ -16,7 +16,7 @@
 | Accuracy | 1.0000 ± 0.0000 |
 | Macro F1 | 1.0000 ± 0.0000 |
 
-For real-data results, see `model/artifacts/multiseed_real/aggregate_results.json`.
+*Note: Synthetic data is linearly separable by design for CI/CD validation. For real CIC-DDoS2019 dataset results, run the multiseed pipeline on the raw data.*
 
 †Full pipeline includes entropy window update, CIC feature extraction from
 OpenFlow counters, RF inference, and HTTP alert dispatch. Hardware: [specify
@@ -185,8 +185,6 @@ python scripts/smoke_test.py
 
 All experiments use `--random-state 42` by default. To override:
 ```bash
-XAI_SDN_SEED=123 python model/train.py --use-synthetic
-# or
 python model/train.py --use-synthetic --random-state 123
 ```
 
@@ -201,8 +199,8 @@ bash scripts/run_multiseed.sh --seeds "42 123 456 789 1024"
 
 All comparisons use 5 independent random seeds and Wilcoxon signed-rank tests.
 ```bash
-bash scripts/run_multiseed.sh --synthetic --seeds "42 123 456 789 1024"
-python model/ablation.py --use-synthetic --seeds "42,123,456,789,1024"
+bash scripts/run_multiseed.sh --synthetic --seeds "42 123 456 789 1024" --output-dir="model/artifacts/multiseed_synthetic"
+python model/ablation.py --use-synthetic --seeds "42,123,456,789,1024" --output="model/artifacts/multiseed_synthetic/ablation_results.json"
 ```
 See `model/artifacts/multiseed_synthetic/aggregate_results.json` for significance
 test results.
