@@ -120,6 +120,9 @@ ablation:  ## Run ablation study
 shap-global:  ## Compute global SHAP importance
 	$(PYTHON) model/evaluate.py --artifacts-dir model/artifacts --use-synthetic --run-shap
 
+mlflow-ui:  ## Start MLflow UI for experiment tracking
+	mlflow ui --backend-store-uri mlruns --port 5000
+
 ## ─── Services ─────────────────────────────────────────────────────────────────
 
 api:  ## Start FastAPI development server

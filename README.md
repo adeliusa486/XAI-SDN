@@ -209,6 +209,25 @@ test results.
 
 ---
 
+## 📈 Experiment Tracking
+
+All training runs are logged to MLflow:
+
+```bash
+# Start MLflow UI
+make mlflow-ui
+# Open: http://localhost:5000
+
+# Run and log training
+python model/train.py --use-synthetic
+```
+
+Each run logs: hyperparameters, metrics (accuracy, F1, FPR, AUC, latency),
+library versions, and all artifacts. Run ID is stored in
+`model/artifacts/reproducibility_manifest.json`.
+
+---
+
 ## 📖 Documentation
 
 | Document | Description |

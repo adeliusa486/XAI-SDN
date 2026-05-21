@@ -227,19 +227,53 @@ def train(
 
     # ── MLflow logging ─────────────────────────────────────────────────────
     if MLFLOW_AVAILABLE:
-        with mlflow.start_run():
+        with mlflow.start_run() as run:
+            run_id = run.info.run_id
+
+            # Log all hyperparameters
             mlflow.log_params(rf_cfg)
-            mlflow.log_metrics(
-                {
-                    "accuracy": accuracy,
-                    "macro_f1": macro_f1,
-                    "cv_f1_mean": cv_scores.mean(),
-                    "latency_ms": latency_ms,
-                    "throughput_flows_s": throughput,
-                }
-            )
+            mlflow.log_param("random_state", random_state)
+            mlflow.log_param("n_features", X.shape[1])
+            mlflow.log_param("n_train", X_train.shape[0])
+            mlflow.log_param("n_test", X_test.shape[0])
+            mlflow.log_param("data_source", "synthetic" if use_synthetic else data_dir)
+            mlflow.log_param("python_version", platform.python_version())
+            mlflow.log_param("sklearn_version",
+                             importlib_metadata.version("scikit-learn"))
+
+            # Log all metrics
+            mlflow.log_metrics({
+                "accuracy": accuracy,
+                "macro_f1": macro_f1,
+                "cv_f1_mean": cv_scores.mean(),
+                "cv_f1_std": cv_scores.std(),
+                "latency_ms": latency_ms,
+                "throughput_flows_s": throughput,
+                "fpr": metrics.get("fpr", 0.0),
+            })
+
+            # Log model
             mlflow.sklearn.log_model(clf, "rf_model")
-            logger.info("MLflow run logged.")
+
+            # Log artifacts
+            mlflow.log_artifact(str(output_path / "metrics.json"))
+            mlflow.log_artifact(str(output_path / "reproducibility_manifest.json"))
+
+            logger.info(f"MLflow run ID: {run_id}")
+
+            # Add run_id to manifest
+            manifest_path = output_path / "reproducibility_manifest.json"
+            with open(manifest_path) as f:
+                manifest = json.load(f)
+            manifest["mlflow_run_id"] = run_id
+            with open(manifest_path, "w") as f:
+                json.dump(manifest, f, indent=2)
+    else:
+        run_id = None
+        logger.warning(
+            "MLflow not available. Install with: pip install mlflow. "
+            "Experiment tracking disabled."
+        )
 
     logger.info("Training complete ✓")
 
