@@ -1,6 +1,14 @@
 """
 baselines.py — Baseline Classifier Implementations for XAI-SDN.
 
+Published SOTA on CIC-DDoS2019 for reference:
+  - Yin et al. (2018): LSTM, 99.18% accuracy (binary)
+  - Tang et al. (2022): RF + entropy, 99.3% accuracy (multi-class)
+  - Neto et al. (2023): XGBoost + SHAP, 99.41% F1 (multi-class)
+
+See docs/architecture.md for comparison methodology.
+Source: Google Scholar search "CIC-DDoS2019 detection", filtered >=2022.
+
 Implements all baseline models from the paper:
   - Decision Tree
   - SVM (RBF kernel)
@@ -280,15 +288,32 @@ def run_baselines(
             from model.train import load_real_data
             X, y_raw, le = load_real_data(data_dir)
 
-        X_train, X_test, y_train_raw, y_test_raw = train_test_split(
-            X, y_raw, test_size=0.30, stratify=y_raw, random_state=seed
-        )
-        le.fit(y_train_raw)
-        y_train = le.transform(y_train_raw)
-        y_test = le.transform(y_test_raw)
-        scaler = StandardScaler()
-        X_train_s = scaler.fit_transform(X_train)
-        X_test_s = scaler.transform(X_test)
+        test_X_path = Path("model/artifacts/X_test.npy")
+        test_y_path = Path("model/artifacts/y_test.npy")
+
+        if test_X_path.exists() and test_y_path.exists():
+            logger.info("Loading saved test split for fair baseline comparison...")
+            X_test_s = np.load(test_X_path)
+            y_test = np.load(test_y_path)
+            
+            X_train, _, y_train_raw, _ = train_test_split(
+                X, y_raw, test_size=0.30, stratify=y_raw, random_state=seed
+            )
+            le.fit(y_train_raw)
+            y_train = le.transform(y_train_raw)
+            scaler = StandardScaler()
+            X_train_s = scaler.fit_transform(X_train)
+        else:
+            logger.warning("No saved test split; generating fresh split for baselines.")
+            X_train, X_test, y_train_raw, y_test_raw = train_test_split(
+                X, y_raw, test_size=0.30, stratify=y_raw, random_state=seed
+            )
+            le.fit(y_train_raw)
+            y_train = le.transform(y_train_raw)
+            y_test = le.transform(y_test_raw)
+            scaler = StandardScaler()
+            X_train_s = scaler.fit_transform(X_train)
+            X_test_s = scaler.transform(X_test)
 
         # Sklearn baselines
         for name, cfg in BASELINE_CONFIGS.items():
