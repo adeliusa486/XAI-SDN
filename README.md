@@ -9,18 +9,22 @@
 
 ---
 
-## 🔑 Key Results (Synthetic Demo — 5 seeds)
+## ⚠️ CI Smoke Test Results (Synthetic Data — NOT Research Results)
 
-| Metric | Mean ± Std (5 seeds) |
-|--------|----------------------|
+> [!WARNING]
+> The metrics below are produced on a **deliberately linearly separable synthetic dataset**
+> used exclusively for CI/CD pipeline validation. They do **NOT** represent real-world
+> DDoS detection performance. Do **NOT** cite these numbers in publications.
+>
+> Real CIC-DDoS2019 results will appear here after running the full pipeline on the dataset.
+> Expected accuracy on real data: 0.97–0.99 (see `docs/architecture.md` for SOTA context).
+
+| Metric | CI Value (Synthetic, 2 seeds) |
+|--------|-------------------------------|
 | Accuracy | 1.0000 ± 0.0000 |
 | Macro F1 | 1.0000 ± 0.0000 |
 
-*Note: Synthetic data is linearly separable by design for CI/CD validation. For real CIC-DDoS2019 dataset results, run the multiseed pipeline on the raw data.*
-
-†Full pipeline includes entropy window update, CIC feature extraction from
-OpenFlow counters, RF inference, and HTTP alert dispatch. Hardware: [specify
-CPU, RAM, Python version from manifest].
+*Entropy features contribute ~39.85% of total SHAP weight in synthetic runs.*
 
 ---
 
@@ -197,13 +201,18 @@ bash scripts/run_multiseed.sh --seeds "42 123 456 789 1024"
 
 ## 📊 Statistical Validity
 
-All comparisons use 5 independent random seeds and Wilcoxon signed-rank tests.
+Multi-seed ablation comparisons use Wilcoxon signed-rank tests (implemented in `model/ablation.py`). Full 5-seed runs are used for ablation; the CI pipeline uses 2 seeds for speed.
+
 ```bash
+# 2-seed CI validation (fast)
+bash scripts/run_multiseed.sh --synthetic --seeds "42 123" --output-dir="model/artifacts/multiseed_synthetic"
+
+# Full 5-seed statistical analysis (for publication)
 bash scripts/run_multiseed.sh --synthetic --seeds "42 123 456 789 1024" --output-dir="model/artifacts/multiseed_synthetic"
 python model/ablation.py --use-synthetic --seeds "42,123,456,789,1024" --output="model/artifacts/multiseed_synthetic/ablation_results.json"
 ```
 See `model/artifacts/multiseed_synthetic/aggregate_results.json` for significance
-test results.
+test results (p-values, mean ± std per metric).
 
 ---
 

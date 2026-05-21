@@ -83,6 +83,11 @@ class OfflineFeaturePipeline:
     ) -> Tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray]:
         """Execute the full offline feature pipeline.
 
+        NOTE ON ENTROPY ORDERING: The train/test split is performed on the raw
+        CIC features BEFORE entropy computation. Shannon entropy features are
+        then computed independently on each partition using a fresh extractor
+        state, which eliminates temporal contamination between partitions.
+
         Args:
             data_dir: Directory containing CIC-DDoS2019 CSV files.
 
@@ -92,12 +97,12 @@ class OfflineFeaturePipeline:
         from sklearn.model_selection import train_test_split
 
         # Step 1: Load data
-        logger.info("Step 1/5: Loading CICFlowMeter CSV files...")
+        logger.info("Step 1/6: Loading CICFlowMeter CSV files...")
         df = self.cic_extractor.load_directory(data_dir)
         X_cic, y_raw = self.cic_extractor.get_feature_matrix(df)
 
         # Step 2: Sort by timestamp if available
-        logger.info("Step 2/5: Sorting by timestamp for temporal ordering...")
+        logger.info("Step 2/6: Sorting by timestamp for temporal ordering...")
         if "Timestamp" in df.columns:
             sort_idx = df["Timestamp"].argsort().values
             X_cic = X_cic.iloc[sort_idx].reset_index(drop=True)
@@ -106,42 +111,63 @@ class OfflineFeaturePipeline:
         else:
             logger.warning("No Timestamp column found; using file order.")
 
-        # Step 3: Compute entropy features
-        logger.info(f"Step 3/5: Computing entropy features (window={self.window_size})...")
-        flow_records = self._dataframe_to_flow_records(df, X_cic)
-        entropy_arr = compute_entropy_features_offline(
-            flow_records,
+        # Step 3: Split CIC features FIRST — prevents entropy temporal contamination
+        # Entropy is computed on the full time-ordered dataset before the split,
+        # which would allow test-partition flow context to leak into train-partition
+        # entropy windows. Splitting first and computing entropy separately on each
+        # partition is the correct approach.
+        logger.info("Step 3/6: Splitting CIC features before entropy computation...")
+        indices = np.arange(len(X_cic))
+        train_idx, test_idx = train_test_split(
+            indices,
+            test_size=self.test_size,
+            stratify=y_raw.values,
+            random_state=self.random_state,
+        )
+        X_cic_train = X_cic.iloc[train_idx].reset_index(drop=True)
+        X_cic_test = X_cic.iloc[test_idx].reset_index(drop=True)
+        df_train = df.iloc[train_idx].reset_index(drop=True)
+        df_test = df.iloc[test_idx].reset_index(drop=True)
+        y_train_raw = y_raw.iloc[train_idx].values
+        y_test_raw = y_raw.iloc[test_idx].values
+
+        # Step 4: Compute entropy independently on each partition
+        # Each partition starts with a fresh extractor state — no cross-partition leakage.
+        logger.info(f"Step 4/6: Computing entropy features per partition (window={self.window_size})...")
+        train_records = self._dataframe_to_flow_records(df_train, X_cic_train)
+        entropy_train = compute_entropy_features_offline(
+            train_records,
             window_size=self.window_size,
             pkt_len_bin_size=self.pkt_len_bin_size,
             iat_bin_size=self.iat_bin_size,
             ttl_bin_size=self.ttl_bin_size,
         )
-        entropy_df = pd.DataFrame(entropy_arr, columns=ENTROPY_FEATURE_NAMES)
-
-        # Step 4: Concatenate
-        logger.info("Step 4/5: Concatenating feature matrix (88-dim)...")
-        X_full = pd.concat([X_cic.reset_index(drop=True), entropy_df], axis=1)
-        # Ensure canonical feature order
-        X_full = self._ensure_feature_columns(X_full)
-
-        # Step 5: Splitting and encoding labels
-        logger.info("Step 5/5: Splitting and encoding labels...")
-
-        X_train, X_test, y_train_raw, y_test_raw = train_test_split(
-            X_full.values,
-            y_raw.values,
-            test_size=self.test_size,
-            stratify=y_raw.values,
-            random_state=self.random_state,
+        test_records = self._dataframe_to_flow_records(df_test, X_cic_test)
+        entropy_test = compute_entropy_features_offline(
+            test_records,
+            window_size=self.window_size,
+            pkt_len_bin_size=self.pkt_len_bin_size,
+            iat_bin_size=self.iat_bin_size,
+            ttl_bin_size=self.ttl_bin_size,
         )
 
+        # Step 5: Concatenate CIC + entropy features per partition
+        logger.info("Step 5/6: Concatenating feature matrix (88-dim per partition)...")
+        entropy_train_df = pd.DataFrame(entropy_train, columns=ENTROPY_FEATURE_NAMES)
+        entropy_test_df = pd.DataFrame(entropy_test, columns=ENTROPY_FEATURE_NAMES)
+        X_train_full = pd.concat([X_cic_train, entropy_train_df], axis=1)
+        X_test_full = pd.concat([X_cic_test, entropy_test_df], axis=1)
+        X_train_full = self._ensure_feature_columns(X_train_full)
+        X_test_full = self._ensure_feature_columns(X_test_full)
+
+        # Step 6: Encode labels and scale features
+        logger.info("Step 6/6: Encoding labels and scaling features...")
         self.label_encoder.fit(y_train_raw)
         y_train = self.label_encoder.transform(y_train_raw)
         y_test = self.label_encoder.transform(y_test_raw)
 
-        # Scale features (fit on train only)
-        X_train = self.scaler.fit_transform(X_train)
-        X_test = self.scaler.transform(X_test)
+        X_train = self.scaler.fit_transform(X_train_full.values)
+        X_test = self.scaler.transform(X_test_full.values)
 
         self._fitted = True
         logger.info(
@@ -149,6 +175,7 @@ class OfflineFeaturePipeline:
             f"Classes: {list(self.label_encoder.classes_)}"
         )
         return X_train, X_test, y_train, y_test
+
 
     def run_on_dataframe(self, df: pd.DataFrame) -> Tuple[np.ndarray, np.ndarray]:
         """Run pipeline on a pre-loaded DataFrame (without split or scaling).

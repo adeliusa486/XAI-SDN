@@ -238,22 +238,22 @@ def _db_to_response(row: AlertDB) -> AlertResponse:
     if row.shap_top_features:
         try:
             shap_top = json.loads(row.shap_top_features)
-        except Exception:
-            pass
+        except Exception as e:
+            logger.warning(f"Alert id={row.id}: failed to deserialize shap_top_features: {e}")
 
     shap_full = None
     if row.shap_full_attribution:
         try:
             shap_full = json.loads(row.shap_full_attribution)
-        except Exception:
-            pass
+        except Exception as e:
+            logger.warning(f"Alert id={row.id}: failed to deserialize shap_full_attribution: {e}")
 
     feat_vec = None
     if row.feature_vector:
         try:
             feat_vec = json.loads(row.feature_vector)
-        except Exception:
-            pass
+        except Exception as e:
+            logger.warning(f"Alert id={row.id}: failed to deserialize feature_vector: {e}")
 
     return AlertResponse(
         id=row.id,

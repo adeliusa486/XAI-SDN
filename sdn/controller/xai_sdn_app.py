@@ -347,14 +347,34 @@ class XAISDNController(app_manager.RyuApp):
             daemon=True,
         ).start()
 
-        # Optionally install drop rule
+        # Optionally install drop rule for volumetric DDoS flows
+        # SlowLoris excluded: it requires per-connection rate-limiting, not a blanket drop.
         if INSTALL_DROP_RULES and label not in ("Benign", "DDoS-SlowLoris"):
-            # Slow loris needs per-connection handling; skip blanket drop
-            logger.warning(
-                f"Would install drop rule for {match.get('ipv4_src')} → "
-                f"{match.get('ipv4_dst')}:{match.get('tp_dst')} "
-                f"[NOT IMPLEMENTED — requires datapath reference]"
-            )
+            dp = self.datapaths.get(stat.get("dpid"))
+            if dp is not None:
+                parser = dp.ofproto_parser
+                src_ip = match.get("ipv4_src")
+                dst_ip = match.get("ipv4_dst")
+                dst_port = match.get("tp_dst")
+                ip_proto = match.get("ip_proto")
+                drop_match = parser.OFPMatch(
+                    eth_type=0x0800,  # IPv4
+                    ipv4_src=src_ip,
+                    ipv4_dst=dst_ip,
+                    ip_proto=ip_proto,
+                    tcp_dst=dst_port if ip_proto == 6 else None,
+                    udp_dst=dst_port if ip_proto == 17 else None,
+                )
+                self._add_flow(dp, priority=10, match=drop_match, actions=[], idle_timeout=60)
+                logger.warning(
+                    f"Drop rule installed for {src_ip} -> {dst_ip}:{dst_port} "
+                    f"(idle_timeout=60s, label={label})"
+                )
+            else:
+                logger.warning(
+                    f"INSTALL_DROP_RULES=1 but datapath not found for dpid={stat.get('dpid')}. "
+                    "Drop rule not installed."
+                )
 
         self._alert_count += 1
         logger.info(
