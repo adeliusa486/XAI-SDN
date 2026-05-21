@@ -1,0 +1,51 @@
+{
+  "accuracy": 1.0,
+  "macro_f1": 1.0,
+  "fpr": 0.0,
+  "auc": 1.0,
+  "latency_ms": 0.016762766676644485,
+  "latency_rf_ms": 0.016762766676644485,
+  "latency_proba_ms": 0.37681099958717823,
+  "latency_entropy_ms": 0.4811065400019288,
+  "latency_pipeline_est_ms": 0.4978693066785733,
+  "throughput_flows_s": 59656.02333374342,
+  "n_test": 3000,
+  "per_class": {
+    "Benign": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0,
+      "support": 976
+    },
+    "DDoS-HTTP": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0,
+      "support": 42
+    },
+    "DDoS-ICMP": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0,
+      "support": 470
+    },
+    "DDoS-SlowLoris": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0,
+      "support": 398
+    },
+    "DDoS-TCP": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0,
+      "support": 601
+    },
+    "DDoS-UDP": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0,
+      "support": 513
+    }
+  }
+}

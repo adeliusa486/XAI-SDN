@@ -1,13 +1,13 @@
 {
   "schema_version": "1.0",
-  "run_timestamp": "2026-05-21T10:54:57Z",
+  "run_timestamp": "2026-05-21T10:38:21Z",
   "data_source": "synthetic",
   "data_hash_sha256": "SYNTHETIC-n10000-seed42",
   "random_state": 42,
   "n_train": 7000,
   "n_test": 3000,
   "hyperparameters": {
-    "n_estimators": 50,
+    "n_estimators": 200,
     "max_depth": null,
     "min_samples_split": 2,
     "min_samples_leaf": 1,
@@ -22,9 +22,9 @@
     "macro_f1": 1.0,
     "cv_f1_mean": 1.0,
     "cv_f1_std": 0.0,
-    "latency_ms": 0.005477466620504856,
-    "throughput_flows_s": 182566.15134020304,
-    "train_time_s": 0.1470113000832498,
+    "latency_ms": 0.024816366688658796,
+    "throughput_flows_s": 40295.987424178624,
+    "train_time_s": 0.45995340030640364,
     "n_train": 7000,
     "n_test": 3000,
     "n_features": 88,
@@ -44,6 +44,5 @@
     "numpy": "2.4.6",
     "pandas": "2.3.3",
     "joblib": "1.5.3"
-  },
-  "mlflow_run_id": "6137a080e4044448bb773c9a67e3c1c3"
+  }
 }
