@@ -124,17 +124,20 @@ class OfflineFeaturePipeline:
         # Ensure canonical feature order
         X_full = self._ensure_feature_columns(X_full)
 
-        # Step 5: Encode labels and split
-        logger.info("Step 5/5: Encoding labels and splitting...")
-        y_enc = self.label_encoder.fit_transform(y_raw)
+        # Step 5: Splitting and encoding labels
+        logger.info("Step 5/5: Splitting and encoding labels...")
 
-        X_train, X_test, y_train, y_test = train_test_split(
+        X_train, X_test, y_train_raw, y_test_raw = train_test_split(
             X_full.values,
-            y_enc,
+            y_raw.values,
             test_size=self.test_size,
-            stratify=y_enc,
+            stratify=y_raw.values,
             random_state=self.random_state,
         )
+
+        self.label_encoder.fit(y_train_raw)
+        y_train = self.label_encoder.transform(y_train_raw)
+        y_test = self.label_encoder.transform(y_test_raw)
 
         # Scale features (fit on train only)
         X_train = self.scaler.fit_transform(X_train)
@@ -162,8 +165,7 @@ class OfflineFeaturePipeline:
         entropy_df = pd.DataFrame(entropy_arr, columns=ENTROPY_FEATURE_NAMES)
         X_full = pd.concat([X_cic.reset_index(drop=True), entropy_df], axis=1)
         X_full = self._ensure_feature_columns(X_full)
-        y_enc = self.label_encoder.fit_transform(y_raw)
-        return X_full.values, y_enc
+        return X_full.values, y_raw.values
 
     # ── Private helpers ────────────────────────────────────────────────────
 

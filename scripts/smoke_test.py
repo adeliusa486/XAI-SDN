@@ -192,9 +192,10 @@ def test_synthetic_data():
     import numpy as np
     from model.train import load_synthetic_data
 
-    X, y, le = load_synthetic_data(n_samples=500, random_state=0)
+    X, y_raw, le = load_synthetic_data(n_samples=500, random_state=0)
     assert X.shape == (500, 88), f"Expected (500, 88), got {X.shape}"
-    assert len(np.unique(y)) >= 5
+    assert len(np.unique(y_raw)) >= 5
+    le.fit(y_raw)
     return f"X={X.shape}, classes={list(le.classes_)}"
 
 
@@ -206,8 +207,11 @@ def test_model_training():
     from sklearn.preprocessing import StandardScaler, LabelEncoder
     from model.train import load_synthetic_data
 
-    X, y, le = load_synthetic_data(n_samples=2000, random_state=42)
-    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, stratify=y)
+    X, y_raw, le = load_synthetic_data(n_samples=2000, random_state=42)
+    X_train, X_test, y_train_raw, y_test_raw = train_test_split(X, y_raw, test_size=0.3, stratify=y_raw)
+    le.fit(y_train_raw)
+    y_train = le.transform(y_train_raw)
+    y_test = le.transform(y_test_raw)
     scaler = StandardScaler()
     X_train_s = scaler.fit_transform(X_train)
     X_test_s = scaler.transform(X_test)

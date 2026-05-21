@@ -50,15 +50,19 @@ def run_ablation(use_synthetic: bool, data_dir, output: str) -> None:
     logger.info("=" * 60)
 
     if use_synthetic or data_dir is None:
-        X_full, y, le = load_synthetic_data(n_samples=8000)
+        X_full, y_raw, le = load_synthetic_data(n_samples=8000)
     else:
         from model.train import load_real_data
 
-        X_full, y, le = load_real_data(data_dir)
+        X_full, y_raw, le = load_real_data(data_dir)
 
-    X_train_f, X_test_f, y_train, y_test = train_test_split(
-        X_full, y, test_size=0.30, stratify=y, random_state=42
+    X_train_f, X_test_f, y_train_raw, y_test_raw = train_test_split(
+        X_full, y_raw, test_size=0.30, stratify=y_raw, random_state=42
     )
+    
+    le.fit(y_train_raw)
+    y_train = le.transform(y_train_raw)
+    y_test = le.transform(y_test_raw)
 
     # Feature slicing
     def slice_features(X: np.ndarray, mode: str) -> np.ndarray:

@@ -17,28 +17,30 @@ class TestSyntheticDataLoader:
         sys.path.insert(0, str(Path(__file__).parent.parent))
         from model.train import load_synthetic_data
 
-        X, y, le = load_synthetic_data(n_samples=500, random_state=0)
+        X, y_raw, le = load_synthetic_data(n_samples=500, random_state=0)
         assert X.shape[0] == 500
         assert X.shape[1] == 88
-        assert len(y) == 500
+        assert len(y_raw) == 500
+        le.fit(y_raw)
         assert len(le.classes_) == 6
 
     def test_load_synthetic_has_all_classes(self):
         from model.train import load_synthetic_data
 
-        X, y, le = load_synthetic_data(n_samples=2000, random_state=42)
-        unique_classes = np.unique(y)
+        X, y_raw, le = load_synthetic_data(n_samples=2000, random_state=42)
+        unique_classes = np.unique(y_raw)
         assert len(unique_classes) == 6
+        le.fit(y_raw)
         expected = {"Benign", "DDoS-UDP", "DDoS-TCP", "DDoS-ICMP", "DDoS-SlowLoris", "DDoS-HTTP"}
         assert set(le.classes_) == expected
 
     def test_load_synthetic_reproducible(self):
         from model.train import load_synthetic_data
 
-        X1, y1, _ = load_synthetic_data(n_samples=100, random_state=7)
-        X2, y2, _ = load_synthetic_data(n_samples=100, random_state=7)
+        X1, y_raw1, _ = load_synthetic_data(n_samples=100, random_state=7)
+        X2, y_raw2, _ = load_synthetic_data(n_samples=100, random_state=7)
         np.testing.assert_array_equal(X1, X2)
-        np.testing.assert_array_equal(y1, y2)
+        np.testing.assert_array_equal(y_raw1, y_raw2)
 
     def test_load_synthetic_different_seeds_differ(self):
         from model.train import load_synthetic_data
@@ -54,8 +56,11 @@ class TestRandomForestTraining:
         from model.train import load_synthetic_data
         from sklearn.model_selection import train_test_split
 
-        X, y, le = load_synthetic_data(n_samples=2000, random_state=42)
-        X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, stratify=y)
+        X, y_raw, le = load_synthetic_data(n_samples=2000, random_state=42)
+        X_train, X_test, y_train_raw, y_test_raw = train_test_split(X, y_raw, test_size=0.3, stratify=y_raw)
+        le.fit(y_train_raw)
+        y_train = le.transform(y_train_raw)
+        y_test = le.transform(y_test_raw)
         scaler = StandardScaler()
         X_train_s = scaler.fit_transform(X_train)
         X_test_s = scaler.transform(X_test)
@@ -97,8 +102,11 @@ class TestModelSerialization:
         from model.train import load_synthetic_data
         from sklearn.model_selection import train_test_split
 
-        X, y, le = load_synthetic_data(n_samples=500, random_state=0)
-        X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, stratify=y)
+        X, y_raw, le = load_synthetic_data(n_samples=500, random_state=0)
+        X_train, X_test, y_train_raw, y_test_raw = train_test_split(X, y_raw, test_size=0.3, stratify=y_raw)
+        le.fit(y_train_raw)
+        y_train = le.transform(y_train_raw)
+        y_test = le.transform(y_test_raw)
         scaler = StandardScaler()
         X_train_s = scaler.fit_transform(X_train)
         X_test_s = scaler.transform(X_test)

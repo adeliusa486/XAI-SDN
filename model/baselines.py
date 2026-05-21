@@ -262,15 +262,18 @@ def run_baselines(
     logger.info("=" * 60)
 
     if use_synthetic or data_dir is None:
-        X, y, le = load_synthetic_data(n_samples=8000)
+        X, y_raw, le = load_synthetic_data(n_samples=8000)
     else:
         from model.train import load_real_data
 
-        X, y, le = load_real_data(data_dir)
+        X, y_raw, le = load_real_data(data_dir)
 
-    X_train, X_test, y_train, y_test = train_test_split(
-        X, y, test_size=0.30, stratify=y, random_state=42
+    X_train, X_test, y_train_raw, y_test_raw = train_test_split(
+        X, y_raw, test_size=0.30, stratify=y_raw, random_state=42
     )
+    le.fit(y_train_raw)
+    y_train = le.transform(y_train_raw)
+    y_test = le.transform(y_test_raw)
     scaler = StandardScaler()
     X_train_s = scaler.fit_transform(X_train)
     X_test_s = scaler.transform(X_test)
