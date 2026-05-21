@@ -196,6 +196,7 @@ python scripts/smoke_test.py
 2. **Single dataset evaluation**: Trained on CIC-DDoS2019 only. Cross-dataset generalization is unproven.
 3. **No adversarial robustness testing**: IP rotation can partially evade entropy-based features.
 4. **Fixed window size N=1000**: No adaptive mechanism for varying traffic rates.
+5. **Label encoding**: `LabelEncoder` is fit exclusively on the training partition (post-split). All 6 attack classes appear in both splits due to stratified sampling.
 
 See [IMPLEMENTATION_STATUS.md](IMPLEMENTATION_STATUS.md) for full technical debt analysis.
 

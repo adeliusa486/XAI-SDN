@@ -85,9 +85,9 @@ def evaluate(
                 "Falling back to fresh synthetic data. "
                 "For correct evaluation, run: python model/train.py --use-synthetic first."
             )
-            X_all, y_all, _ = load_synthetic_data(n_samples=5000, random_state=42)
+            X_all, y_raw, _ = load_synthetic_data(n_samples=5000, random_state=42)
             X_test = scaler.transform(X_all)
-            y_test = y_all
+            y_test = le.transform(y_raw)
     else:
         from model.train import load_real_data
         from sklearn.model_selection import train_test_split

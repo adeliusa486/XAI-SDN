@@ -85,26 +85,41 @@ def train(
     # ── Load data ──────────────────────────────────────────────────────────
     if use_synthetic:
         logger.info("Using synthetic data for training demo...")
-        X, y, label_encoder = load_synthetic_data()
+        X, y_raw, label_encoder = load_synthetic_data()
     else:
         logger.info(f"Loading real data from {data_dir}...")
-        X, y, label_encoder = load_real_data(data_dir)
+        X, y_raw, label_encoder = load_real_data(data_dir)
 
     logger.info(f"Dataset: {X.shape[0]} samples, {X.shape[1]} features")
-    logger.info(f"Classes: {list(label_encoder.classes_)}")
-    logger.info(f"Class distribution:\n{_class_distribution(y, label_encoder)}")
 
     # ── Train/test split ───────────────────────────────────────────────────
     test_size = cfg.get("data", {}).get("test_size", 0.30)
     random_state = rf_cfg.get("random_state", 42)
 
-    X_train, X_test, y_train, y_test = train_test_split(
+    X_train, X_test, y_train_raw, y_test_raw = train_test_split(
         X,
-        y,
+        y_raw,
         test_size=test_size,
-        stratify=y,
+        stratify=y_raw,
         random_state=random_state,
     )
+
+    # Fit encoder ONLY on train labels
+    label_encoder.fit(y_train_raw)
+    y_train = label_encoder.transform(y_train_raw)
+    y_test  = label_encoder.transform(y_test_raw)
+
+    logger.info(f"Label encoder fit on train split only. Classes: {list(label_encoder.classes_)}")
+
+    # Verify test labels are all known (no unseen classes)
+    unknown = set(y_test_raw) - set(label_encoder.classes_)
+    assert not unknown, (
+        f"Test set contains classes not in train: {unknown}. "
+        "Increase train size or check class distribution."
+    )
+    logger.info("Leakage check passed: all test classes present in train.")
+
+    logger.info(f"Train Class distribution:\n{_class_distribution(y_train, label_encoder)}")
 
     # ── Normalize features ─────────────────────────────────────────────────
     scaler = StandardScaler()
@@ -279,9 +294,7 @@ def load_synthetic_data(
     y_raw = np.array(y_parts)
 
     le = LabelEncoder()
-    y_enc = le.fit_transform(y_raw)
-
-    return X, y_enc, le
+    return X, y_raw, le
 
 
 def load_real_data(data_dir: str) -> tuple[np.ndarray, np.ndarray, LabelEncoder]:
