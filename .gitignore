@@ -44,8 +44,12 @@ data/splits/
 *.h5
 *.hdf5
 
-# Model artifacts (use DVC or MLflow)
-model/artifacts/
+# Model artifacts (generated — use DVC or commit deliberately for provenance)
+# Exception: X_test.npy and y_test.npy MAY be committed for reproducibility
+model/artifacts/*.pkl
+model/artifacts/*.json
+# model/artifacts/X_test.npy   # Uncomment to exclude test split
+# model/artifacts/y_test.npy   # Uncomment to exclude test split
 *.pkl
 *.joblib
 *.pt

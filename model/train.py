@@ -113,6 +113,14 @@ def train(
 
     logger.info(f"Train: {X_train_scaled.shape}, Test: {X_test_scaled.shape}")
 
+    # Save test split for evaluation decoupling
+    np.save(output_path / "X_test.npy", X_test_scaled)
+    np.save(output_path / "y_test.npy", y_test)
+    logger.info(
+        f"Test split saved: X_test.npy {X_test_scaled.shape}, "
+        f"y_test.npy {y_test.shape}"
+    )
+
     # ── Cross-validation ───────────────────────────────────────────────────
     logger.info("Running 5-fold stratified cross-validation...")
     cv = StratifiedKFold(n_splits=5, shuffle=True, random_state=random_state)
