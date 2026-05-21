@@ -261,15 +261,19 @@ def _compute_shap_global(clf, X_test, le, feature_names, output_path):
 
         # Mean |SHAP| per feature across all DDoS classes (exclude Benign class 0)
         if isinstance(shap_values, list) and len(shap_values) > 1:
+            # Older SHAP API: returns list of arrays, one per class
             mean_abs_shap = np.mean(
                 [np.abs(shap_values[i]).mean(axis=0) for i in range(1, len(shap_values))],
                 axis=0,
             )
         else:
             shap_arr = np.array(shap_values)
-            mean_abs_shap = (
-                np.abs(shap_arr).mean(axis=0) if shap_arr.ndim == 2 else shap_arr.mean(axis=0)
-            )
+            if shap_arr.ndim == 3:
+                # Newer SHAP API: returns (n_samples, n_features, n_classes)
+                # Average over DDoS classes (1+) then over samples
+                mean_abs_shap = np.abs(shap_arr[:, :, 1:]).mean(axis=0).mean(axis=1)
+            else:
+                mean_abs_shap = np.abs(shap_arr).mean(axis=0)
 
         importance_df = pd.DataFrame(
             {
