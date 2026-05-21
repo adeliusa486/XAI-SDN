@@ -8,7 +8,7 @@ you need to know to get started.
 ## Development Setup
 
 ```bash
-git clone https://github.com/yourusername/xai-sdn.git
+git clone https://github.com/adeliusa486/XAI-SDN.git
 cd xai-sdn
 python -m venv venv
 source venv/bin/activate

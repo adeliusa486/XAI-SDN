@@ -1,6 +1,6 @@
 # XAI-SDN: Explainable Entropy-Guided Machine Learning for Real-Time DDoS Detection in Software Defined Networks
 
-[![CI](https://github.com/adeliusa486/xai-sdn/actions/workflows/ci.yml/badge.svg)](https://github.com/adeliusa486/xai-sdn/actions)
+[![CI](https://github.com/adeliusa486/XAI-SDN/actions/workflows/ci.yml/badge.svg)](https://github.com/adeliusa486/XAI-SDN/actions)
 [![Python 3.10+](https://img.shields.io/badge/python-3.10+-blue.svg)](https://www.python.org/downloads/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![Dataset: CIC-DDoS2019](https://img.shields.io/badge/dataset-CIC--DDoS2019-orange.svg)](https://www.unb.ca/cic/datasets/ddos-2019.html)
@@ -152,8 +152,8 @@ The simulator generates a continuous stream of realistic multi-class DDoS alerts
 ### Option 1: Docker (Recommended for Production)
 
 ```bash
-git clone https://github.com/adeliusa486/xai-sdn.git
-cd xai-sdn
+git clone https://github.com/adeliusa486/XAI-SDN.git
+cd XAI-SDN
 cp .env.example .env
 docker compose up -d
 ```
@@ -168,8 +168,8 @@ Services started:
 
 ```bash
 # Clone and install dependencies
-git clone https://github.com/adeliusa486/xai-sdn.git
-cd xai-sdn
+git clone https://github.com/adeliusa486/XAI-SDN.git
+cd XAI-SDN
 pip install -r requirements.txt -r requirements-dev.txt
 
 # Quick demo with synthetic data (no dataset download required)
@@ -410,7 +410,7 @@ If you use this framework in your research, please cite:
   title     = {XAI-SDN: Explainable Entropy-Guided Machine Learning for Real-Time DDoS Detection in Software Defined Networks},
   year      = {2026},
   note      = {Open-source implementation. Evaluated on CIC-DDoS2019 dataset.},
-  url       = {https://github.com/adeliusa486/xai-sdn}
+  url       = {https://github.com/adeliusa486/XAI-SDN}
 }
 ```
 

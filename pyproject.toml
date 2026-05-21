@@ -21,9 +21,9 @@ classifiers = [
 ]
 
 [project.urls]
-Homepage = "https://github.com/yourusername/xai-sdn"
-Documentation = "https://github.com/yourusername/xai-sdn/tree/main/docs"
-Issues = "https://github.com/yourusername/xai-sdn/issues"
+Homepage = "https://github.com/adeliusa486/XAI-SDN"
+Documentation = "https://github.com/adeliusa486/XAI-SDN/tree/main/docs"
+Issues = "https://github.com/adeliusa486/XAI-SDN/issues"
 
 [project.optional-dependencies]
 dev = [

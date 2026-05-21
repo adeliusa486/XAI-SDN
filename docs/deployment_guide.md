@@ -25,8 +25,8 @@ For SDN controller integration:
 ### Quick Start
 
 ```bash
-git clone https://github.com/yourusername/xai-sdn.git
-cd xai-sdn
+git clone https://github.com/adeliusa486/XAI-SDN.git
+cd XAI-SDN
 cp .env.example .env
 # Edit .env if needed
 
