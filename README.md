@@ -90,8 +90,11 @@ python model/train.py --config configs/model_config.yaml
 # 4. Evaluate
 python model/evaluate.py --config configs/model_config.yaml
 
-# 5. Run SHAP analysis
-python explainability/global_importance.py
+# 5. Run SHAP analysis (uses saved test split from step 3)
+python explainability/global_importance.py \
+    --artifacts-dir model/artifacts \
+    --output-dir model/artifacts/shap \
+    --max-samples 2000
 ```
 
 ---
@@ -192,6 +195,16 @@ python scripts/smoke_test.py
 4. **Fixed window size N=1000**: No adaptive mechanism for varying traffic rates.
 
 See [IMPLEMENTATION_STATUS.md](IMPLEMENTATION_STATUS.md) for full technical debt analysis.
+
+---
+
+## 📦 Repository Artifacts
+
+The following files are **generated** (never committed):
+- `SMOKE_TEST_REPORT.md` — produced by CI; download from GitHub Actions artifacts
+- `model/artifacts/*.pkl` — produced by `python model/train.py`
+- `model/artifacts/X_test.npy` — saved test split (produced by `model/train.py`)
+- `model/artifacts/metrics.json` — training metrics (produced by `model/train.py`)
 
 ---
 
