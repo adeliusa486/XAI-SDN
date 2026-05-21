@@ -1,0 +1,5 @@
+{"seed": 42, "accuracy": 1.0, "macro_f1": 1.0, "fpr": 0.0, "auc": 1.0, "latency_rf_ms": 0.016762766676644485}
+{"seed": 123, "accuracy": 1.0, "macro_f1": 1.0, "fpr": 0.0, "auc": 1.0, "latency_rf_ms": 0.012382733325163525}
+{"seed": 456, "accuracy": 1.0, "macro_f1": 1.0, "fpr": 0.0, "auc": 1.0, "latency_rf_ms": 0.012486633379012346}
+{"seed": 789, "accuracy": 1.0, "macro_f1": 1.0, "fpr": 0.0, "auc": 1.0, "latency_rf_ms": 0.012463033354530731}
+{"seed": 1024, "accuracy": 1.0, "macro_f1": 1.0, "fpr": 0.0, "auc": 1.0, "latency_rf_ms": 0.01218630000948906}
