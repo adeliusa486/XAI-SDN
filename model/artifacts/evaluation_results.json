@@ -3,12 +3,12 @@
   "macro_f1": 1.0,
   "fpr": 0.0,
   "auc": 1.0,
-  "latency_ms": 0.01207366663341721,
-  "latency_rf_ms": 0.01207366663341721,
-  "latency_proba_ms": 0.2650459995493293,
-  "latency_entropy_ms": 0.5223811700008809,
-  "latency_pipeline_est_ms": 0.5344548366342982,
-  "throughput_flows_s": 82824.88082222045,
+  "latency_ms": 0.012167833279818296,
+  "latency_rf_ms": 0.012167833279818296,
+  "latency_proba_ms": 0.3622850030660629,
+  "latency_entropy_ms": 0.4552390700206161,
+  "latency_pipeline_est_ms": 0.4674069033004344,
+  "throughput_flows_s": 82183.90053540684,
   "n_test": 3000,
   "per_class": {
     "Benign": {
