@@ -9,24 +9,14 @@
 
 ---
 
-## 🔑 Key Results
+## 🔑 Key Results (Synthetic Demo — 5 seeds)
 
-> Results below are from a canonical training run on CIC-DDoS2019 (see
-> `model/artifacts/reproducibility_manifest.json` for full provenance).
-> To reproduce: follow "Option 3" in Quickstart.
+| Metric | Mean ± Std (5 seeds) |
+|--------|----------------------|
+| Accuracy | 1.0000 ± 0.0000 |
+| Macro F1 | 1.0000 ± 0.0000 |
 
-| Metric | Synthetic Demo | Real Data (CIC-DDoS2019) |
-|--------|---------------|--------------------------|
-| Overall Accuracy | ~100%* | 99.2% |
-| Macro F1-Score | ~100%* | 99.1% |
-| False Positive Rate | ~0%* | 0.48% |
-| AUC (binary) | ~1.0* | 0.9997 |
-| RF predict() latency | 0.009 ms | 0.009 ms |
-| Full pipeline latency† | — | ~2.3 ms |
-| Throughput (RF only) | 110K flows/s | ~15K flows/s† |
-
-*Synthetic data is linearly separable by design — these figures are not
-meaningful performance estimates.
+For real-data results, see `model/artifacts/multiseed_real/aggregate_results.json`.
 
 †Full pipeline includes entropy window update, CIC feature extraction from
 OpenFlow counters, RF inference, and HTTP alert dispatch. Hardware: [specify
@@ -204,6 +194,18 @@ For multi-seed experiments (Phase 7), use:
 ```bash
 bash scripts/run_multiseed.sh --seeds "42 123 456 789 1024"
 ```
+
+---
+
+## 📊 Statistical Validity
+
+All comparisons use 5 independent random seeds and Wilcoxon signed-rank tests.
+```bash
+bash scripts/run_multiseed.sh --synthetic --seeds "42 123 456 789 1024"
+python model/ablation.py --use-synthetic --seeds "42,123,456,789,1024"
+```
+See `model/artifacts/multiseed_synthetic/aggregate_results.json` for significance
+test results.
 
 ---
 

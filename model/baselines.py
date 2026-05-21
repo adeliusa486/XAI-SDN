@@ -249,12 +249,14 @@ def train_pytorch_model(model, X_train, y_train, X_test, y_test, model_name, epo
 @click.option("--skip-deep", is_flag=True, help="Skip DNN/LSTM baselines.")
 @click.option("--output", default="model/artifacts/baseline_results.json", help="Output path.")
 @click.option("--random-state", default=42, type=int, help="Global random seed for reproducibility.")
+@click.option("--seeds", default="42", help="Comma-separated seeds for multi-run.")
 def run_baselines(
     use_synthetic: bool,
     data_dir: Optional[str],
     skip_deep: bool,
     output: str,
     random_state: int,
+    seeds: str,
 ) -> None:
     """Run all baseline classifiers and compare with XAI-SDN."""
     from utils.seed_utils import set_global_seed
@@ -265,46 +267,53 @@ def run_baselines(
     logger.info("XAI-SDN Baseline Comparison")
     logger.info("=" * 60)
 
-    if use_synthetic or data_dir is None:
-        X, y_raw, le = load_synthetic_data(n_samples=8000, random_state=random_state)
-    else:
-        from model.train import load_real_data
+    seed_list = [int(s.strip()) for s in seeds.split(",")]
+    all_results = []
+    
+    for seed in seed_list:
+        set_global_seed(seed)
+        logger.info(f"\n--- Running Seed: {seed} ---")
 
-        X, y_raw, le = load_real_data(data_dir)
+        if use_synthetic or data_dir is None:
+            X, y_raw, le = load_synthetic_data(n_samples=8000, random_state=seed)
+        else:
+            from model.train import load_real_data
+            X, y_raw, le = load_real_data(data_dir)
 
-    X_train, X_test, y_train_raw, y_test_raw = train_test_split(
-        X, y_raw, test_size=0.30, stratify=y_raw, random_state=random_state
-    )
-    le.fit(y_train_raw)
-    y_train = le.transform(y_train_raw)
-    y_test = le.transform(y_test_raw)
-    scaler = StandardScaler()
-    X_train_s = scaler.fit_transform(X_train)
-    X_test_s = scaler.transform(X_test)
+        X_train, X_test, y_train_raw, y_test_raw = train_test_split(
+            X, y_raw, test_size=0.30, stratify=y_raw, random_state=seed
+        )
+        le.fit(y_train_raw)
+        y_train = le.transform(y_train_raw)
+        y_test = le.transform(y_test_raw)
+        scaler = StandardScaler()
+        X_train_s = scaler.fit_transform(X_train)
+        X_test_s = scaler.transform(X_test)
 
-    results = []
+        # Sklearn baselines
+        for name, cfg in BASELINE_CONFIGS.items():
+            if "random_state" in cfg["params"]:
+                cfg["params"]["random_state"] = seed
+            r = train_and_evaluate_sklearn(name, cfg, X_train_s, X_test_s, y_train, y_test, le)
+            r["seed"] = seed
+            all_results.append(r)
 
-    # Sklearn baselines
-    for name, cfg in BASELINE_CONFIGS.items():
-        if "random_state" in cfg["params"]:
-            cfg["params"]["random_state"] = random_state
-        r = train_and_evaluate_sklearn(name, cfg, X_train_s, X_test_s, y_train, y_test, le)
-        results.append(r)
+        # PyTorch baselines
+        if not skip_deep:
+            n_f = X_train_s.shape[1]
+            n_c = len(le.classes_)
 
-    # PyTorch baselines
-    if not skip_deep:
-        n_f = X_train_s.shape[1]
-        n_c = len(le.classes_)
+            dnn = build_dnn(n_f, n_c)
+            if dnn is not None:
+                r = train_pytorch_model(dnn, X_train_s, y_train, X_test_s, y_test, "DNN-4x256")
+                r["seed"] = seed
+                all_results.append(r)
 
-        dnn = build_dnn(n_f, n_c)
-        if dnn is not None:
-            r = train_pytorch_model(dnn, X_train_s, y_train, X_test_s, y_test, "DNN-4x256")
-            results.append(r)
-
-        lstm = build_lstm(n_f, n_c)
-        if lstm is not None:
-            r = train_pytorch_model(lstm, X_train_s, y_train, X_test_s, y_test, "LSTM-2x128")
-            results.append(r)
+            lstm = build_lstm(n_f, n_c)
+            if lstm is not None:
+                r = train_pytorch_model(lstm, X_train_s, y_train, X_test_s, y_test, "LSTM-2x128")
+                r["seed"] = seed
+                all_results.append(r)
 
     # Print comparison table
     logger.info("\n" + "=" * 70)
@@ -315,22 +324,34 @@ def run_baselines(
     )
     logger.info(header)
     logger.info("-" * 70)
-    for r in results:
+    # Group by model
+    model_results = {}
+    for r in all_results:
         if "error" in r:
-            logger.info(f"{r['model']:<20} ERROR: {r['error']}")
-        else:
-            logger.info(
-                f"{r['model']:<20} "
-                f"{r.get('accuracy', 0):>10.4f} "
-                f"{r.get('macro_f1', 0):>10.4f} "
-                f"{r.get('latency_ms', 0):>12.3f} "
-                f"{r.get('throughput_flows_s', 0):>12.0f}"
-            )
+            continue
+        m = r["model"]
+        if m not in model_results:
+            model_results[m] = []
+        model_results[m].append(r)
+        
+    for m, r_list in model_results.items():
+        mean_acc = sum([x["accuracy"] for x in r_list]) / len(r_list)
+        mean_f1 = sum([x["macro_f1"] for x in r_list]) / len(r_list)
+        mean_lat = sum([x["latency_ms"] for x in r_list]) / len(r_list)
+        mean_thru = sum([x["throughput_flows_s"] for x in r_list if "throughput_flows_s" in x]) / len(r_list)
+        
+        logger.info(
+            f"{m:<20} "
+            f"{mean_acc:>10.4f} "
+            f"{mean_f1:>10.4f} "
+            f"{mean_lat:>12.3f} "
+            f"{mean_thru:>12.0f}"
+        )
 
     out_path = Path(output)
     out_path.parent.mkdir(parents=True, exist_ok=True)
     with open(out_path, "w") as f:
-        json.dump(results, f, indent=2)
+        json.dump(all_results, f, indent=2)
     logger.info(f"\nResults saved to {out_path}")
 
 

@@ -44,112 +44,147 @@ N_ENT = len(ENTROPY_FEATURE_NAMES)  # 8
 @click.option("--data-dir", default=None)
 @click.option("--output", default="model/artifacts/ablation_results.json")
 @click.option("--random-state", default=42, type=int, help="Global random seed for reproducibility.")
-def run_ablation(use_synthetic: bool, data_dir, output: str, random_state: int) -> None:
+@click.option("--seeds", default="42", help="Comma-separated seeds for multi-run.")
+def run_ablation(use_synthetic: bool, data_dir, output: str, random_state: int, seeds: str) -> None:
     """Run the ablation study comparing feature subsets and model variants."""
     from utils.seed_utils import set_global_seed
+    from scipy import stats as scipy_stats
     set_global_seed(random_state)
     logger.info("=" * 60)
     logger.info("XAI-SDN Ablation Study")
     logger.info("=" * 60)
 
-    if use_synthetic or data_dir is None:
-        X_full, y_raw, le = load_synthetic_data(n_samples=8000, random_state=random_state)
-    else:
-        from model.train import load_real_data
-
-        X_full, y_raw, le = load_real_data(data_dir)
-
-    X_train_f, X_test_f, y_train_raw, y_test_raw = train_test_split(
-        X_full, y_raw, test_size=0.30, stratify=y_raw, random_state=random_state
-    )
-    
-    le.fit(y_train_raw)
-    y_train = le.transform(y_train_raw)
-    y_test = le.transform(y_test_raw)
-
-    # Feature slicing
-    def slice_features(X: np.ndarray, mode: str) -> np.ndarray:
-        if mode == "cic_only":
-            return X[:, :N_CIC]
-        elif mode == "entropy_only":
-            return X[:, N_CIC:]
-        elif mode == "full":
-            return X
-        raise ValueError(f"Unknown feature mode: {mode}")
-
-    RF_PARAMS = dict(
-        n_estimators=200, max_features="sqrt", class_weight="balanced", random_state=random_state, n_jobs=-1
-    )
-    SVM_PARAMS = dict(
-        kernel="rbf",
-        C=1.0,
-        gamma="scale",
-        class_weight="balanced",
-        random_state=random_state,
-        probability=True,
-    )
-
+    seed_list = [int(s.strip()) for s in seeds.split(",")]
     configs = [
         {"name": "RF + CIC-only (80-dim)", "features": "cic_only", "model": "RF"},
         {"name": "RF + Entropy-only (8-dim)", "features": "entropy_only", "model": "RF"},
         {"name": "SVM + Full (88-dim)", "features": "full", "model": "SVM"},
         {"name": "XAI-SDN: RF + Full (88-dim)", "features": "full", "model": "RF"},
     ]
+    all_results = {cfg["name"]: [] for cfg in configs}
 
-    results = []
-    for cfg in configs:
-        logger.info(f"\nRunning: {cfg['name']}")
+    for seed in seed_list:
+        set_global_seed(seed)
+        logger.info(f"\n--- Running Seed: {seed} ---")
 
-        X_tr = slice_features(X_train_f, cfg["features"])
-        X_te = slice_features(X_test_f, cfg["features"])
-
-        scaler = StandardScaler()
-        X_tr_s = scaler.fit_transform(X_tr)
-        X_te_s = scaler.transform(X_te)
-
-        if cfg["model"] == "RF":
-            model = RandomForestClassifier(**RF_PARAMS)
-        elif cfg["model"] == "SVM":
-            model = SVC(**SVM_PARAMS)
+        if use_synthetic or data_dir is None:
+            X_full, y_raw, le = load_synthetic_data(n_samples=8000, random_state=seed)
         else:
-            raise ValueError(f"Unknown model: {cfg['model']}")
+            from model.train import load_real_data
+            X_full, y_raw, le = load_real_data(data_dir)
 
-        t0 = time.perf_counter()
-        model.fit(X_tr_s, y_train)
-        train_time = time.perf_counter() - t0
+        X_train_f, X_test_f, y_train_raw, y_test_raw = train_test_split(
+            X_full, y_raw, test_size=0.30, stratify=y_raw, random_state=seed
+        )
+        
+        le.fit(y_train_raw)
+        y_train = le.transform(y_train_raw)
+        y_test = le.transform(y_test_raw)
 
-        t0 = time.perf_counter()
-        y_pred = model.predict(X_te_s)
-        inf_time = time.perf_counter() - t0
+        # Feature slicing
+        def slice_features(X: np.ndarray, mode: str) -> np.ndarray:
+            if mode == "cic_only":
+                return X[:, :N_CIC]
+            elif mode == "entropy_only":
+                return X[:, N_CIC:]
+            elif mode == "full":
+                return X
+            raise ValueError(f"Unknown feature mode: {mode}")
 
-        acc = accuracy_score(y_test, y_pred)
-        f1 = f1_score(y_test, y_pred, average="macro")
-        latency_ms = (inf_time / len(X_te)) * 1000
+        RF_PARAMS = dict(
+            n_estimators=200, max_features="sqrt", class_weight="balanced", random_state=seed, n_jobs=-1
+        )
+        SVM_PARAMS = dict(
+            kernel="rbf",
+            C=1.0,
+            gamma="scale",
+            class_weight="balanced",
+            random_state=seed,
+            probability=True,
+        )
 
-        # Binary FPR
-        benign_id = list(le.classes_).index("Benign") if "Benign" in le.classes_ else 0
-        y_bin_true = (y_test != benign_id).astype(int)
-        y_bin_pred = (y_pred != benign_id).astype(int)
-        tn = int(((y_bin_true == 0) & (y_bin_pred == 0)).sum())
-        fp = int(((y_bin_true == 0) & (y_bin_pred == 1)).sum())
-        fpr = fp / (fp + tn) if (fp + tn) > 0 else 0.0
+        for cfg in configs:
+            logger.info(f"Running: {cfg['name']}")
 
-        result = {
-            "name": cfg["name"],
-            "features": cfg["features"],
-            "model": cfg["model"],
-            "n_features": X_tr.shape[1],
-            "accuracy": float(acc),
-            "macro_f1": float(f1),
-            "fpr": float(fpr),
-            "latency_ms": float(latency_ms),
-            "train_time_s": float(train_time),
+            X_tr = slice_features(X_train_f, cfg["features"])
+            X_te = slice_features(X_test_f, cfg["features"])
+
+            scaler = StandardScaler()
+            X_tr_s = scaler.fit_transform(X_tr)
+            X_te_s = scaler.transform(X_te)
+
+            if cfg["model"] == "RF":
+                model = RandomForestClassifier(**RF_PARAMS)
+            elif cfg["model"] == "SVM":
+                model = SVC(**SVM_PARAMS)
+            else:
+                raise ValueError(f"Unknown model: {cfg['model']}")
+
+            t0 = time.perf_counter()
+            model.fit(X_tr_s, y_train)
+            train_time = time.perf_counter() - t0
+
+            t0 = time.perf_counter()
+            y_pred = model.predict(X_te_s)
+            inf_time = time.perf_counter() - t0
+
+            acc = accuracy_score(y_test, y_pred)
+            f1 = f1_score(y_test, y_pred, average="macro")
+            latency_ms = (inf_time / len(X_te)) * 1000
+
+            # Binary FPR
+            benign_id = list(le.classes_).index("Benign") if "Benign" in le.classes_ else 0
+            y_bin_true = (y_test != benign_id).astype(int)
+            y_bin_pred = (y_pred != benign_id).astype(int)
+            tn = int(((y_bin_true == 0) & (y_bin_pred == 0)).sum())
+            fp = int(((y_bin_true == 0) & (y_bin_pred == 1)).sum())
+            fpr = fp / (fp + tn) if (fp + tn) > 0 else 0.0
+
+            result = {
+                "seed": seed,
+                "name": cfg["name"],
+                "features": cfg["features"],
+                "model": cfg["model"],
+                "n_features": X_tr.shape[1],
+                "accuracy": float(acc),
+                "macro_f1": float(f1),
+                "fpr": float(fpr),
+                "latency_ms": float(latency_ms),
+                "train_time_s": float(train_time),
+            }
+            all_results[cfg["name"]].append(result)
+
+            logger.info(
+                f"  Acc={acc:.4f}  F1={f1:.4f}  FPR={fpr*100:.2f}%  "
+                f"Lat={latency_ms:.2f}ms  Features={X_tr.shape[1]}"
+            )
+
+    # Statistical significance: proposed system vs each baseline
+    proposed_key = "XAI-SDN: RF + Full (88-dim)"
+    proposed_accs = [r["accuracy"] for r in all_results[proposed_key]]
+
+    sig_results = {}
+    for name, results in all_results.items():
+        if name == proposed_key:
+            continue
+        baseline_accs = [r["accuracy"] for r in results]
+        
+        # If lengths are > 1 and all values are identically matched (which can happen with synthetic), wilcoxon might error
+        try:
+            stat, p_value = scipy_stats.wilcoxon(proposed_accs, baseline_accs)
+        except ValueError:
+            stat, p_value = 0.0, 1.0 # E.g. differences are all zero
+            
+        sig_results[name] = {
+            "wilcoxon_stat": float(stat),
+            "p_value": float(p_value),
+            "significant_at_0.05": bool(p_value < 0.05),
+            "proposed_mean": float(sum(proposed_accs)/len(proposed_accs)) if proposed_accs else 0.0,
+            "baseline_mean": float(sum(baseline_accs)/len(baseline_accs)) if baseline_accs else 0.0,
         }
-        results.append(result)
-
         logger.info(
-            f"  Acc={acc:.4f}  F1={f1:.4f}  FPR={fpr*100:.2f}%  "
-            f"Lat={latency_ms:.2f}ms  Features={X_tr.shape[1]}"
+            f"  {name}: p={p_value:.4f} "
+            f"({'✓ significant' if p_value < 0.05 else '✗ not significant'})"
         )
 
     # Print comparison table
@@ -159,22 +194,26 @@ def run_ablation(use_synthetic: bool, data_dir, output: str, random_state: int) 
     header = f"{'Configuration':<35} {'Acc%':>7} {'F1%':>7} {'FPR%':>7} {'ΔAcc':>7}"
     logger.info(header)
     logger.info("-" * 80)
-    baseline_acc = results[0]["accuracy"]
-    for r in results:
-        delta = r["accuracy"] - baseline_acc
+    baseline_acc = sum([r["accuracy"] for r in all_results["RF + CIC-only (80-dim)"]]) / len(seed_list)
+    for name, r_list in all_results.items():
+        mean_acc = sum([r["accuracy"] for r in r_list]) / len(r_list)
+        mean_f1 = sum([r["macro_f1"] for r in r_list]) / len(r_list)
+        mean_fpr = sum([r["fpr"] for r in r_list]) / len(r_list)
+        
+        delta = mean_acc - baseline_acc
         delta_str = f"+{delta*100:.1f}%" if delta >= 0 else f"{delta*100:.1f}%"
         logger.info(
-            f"{r['name']:<35} "
-            f"{r['accuracy']*100:>7.1f} "
-            f"{r['macro_f1']*100:>7.1f} "
-            f"{r['fpr']*100:>7.2f} "
+            f"{name:<35} "
+            f"{mean_acc*100:>7.1f} "
+            f"{mean_f1*100:>7.1f} "
+            f"{mean_fpr*100:>7.2f} "
             f"{delta_str:>7}"
         )
 
     out_path = Path(output)
     out_path.parent.mkdir(parents=True, exist_ok=True)
     with open(out_path, "w") as f:
-        json.dump(results, f, indent=2)
+        json.dump({"results": all_results, "significance": sig_results}, f, indent=2)
     logger.info(f"\nAblation results saved to {out_path}")
 
 
