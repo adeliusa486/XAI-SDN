@@ -86,8 +86,30 @@ train-synthetic:  ## Train RF model on synthetic data (no dataset needed)
 evaluate:  ## Evaluate trained model
 	$(PYTHON) model/evaluate.py --artifacts-dir model/artifacts --use-synthetic
 
+evaluate-from-split:  ## Evaluate using saved test split (requires prior train run)
+	$(PYTHON) model/evaluate.py \
+		--artifacts-dir model/artifacts \
+		--output-dir model/artifacts
+
 evaluate-real:  ## Evaluate on real CIC-DDoS2019 data
-	$(PYTHON) model/evaluate.py --artifacts-dir model/artifacts --data-dir data/raw --run-shap
+	$(PYTHON) model/evaluate.py \
+		--artifacts-dir model/artifacts \
+		--data-dir data/raw \
+		--run-shap \
+		--output-dir model/artifacts
+
+shap-global:  ## Compute global SHAP importance (requires trained model + X_test.npy)
+	$(PYTHON) explainability/global_importance.py \
+		--artifacts-dir model/artifacts \
+		--output-dir model/artifacts/shap \
+		--max-samples 2000
+
+shap-global-real:  ## Compute global SHAP on real data
+	$(PYTHON) explainability/global_importance.py \
+		--artifacts-dir model/artifacts \
+		--data-dir data/raw \
+		--output-dir model/artifacts/shap \
+		--max-samples 2000
 
 baselines:  ## Run baseline comparison
 	$(PYTHON) model/baselines.py --use-synthetic

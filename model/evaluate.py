@@ -71,10 +71,23 @@ def evaluate(
 
     # ── Load data ──────────────────────────────────────────────────────────
     if use_synthetic or data_dir is None:
-        logger.info("Using synthetic test data...")
-        X_all, y_all, _ = load_synthetic_data(n_samples=5000, random_state=99)
-        X_test = scaler.transform(X_all)
-        y_test = y_all
+        test_X_path = artifacts_path / "X_test.npy"
+        test_y_path = artifacts_path / "y_test.npy"
+
+        if test_X_path.exists() and test_y_path.exists():
+            logger.info(f"Loading saved test split from {artifacts_path}...")
+            X_test = np.load(test_X_path)
+            y_test = np.load(test_y_path)
+            logger.info(f"Test set: {X_test.shape[0]} samples, {X_test.shape[1]} features")
+        else:
+            logger.warning(
+                "No saved test split found (X_test.npy / y_test.npy). "
+                "Falling back to fresh synthetic data. "
+                "For correct evaluation, run: python model/train.py --use-synthetic first."
+            )
+            X_all, y_all, _ = load_synthetic_data(n_samples=5000, random_state=42)
+            X_test = scaler.transform(X_all)
+            y_test = y_all
     else:
         from model.train import load_real_data
         from sklearn.model_selection import train_test_split

@@ -43,10 +43,18 @@ python model/train.py --config configs/model_config.yaml $TRAIN_FLAG \
   --output-dir "$ARTIFACTS_DIR"
 
 # Step 3: Evaluate
-echo; echo "[3/6] Evaluating model..."
-python model/evaluate.py --artifacts-dir "$ARTIFACTS_DIR" \
-  $([ $SYNTHETIC -eq 1 ] && echo '--use-synthetic' || echo "--data-dir $DATA_DIR") \
-  --run-shap
+echo; echo "[3/6] Evaluating model (using saved test split)..."
+if [ $SYNTHETIC -eq 1 ]; then
+  python model/evaluate.py \
+    --artifacts-dir "$ARTIFACTS_DIR" \
+    --output-dir "$ARTIFACTS_DIR"
+else
+  python model/evaluate.py \
+    --artifacts-dir "$ARTIFACTS_DIR" \
+    --data-dir "$DATA_DIR" \
+    --run-shap \
+    --output-dir "$ARTIFACTS_DIR"
+fi
 
 # Step 4: Baseline comparison
 echo; echo "[4/6] Running baseline comparison..."
