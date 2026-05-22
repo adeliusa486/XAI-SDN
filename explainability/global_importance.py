@@ -69,12 +69,7 @@ def compute_global_importance(
     elif data_dir is not None:
         logger.info(f"Loading real data from {data_dir}...")
         from model.train import load_real_data
-        from sklearn.model_selection import train_test_split
-        X_all, y_all, _ = load_real_data(data_dir)
-        _, X_test_raw, _, _ = train_test_split(
-            X_all, y_all, test_size=0.30, stratify=y_all, random_state=42
-        )
-        X_test = scaler.transform(X_test_raw)
+        _, X_test, _, _, _, _ = load_real_data(data_dir, random_state=42)
     else:
         logger.error(
             "No data source available. Either provide --data-dir or ensure "

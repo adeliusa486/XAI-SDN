@@ -1,6 +1,6 @@
 {
   "schema_version": "1.0",
-  "run_timestamp": "2026-05-21T20:40:59Z",
+  "run_timestamp": "2026-05-21T22:53:02Z",
   "data_source": "data/raw",
   "data_hash_sha256": "603648e7c56e9232b6d647470dc01b6451502c594a4ebf235b45103edb5e545a",
   "random_state": 42,
@@ -18,13 +18,16 @@
     "random_state": 42
   },
   "metrics": {
-    "accuracy": 0.9999888661882839,
-    "macro_f1": 0.9996750965138379,
-    "cv_f1_mean": 0.9993504420238679,
-    "cv_f1_std": 0.00020556077850545767,
-    "latency_ms": 0.0023650040173174977,
-    "throughput_flows_s": 422832.26272666064,
-    "train_time_s": 106.97711149975657,
+    "accuracy": 0.9999870105529979,
+    "macro_f1": 0.9996209055860001,
+    "fpr": 0.0005369992482010525,
+    "fnr": 8.423125410042425e-06,
+    "auc_roc": 0.9999999810025095,
+    "cv_f1_mean": 0.9993621805391839,
+    "cv_f1_std": 0.00019042193417682652,
+    "latency_ms": 0.0015056129254629696,
+    "throughput_flows_s": 664181.3331221929,
+    "train_time_s": 92.0102629000321,
     "n_train": 2514860,
     "n_test": 1077798,
     "n_features": 88,
@@ -41,5 +44,5 @@
     "pandas": "2.3.3",
     "joblib": "1.5.3"
   },
-  "mlflow_run_id": "d0e9534729e74083835e68f8e7e2ff57"
+  "mlflow_run_id": "2693db0b9ac94b2596f651ea2e57d99e"
 }

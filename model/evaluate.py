@@ -101,13 +101,9 @@ def evaluate(
             y_test = le.transform(y_raw)
     else:
         from model.train import load_real_data
-        from sklearn.model_selection import train_test_split
-
-        X_all, y_all, _ = load_real_data(data_dir)
-        _, X_test_raw, _, y_test = train_test_split(
-            X_all, y_all, test_size=0.30, stratify=y_all, random_state=random_state
+        _, X_test, _, y_test, _, _ = load_real_data(
+            data_dir, random_state=random_state
         )
-        X_test = scaler.transform(X_test_raw)
 
     logger.info(f"Test set: {X_test.shape[0]} samples")
 
