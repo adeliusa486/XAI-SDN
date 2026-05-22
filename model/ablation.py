@@ -40,12 +40,20 @@ N_ENT = len(ENTROPY_FEATURE_NAMES)  # 8
 
 
 @click.command()
-@click.option("--use-synthetic", is_flag=True, default=True)
-@click.option("--data-dir", default=None)
-@click.option("--output", default="model/artifacts/ablation_results.json")
+@click.option("--use-synthetic/--no-use-synthetic", default=True, help="Use synthetic data.")
+@click.option("--data-dir", default=None, help="Real data directory.")
+@click.option("--output", default="model/artifacts/ablation_results.json", help="Output path.")
 @click.option("--random-state", default=42, type=int, help="Global random seed for reproducibility.")
 @click.option("--seeds", default="42", help="Comma-separated seeds for multi-run.")
-def run_ablation(use_synthetic: bool, data_dir, output: str, random_state: int, seeds: str) -> None:
+@click.option("--max-samples", default=10000, type=int, help="Max samples for CPU-intensive ablation runs.")
+def run_ablation(
+    use_synthetic: bool,
+    data_dir: Optional[str],
+    output: str,
+    random_state: int,
+    seeds: str,
+    max_samples: int,
+) -> None:
     """Run the ablation study comparing feature subsets and model variants."""
     from utils.seed_utils import set_global_seed
     from scipy import stats as scipy_stats
@@ -68,18 +76,35 @@ def run_ablation(use_synthetic: bool, data_dir, output: str, random_state: int, 
         logger.info(f"\n--- Running Seed: {seed} ---")
 
         if use_synthetic or data_dir is None:
-            X_full, y_raw, le = load_synthetic_data(n_samples=8000, random_state=seed)
+            # Synthetic path: completely self-contained, no mixing with real files.
+            logger.info("Running synthetic ablation data path...")
+            X_syn, y_syn_raw, le = load_synthetic_data(n_samples=8000, random_state=seed)
+            X_train_f, X_test_f, y_train_raw, y_test_raw = train_test_split(
+                X_syn, y_syn_raw, test_size=0.30, stratify=y_syn_raw, random_state=seed
+            )
+            le.fit(y_train_raw)
+            y_train = le.transform(y_train_raw)
+            y_test = le.transform(y_test_raw)
         else:
+            # Real path: correctly unpack the 6-tuple returned by load_real_data.
+            logger.info("Running real-world ablation data path...")
             from model.train import load_real_data
-            X_full, y_raw, le = load_real_data(data_dir)
-
-        X_train_f, X_test_f, y_train_raw, y_test_raw = train_test_split(
-            X_full, y_raw, test_size=0.30, stratify=y_raw, random_state=seed
-        )
-        
-        le.fit(y_train_raw)
-        y_train = le.transform(y_train_raw)
-        y_test = le.transform(y_test_raw)
+            X_train_f, X_test_f, y_train, y_test, le, scaler = load_real_data(
+                data_dir, test_size=0.30, random_state=seed
+            )
+            
+            # Subsample for tractability (SVM RBF training time/memory guard)
+            if max_samples is not None and X_train_f.shape[0] > max_samples:
+                logger.info(f"Subsampling real train split to {max_samples} for tractability...")
+                _, X_train_f, _, y_train = train_test_split(
+                    X_train_f, y_train, test_size=max_samples, stratify=y_train, random_state=seed
+                )
+                test_limit = int(max_samples * 0.3)
+                if X_test_f.shape[0] > test_limit:
+                    logger.info(f"Subsampling real test split to {test_limit} for tractability...")
+                    _, X_test_f, _, y_test = train_test_split(
+                        X_test_f, y_test, test_size=test_limit, stratify=y_test, random_state=seed
+                    )
 
         # Feature slicing
         def slice_features(X: np.ndarray, mode: str) -> np.ndarray:

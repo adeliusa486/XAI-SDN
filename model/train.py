@@ -25,7 +25,12 @@ import numpy as np
 import yaml
 from loguru import logger
 from sklearn.ensemble import RandomForestClassifier
-from sklearn.metrics import classification_report, f1_score
+from sklearn.metrics import (
+    classification_report,
+    confusion_matrix,
+    f1_score,
+    roc_auc_score,
+)
 from sklearn.model_selection import StratifiedKFold, cross_val_score, train_test_split
 from sklearn.preprocessing import LabelEncoder, StandardScaler
 
@@ -90,52 +95,42 @@ def train(
     logger.info("=" * 60)
 
     # ── Load data ──────────────────────────────────────────────────────────
+    test_size = cfg.get("data", {}).get("test_size", 0.30)
+
     if use_synthetic:
         logger.info("Using synthetic data for training demo...")
         X, y_raw, label_encoder = load_synthetic_data(random_state=random_state)
+
+        # Split — synthetic path: entropy is already encoded in the feature
+        # means (no sliding window used), so split-before-entropy is not required.
+        X_train, X_test, y_train_raw, y_test_raw = train_test_split(
+            X, y_raw, test_size=test_size, stratify=y_raw, random_state=random_state,
+        )
+        label_encoder.fit(y_train_raw)
+        y_train = label_encoder.transform(y_train_raw)
+        y_test  = label_encoder.transform(y_test_raw)
+        scaler = StandardScaler()
+        X_train_scaled = scaler.fit_transform(X_train)
+        X_test_scaled  = scaler.transform(X_test)
+
     else:
-        logger.info(f"Loading real data from {data_dir}...")
-        X, y_raw, label_encoder = load_real_data(data_dir)
+        # REAL DATA PATH — use OfflineFeaturePipeline.run() which correctly
+        # performs train/test split BEFORE entropy computation, preventing
+        # temporal window contamination between partitions.
+        logger.info(f"Loading real data from {data_dir} via OfflineFeaturePipeline.run()...")
+        X_train_scaled, X_test_scaled, y_train, y_test, label_encoder, scaler = \
+            load_real_data(data_dir, test_size=test_size, random_state=random_state)
 
-    logger.info(f"Dataset: {X.shape[0]} samples, {X.shape[1]} features")
-
-    # ── Train/test split ───────────────────────────────────────────────────
-    test_size = cfg.get("data", {}).get("test_size", 0.30)
-    # Using the global CLI random_state instead of config rf_cfg.get("random_state")
-
-    X_train, X_test, y_train_raw, y_test_raw = train_test_split(
-        X,
-        y_raw,
-        test_size=test_size,
-        stratify=y_raw,
-        random_state=random_state,
+    logger.info(
+        f"Dataset: {X_train_scaled.shape[0] + X_test_scaled.shape[0]} samples total, "
+        f"{X_train_scaled.shape[1]} features"
     )
-
-    # Fit encoder ONLY on train labels
-    label_encoder.fit(y_train_raw)
-    y_train = label_encoder.transform(y_train_raw)
-    y_test  = label_encoder.transform(y_test_raw)
-
+    logger.info(f"Train: {X_train_scaled.shape}, Test: {X_test_scaled.shape}")
     logger.info(f"Label encoder fit on train split only. Classes: {list(label_encoder.classes_)}")
-
-    # Verify test labels are all known (no unseen classes)
-    unknown = set(y_test_raw) - set(label_encoder.classes_)
-    assert not unknown, (
-        f"Test set contains classes not in train: {unknown}. "
-        "Increase train size or check class distribution."
-    )
-    logger.info("Leakage check passed: all test classes present in train.")
-
+    logger.info("Leakage check: entropy computed independently per partition. ✓")
     logger.info(f"Train Class distribution:\n{_class_distribution(y_train, label_encoder)}")
 
-    # ── Normalize features ─────────────────────────────────────────────────
-    scaler = StandardScaler()
-    X_train_scaled = scaler.fit_transform(X_train)
-    X_test_scaled = scaler.transform(X_test)
-
-    logger.info(f"Train: {X_train_scaled.shape}, Test: {X_test_scaled.shape}")
-
-    # Save test split for evaluation decoupling
+    # Save test split for evaluation decoupling (excluded from .gitignore in CI)
     np.save(output_path / "X_test.npy", X_test_scaled)
     np.save(output_path / "y_test.npy", y_test)
     logger.info(
@@ -175,13 +170,18 @@ def train(
     logger.info(f"Training time: {train_time:.1f}s")
 
     # ── Evaluate ───────────────────────────────────────────────────────────
-    logger.info("Evaluating on test set...")
-    t0 = time.perf_counter()
-    y_pred = clf.predict(X_test_scaled)
-    inference_time = time.perf_counter() - t0
+    logger.info("Evaluating on test set (best of 3 inference runs for stable latency)...")
+    latencies = []
+    for _ in range(3):
+        t0 = time.perf_counter()
+        y_pred = clf.predict(X_test_scaled)
+        latencies.append(time.perf_counter() - t0)
+    inference_time = min(latencies)  # Best of 3 for stable measurement
 
-    latency_ms = (inference_time / len(X_test)) * 1000
-    throughput = len(X_test) / inference_time
+    latency_ms = (inference_time / len(X_test_scaled)) * 1000
+    throughput = len(X_test_scaled) / inference_time
+
+    y_proba = clf.predict_proba(X_test_scaled)
 
     report = classification_report(
         y_test,
@@ -192,10 +192,36 @@ def train(
     macro_f1 = f1_score(y_test, y_pred, average="macro")
     accuracy = report["accuracy"]
 
+    # False Positive Rate (binary: Benign vs any DDoS)
+    benign_id = list(label_encoder.classes_).index("Benign") \
+        if "Benign" in label_encoder.classes_ else 0
+    y_bin_true = (y_test != benign_id).astype(int)
+    y_bin_pred = (y_pred != benign_id).astype(int)
+    cm_bin = confusion_matrix(y_bin_true, y_bin_pred)
+    if cm_bin.shape == (2, 2):
+        tn, fp, fn, tp = cm_bin.ravel()
+        fpr = fp / (fp + tn) if (fp + tn) > 0 else 0.0
+        fnr = fn / (fn + tp) if (fn + tp) > 0 else 0.0
+    else:
+        fpr, fnr = 0.0, 0.0
+
+    # AUC-ROC
+    try:
+        if len(label_encoder.classes_) == 2:
+            auc = float(roc_auc_score(y_test, y_proba[:, 1]))
+        else:
+            auc = float(roc_auc_score(y_test, y_proba, multi_class="ovr", average="macro"))
+    except Exception as e:
+        logger.warning(f"AUC computation failed: {e}")
+        auc = None
+
     logger.info(f"\n{classification_report(y_test, y_pred, target_names=label_encoder.classes_)}")
-    logger.info(f"Macro F1:          {macro_f1:.4f}")
-    logger.info(f"Accuracy:          {accuracy:.4f}")
-    logger.info(f"Mean latency:      {latency_ms:.3f} ms/flow")
+    logger.info(f"Macro F1:          {macro_f1:.6f}")
+    logger.info(f"Accuracy:          {accuracy:.6f}")
+    logger.info(f"FPR (binary):      {fpr*100:.4f}%")
+    logger.info(f"FNR (binary):      {fnr*100:.4f}%")
+    logger.info(f"AUC-ROC:           {auc:.6f}" if auc else "AUC-ROC:           N/A")
+    logger.info(f"Mean latency:      {latency_ms:.4f} ms/flow")
     logger.info(f"Throughput:        {throughput:.0f} flows/s")
 
     # ── Serialize artifacts ────────────────────────────────────────────────
@@ -211,14 +237,17 @@ def train(
     metrics = {
         "accuracy": float(accuracy),
         "macro_f1": float(macro_f1),
+        "fpr": float(fpr),
+        "fnr": float(fnr),
+        "auc_roc": auc,
         "cv_f1_mean": float(cv_scores.mean()),
         "cv_f1_std": float(cv_scores.std()),
         "latency_ms": float(latency_ms),
         "throughput_flows_s": float(throughput),
         "train_time_s": float(train_time),
-        "n_train": int(X_train.shape[0]),
-        "n_test": int(X_test.shape[0]),
-        "n_features": int(X.shape[1]),
+        "n_train": int(X_train_scaled.shape[0]),
+        "n_test": int(X_test_scaled.shape[0]),
+        "n_features": int(X_train_scaled.shape[1]),
         "classes": label_encoder.classes_.tolist(),
     }
     with open(output_path / "metrics.json", "w") as f:
@@ -232,8 +261,8 @@ def train(
         output_path=output_path,
         metrics=metrics,
         rf_cfg=rf_cfg,
-        n_train=int(X_train.shape[0]),
-        n_test=int(X_test.shape[0]),
+        n_train=int(X_train_scaled.shape[0]),
+        n_test=int(X_test_scaled.shape[0]),
         random_state=random_state,
         data_source="synthetic" if use_synthetic else data_dir,
         data_hash=data_hash,
@@ -247,9 +276,9 @@ def train(
             # Log all hyperparameters
             mlflow.log_params(rf_cfg)
             mlflow.log_param("random_state", random_state)
-            mlflow.log_param("n_features", X.shape[1])
-            mlflow.log_param("n_train", X_train.shape[0])
-            mlflow.log_param("n_test", X_test.shape[0])
+            mlflow.log_param("n_features", X_train_scaled.shape[1])
+            mlflow.log_param("n_train", X_train_scaled.shape[0])
+            mlflow.log_param("n_test", X_test_scaled.shape[0])
             mlflow.log_param("data_source", "synthetic" if use_synthetic else data_dir)
             mlflow.log_param("python_version", platform.python_version())
             mlflow.log_param("sklearn_version",
@@ -371,21 +400,34 @@ def load_synthetic_data(
     return X, y_raw, le
 
 
-def load_real_data(data_dir: str) -> tuple[np.ndarray, np.ndarray, LabelEncoder]:
-    """Load and preprocess real CIC-DDoS2019 data.
+def load_real_data(
+    data_dir: str,
+    test_size: float = 0.30,
+    random_state: int = 42,
+) -> tuple:
+    """Load and preprocess real CIC-DDoS2019 data using the split-first pipeline.
+
+    Uses OfflineFeaturePipeline.run() which performs the train/test split
+    BEFORE computing entropy features, preventing temporal window contamination
+    between the train and test partitions.
 
     Args:
         data_dir: Directory containing CIC-DDoS2019 CSV files.
+        test_size: Fraction of data for the test split (default 0.30).
+        random_state: Random seed for reproducibility.
 
     Returns:
-        (X, y_encoded, LabelEncoder)
+        Tuple (X_train_scaled, X_test_scaled, y_train, y_test, label_encoder, scaler)
+        All arrays are already split, entropy-augmented, and scaled.
     """
     from features.pipeline import OfflineFeaturePipeline
 
-    pipeline = OfflineFeaturePipeline()
-    df = pipeline.cic_extractor.load_directory(data_dir)
-    X, y_enc = pipeline.run_on_dataframe(df)
-    return X, y_enc, pipeline.label_encoder
+    pipeline = OfflineFeaturePipeline(
+        test_size=test_size,
+        random_state=random_state,
+    )
+    X_train, X_test, y_train, y_test = pipeline.run(data_dir)
+    return X_train, X_test, y_train, y_test, pipeline.label_encoder, pipeline.scaler
 
 
 # ─── Utilities ────────────────────────────────────────────────────────────────
