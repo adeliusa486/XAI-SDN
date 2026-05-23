@@ -86,3 +86,4 @@ figures/
 SMOKE_TEST_REPORT.md
 EVALUATION_REPORT.md
 model/artifacts/reproducibility_manifest.json
+data/alerts.db
