@@ -201,6 +201,7 @@ python model/train.py --config configs/model_config.yaml --use-synthetic
 # Start API and dashboard
 python -m uvicorn api.main:app --reload --host 0.0.0.0 --port 8000
 python -m streamlit run dashboard/app.py
+python scripts/simulate_traffic.py
 ```
 
 ### Option 3: Full Real-World Pipeline (CIC-DDoS2019)
