@@ -10,6 +10,13 @@
 
 ---
 
+## 📄 Paper & Repository Report
+
+- **Journal manuscript** (Elsevier `elsarticle`, targeting *Computers & Security*): LaTeX source, bibliography, figures, and compiled PDFs in [`paper/`](paper/) — [`XAI-SDN-journal.pdf`](paper/XAI-SDN-journal.pdf) (two-column, 9 pp) and [`XAI-SDN-journal-review.pdf`](paper/XAI-SDN-journal-review.pdf) (single-column submission format, 29 pp). Change log and pre-submission action items: [`paper/EDITORIAL_REPORT.md`](paper/EDITORIAL_REPORT.md).
+- **Full repository report** — complete inventory of modules, archived experimental artifacts, verified results, and reproduction instructions: [`REPO_REPORT.md`](REPO_REPORT.md).
+
+---
+
 ## 🏆 Empirical Results — CIC-DDoS2019 Real-World Dataset
 
 Evaluated on **100% of the raw, un-subsampled** CIC-DDoS2019 dataset (`Syn.csv`, 1.87 GB, 3.59 million network flows). After NaN removal, deduplication, and a stratified 70/30 temporal train/test split, the model was trained on **2,514,860 samples** and evaluated on **1,077,798 held-out test samples** with zero temporal data leakage.
