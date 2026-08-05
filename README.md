@@ -34,7 +34,7 @@ Evaluated on **100% of the raw, un-subsampled** CIC-DDoS2019 dataset (`Syn.csv`,
 
 ### Confusion Matrix (1,077,798 Test Samples)
 
-|  | Predicted Benign | Predicted DDoS-Syn |
+|  | Predicted Benign | Predicted DDoS-Syn 
 |---|---|---|
 | **True Benign** | 9,306 | **5** |
 | **True DDoS-Syn** | **9** | 1,068,478 |
