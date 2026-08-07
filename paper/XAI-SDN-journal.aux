@@ -85,67 +85,69 @@
 \newlabel{eq:shap}{{6}{5}{SHAP explainability}{equation.6}{}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {5.4}Evaluation metrics}{5}{subsection.5.4}\protected@file@percent }
 \newlabel{eq:metrics}{{7}{5}{Evaluation metrics}{equation.7}{}}
-\@writefile{lot}{\contentsline {table}{\numberline {2}{\ignorespaces CIC-DDoS2019 SYN partition: test set class distribution.}}{5}{table.2}\protected@file@percent }
-\newlabel{tab:dataset}{{2}{5}{CIC-DDoS2019 SYN partition: test set class distribution}{table.2}{}}
-\@writefile{lot}{\contentsline {table}{\numberline {3}{\ignorespaces Random Forest hyperparameter configuration.}}{5}{table.3}\protected@file@percent }
-\newlabel{tab:hyperparams}{{3}{5}{Random Forest hyperparameter configuration}{table.3}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {3}{\ignorespaces Extreme class imbalance in the CIC-DDoS2019 SYN test partition (1,077,798 flows). With less than 1\% benign traffic, raw accuracy is not a reliable metric, necessitating the use of Macro F1 and Precision-Recall evaluation.}}{5}{figure.3}\protected@file@percent }
+\newlabel{fig:imbalance}{{3}{5}{Extreme class imbalance in the CIC-DDoS2019 SYN test partition (1,077,798 flows). With less than 1\% benign traffic, raw accuracy is not a reliable metric, necessitating the use of Macro F1 and Precision-Recall evaluation}{figure.3}{}}
 \@writefile{toc}{\contentsline {section}{\numberline {6}Experimental setup}{5}{section.6}\protected@file@percent }
 \newlabel{sec:setup}{{6}{5}{Experimental setup}{section.6}{}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {6.1}Dataset and preprocessing}{5}{subsection.6.1}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {6.2}Implementation, hyperparameters, and reproducibility}{5}{subsection.6.2}\protected@file@percent }
-\@writefile{lot}{\contentsline {table}{\numberline {4}{\ignorespaces XAI-SDN detection performance on CIC-DDoS2019 (fixed temporal split, seed = 42).}}{6}{table.4}\protected@file@percent }
-\newlabel{tab:results}{{4}{6}{XAI-SDN detection performance on CIC-DDoS2019 (fixed temporal split, seed = 42)}{table.4}{}}
-\@writefile{lot}{\contentsline {table}{\numberline {5}{\ignorespaces Per-class precision, recall, and F1 on the held-out test partition, derived from the confusion matrix of Fig.~\ref {fig:confusion}.}}{6}{table.5}\protected@file@percent }
-\newlabel{tab:perclass}{{5}{6}{Per-class precision, recall, and F1 on the held-out test partition, derived from the confusion matrix of Fig.~\ref {fig:confusion}}{table.5}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {3}{\ignorespaces Confusion matrix on 1,077,798 held-out test flows (fixed temporal split, seed = 42). Only 14 flows are misclassified.}}{6}{figure.3}\protected@file@percent }
-\newlabel{fig:confusion}{{3}{6}{Confusion matrix on 1,077,798 held-out test flows (fixed temporal split, seed = 42). Only 14 flows are misclassified}{figure.3}{}}
-\@writefile{toc}{\contentsline {section}{\numberline {7}Results and discussion}{6}{section.7}\protected@file@percent }
-\newlabel{sec:results}{{7}{6}{Results and discussion}{section.7}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {7.1}Detection performance}{6}{subsection.7.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {7}Results and discussion}{5}{section.7}\protected@file@percent }
+\newlabel{sec:results}{{7}{5}{Results and discussion}{section.7}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {7.1}Detection performance}{5}{subsection.7.1}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {2}{\ignorespaces Random Forest hyperparameter configuration.}}{6}{table.2}\protected@file@percent }
+\newlabel{tab:hyperparams}{{2}{6}{Random Forest hyperparameter configuration}{table.2}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {3}{\ignorespaces XAI-SDN detection performance on CIC-DDoS2019 (fixed temporal split, seed = 42).}}{6}{table.3}\protected@file@percent }
+\newlabel{tab:results}{{3}{6}{XAI-SDN detection performance on CIC-DDoS2019 (fixed temporal split, seed = 42)}{table.3}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {4}{\ignorespaces Per-class precision, recall, and F1 on the held-out test partition, derived from the confusion matrix of Fig.~\ref {fig:confusion}.}}{6}{table.4}\protected@file@percent }
+\newlabel{tab:perclass}{{4}{6}{Per-class precision, recall, and F1 on the held-out test partition, derived from the confusion matrix of Fig.~\ref {fig:confusion}}{table.4}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {4}{\ignorespaces Confusion matrix on 1,077,798 held-out test flows (fixed temporal split, seed = 42). Only 14 flows are misclassified.}}{6}{figure.4}\protected@file@percent }
+\newlabel{fig:confusion}{{4}{6}{Confusion matrix on 1,077,798 held-out test flows (fixed temporal split, seed = 42). Only 14 flows are misclassified}{figure.4}{}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {7.2}FPR robustness across split methodologies}{6}{subsection.7.2}\protected@file@percent }
-\@writefile{lot}{\contentsline {table}{\numberline {6}{\ignorespaces Pipeline latency and throughput breakdown.}}{6}{table.6}\protected@file@percent }
-\newlabel{tab:latency}{{6}{6}{Pipeline latency and throughput breakdown}{table.6}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {4}{\ignorespaces Latency contribution of each pipeline stage (log scale). Explanation generation dominates the per-flow budget when SHAP is invoked, motivating the alert-gated invocation policy of Algorithm~\ref {alg:xaisdn}.}}{6}{figure.4}\protected@file@percent }
-\newlabel{fig:latency}{{4}{6}{Latency contribution of each pipeline stage (log scale). Explanation generation dominates the per-flow budget when SHAP is invoked, motivating the alert-gated invocation policy of Algorithm~\ref {alg:xaisdn}}{figure.4}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {5}{\ignorespaces Pipeline latency and throughput breakdown.}}{6}{table.5}\protected@file@percent }
+\newlabel{tab:latency}{{5}{6}{Pipeline latency and throughput breakdown}{table.5}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {5}{\ignorespaces Latency contribution of each pipeline stage (log scale). Explanation generation dominates the per-flow budget when SHAP is invoked, motivating the alert-gated invocation policy of Algorithm~\ref {alg:xaisdn}.}}{6}{figure.5}\protected@file@percent }
+\newlabel{fig:latency}{{5}{6}{Latency contribution of each pipeline stage (log scale). Explanation generation dominates the per-flow budget when SHAP is invoked, motivating the alert-gated invocation policy of Algorithm~\ref {alg:xaisdn}}{figure.5}{}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {7.3}Latency and throughput}{6}{subsection.7.3}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {7.4}SHAP feature attribution}{6}{subsection.7.4}\protected@file@percent }
-\@writefile{lof}{\contentsline {figure}{\numberline {5}{\ignorespaces Global SHAP feature importance for XAI-SDN (2,000 sampled test flows; twelve leading features). $H_{\mathrm  {ttl}}$ is excluded as a degenerate constant in the offline SYN partition ($H_{\mathrm  {ttl}}=0.0$ throughout). Six entropy features appear among the top twelve, validating the entropy augmentation strategy.}}{7}{figure.5}\protected@file@percent }
-\newlabel{fig:shap}{{5}{7}{Global SHAP feature importance for XAI-SDN (2,000 sampled test flows; twelve leading features). $H_{\mathrm {ttl}}$ is excluded as a degenerate constant in the offline SYN partition ($H_{\mathrm {ttl}}=0.0$ throughout). Six entropy features appear among the top twelve, validating the entropy augmentation strategy}{figure.5}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {6}{\ignorespaces ROC curves for XAI-SDN and baselines on the binary DDoS detection task. XAI-SDN achieves AUC = 1.0000 with TPR = 99.99\% at FPR = 0.054\%.}}{7}{figure.6}\protected@file@percent }
-\newlabel{fig:roc}{{6}{7}{ROC curves for XAI-SDN and baselines on the binary DDoS detection task. XAI-SDN achieves AUC = 1.0000 with TPR = 99.99\% at FPR = 0.054\%}{figure.6}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {6}{\ignorespaces Global SHAP feature importance for XAI-SDN (2,000 sampled test flows; twelve leading features). $H_{\mathrm  {ttl}}$ is excluded as a degenerate constant in the offline SYN partition ($H_{\mathrm  {ttl}}=0.0$ throughout). Six entropy features appear among the top twelve, validating the entropy augmentation strategy.}}{7}{figure.6}\protected@file@percent }
+\newlabel{fig:shap}{{6}{7}{Global SHAP feature importance for XAI-SDN (2,000 sampled test flows; twelve leading features). $H_{\mathrm {ttl}}$ is excluded as a degenerate constant in the offline SYN partition ($H_{\mathrm {ttl}}=0.0$ throughout). Six entropy features appear among the top twelve, validating the entropy augmentation strategy}{figure.6}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {7}{\ignorespaces ROC curves for XAI-SDN and baselines on the binary DDoS detection task. XAI-SDN achieves AUC = 1.0000 with TPR = 99.99\% at FPR = 0.054\%.}}{7}{figure.7}\protected@file@percent }
+\newlabel{fig:roc}{{7}{7}{ROC curves for XAI-SDN and baselines on the binary DDoS detection task. XAI-SDN achieves AUC = 1.0000 with TPR = 99.99\% at FPR = 0.054\%}{figure.7}{}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {7.5}ROC analysis}{7}{subsection.7.5}\protected@file@percent }
-\@writefile{lof}{\contentsline {figure}{\numberline {7}{\ignorespaces SHAP fidelity deletion curve (C1). Model agreement (\% of test samples where the masked model matches the full model) under SHAP-guided feature masking (blue) vs.\ random masking (grey). At $k=5$ the SHAP gap is $-31.3$ percentage points, confirming that SHAP attributions identify genuinely influential features rather than surface correlates.}}{7}{figure.7}\protected@file@percent }
-\newlabel{fig:deletion}{{7}{7}{SHAP fidelity deletion curve (C1). Model agreement (\% of test samples where the masked model matches the full model) under SHAP-guided feature masking (blue) vs.\ random masking (grey). At $k=5$ the SHAP gap is $-31.3$ percentage points, confirming that SHAP attributions identify genuinely influential features rather than surface correlates}{figure.7}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {8}{\ignorespaces Precision-Recall (PR) curves on the binary detection task. Given the extreme class imbalance (0.86\% benign), PR curves provide a more honest assessment of false alarm rates than ROC curves. XAI-SDN maintains perfect precision even at maximum recall.}}{7}{figure.8}\protected@file@percent }
+\newlabel{fig:pr}{{8}{7}{Precision-Recall (PR) curves on the binary detection task. Given the extreme class imbalance (0.86\% benign), PR curves provide a more honest assessment of false alarm rates than ROC curves. XAI-SDN maintains perfect precision even at maximum recall}{figure.8}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {9}{\ignorespaces SHAP fidelity deletion curve (C1). Model agreement (\% of test samples where the masked model matches the full model) under SHAP-guided feature masking (blue) vs.\ random masking (grey). At $k=5$ the SHAP gap is $-31.3$ percentage points, confirming that SHAP attributions identify genuinely influential features rather than surface correlates.}}{7}{figure.9}\protected@file@percent }
+\newlabel{fig:deletion}{{9}{7}{SHAP fidelity deletion curve (C1). Model agreement (\% of test samples where the masked model matches the full model) under SHAP-guided feature masking (blue) vs.\ random masking (grey). At $k=5$ the SHAP gap is $-31.3$ percentage points, confirming that SHAP attributions identify genuinely influential features rather than surface correlates}{figure.9}{}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {7.6}SHAP explanation quality (RQ3)}{7}{subsection.7.6}\protected@file@percent }
 \newlabel{sec:shap_quality}{{7.6}{7}{SHAP explanation quality (RQ3)}{subsection.7.6}{}}
-\@writefile{toc}{\contentsline {section}{\numberline {8}Ablation and comparative analysis}{7}{section.8}\protected@file@percent }
-\newlabel{sec:comparative}{{8}{7}{Ablation and comparative analysis}{section.8}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {8.1}Multi-vector generalization (RQ2)}{7}{subsection.8.1}\protected@file@percent }
-\newlabel{sec:multipartition}{{8.1}{7}{Multi-vector generalization (RQ2)}{subsection.8.1}{}}
 \citation{elsayed2020insdn}
 \citation{elsayed2020insdn}
 \citation{elsayed2020insdn}
 \citation{cortes1995svm}
 \citation{chen2016xgboost}
-\@writefile{lot}{\contentsline {table}{\numberline {7}{\ignorespaces Per-partition evaluation across five CIC-DDoS2019 attack vectors (XAI-SDN RF-88). Entropy features ranked in top-5 SHAP for every partition.}}{8}{table.7}\protected@file@percent }
-\newlabel{tab:partition}{{7}{8}{Per-partition evaluation across five CIC-DDoS2019 attack vectors (XAI-SDN RF-88). Entropy features ranked in top-5 SHAP for every partition}{table.7}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {8}{\ignorespaces Cross-partition macro-F1 heatmap ($5\times 5$, train partition $\times $ test partition). Every off-diagonal cell represents zero-shot transfer performance. XAI-SDN achieves $\geq 1.000$ F1 in all 25 cells, confirming attack-agnostic generalization across the five CIC-DDoS2019 attack vectors.}}{8}{figure.8}\protected@file@percent }
-\newlabel{fig:heatmap}{{8}{8}{Cross-partition macro-F1 heatmap ($5\times 5$, train partition $\times $ test partition). Every off-diagonal cell represents zero-shot transfer performance. XAI-SDN achieves $\geq 1.000$ F1 in all 25 cells, confirming attack-agnostic generalization across the five CIC-DDoS2019 attack vectors}{figure.8}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {6}{\ignorespaces Per-partition evaluation across five CIC-DDoS2019 attack vectors (XAI-SDN RF-88). Entropy features ranked in top-5 SHAP for every partition.}}{8}{table.6}\protected@file@percent }
+\newlabel{tab:partition}{{6}{8}{Per-partition evaluation across five CIC-DDoS2019 attack vectors (XAI-SDN RF-88). Entropy features ranked in top-5 SHAP for every partition}{table.6}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {10}{\ignorespaces Cross-partition macro-F1 heatmap ($5\times 5$, train partition $\times $ test partition). Every off-diagonal cell represents zero-shot transfer performance. XAI-SDN achieves $\geq 1.000$ F1 in all 25 cells, confirming attack-agnostic generalization across the five CIC-DDoS2019 attack vectors.}}{8}{figure.10}\protected@file@percent }
+\newlabel{fig:heatmap}{{10}{8}{Cross-partition macro-F1 heatmap ($5\times 5$, train partition $\times $ test partition). Every off-diagonal cell represents zero-shot transfer performance. XAI-SDN achieves $\geq 1.000$ F1 in all 25 cells, confirming attack-agnostic generalization across the five CIC-DDoS2019 attack vectors}{figure.10}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {8}Ablation and comparative analysis}{8}{section.8}\protected@file@percent }
+\newlabel{sec:comparative}{{8}{8}{Ablation and comparative analysis}{section.8}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {8.1}Multi-vector generalization (RQ2)}{8}{subsection.8.1}\protected@file@percent }
+\newlabel{sec:multipartition}{{8.1}{8}{Multi-vector generalization (RQ2)}{subsection.8.1}{}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {8.2}Feature ablation across seeds (RQ1)}{8}{subsection.8.2}\protected@file@percent }
 \newlabel{sec:ablation}{{8.2}{8}{Feature ablation across seeds (RQ1)}{subsection.8.2}{}}
-\@writefile{lot}{\contentsline {table}{\numberline {8}{\ignorespaces Feature ablation over ten seeds \{42, 123, 456, 789, 1024, 2048, 31337, 555, 777, 999\} (controlled protocol, mean $\pm $ sample std). Wilcoxon signed-rank test: vs.\ SVM $p=0.0020^{*}$.}}{8}{table.8}\protected@file@percent }
-\newlabel{tab:ablation}{{8}{8}{Feature ablation over ten seeds \{42, 123, 456, 789, 1024, 2048, 31337, 555, 777, 999\} (controlled protocol, mean $\pm $ sample std). Wilcoxon signed-rank test: vs.\ SVM $p=0.0020^{*}$}{table.8}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {9}{\ignorespaces Feature ablation over the five archived seeds (mean $\pm $ std). Neither feature family alone matches the full 88-dimensional configuration, and the RF outperforms an SVM given identical features.}}{8}{figure.9}\protected@file@percent }
-\newlabel{fig:ablation}{{9}{8}{Feature ablation over the five archived seeds (mean $\pm $ std). Neither feature family alone matches the full 88-dimensional configuration, and the RF outperforms an SVM given identical features}{figure.9}{}}
-\@writefile{lot}{\contentsline {table}{\numberline {9}{\ignorespaces External validity: XAI-SDN cross-dataset transfer to InSDN~\cite  {elsayed2020insdn}. Three training scenarios evaluated on InSDN holdout test set.}}{8}{table.9}\protected@file@percent }
-\newlabel{tab:insdn}{{9}{8}{External validity: XAI-SDN cross-dataset transfer to InSDN~\cite {elsayed2020insdn}. Three training scenarios evaluated on InSDN holdout test set}{table.9}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {7}{\ignorespaces Feature ablation over ten seeds \{42, 123, 456, 789, 1024, 2048, 31337, 555, 777, 999\} (controlled protocol, mean $\pm $ sample std). Wilcoxon signed-rank test: vs.\ SVM $p=0.0020^{*}$.}}{8}{table.7}\protected@file@percent }
+\newlabel{tab:ablation}{{7}{8}{Feature ablation over ten seeds \{42, 123, 456, 789, 1024, 2048, 31337, 555, 777, 999\} (controlled protocol, mean $\pm $ sample std). Wilcoxon signed-rank test: vs.\ SVM $p=0.0020^{*}$}{table.7}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {11}{\ignorespaces Feature ablation over the five archived seeds (mean $\pm $ std). Neither feature family alone matches the full 88-dimensional configuration, and the RF outperforms an SVM given identical features.}}{8}{figure.11}\protected@file@percent }
+\newlabel{fig:ablation}{{11}{8}{Feature ablation over the five archived seeds (mean $\pm $ std). Neither feature family alone matches the full 88-dimensional configuration, and the RF outperforms an SVM given identical features}{figure.11}{}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {8.3}External validity: transfer to InSDN (RQ2 extended)}{8}{subsection.8.3}\protected@file@percent }
 \newlabel{sec:insdn}{{8.3}{8}{External validity: transfer to InSDN (RQ2 extended)}{subsection.8.3}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {8.4}Baseline comparison}{8}{subsection.8.4}\protected@file@percent }
 \citation{elsayed2020insdn}
 \citation{elsayed2020insdn}
-\@writefile{lof}{\contentsline {figure}{\numberline {10}{\ignorespaces Macro F1 versus throughput under the controlled protocol. XAI-SDN occupies the operating region combining near-best F1 with practical throughput, and is the only marker backed by per-prediction explanations.}}{9}{figure.10}\protected@file@percent }
-\newlabel{fig:tradeoff}{{10}{9}{Macro F1 versus throughput under the controlled protocol. XAI-SDN occupies the operating region combining near-best F1 with practical throughput, and is the only marker backed by per-prediction explanations}{figure.10}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {8}{\ignorespaces External validity: XAI-SDN cross-dataset transfer to InSDN~\cite  {elsayed2020insdn}. Three training scenarios evaluated on InSDN holdout test set.}}{9}{table.8}\protected@file@percent }
+\newlabel{tab:insdn}{{8}{9}{External validity: XAI-SDN cross-dataset transfer to InSDN~\cite {elsayed2020insdn}. Three training scenarios evaluated on InSDN holdout test set}{table.8}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {12}{\ignorespaces Macro F1 versus throughput under the controlled protocol. XAI-SDN occupies the operating region combining near-best F1 with practical throughput, and is the only marker backed by per-prediction explanations.}}{9}{figure.12}\protected@file@percent }
+\newlabel{fig:tradeoff}{{12}{9}{Macro F1 versus throughput under the controlled protocol. XAI-SDN occupies the operating region combining near-best F1 with practical throughput, and is the only marker backed by per-prediction explanations}{figure.12}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {8.4}Baseline comparison}{9}{subsection.8.4}\protected@file@percent }
 \@writefile{toc}{\contentsline {section}{\numberline {9}Discussion}{9}{section.9}\protected@file@percent }
 \newlabel{sec:discussion}{{9}{9}{Discussion}{section.9}{}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {9.1}Deployment considerations}{9}{subsection.9.1}\protected@file@percent }
@@ -165,10 +167,10 @@
 \bibcite{nychis2008entropy}{{9}{}{{}}{{}}}
 \bibcite{lakhina2005mining}{{10}{}{{}}{{}}}
 \bibcite{bhuyan2014network}{{11}{}{{}}{{}}}
+\@writefile{lot}{\contentsline {table}{\numberline {9}{\ignorespaces Comparative performance under the controlled protocol (10K training / 3K test samples, seed = 42). Training time is measured on the same hardware; the DNN is trained on GPU.}}{10}{table.9}\protected@file@percent }
+\newlabel{tab:comparison}{{9}{10}{Comparative performance under the controlled protocol (10K training / 3K test samples, seed = 42). Training time is measured on the same hardware; the DNN is trained on GPU}{table.9}{}}
 \bibcite{lall2006entropy}{{12}{}{{}}{{}}}
 \bibcite{braga2010lightweight}{{13}{}{{}}{{}}}
-\@writefile{lot}{\contentsline {table}{\numberline {10}{\ignorespaces Comparative performance under the controlled protocol (10K training / 3K test samples, seed = 42). Training time is measured on the same hardware; the DNN is trained on GPU.}}{10}{table.10}\protected@file@percent }
-\newlabel{tab:comparison}{{10}{10}{Comparative performance under the controlled protocol (10K training / 3K test samples, seed = 42). Training time is measured on the same hardware; the DNN is trained on GPU}{table.10}{}}
 \bibcite{tang2016deep}{{14}{}{{}}{{}}}
 \bibcite{niyaz2017deep}{{15}{}{{}}{{}}}
 \bibcite{sharafaldin2018cicids}{{16}{}{{}}{{}}}
@@ -189,4 +191,4 @@
 \bibcite{shannon1948mathematical}{{31}{}{{}}{{}}}
 \bibcite{cortes1995svm}{{32}{}{{}}{{}}}
 \providecommand\NAT@force@numbers{}\NAT@force@numbers
-\gdef \@abspage@last{11}
+\gdef \@abspage@last{12}
