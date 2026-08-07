@@ -62,7 +62,12 @@ def run_ablation(
     logger.info("XAI-SDN Ablation Study")
     logger.info("=" * 60)
 
-    seed_list = [int(s.strip()) for s in seeds.split(",")]
+    base_seed_list = [int(s.strip()) for s in seeds.split(",")]
+    seed_list = []
+    for s in base_seed_list:
+        for i in range(10):
+            seed_list.append(s + i)
+            
     configs = [
         {"name": "RF + CIC-only (80-dim)", "features": "cic_only", "model": "RF"},
         {"name": "RF + Entropy-only (8-dim)", "features": "entropy_only", "model": "RF"},
