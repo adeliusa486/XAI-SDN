@@ -151,7 +151,54 @@ XAI-SDN is built on three design principles: (\emph{i}) computational efficiency
 
 \begin{figure*}[t]
 \centering
-\includegraphics[width=\textwidth]{figures/architecture}
+\begin{tikzpicture}[
+    node distance=1.5cm,
+    font=\sffamily\small,
+    thick,
+    block/.style={rectangle, draw, fill=white, minimum width=3.5cm, minimum height=1.2cm, align=center, rounded corners=2pt, inner sep=5pt},
+    layer/.style={rectangle, draw, fill=gray!5, inner sep=15pt, rounded corners=4pt},
+    arrow/.style={-{Stealth[scale=1.2]}, line width=1.2pt, draw=xsdngray},
+    dashed_arrow/.style={dashed, -{Stealth[scale=1.2]}, line width=1.2pt, draw=xsdnred}
+]
+
+% Data Plane Layer
+\node[block, fill=cmlow, draw=xsdnblue] (sw1) {OpenFlow Switch};
+\node[block, fill=cmlow, draw=xsdnblue, right=of sw1] (sw2) {OpenFlow Switch};
+\node[block, fill=cmlow, draw=xsdnblue, right=of sw2] (sw3) {OpenFlow Switch};
+
+% Group Data Plane
+\begin{scope}[on background layer]
+    \node[layer, draw=xsdnblue, fit=(sw1) (sw2) (sw3)] (dataplane) {};
+    \node[above right] at (dataplane.south west) {\textbf{Data Plane}};
+\end{scope}
+
+% Southbound API
+\node[above=2cm of sw2, font=\sffamily\bfseries\color{xsdngray}] (southbound) {Southbound API (OpenFlow)};
+
+% Control Plane Components
+\node[block, fill=white, draw=xsdnteal, above=2cm of southbound] (rf) {Random Forest\\Classifier};
+\node[block, fill=white, draw=xsdngreen, left=of rf] (features) {$\mathcal{O}(1)$ Entropy \&\\Feature Augmentation};
+\node[block, fill=white, draw=xsdnorange, right=of rf] (shap) {SHAP\\TreeExplainer};
+
+\node[block, fill=white, draw=xsdnred, above=of rf] (dash) {Security Dashboard\\\& Mitigation Engine};
+
+% Group Control Plane
+\begin{scope}[on background layer]
+    \node[layer, draw=xsdnteal, fit=(features) (rf) (shap) (dash)] (controlplane) {};
+    \node[above right] at (controlplane.south west) {\textbf{SDN Control Plane}};
+\end{scope}
+
+% Arrows
+\draw[arrow] (dataplane.north) -- node[left] {Flow Statistics} (features.south);
+\draw[arrow] (features) -- node[above] {$\mathbf{x} \in \mathbb{R}^{88}$} (rf);
+\draw[arrow] (rf) -- node[above] {Alerts} (shap);
+\draw[arrow] (shap) -- node[right] {Attributions $\boldsymbol{\phi}$} (dash.east -| shap.north);
+\draw[arrow] (rf) -- node[left] {Predictions $\hat{y}$} (dash);
+
+% Mitigation Feedback
+\draw[dashed_arrow] (dash.west) -| node[left, yshift=-1cm, text=xsdnred] {Drop Rules} (dataplane.north -| features.south);
+
+\end{tikzpicture}
 \caption{XAI-SDN system architecture. OpenFlow switches export flow statistics to the controller-embedded XAI-SDN module, which performs $\mathcal{O}(1)$ entropy-augmented feature extraction, Random Forest classification, and SHAP-based explanation generation. Detected DDoS events trigger alerts and policy updates; the dashed arrow represents the southbound policy-enforcement feedback loop.}
 \label{fig:architecture}
 \end{figure*}
