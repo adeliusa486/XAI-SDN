@@ -10,8 +10,7 @@
   <a href="LICENSE"><img src="https://img.shields.io/badge/License-MIT-yellow.svg" alt="License: MIT"></a>
   <a href="https://www.unb.ca/cic/datasets/ddos-2019.html"><img src="https://img.shields.io/badge/dataset-CIC--DDoS2019-orange.svg" alt="Dataset: CIC-DDoS2019"></a>
   <a href="https://github.com/psf/black"><img src="https://img.shields.io/badge/code%20style-black-000000.svg" alt="Code style: black"></a>
-  <a href="#"><img src="https://img.shields.io/badge/Paper-Coming%20Soon-brightgreen.svg" alt="Paper Status"></a>
-</p>
+ 
 
 This repository contains the official codebase for **XAI-SDN**, an end-to-end explainable machine learning framework for real-time Distributed Denial of Service (DDoS) detection in Software Defined Networks (SDN). 
 
