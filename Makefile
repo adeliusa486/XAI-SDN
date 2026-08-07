@@ -1,174 +1,81 @@
-# XAI-SDN Makefile
-# Usage: make help
+# XAI-SDN — Reproducibility Makefile
+# Run `make reproduce` to regenerate all paper artifacts from scratch.
+# Run `make paper`     to compile the LaTeX PDF only.
+# Run `make clean`     to remove generated artifacts.
 
-.PHONY: help install install-dev test test-cov lint format type-check \
-        train train-synthetic evaluate baselines ablation smoke-test \
-        api dashboard docker-build docker-up docker-down clean
+PYTHON    := python
+PAPER_DIR := paper
+ARTIFACTS := model/artifacts
 
-PYTHON   := python
-PYTEST   := pytest
-UVICORN  := uvicorn
-BLACK    := black
-ISORT    := isort
-FLAKE8   := flake8
-MYPY     := mypy
+.PHONY: all reproduce synthetic-experiments paper clean help
 
-SRC_DIRS := features model explainability api sdn
-TEST_DIR := tests
+# ─── Default target ───────────────────────────────────────────────────────────
+all: help
 
-## ─── Help ─────────────────────────────────────────────────────────────────────
+help:
+	@echo ""
+	@echo "  XAI-SDN Reproducibility Makefile"
+	@echo "  ─────────────────────────────────"
+	@echo "  make reproduce    Re-run ALL experiments + compile PDF"
+	@echo "  make synthetic    Run experiments on synthetic data only"
+	@echo "  make paper        Compile LaTeX PDF only"
+	@echo "  make clean        Remove generated artifact files"
+	@echo ""
 
-help:  ## Show this help
-	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) \
-		| awk 'BEGIN {FS = ":.*?## "}; {printf "  \033[36m%-22s\033[0m %s\n", $$1, $$2}'
+# ─── Full reproduce (requires real CIC-DDoS2019 data in data/raw/) ───────────
+reproduce: check-data
+	@echo "[1/5] Generating ROC/PR curves..."
+	$(PYTHON) scripts/generate_roc_pr.py
+	@echo "[2/5] Running 10-seed Wilcoxon ablation..."
+	$(PYTHON) scripts/run_10seed_wilcoxon.py
+	@echo "[3/5] Running multi-partition evaluation..."
+	$(PYTHON) scripts/run_multipartition.py
+	@echo "[4/5] Running cross-partition generalization matrix..."
+	$(PYTHON) scripts/run_cross_partition.py
+	@echo "[5/5] Running XAI quality evaluation..."
+	$(PYTHON) explainability/evaluate_xai_quality.py
+	@echo ""
+	@echo "All artifacts generated. Compiling PDF..."
+	$(MAKE) paper
 
-## ─── Installation ─────────────────────────────────────────────────────────────
+check-data:
+	@if [ ! -d "data/raw" ]; then \
+		echo "ERROR: data/raw/ not found."; \
+		echo "Download CIC-DDoS2019 from https://www.unb.ca/cic/datasets/ddos-2019.html"; \
+		echo "and place CSV files in data/raw/."; \
+		echo ""; \
+		echo "To run with synthetic data only: make synthetic"; \
+		exit 1; \
+	fi
 
-install:  ## Install runtime dependencies
-	pip install -r requirements.txt
+# ─── Synthetic-only run (no real data needed) ─────────────────────────────────
+synthetic:
+	@echo "[1/5] Generating ROC/PR curves (synthetic)..."
+	$(PYTHON) scripts/generate_roc_pr.py --use-synthetic
+	@echo "[2/5] Running 10-seed Wilcoxon ablation (synthetic)..."
+	$(PYTHON) scripts/run_10seed_wilcoxon.py --use-synthetic --max-samples 8000
+	@echo "[3/5] Running multi-partition evaluation (synthetic)..."
+	$(PYTHON) scripts/run_multipartition.py --use-synthetic
+	@echo "[4/5] Running cross-partition matrix (synthetic)..."
+	$(PYTHON) scripts/run_cross_partition.py --use-synthetic
+	@echo "[5/5] Running XAI quality evaluation (synthetic)..."
+	$(PYTHON) explainability/evaluate_xai_quality.py --use-synthetic --n-explain 300
+	@echo "[6/6] Running InSDN cross-dataset transfer (synthetic)..."
+	$(PYTHON) scripts/run_insdn_transfer.py --use-synthetic --n-samples 10000
+	@echo ""
+	@echo "All synthetic artifacts generated in $(ARTIFACTS)/"
 
-install-dev:  ## Install all dependencies including dev/test tools
-	pip install -r requirements.txt
-	pip install pre-commit
-	pre-commit install
+# ─── PDF compilation ──────────────────────────────────────────────────────────
+paper:
+	@echo "Compiling LaTeX paper..."
+	cd $(PAPER_DIR) && pdflatex -interaction=nonstopmode XAI-SDN-journal.tex
+	cd $(PAPER_DIR) && bibtex XAI-SDN-journal
+	cd $(PAPER_DIR) && pdflatex -interaction=nonstopmode XAI-SDN-journal.tex
+	cd $(PAPER_DIR) && pdflatex -interaction=nonstopmode XAI-SDN-journal.tex
+	@echo "PDF ready: $(PAPER_DIR)/XAI-SDN-journal.pdf"
 
-## ─── Testing ──────────────────────────────────────────────────────────────────
-
-test:  ## Run full test suite
-	$(PYTEST) $(TEST_DIR) -v --tb=short
-
-test-cov:  ## Run tests with coverage report
-	$(PYTEST) $(TEST_DIR) -v --cov=$(shell echo $(SRC_DIRS) | tr ' ' ',') \
-		--cov-report=term-missing --cov-report=html --tb=short
-
-test-entropy:  ## Run entropy-specific tests
-	$(PYTEST) $(TEST_DIR)/test_entropy.py -v
-
-test-model:  ## Run model-specific tests
-	$(PYTEST) $(TEST_DIR)/test_model.py -v
-
-test-api:  ## Run API tests
-	$(PYTEST) $(TEST_DIR)/test_api.py -v --asyncio-mode=auto
-
-smoke-test:  ## Run smoke test suite (no API server needed)
-	$(PYTHON) scripts/smoke_test.py --skip-api
-
-smoke-test-full:  ## Run full smoke test suite (starts API)
-	$(PYTHON) scripts/smoke_test.py
-
-## ─── Code Quality ─────────────────────────────────────────────────────────────
-
-lint:  ## Lint with flake8
-	$(FLAKE8) $(SRC_DIRS) --max-line-length=100 --ignore=E501,W503
-
-format:  ## Format with black + isort
-	$(BLACK) $(SRC_DIRS) $(TEST_DIR) scripts --line-length=100
-	$(ISORT) $(SRC_DIRS) $(TEST_DIR) scripts --profile=black
-
-format-check:  ## Check formatting without applying
-	$(BLACK) --check $(SRC_DIRS) --line-length=100
-	$(ISORT) --check $(SRC_DIRS) --profile=black
-
-type-check:  ## Type check with mypy
-	$(MYPY) $(SRC_DIRS) --ignore-missing-imports
-
-## ─── ML Pipeline ──────────────────────────────────────────────────────────────
-
-generate-data:  ## Generate synthetic dataset
-	$(PYTHON) scripts/generate_synthetic_data.py
-
-train:  ## Train RF model (requires real data in data/raw/)
-	$(PYTHON) model/train.py --config configs/model_config.yaml
-
-train-synthetic:  ## Train RF model on synthetic data (no dataset needed)
-	$(PYTHON) model/train.py --config configs/model_config.yaml --use-synthetic
-
-evaluate:  ## Evaluate trained model
-	$(PYTHON) model/evaluate.py --artifacts-dir model/artifacts --use-synthetic
-
-evaluate-from-split:  ## Evaluate using saved test split (requires prior train run)
-	$(PYTHON) model/evaluate.py \
-		--artifacts-dir model/artifacts \
-		--output-dir model/artifacts
-
-evaluate-real:  ## Evaluate on real CIC-DDoS2019 data
-	$(PYTHON) model/evaluate.py \
-		--artifacts-dir model/artifacts \
-		--data-dir data/raw \
-		--run-shap \
-		--output-dir model/artifacts
-
-shap-global:  ## Compute global SHAP importance (requires trained model + X_test.npy)
-	$(PYTHON) explainability/global_importance.py \
-		--artifacts-dir model/artifacts \
-		--output-dir model/artifacts/shap \
-		--max-samples 2000
-
-shap-global-real:  ## Compute global SHAP on real data
-	$(PYTHON) explainability/global_importance.py \
-		--artifacts-dir model/artifacts \
-		--data-dir data/raw \
-		--output-dir model/artifacts/shap \
-		--max-samples 2000
-
-baselines:  ## Run baseline comparison
-	$(PYTHON) model/baselines.py --use-synthetic
-
-ablation:  ## Run ablation study
-	$(PYTHON) model/ablation.py --use-synthetic
-
-mlflow-ui:  ## Start MLflow UI for experiment tracking
-	mlflow ui --backend-store-uri mlruns --port 5000
-
-## ─── Services ─────────────────────────────────────────────────────────────────
-
-api:  ## Start FastAPI development server
-	$(UVICORN) api.main:app --host 0.0.0.0 --port 8000 --reload
-
-dashboard:  ## Start Streamlit dashboard
-	streamlit run dashboard/app.py --server.address 0.0.0.0 --server.port 8501
-
-## ─── Docker ───────────────────────────────────────────────────────────────────
-
-docker-build:  ## Build Docker images
-	docker compose build
-
-docker-up:  ## Start all services
-	docker compose up -d
-	@echo "Services started:"
-	@echo "  API:       http://localhost:8000/docs"
-	@echo "  Dashboard: http://localhost:8501"
-	@echo "  Prometheus:http://localhost:9090"
-	@echo "  Grafana:   http://localhost:3000"
-
-docker-down:  ## Stop all services
-	docker compose down
-
-docker-logs:  ## Tail all service logs
-	docker compose logs -f
-
-docker-train:  ## Run training job in Docker
-	docker compose --profile train run --rm trainer
-
-## ─── Setup ────────────────────────────────────────────────────────────────────
-
-setup:  ## Full development setup
-	cp -n .env.example .env || true
-	mkdir -p data/raw data/processed data/synthetic data/splits model/artifacts logs
-	$(PYTHON) scripts/generate_synthetic_data.py
-	$(PYTHON) model/train.py --use-synthetic
-	@echo "\nSetup complete. Run 'make api' to start the API server."
-
-## ─── Cleanup ──────────────────────────────────────────────────────────────────
-
-clean:  ## Remove build artifacts and caches
-	find . -type f -name "*.pyc" -delete
-	find . -type d -name "__pycache__" -exec rm -rf {} + 2>/dev/null || true
-	find . -type d -name ".pytest_cache" -exec rm -rf {} + 2>/dev/null || true
-	rm -rf htmlcov .coverage .mypy_cache dist build *.egg-info
-
-clean-data:  ## Remove generated data (keeps raw data)
-	rm -rf data/synthetic data/processed data/splits
-
-clean-model:  ## Remove trained model artifacts
-	rm -rf model/artifacts/*.pkl model/artifacts/*.json model/artifacts/*.csv
+# ─── Clean ────────────────────────────────────────────────────────────────────
+clean:
+	rm -f $(PAPER_DIR)/*.aux $(PAPER_DIR)/*.bbl $(PAPER_DIR)/*.blg \
+	       $(PAPER_DIR)/*.log $(PAPER_DIR)/*.out $(PAPER_DIR)/*.synctex.gz
+	@echo "LaTeX build files removed. Artifacts in $(ARTIFACTS)/ preserved."
