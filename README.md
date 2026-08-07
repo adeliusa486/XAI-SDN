@@ -5,7 +5,6 @@
 <h1 align="center">XAI-SDN: Explainable Entropy-Guided Machine Learning for Real-Time DDoS Detection</h1>
 
 <p align="center">
-  <a href="https://github.com/adeliusa486/XAI-SDN/actions"><img src="https://github.com/adeliusa486/XAI-SDN/actions/workflows/ci.yml/badge.svg" alt="CI"></a>
   <a href="https://www.python.org/downloads/"><img src="https://img.shields.io/badge/python-3.10+-blue.svg" alt="Python 3.10+"></a>
   <a href="LICENSE"><img src="https://img.shields.io/badge/License-MIT-yellow.svg" alt="License: MIT"></a>
   <a href="https://www.unb.ca/cic/datasets/ddos-2019.html"><img src="https://img.shields.io/badge/dataset-CIC--DDoS2019-orange.svg" alt="Dataset: CIC-DDoS2019"></a>
@@ -24,6 +23,10 @@ By combining an $\mathcal{O}(1)$ Shannon entropy feature augmentation technique 
 1. **$\mathcal{O}(1)$ Rolling Entropy Engine:** Recalculating Shannon entropy over a sliding window of $N=1,000$ normally requires $\mathcal{O}(N)$ time. XAI-SDN implements a circular buffer and stateful hash-map to update entropy in strict $\mathcal{O}(1)$ time, yielding an extraction latency of **0.0150 ms/flow**.
 2. **Explainable by Design:** Every single detected DDoS alert is attributed in real-time using TreeSHAP, providing precise features (e.g., *Source IP Entropy*, *Destination Port*) that triggered the classification.
 3. **High Throughput Evaluation:** Reaches **599,052 flows/second** without explanations, and gracefully degrades to 1,953 flows/second when full SHAP attributions are extracted for active alerts.
+
+<p align="center">
+  <img src="assets/fig8.png" width="600" alt="Accuracy vs Throughput Tradeoff">
+</p>
 
 ---
 
@@ -100,21 +103,6 @@ XAI-SDN/
 ```
 
 ---
-
-## Citation
-
-If you use XAI-SDN or the $\mathcal{O}(1)$ rolling entropy engine in your research, please cite our forthcoming paper:
-
-```bibtex
-@article{xaisdn2026,
-  author    = {adeliusa486},
-  title     = {XAI-SDN: Explainable Entropy-Guided Machine Learning for Real-Time DDoS Detection in Software Defined Networks},
-  year      = {2026},
-  journal   = {Under Review},
-  note      = {Open-source implementation. Evaluated on CIC-DDoS2019 dataset.},
-  url       = {https://github.com/adeliusa486/XAI-SDN}
-}
-```
 
 ## License
 
