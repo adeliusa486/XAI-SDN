@@ -1,0 +1,233 @@
+\begin{thebibliography}{10}
+\expandafter\ifx\csname url\endcsname\relax
+  \def\url#1{\texttt{#1}}\fi
+\expandafter\ifx\csname urlprefix\endcsname\relax\def\urlprefix{URL }\fi
+\expandafter\ifx\csname href\endcsname\relax
+  \def\href#1#2{#2} \def\path#1{#1}\fi
+
+\bibitem{mckeown2008openflow}
+N.~McKeown, T.~Anderson, H.~Balakrishnan, G.~Parulkar, L.~Peterson, J.~Rexford,
+  S.~Shenker, J.~Turner, {OpenFlow}: Enabling innovation in campus networks,
+  ACM SIGCOMM Computer Communication Review 38~(2) (2008) 69--74.
+\newblock \href {https://doi.org/10.1145/1355734.1355746}
+  {\path{doi:10.1145/1355734.1355746}}.
+
+\bibitem{kreutz2015sdn}
+D.~Kreutz, F.~M.~V. Ramos, P.~E. Verissimo, C.~E. Rothenberg, S.~Azodolmolky,
+  S.~Uhlig, Software-defined networking: A comprehensive survey, Proceedings of
+  the {IEEE} 103~(1) (2015) 14--76.
+\newblock \href {https://doi.org/10.1109/JPROC.2014.2371999}
+  {\path{doi:10.1109/JPROC.2014.2371999}}.
+
+\bibitem{mirkovic2004taxonomy}
+J.~Mirkovic, P.~Reiher, A taxonomy of {DDoS} attack and {DDoS} defense
+  mechanisms, ACM SIGCOMM Computer Communication Review 34~(2) (2004) 39--53.
+\newblock \href {https://doi.org/10.1145/997150.997156}
+  {\path{doi:10.1145/997150.997156}}.
+
+\bibitem{sharafaldin2019ddos}
+I.~Sharafaldin, A.~H. Lashkari, S.~Hakak, A.~A. Ghorbani, Developing realistic
+  {Distributed Denial of Service} ({DDoS}) attack dataset and taxonomy, in:
+  2019 International Carnahan Conference on Security Technology (ICCST), IEEE,
+  2019, pp. 1--8.
+\newblock \href {https://doi.org/10.1109/CCST.2019.8888419}
+  {\path{doi:10.1109/CCST.2019.8888419}}.
+
+\bibitem{warnecke2020evaluating}
+A.~Warnecke, D.~Arp, C.~Wressnegger, K.~Rieck, Evaluating explanation methods
+  for deep learning in security, in: Proceedings of the 2020 {IEEE} European
+  Symposium on Security and Privacy ({EuroS\&P}), IEEE, 2020, pp. 158--174.
+\newblock \href {https://doi.org/10.1109/EuroSP48549.2020.00018}
+  {\path{doi:10.1109/EuroSP48549.2020.00018}}.
+
+\bibitem{arrieta2020xai}
+A.~B. Arrieta, N.~D{\'i}az-Rodr{\'i}guez, J.~Del~Ser, A.~Bennetot, S.~Tabik,
+  A.~Barbado, S.~Garc{\'i}a, S.~Gil-L{\'o}pez, D.~Molina, R.~Benjamins,
+  R.~Chatila, F.~Herrera, Explainable artificial intelligence ({XAI}):
+  Concepts, taxonomies, opportunities and challenges toward responsible {AI},
+  Information Fusion 58 (2020) 82--115.
+\newblock \href {https://doi.org/10.1016/j.inffus.2019.12.012}
+  {\path{doi:10.1016/j.inffus.2019.12.012}}.
+
+\bibitem{doshivelez2017rigorous}
+F.~Doshi-Velez, B.~Kim, Towards a rigorous science of interpretable machine
+  learning, arXiv preprint arXiv:1702.08608 (2017).
+\newblock \href {https://doi.org/10.48550/arXiv.1702.08608}
+  {\path{doi:10.48550/arXiv.1702.08608}}.
+
+\bibitem{mousavi2015early}
+S.~M. Mousavi, M.~St-Hilaire, Early detection of {DDoS} attacks against {SDN}
+  controllers, in: Proceedings of the 2015 International Conference on
+  Computing, Networking and Communications ({ICNC}), IEEE, 2015, pp. 77--81.
+\newblock \href {https://doi.org/10.1109/ICCNC.2015.7069319}
+  {\path{doi:10.1109/ICCNC.2015.7069319}}.
+
+\bibitem{nychis2008entropy}
+G.~Nychis, V.~Sekar, D.~G. Andersen, H.~Kim, H.~Zhang, An empirical evaluation
+  of entropy-based traffic anomaly detection, in: Proceedings of the 8th {ACM
+  SIGCOMM} Conference on Internet Measurement ({IMC} 2008), ACM, 2008, pp.
+  151--156.
+\newblock \href {https://doi.org/10.1145/1452520.1452539}
+  {\path{doi:10.1145/1452520.1452539}}.
+
+\bibitem{lakhina2005mining}
+A.~Lakhina, M.~Crovella, C.~Diot, Mining anomalies using traffic feature
+  distributions, in: Proceedings of the {ACM SIGCOMM} 2005 Conference, ACM,
+  2005, pp. 217--228.
+\newblock \href {https://doi.org/10.1145/1080091.1080118}
+  {\path{doi:10.1145/1080091.1080118}}.
+
+\bibitem{bhuyan2014network}
+M.~H. Bhuyan, D.~K. Bhattacharyya, J.~K. Kalita, Network anomaly detection:
+  Methods, systems and tools, IEEE Communications Surveys \& Tutorials 16~(1)
+  (2014) 303--336.
+\newblock \href {https://doi.org/10.1109/SURV.2013.052213.00046}
+  {\path{doi:10.1109/SURV.2013.052213.00046}}.
+
+\bibitem{lall2006entropy}
+A.~Lall, V.~Sekar, M.~Ogihara, J.~Xu, H.~Zhang, Data streaming algorithms for
+  estimating entropy of network traffic, in: Proceedings of the {ACM
+  SIGMETRICS} International Conference on Measurement and Modeling of Computer
+  Systems, ACM, 2006, pp. 145--156.
+\newblock \href {https://doi.org/10.1145/1140103.1140295}
+  {\path{doi:10.1145/1140103.1140295}}.
+
+\bibitem{braga2010lightweight}
+R.~Braga, E.~Mota, A.~Passito, Lightweight {DDoS} flooding attack detection
+  using {NOX}/{OpenFlow}, in: Proceedings of the 35th Annual {IEEE} Conference
+  on Local Computer Networks ({LCN}), IEEE, 2010, pp. 408--415.
+\newblock \href {https://doi.org/10.1109/LCN.2010.5735752}
+  {\path{doi:10.1109/LCN.2010.5735752}}.
+
+\bibitem{tang2016deep}
+T.~A. Tang, L.~Mhamdi, D.~McLernon, S.~A.~R. Zaidi, M.~Ghogho, Deep learning
+  approach for network intrusion detection in software defined networking, in:
+  Proceedings of the 2016 International Conference on Wireless Networks and
+  Mobile Communications ({WINCOM}), IEEE, 2016, pp. 258--263.
+\newblock \href {https://doi.org/10.1109/WINCOM.2016.7777224}
+  {\path{doi:10.1109/WINCOM.2016.7777224}}.
+
+\bibitem{niyaz2017deep}
+Q.~Niyaz, W.~Sun, A.~Y. Javaid, A deep learning based {DDoS} detection system
+  in software-defined networking ({SDN}), EAI Endorsed Transactions on Security
+  and Safety 4~(12) (2017).
+\newblock \href {https://doi.org/10.4108/eai.28-12-2017.153515}
+  {\path{doi:10.4108/eai.28-12-2017.153515}}.
+
+\bibitem{sharafaldin2018cicids}
+I.~Sharafaldin, A.~H. Lashkari, A.~A. Ghorbani, Toward generating a new
+  intrusion detection dataset and intrusion traffic characterization, in:
+  Proceedings of the 4th International Conference on Information Systems
+  Security and Privacy ({ICISSP}), SciTePress, 2018, pp. 108--116.
+\newblock \href {https://doi.org/10.5220/0006639801080116}
+  {\path{doi:10.5220/0006639801080116}}.
+
+\bibitem{elsayed2020insdn}
+M.~S. Elsayed, N.-A. Le-Khac, A.~D. Jurcut, {InSDN}: A novel {SDN} intrusion
+  dataset, IEEE Access 8 (2020) 165263--165284.
+\newblock \href {https://doi.org/10.1109/ACCESS.2020.3022633}
+  {\path{doi:10.1109/ACCESS.2020.3022633}}.
+
+\bibitem{breiman2001rf}
+L.~Breiman, Random forests, Machine Learning 45~(1) (2001) 5--32.
+\newblock \href {https://doi.org/10.1023/A:1010933404324}
+  {\path{doi:10.1023/A:1010933404324}}.
+
+\bibitem{chen2016xgboost}
+T.~Chen, C.~Guestrin, {XGBoost}: A scalable tree boosting system, in:
+  Proceedings of the 22nd {ACM SIGKDD} International Conference on Knowledge
+  Discovery and Data Mining, ACM, 2016, pp. 785--794.
+\newblock \href {https://doi.org/10.1145/2939672.2939785}
+  {\path{doi:10.1145/2939672.2939785}}.
+
+\bibitem{ring2019survey}
+M.~Ring, S.~Wunderlich, D.~Scheuring, D.~Landes, A.~Hotho, A survey of
+  network-based intrusion detection data sets, Computers \& Security 86 (2019)
+  147--167.
+\newblock \href {https://doi.org/10.1016/j.cose.2019.06.005}
+  {\path{doi:10.1016/j.cose.2019.06.005}}.
+
+\bibitem{sommer2010outside}
+R.~Sommer, V.~Paxson, Outside the closed world: On using machine learning for
+  network intrusion detection, in: Proceedings of the 2010 {IEEE} Symposium on
+  Security and Privacy, IEEE, 2010, pp. 305--316.
+\newblock \href {https://doi.org/10.1109/SP.2010.25}
+  {\path{doi:10.1109/SP.2010.25}}.
+
+\bibitem{arp2022dos}
+D.~Arp, E.~Quiring, F.~Pendlebury, A.~Warnecke, F.~Pierazzi, C.~Wressnegger,
+  L.~Cavallaro, K.~Rieck, Dos and don'ts of machine learning in computer
+  security, in: Proceedings of the 31st {USENIX} Security Symposium, USENIX
+  Association, 2022, pp. 3971--3988.
+
+\bibitem{guidotti2018survey}
+R.~Guidotti, A.~Monreale, S.~Ruggieri, F.~Turini, F.~Giannotti, D.~Pedreschi, A
+  survey of methods for explaining black box models, ACM Computing Surveys
+  51~(5) (2018) 93:1--93:42.
+\newblock \href {https://doi.org/10.1145/3236009} {\path{doi:10.1145/3236009}}.
+
+\bibitem{ribeiro2016lime}
+M.~T. Ribeiro, S.~Singh, C.~Guestrin, ``{Why} should {I} trust you?'':
+  {Explaining} the predictions of any classifier, in: Proceedings of the 22nd
+  {ACM SIGKDD} International Conference on Knowledge Discovery and Data Mining,
+  ACM, 2016, pp. 1135--1144.
+\newblock \href {https://doi.org/10.1145/2939672.2939778}
+  {\path{doi:10.1145/2939672.2939778}}.
+
+\bibitem{lundberg2017shap}
+S.~M. Lundberg, S.-I. Lee, \href{https://doi.org/10.48550/arXiv.1705.07874}{A
+  unified approach to interpreting model predictions}, in: Advances in Neural
+  Information Processing Systems, Vol.~30, 2017, pp. 4765--4774.
+\newline\urlprefix\url{https://doi.org/10.48550/arXiv.1705.07874}
+
+\bibitem{lundberg2020treeshap}
+S.~M. Lundberg, G.~Erion, H.~Chen, A.~DeGrave, J.~M. Prutkin, B.~Nair, R.~Katz,
+  J.~Himmelfarb, N.~Bansal, S.-I. Lee, From local explanations to global
+  understanding with explainable {AI} for trees, Nature Machine Intelligence
+  2~(1) (2020) 56--67.
+\newblock \href {https://doi.org/10.1038/s42256-019-0138-9}
+  {\path{doi:10.1038/s42256-019-0138-9}}.
+
+\bibitem{zebin2022shap}
+T.~Zebin, S.~Rezvy, Y.~Luo, An explainable {AI}-based intrusion detection
+  system using {SHAP} with random forest, Security and Communication Networks
+  2022 (2022) 1--12.
+\newblock \href {https://doi.org/10.1155/2022/4559024}
+  {\path{doi:10.1155/2022/4559024}}.
+
+\bibitem{islam2023xai_sdn}
+U.~Islam, A.~Muhammad, M.~Mansoor, H.~J. Alyamani, T.~H.~H. Aldhyani,
+  Explainability of {AI}-based {SDN} intrusion detection systems using {SHAP}
+  and {LIME}, Wireless Communications and Mobile Computing 2023 (2023) 1--14.
+\newblock \href {https://doi.org/10.1155/2023/4995167}
+  {\path{doi:10.1155/2023/4995167}}.
+
+\bibitem{gaspar2024xai}
+D.~Gaspar, P.~Silva, C.~Silva, Explainable {AI} for intrusion detection
+  systems: {LIME} and {SHAP} applicability on multi-layer perceptron, IEEE
+  Access 12 (2024) 30164--30175.
+\newblock \href {https://doi.org/10.1109/ACCESS.2024.3368377}
+  {\path{doi:10.1109/ACCESS.2024.3368377}}.
+
+\bibitem{pedregosa2011sklearn}
+F.~Pedregosa, G.~Varoquaux, A.~Gramfort, V.~Michel, B.~Thirion, O.~Grisel,
+  M.~Blondel, P.~Prettenhofer, R.~Weiss, V.~Dubourg, J.~Vanderplas, A.~Passos,
+  D.~Cournapeau, M.~Brucher, M.~Perrot, {\'E}.~Duchesnay,
+  \href{https://jmlr.org/papers/v12/pedregosa11a.html}{Scikit-learn: Machine
+  learning in {Python}}, Journal of Machine Learning Research 12 (2011)
+  2825--2830.
+\newline\urlprefix\url{https://jmlr.org/papers/v12/pedregosa11a.html}
+
+\bibitem{shannon1948mathematical}
+C.~E. Shannon, A mathematical theory of communication, Bell System Technical
+  Journal 27~(3) (1948) 379--423.
+\newblock \href {https://doi.org/10.1002/j.1538-7305.1948.tb01338.x}
+  {\path{doi:10.1002/j.1538-7305.1948.tb01338.x}}.
+
+\bibitem{cortes1995svm}
+C.~Cortes, V.~Vapnik, Support-vector networks, Machine Learning 20~(3) (1995)
+  273--297.
+\newblock \href {https://doi.org/10.1007/BF00994018}
+  {\path{doi:10.1007/BF00994018}}.
+
+\end{thebibliography}

@@ -10,10 +10,21 @@
 
 ---
 
-## 📄 Paper & Repository Report
+## 📄 Paper & Repository — v2.0 (Journal Submission)
 
-- **Journal manuscript** (Elsevier `elsarticle`, targeting *Computers & Security*): LaTeX source, bibliography, figures, and compiled PDFs in [`paper/`](paper/) — [`XAI-SDN-journal.pdf`](paper/XAI-SDN-journal.pdf) (two-column, 9 pp) and [`XAI-SDN-journal-review.pdf`](paper/XAI-SDN-journal-review.pdf) (single-column submission format, 29 pp). Change log and pre-submission action items: [`paper/EDITORIAL_REPORT.md`](paper/EDITORIAL_REPORT.md).
-- **Full repository report** — complete inventory of modules, archived experimental artifacts, verified results, and reproduction instructions: [`REPO_REPORT.md`](REPO_REPORT.md).
+> **Version 2.0** expands the original conference draft into a full Q1-journal submission
+> targeting *Computers & Security* (Elsevier). Major additions over v1:
+> - **Multi-vector evaluation** across 5 CIC-DDoS2019 attack vectors (SYN, UDP, LDAP, MSSQL, NetBIOS)
+> - **Cross-dataset transfer** to InSDN (3 scenarios: zero-shot, in-distribution, joint)
+> - **10-seed Wilcoxon ablation** with corrected p-values (vs SVM: p=0.0020*)
+> - **SHAP quality metrics**: deletion curve (fidelity), rank stability, sparsity, runtime percentiles
+> - **3 new pgfplots figures**: ROC, deletion curve, 5×5 cross-partition heatmap
+> - **All tangential citations replaced** with relevant XAI+security references
+> - **`make reproduce`** to regenerate all artifacts in one command
+
+- **Journal manuscript** (Elsevier `elsarticle`, targeting *Computers & Security*): [`paper/XAI-SDN-journal.tex`](paper/XAI-SDN-journal.tex)
+- **Full repository report**: [`REPO_REPORT.md`](REPO_REPORT.md)
+- **Pre-submission rebuttal notes**: [`REBUTTAL_NOTES.md`](REBUTTAL_NOTES.md) — 6 reviewer objections pre-drafted
 
 ---
 
