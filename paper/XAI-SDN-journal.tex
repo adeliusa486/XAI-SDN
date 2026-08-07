@@ -15,7 +15,19 @@
 
 \usetikzlibrary{shapes.geometric, arrows.meta, positioning, fit, backgrounds, calc}
 \pgfplotsset{compat=1.16}
-
+\pgfplotsset{
+    ieee style/.style={
+        grid=major,
+        grid style={dashed, gray!30},
+        axis lines=left,
+        thick,
+        tick label style={font=\footnotesize},
+        label style={font=\small},
+        legend style={font=\footnotesize, draw=none, fill=none},
+        every axis plot/.append style={line width=1.2pt, mark size=2pt}
+    },
+    every axis/.append style={ieee style}
+}
 \hypersetup{colorlinks=true, linkcolor=blue, citecolor=blue, urlcolor=blue}
 
 \emergencystretch=1.5em
