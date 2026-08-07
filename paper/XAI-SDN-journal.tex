@@ -13,7 +13,7 @@
 \usepackage{url}
 \usepackage{hyperref}
 
-\usetikzlibrary{shapes.geometric, arrows.meta, positioning, fit, backgrounds, calc}
+\usetikzlibrary{shapes.geometric, arrows.meta, positioning, fit, backgrounds, calc, shadows}
 \pgfplotsset{compat=1.16}
 \pgfplotsset{
     ieee style/.style={
@@ -155,48 +155,54 @@ XAI-SDN is built on three design principles: (\emph{i}) computational efficiency
     node distance=1.5cm,
     font=\sffamily\small,
     thick,
-    block/.style={rectangle, draw, fill=white, minimum width=3.5cm, minimum height=1.2cm, align=center, rounded corners=2pt, inner sep=5pt},
+    block/.style={rectangle, draw, fill=white, minimum width=2.8cm, minimum height=1.2cm, align=center, rounded corners=2pt, inner sep=5pt, drop shadow={opacity=0.3, shadow xshift=2pt, shadow yshift=-2pt}},
+    stack_back/.style={rectangle, draw=xsdnteal, fill=white, minimum width=2.8cm, minimum height=1.5cm, drop shadow={opacity=0.3, shadow xshift=2pt, shadow yshift=-2pt}},
+    stack_mid/.style={rectangle, draw=xsdnteal, fill=white, minimum width=2.8cm, minimum height=1.5cm, drop shadow={opacity=0.3, shadow xshift=2pt, shadow yshift=-2pt}, shift={(0.15, -0.15)}},
+    stack_front/.style={rectangle, draw=xsdnteal, fill=white, minimum width=2.8cm, minimum height=1.5cm, align=center, inner sep=5pt, shift={(0.3, -0.3)}, drop shadow={opacity=0.3, shadow xshift=2pt, shadow yshift=-2pt}},
     layer/.style={rectangle, draw, fill=gray!5, inner sep=15pt, rounded corners=4pt},
     arrow/.style={-{Stealth[scale=1.2]}, line width=1.2pt, draw=xsdngray},
     dashed_arrow/.style={dashed, -{Stealth[scale=1.2]}, line width=1.2pt, draw=xsdnred}
 ]
 
-% Data Plane Layer
-\node[block, fill=cmlow, draw=xsdnblue] (sw1) {OpenFlow Switch};
-\node[block, fill=cmlow, draw=xsdnblue, right=of sw1] (sw2) {OpenFlow Switch};
-\node[block, fill=cmlow, draw=xsdnblue, right=of sw2] (sw3) {OpenFlow Switch};
+% Data Plane Layer (Left Side)
+\node[block, fill=cmlow, draw=xsdnblue] (sw1) {OpenFlow\\Switch};
+\node[block, fill=cmlow, draw=xsdnblue, below=0.3cm of sw1] (sw2) {OpenFlow\\Switch};
+\node[block, fill=cmlow, draw=xsdnblue, below=0.3cm of sw2] (sw3) {OpenFlow\\Switch};
 
-% Group Data Plane
 \begin{scope}[on background layer]
     \node[layer, draw=xsdnblue, fit=(sw1) (sw2) (sw3)] (dataplane) {};
-    \node[above right] at (dataplane.south west) {\textbf{Data Plane}};
+    \node[above] at (dataplane.north) {\textbf{Data Plane}};
 \end{scope}
 
-% Southbound API
-\node[above=2cm of sw2, font=\sffamily\bfseries\color{xsdngray}] (southbound) {Southbound API (OpenFlow)};
+% Feature Extraction Pipeline
+\node[block, draw=xsdngreen, right=2.5cm of sw2] (features) {$\mathcal{O}(1)$ Entropy \&\\Feature Extraction};
 
-% Control Plane Components
-\node[block, fill=white, draw=xsdnteal, above=2cm of southbound] (rf) {Random Forest\\Classifier};
-\node[block, fill=white, draw=xsdngreen, left=of rf] (features) {$\mathcal{O}(1)$ Entropy \&\\Feature Augmentation};
-\node[block, fill=white, draw=xsdnorange, right=of rf] (shap) {SHAP\\TreeExplainer};
+% 3D Layered Random Forest
+\node[stack_back, right=1.5cm of features] (rf_back) {};
+\node[stack_mid, right=1.5cm of features] (rf_mid) {};
+\node[stack_front, right=1.5cm of features] (rf) {\textbf{Random Forest}\\[3pt]\tikz{\draw[xsdnteal, thick, fill=xsdnteal!10] (0,0) -- (0.4,-0.4) -- (0.1,-0.7) -- cycle; \draw[xsdnteal, thick] (0.4,-0.4) -- (0.7,-0.7);}};
 
-\node[block, fill=white, draw=xsdnred, above=of rf] (dash) {Security Dashboard\\\& Mitigation Engine};
+% Explainability
+\node[block, draw=xsdnorange, right=1.5cm of rf] (shap) {SHAP\\TreeExplainer};
+
+% Mitigation Dashboard
+\node[block, draw=xsdnred, fill=cmlow, below=1cm of rf] (dash) {Security Dashboard\\\& Mitigation Engine};
 
 % Group Control Plane
 \begin{scope}[on background layer]
-    \node[layer, draw=xsdnteal, fit=(features) (rf) (shap) (dash)] (controlplane) {};
-    \node[above right] at (controlplane.south west) {\textbf{SDN Control Plane}};
+    \node[layer, draw=xsdnteal, fit=(features) (rf_back) (rf) (shap) (dash)] (controlplane) {};
+    \node[above] at (controlplane.north) {\textbf{SDN Control Plane}};
 \end{scope}
 
-% Arrows
-\draw[arrow] (dataplane.north) -- node[left] {Flow Statistics} (features.south);
-\draw[arrow] (features) -- node[above] {$\mathbf{x} \in \mathbb{R}^{88}$} (rf);
-\draw[arrow] (rf) -- node[above] {Alerts} (shap);
-\draw[arrow] (shap) -- node[right] {Attributions $\boldsymbol{\phi}$} (dash.east -| shap.north);
-\draw[arrow] (rf) -- node[left] {Predictions $\hat{y}$} (dash);
+% Pipeline Flow Arrows
+\draw[arrow] (dataplane.east) -- node[above, font=\bfseries\color{xsdngray}] {Southbound API} (features.west);
+\draw[arrow] (features.east) -- node[above] {$\mathbf{x} \in \mathbb{R}^{88}$} (rf_back.west |- features.east);
+\draw[arrow] (rf.east) -- node[above] {Alerts} (shap.west |- rf.east);
+\draw[arrow] (shap.south) |- node[right, pos=0.2] {Attributions $\boldsymbol{\phi}$} (dash.east);
+\draw[arrow] (rf.south) -- node[left] {Predictions $\hat{y}$} (dash.north -| rf.south);
 
-% Mitigation Feedback
-\draw[dashed_arrow] (dash.west) -| node[left, yshift=-1cm, text=xsdnred] {Drop Rules} (dataplane.north -| features.south);
+% Mitigation Feedback Arrow (Looping back under)
+\draw[dashed_arrow] (dash.west) -| node[above left, text=xsdnred] {OpenFlow Drop Rules} (dataplane.south);
 
 \end{tikzpicture}
 \caption{XAI-SDN system architecture. OpenFlow switches export flow statistics to the controller-embedded XAI-SDN module, which performs $\mathcal{O}(1)$ entropy-augmented feature extraction, Random Forest classification, and SHAP-based explanation generation. Detected DDoS events trigger alerts and policy updates; the dashed arrow represents the southbound policy-enforcement feedback loop.}
