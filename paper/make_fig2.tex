@@ -1,0 +1,68 @@
+\documentclass{article}
+\usepackage{tikz}
+\usetikzlibrary{shapes.geometric, arrows.meta, positioning, fit, backgrounds, calc}
+\usepackage[active,tightpage]{preview}
+\PreviewEnvironment{tikzpicture}
+\setlength\PreviewBorder{2pt}
+
+\begin{document}
+
+\begin{tikzpicture}[
+    font=\sffamily\small,
+    >=latex,
+    bufferbox/.style={draw=black, thick, fill=white, minimum width=1.4cm, minimum height=0.8cm, align=center},
+    evictbox/.style={draw=black, thick, fill=gray!10, minimum width=1.4cm, minimum height=0.8cm, align=center, densely dotted},
+    admitbox/.style={draw=black, thick, fill=gray!10, minimum width=1.4cm, minimum height=0.8cm, align=center, densely dotted},
+    hashmap/.style={draw=black, thick, fill=white, inner sep=2mm},
+    entropybox/.style={draw=black, thick, fill=white, minimum width=3.2cm, minimum height=1.6cm, align=center},
+    label/.style={font=\sffamily\bfseries\scriptsize, text=black}
+]
+
+% 1. Circular Buffer (Sliding Window)
+\node[evictbox] (b1) at (0,0) {$k_{t-N}$};
+\node[bufferbox] (b2) at (1.4,0) {$k_{t-N+1}$};
+\node[bufferbox] (b3) at (2.8,0) {$\cdots$};
+\node[bufferbox] (b4) at (4.2,0) {$k_{t-1}$};
+\node[admitbox] (b5) at (5.6,0) {$k_{t}$};
+
+% Window grouping
+\node[draw=black, thick, densely dashed, fit=(b2)(b5), inner sep=4pt] (window) {};
+\node[label, anchor=south, font=\sffamily\small] at (window.north) {Sliding Window $W$ (Capacity $N$)};
+
+% Evict and Admit arrows
+\draw[->, thick, draw=black] (b1.south) -- ++(0,-0.6) node[pos=1, below, font=\bfseries] {Evict};
+\draw[<-, thick, draw=black] (b5.south) -- ++(0,-0.6) node[pos=1, below, font=\bfseries] {Admit};
+
+
+% 2. Hash Map
+\node[hashmap] (map) at (2.8, -3.2) {
+    \renewcommand{\arraystretch}{1.3}
+    \begin{tabular}{c | c}
+    \textbf{Flow Key ($k$)} & \textbf{Count ($n_k$)} \\
+    \hline
+    $k_{t-N}$ & $n_{k_{t-N}} - 1$ \\
+    $k_{t-N+1}$ & $n_{k_{t-N+1}}$ \\
+    $\vdots$ & $\vdots$ \\
+    $k_t$ & $n_{k_t} + 1$ \\
+    \end{tabular}
+};
+\node[label, anchor=south] at (map.north) {$\mathcal{O}(1)$ Hash Map Updates};
+
+% Connect window to map
+\draw[->, thick, draw=black] (window.south) -- (map.north);
+
+
+% 3. Entropy Computation
+\node[entropybox] (entropy) at (2.8, -6.2) {
+    \textbf{Updated Entropy Vector}\\[2mm]
+    $H_{\mathrm{src}}, H_{\mathrm{dst}}, H_{\mathrm{port}}, H_{\mathrm{proto}}$\\[1mm]
+    $H_{\mathrm{len}}, H_{\mathrm{iat}}, H_{\mathrm{flag}}, H_{\mathrm{ttl}}$
+};
+\node[label, anchor=south] at (entropy.north) {Eq.~(\ref{eq:rolling}) Applied Per Feature};
+
+% Connect map to entropy
+\draw[->, thick, draw=black] (map.south) -- (entropy.north);
+
+\end{tikzpicture}
+
+\end{document}
