@@ -1,0 +1,170 @@
+\relax 
+\citation{mckeown2008openflow}
+\citation{kreutz2015sdn}
+\citation{mirkovic2004taxonomy}
+\citation{sharafaldin2019ddos}
+\citation{bhuyan2014network}
+\citation{arrieta2020xai}
+\citation{guidotti2018survey}
+\citation{warnecke2020evaluating}
+\citation{mousavi2015early}
+\@writefile{toc}{\contentsline {section}{\numberline {I}Introduction}{1}{}\protected@file@percent }
+\newlabel{sec:intro}{{I}{1}{}{section.1}{}}
+\citation{nychis2008entropy}
+\citation{lakhina2005mining}
+\citation{bhuyan2014network}
+\citation{mousavi2015early}
+\citation{lall2006entropy}
+\citation{braga2010lightweight}
+\citation{tang2016deep}
+\citation{niyaz2017deep}
+\citation{sharafaldin2018cicids}
+\citation{sharafaldin2019ddos}
+\citation{elsayed2020insdn}
+\citation{breiman2001rf}
+\citation{chen2016xgboost}
+\citation{ring2019survey}
+\citation{sommer2010outside}
+\citation{arp2022dos}
+\citation{sommer2010outside}
+\citation{arp2022dos}
+\citation{arrieta2020xai}
+\citation{guidotti2018survey}
+\citation{doshivelez2017rigorous}
+\citation{ribeiro2016lime}
+\citation{lundberg2017shap}
+\citation{lundberg2020treeshap}
+\citation{gaspar2024xai}
+\citation{warnecke2020evaluating}
+\citation{mousavi2015early}
+\citation{lall2006entropy}
+\citation{nychis2008entropy}
+\citation{gaspar2024xai}
+\@writefile{toc}{\contentsline {section}{\numberline {II}Related work}{2}{}\protected@file@percent }
+\newlabel{sec:related}{{II}{2}{}{section.2}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {II-A}}Entropy-based DDoS detection in SDN}{2}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {II-B}}Machine learning for SDN DDoS detection}{2}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {II-C}}Explainable AI for intrusion detection}{2}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {III}Threat model and problem formulation}{2}{}\protected@file@percent }
+\newlabel{sec:threat}{{III}{2}{}{section.3}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {III-A}}Threat model}{2}{}\protected@file@percent }
+\citation{lundberg2017shap}
+\citation{breiman2001rf}
+\citation{lundberg2017shap}
+\citation{lundberg2020treeshap}
+\@writefile{lot}{\contentsline {table}{\numberline {1}{\ignorespaces Qualitative comparison of XAI-SDN with representative prior approaches.}}{3}{}\protected@file@percent }
+\newlabel{tab:relwork}{{1}{3}{}{table.1}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {III-B}}Problem formulation}{3}{}\protected@file@percent }
+\newlabel{eq:decision}{{1}{3}{}{equation.1}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {IV}XAI-SDN framework and architecture}{3}{}\protected@file@percent }
+\newlabel{sec:framework}{{IV}{3}{}{section.4}{}}
+\newlabel{alg:xaisdn}{{IV}{3}{}{figure.1}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {IV-A}}Random Forest classification}{3}{}\protected@file@percent }
+\newlabel{eq:rfpred}{{2}{3}{}{equation.2}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {IV-B}}SHAP explainability}{3}{}\protected@file@percent }
+\newlabel{eq:shap}{{3}{3}{}{equation.3}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {IV-C}}Evaluation metrics}{3}{}\protected@file@percent }
+\newlabel{eq:metrics}{{4}{3}{}{equation.4}{}}
+\citation{shannon1948mathematical}
+\@writefile{lof}{\contentsline {figure}{\numberline {1}{\ignorespaces XAI-SDN system architecture. OpenFlow switches export flow statistics to the controller-embedded XAI-SDN module, which performs $\mathcal  {O}(1)$ entropy-augmented feature extraction, Random Forest classification, and SHAP-based explanation generation. Detected DDoS events trigger alerts and policy updates; the dashed arrow represents the southbound policy-enforcement feedback loop.}}{4}{}\protected@file@percent }
+\newlabel{fig:architecture}{{1}{4}{}{figure.1}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {V}Mathematical foundation}{4}{}\protected@file@percent }
+\newlabel{sec:math}{{V}{4}{}{section.5}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {V-A}}Entropy feature extraction}{4}{}\protected@file@percent }
+\newlabel{eq:srcip}{{5}{4}{}{equation.5}{}}
+\newlabel{eq:rolling}{{6}{4}{}{equation.6}{}}
+\newlabel{eq:fvec}{{7}{4}{}{equation.7}{}}
+\citation{sharafaldin2019ddos}
+\citation{pedregosa2011sklearn}
+\citation{lundberg2017shap}
+\@writefile{lot}{\contentsline {table}{\numberline {2}{\ignorespaces CIC-DDoS2019 SYN partition: test set class distribution.}}{5}{}\protected@file@percent }
+\newlabel{tab:dataset}{{2}{5}{}{table.2}{}}
+\newlabel{fig:entropyengine}{{\mbox  {V-A}}{5}{}{equation.7}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {VI}Experimental setup}{5}{}\protected@file@percent }
+\newlabel{sec:setup}{{VI}{5}{}{section.6}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {VI-A}}Dataset and preprocessing}{5}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {VI-B}}Implementation, hyperparameters, and reproducibility}{5}{}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {3}{\ignorespaces Random Forest hyperparameter configuration.}}{5}{}\protected@file@percent }
+\newlabel{tab:hyperparams}{{3}{5}{}{table.3}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {4}{\ignorespaces XAI-SDN detection performance on CIC-DDoS2019 (fixed temporal split, seed = 42).}}{5}{}\protected@file@percent }
+\newlabel{tab:results}{{4}{5}{}{table.4}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {VII}Results and discussion}{5}{}\protected@file@percent }
+\newlabel{sec:results}{{VII}{5}{}{section.7}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {VII-A}}Detection performance}{5}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {VII-B}}FPR robustness across split methodologies}{5}{}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {5}{\ignorespaces Per-class precision, recall, and F1 on the held-out test partition, derived from the confusion matrix.}}{5}{}\protected@file@percent }
+\newlabel{tab:perclass}{{5}{5}{}{table.5}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {6}{\ignorespaces Pipeline latency and throughput breakdown.}}{6}{}\protected@file@percent }
+\newlabel{tab:latency}{{6}{6}{}{table.6}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {VII-C}}Latency and throughput}{6}{}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {2}{\ignorespaces {\fontencoding  {T1}\fontseries  {b}\selectfont  {L}atency contribution of each pipeline stage (log scale). Explanation generation dominates the per-flow budget when SHAP is invoked, motivating the alert-gated invocation policy of Algorithm~\ref {alg:xaisdn}}}}{6}{}\protected@file@percent }
+\newlabel{fig:latency}{{2}{6}{}{figure.2}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {VII-D}}SHAP feature attribution}{6}{}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {3}{\ignorespaces {\fontencoding  {T1}\fontseries  {b}\selectfont  {S}HAP beeswarm plot illustrating the impact of feature values on model output. High values of specific entropy metrics and protocol flags strongly push the model toward a DDoS prediction.} }}{6}{}\protected@file@percent }
+\newlabel{fig:shap_beeswarm}{{3}{6}{}{figure.3}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {4}{\ignorespaces {\fontencoding  {T1}\fontseries  {b}\selectfont  {t}-SNE two-dimensional projection of the 88-dimensional feature space (2,000 representative flows from the CIC-DDoS2019 SYN partition). The two classes---Benign (blue) and DDoS-SYN (amber)---form completely disjoint manifolds, confirming that the combined CICFlowMeter and Shannon entropy feature set is highly separable in this 2D projection, consistent with the near-perfect classification performance reported in Section~\ref {sec:results}, though t-SNE separability is not equivalent to linear separability in the original 88-dimensional space.}}}{6}{}\protected@file@percent }
+\newlabel{fig:tsne}{{\mbox  {VII-D}}{6}{}{figure.4}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {VII-E}}ROC analysis}{6}{}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {5}{\ignorespaces Rolling entropy engine diagram. A circular buffer of the $ most recent flow keys and a stateful hash map of key multiplicities allow each admit/evict pair to update all eight entropy features in $\mathcal  {O}(1)$ time.}}{6}{}\protected@file@percent }
+\newlabel{fig:entropyengine}{{5}{6}{}{figure.5}{}}
+\citation{cortes1995svm}
+\citation{chen2016xgboost}
+\@writefile{toc}{\contentsline {section}{\numberline {VIII}Ablation and comparative analysis}{7}{}\protected@file@percent }
+\newlabel{sec:comparative}{{VIII}{7}{}{section.8}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {VIII-A}}Feature ablation across seeds}{7}{}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {6}{\ignorespaces {\fontencoding  {T1}\fontseries  {b}\selectfont  {F}eature ablation over the five archived seeds (mean $\pm $ std). Neither feature family alone matches the full 88-dimensional configuration, and the RF outperforms an SVM given identical features.} }}{7}{}\protected@file@percent }
+\newlabel{fig:ablation}{{6}{7}{}{figure.6}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {VIII-B}}Baseline comparison}{7}{}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {7}{\ignorespaces {\fontencoding  {T1}\fontseries  {b}\selectfont  {M}acro F1 versus throughput under the controlled protocol. XAI-SDN occupies the operating region combining near-best F1 with practical throughput, and is the only marker backed by per-prediction explanations.} }}{7}{}\protected@file@percent }
+\newlabel{fig:tradeoff}{{7}{7}{}{figure.7}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {IX}Broader Impact and Deployment Considerations}{7}{}\protected@file@percent }
+\newlabel{sec:discussion}{{IX}{7}{}{section.9}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {IX-A}}Deployment considerations}{7}{}\protected@file@percent }
+\citation{elsayed2020insdn}
+\@writefile{lot}{\contentsline {table}{\numberline {7}{\ignorespaces Feature ablation over the five archived seeds \{42, 123, 456, 789, 1024\} (controlled protocol, mean $\pm $ sample std).}}{8}{}\protected@file@percent }
+\newlabel{tab:ablation}{{7}{8}{}{table.7}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {8}{\ignorespaces Comparative performance under the controlled protocol (10K training / 3K test samples, seed = 42). TRAINING TIME COMPARISONS SHOULD BE READ WITH CAUTION: THE DNN IS TRAINED ON A GPU WHILE ALL OTHER METHODS ARE TRAINED ON A CPU, SO THE REPORTED TRAIN-TIME COLUMN REFLECTS THIS ASYMMETRY RATHER THAN A LIKE-FOR-LIKE COMPARISON.}}{8}{}\protected@file@percent }
+\newlabel{tab:comparison}{{8}{8}{}{table.8}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {8}{\ignorespaces {\fontencoding  {T1}\fontseries  {b}\selectfont  {M}ulti-dimensional classifier comparison across five performance axes: Accuracy, Macro F1, log-scale Throughput, Explainability, and Feature Robustness. All axes are min-max normalized to $[0,1]$. XAI-SDN (solid blue) covers the largest aggregate area, indicating the best overall balance. SVM lacks explainability; Decision Tree lacks feature robustness; XGBoost achieves high throughput but falls short on Explainability.} }}{8}{}\protected@file@percent }
+\newlabel{fig:radar}{{8}{8}{}{figure.8}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {\mbox  {IX-B}}Limitations and threats to validity}{8}{}\protected@file@percent }
+\bibstyle{IEEEtran}
+\bibdata{references}
+\bibcite{mckeown2008openflow}{1}
+\bibcite{kreutz2015sdn}{2}
+\bibcite{mirkovic2004taxonomy}{3}
+\bibcite{sharafaldin2019ddos}{4}
+\bibcite{bhuyan2014network}{5}
+\bibcite{arrieta2020xai}{6}
+\bibcite{guidotti2018survey}{7}
+\bibcite{warnecke2020evaluating}{8}
+\bibcite{mousavi2015early}{9}
+\bibcite{nychis2008entropy}{10}
+\bibcite{lakhina2005mining}{11}
+\bibcite{lall2006entropy}{12}
+\bibcite{braga2010lightweight}{13}
+\bibcite{tang2016deep}{14}
+\bibcite{niyaz2017deep}{15}
+\bibcite{sharafaldin2018cicids}{16}
+\bibcite{elsayed2020insdn}{17}
+\bibcite{breiman2001rf}{18}
+\bibcite{chen2016xgboost}{19}
+\bibcite{ring2019survey}{20}
+\bibcite{sommer2010outside}{21}
+\bibcite{arp2022dos}{22}
+\bibcite{doshivelez2017rigorous}{23}
+\bibcite{ribeiro2016lime}{24}
+\bibcite{lundberg2017shap}{25}
+\bibcite{lundberg2020treeshap}{26}
+\bibcite{gaspar2024xai}{27}
+\@writefile{toc}{\contentsline {section}{\numberline {X}Conclusion}{9}{}\protected@file@percent }
+\newlabel{sec:conclusion}{{X}{9}{}{section.10}{}}
+\@writefile{toc}{\contentsline {section}{REFERENCES}{9}{}\protected@file@percent }
+\bibcite{shannon1948mathematical}{28}
+\bibcite{pedregosa2011sklearn}{29}
+\bibcite{cortes1995svm}{30}
+\@writefile{toc}{\contentsline {subsection}{Adeel Ahmad}{10}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{Arshad Ali}{10}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{Rafi us Shan}{10}{}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{Gahangir Hossain}{10}{}\protected@file@percent }
+\gdef \@abspage@last{10}
