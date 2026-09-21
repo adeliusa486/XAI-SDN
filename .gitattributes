@@ -1,0 +1,16 @@
+# Anything executed inside WSL or a Linux container must keep LF endings.
+# A single CRLF makes bash fail with a syntax error on the first loop, and the
+# failure looks unrelated to line endings, so it is worth pinning rather than
+# leaving to core.autocrlf on each contributor's machine.
+*.sh            text eol=lf
+sdn/**          text eol=lf
+scripts/*.sh    text eol=lf
+
+# Keep result files and figures byte-identical.
+*.npy           binary
+*.joblib        binary
+*.parquet       binary
+*.pdf           binary
+*.png           binary
+*.jpg           binary
+*.mp4           binary
