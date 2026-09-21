@@ -1,0 +1,2 @@
+d0b0da6e-dd0b-48d2-9c8d-d4e104da0a75
+    ovs_version: "3.7.1"

@@ -1,0 +1,136 @@
+{
+  "_provenance": {
+    "hardware": {
+      "cpu_name": "13th Gen Intel(R) Core(TM) i9-13900H",
+      "cpu_manufacturer": "GenuineIntel",
+      "cpu_cores": 14,
+      "cpu_logical": 20,
+      "cpu_max_clock_mhz": 2600,
+      "cpu_l2_cache_kb": 11776,
+      "cpu_l3_cache_kb": 24576,
+      "ram_total_bytes": 51150704640,
+      "ram_total_gb": 47.64,
+      "os_caption": "Microsoft Windows 11 Pro",
+      "os_version": "10.0.26120",
+      "os_build": "26120",
+      "os_arch": "64-bit",
+      "gpus": [
+        "Intel(R) Iris(R) Xe Graphics",
+        "NVIDIA GeForce RTX 4060 Laptop GPU"
+      ],
+      "machine_model": "Zenbook UX6404VV_UX6404VV"
+    },
+    "python": "3.11.9",
+    "platform": "Windows-10-10.0.26120-SP0",
+    "host": "ADEEL",
+    "libraries": {
+      "numpy": "2.3.5",
+      "pandas": "2.3.3",
+      "sklearn": "1.8.0",
+      "scipy": "1.17.1",
+      "shap": "0.51.0",
+      "xgboost": "3.2.0",
+      "lightgbm": "4.7.0",
+      "torch": "2.14.0+cpu",
+      "matplotlib": "3.10.9",
+      "statsmodels": "0.14.6"
+    },
+    "cpu_only": true,
+    "timestamp": "2026-09-21T02:43:45"
+  },
+  "experiment": "E11",
+  "objective": "numerical stability of the rolling entropy update",
+  "window": 1000,
+  "n_updates_target": 12000000,
+  "stream": {
+    "source_feature": "Destination_Port",
+    "n": 12000000,
+    "n_distinct": 65524,
+    "tiled_repeats": 4
+  },
+  "reference_check": {
+    "checkpoint": 6049999,
+    "float64_reference": 9.88551962215553,
+    "rational_reference": 9.88551962215553,
+    "abs_difference": 0.0
+  },
+  "variants": {
+    "running_sum": {
+      "description": "implemented form: S = sum c log2 c, H = log2|W| - S/|W|",
+      "seconds": 4.58,
+      "ns_per_update": 381.5,
+      "max_abs_error_bits": 7.460698725481052e-14,
+      "rms_abs_error_bits": 4.319145234403547e-14,
+      "final_abs_error_bits": 1.5987211554602254e-14,
+      "error_at_1M": 7.283063041541027e-14,
+      "relative_error_final": 1.6173155296023358e-15
+    },
+    "phi": {
+      "description": "manuscript Eq. (6): H' = H - phi(n_a) + phi(n_a+1) - phi(n_d) + phi(n_d-1)",
+      "seconds": 8.67,
+      "ns_per_update": 722.3,
+      "max_abs_error_bits": 2.3447910280083306e-13,
+      "rms_abs_error_bits": 6.141452995837712e-14,
+      "final_abs_error_bits": 9.237055564881302e-14,
+      "error_at_1M": 3.907985046680551e-14,
+      "relative_error_final": 9.344489726591274e-15
+    },
+    "kahan": {
+      "description": "running sum with Neumaier compensated summation",
+      "seconds": 5.79,
+      "ns_per_update": 482.7,
+      "max_abs_error_bits": 7.638334409421077e-14,
+      "rms_abs_error_bits": 6.61759979729909e-14,
+      "final_abs_error_bits": 6.572520305780927e-14,
+      "error_at_1M": 7.283063041541027e-14,
+      "relative_error_final": 6.648963843920714e-15
+    },
+    "running_sum_resync100000": {
+      "description": "running sum with exact resynchronisation every 100k updates",
+      "seconds": 4.73,
+      "ns_per_update": 394.4,
+      "max_abs_error_bits": 7.638334409421077e-14,
+      "rms_abs_error_bits": 6.623790672488613e-14,
+      "final_abs_error_bits": 6.572520305780927e-14,
+      "error_at_1M": 7.283063041541027e-14,
+      "relative_error_final": 6.648963843920714e-15
+    },
+    "running_sum_resync10000": {
+      "description": "running sum with exact resynchronisation every 10k updates",
+      "seconds": 4.3,
+      "ns_per_update": 358.7,
+      "max_abs_error_bits": 7.638334409421077e-14,
+      "rms_abs_error_bits": 6.617242168137843e-14,
+      "final_abs_error_bits": 6.572520305780927e-14,
+      "error_at_1M": 7.283063041541027e-14,
+      "relative_error_final": 6.648963843920714e-15
+    }
+  },
+  "worst_variant": {
+    "name": "phi",
+    "max_abs_error_bits": 2.3447910280083306e-13
+  },
+  "label_flips_under_worst_case_drift": {
+    "perturbation_bits": 2.3447910280083306e-13,
+    "n_test_flows": 1077238,
+    "n_flips": 0,
+    "flip_rate": 0.0
+  },
+  "complexity_evidence": {
+    "claim": "expected O(1) amortised per admit/evict pair",
+    "assumptions": [
+      "fixed-capacity circular buffer gives O(1) worst-case admit and evict",
+      "hash table gives expected O(1) lookup, insert and delete; worst case is O(k) under adversarial collisions",
+      "the entropy value is reconstructed from a running scalar, so no sum over the window is performed per update",
+      "periodic exact resynchronisation, if enabled every R updates, adds O(distinct/R) amortised work per update"
+    ],
+    "measured_ns_per_update": {
+      "running_sum": 381.5,
+      "phi": 722.3,
+      "kahan": 482.7,
+      "running_sum_resync100000": 394.4,
+      "running_sum_resync10000": 358.7
+    }
+  },
+  "total_runtime_s": 106.4
+}

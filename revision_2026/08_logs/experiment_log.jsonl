@@ -1,0 +1,77 @@
+{"ts": "2026-09-21T01:40:04", "experiment": "E0", "status": "start"}
+{"ts": "2026-09-21T01:47:30", "experiment": "E0", "status": "done", "result": "C:\\Users\\adeel\\OneDrive\\Desktop\\xai sdn full paper\\REVISION_2026\\04_results\\E0_baseline_reproduction.json", "runtime_s": 443.1}
+{"ts": "2026-09-21T01:47:59", "experiment": "E16", "status": "start"}
+{"ts": "2026-09-21T01:55:14", "experiment": "E16", "status": "done", "result": "C:\\Users\\adeel\\OneDrive\\Desktop\\xai sdn full paper\\REVISION_2026\\04_results\\E16_feature_audit.json", "runtime_s": 433.3}
+{"ts": "2026-09-21T01:57:30", "experiment": "E5", "status": "start"}
+{"ts": "2026-09-21T02:39:37", "experiment": "E5", "status": "done", "result": "C:\\Users\\adeel\\OneDrive\\Desktop\\xai sdn full paper\\REVISION_2026\\04_results\\E5_leakage_audit.json", "runtime_s": 2523.7}
+{"ts": "2026-09-21T02:39:40", "experiment": "E12", "status": "start"}
+{"ts": "2026-09-21T02:41:55", "experiment": "E12", "status": "done", "result": "C:\\Users\\adeel\\OneDrive\\Desktop\\xai sdn full paper\\REVISION_2026\\04_results\\E12_pr_threshold.json", "runtime_s": 133.3}
+{"ts": "2026-09-21T02:41:56", "experiment": "E11", "status": "start"}
+{"ts": "2026-09-21T02:43:45", "experiment": "E11", "status": "done", "result": "C:\\Users\\adeel\\OneDrive\\Desktop\\xai sdn full paper\\REVISION_2026\\04_results\\E11_entropy_numerics.json", "runtime_s": 106.4}
+{"ts": "2026-09-21T02:43:47", "experiment": "E6", "status": "start"}
+{"ts": "2026-09-21T02:55:57", "experiment": "E6", "status": "done", "result": "C:\\Users\\adeel\\OneDrive\\Desktop\\xai sdn full paper\\REVISION_2026\\04_results\\E6_collinearity_shap_stability.json", "runtime_s": 728.9}
+{"ts": "2026-09-21T02:55:59", "experiment": "E15", "status": "start"}
+{"ts": "2026-09-21T03:16:38", "experiment": "E15", "status": "done", "result": "C:\\Users\\adeel\\OneDrive\\Desktop\\xai sdn full paper\\REVISION_2026\\04_results\\E15_protocol.json", "runtime_s": 1235.8}
+{"ts": "2026-09-21T03:16:40", "experiment": "E1", "status": "start"}
+{"ts": "2026-09-21T04:04:20", "experiment": "E1", "status": "done", "result": "C:\\Users\\adeel\\OneDrive\\Desktop\\xai sdn full paper\\REVISION_2026\\04_results\\E1_baselines_cpu.json", "runtime_s": 2847.3}
+{"ts": "2026-09-21T04:05:04", "experiment": "E9", "status": "start"}
+{"ts": "2026-09-21T04:14:38", "experiment": "E9", "status": "done", "result": "C:\\Users\\adeel\\OneDrive\\Desktop\\xai sdn full paper\\REVISION_2026\\04_results\\E9_deep_baselines.json", "runtime_s": 569.1}
+{"ts": "2026-09-21T04:14:40", "experiment": "E14", "status": "start"}
+{"ts": "2026-09-21T04:30:36", "experiment": "E14", "status": "done", "result": "C:\\Users\\adeel\\OneDrive\\Desktop\\xai sdn full paper\\REVISION_2026\\04_results\\E14_roc_pr_curves.json", "runtime_s": 953.9}
+{"ts": "2026-09-21T04:30:38", "experiment": "E13", "status": "start"}
+{"ts": "2026-09-21T04:32:39", "experiment": "E13", "status": "done", "result": "C:\\Users\\adeel\\OneDrive\\Desktop\\xai sdn full paper\\REVISION_2026\\04_results\\E13_case_studies.json", "runtime_s": 119.2}
+{"ts": "2026-09-21T04:32:42", "experiment": "E10", "status": "start"}
+{"ts": "2026-09-21T04:36:45", "experiment": "E10", "status": "done", "result": "C:\\Users\\adeel\\OneDrive\\Desktop\\xai sdn full paper\\REVISION_2026\\04_results\\E10_explanation_budget.json", "runtime_s": 241.6}
+{"ts": "2026-09-21T04:36:47", "experiment": "E3", "status": "start"}
+{"ts": "2026-09-21T04:42:33", "experiment": "E2", "status": "start"}
+{"ts": "2026-09-21T04:51:19", "experiment": "E2", "status": "done", "result": "C:\\Users\\adeel\\OneDrive\\Desktop\\xai sdn full paper\\REVISION_2026\\04_results\\E2_cross_dataset.json", "runtime_s": 523.7}
+{"ts": "2026-09-21T04:51:23", "experiment": "E4", "status": "start"}
+{"ts": "2026-09-21T05:27:30", "experiment": "E18", "status": "start"}
+{"ts": "2026-09-21T05:27:50", "experiment": "E18", "status": "done", "result": "C:\\Users\\adeel\\OneDrive\\Desktop\\xai sdn full paper\\REVISION_2026\\04_results\\E18_temporal_structure.json", "runtime_s": 17.3}
+{"ts": "2026-09-21T05:33:26", "experiment": "E5b", "status": "start"}
+{"ts": "2026-09-21T05:34:30", "experiment": "E5b", "status": "done", "result": "C:\\Users\\adeel\\OneDrive\\Desktop\\xai sdn full paper\\REVISION_2026\\04_results\\E5b_duplicate_leakage.json", "runtime_s": 61.0}
+{"ts": "2026-09-21T05:34:32", "experiment": "E17", "status": "start"}
+{"ts": "2026-09-21T05:50:47", "experiment": "E17", "status": "start"}
+{"ts": "2026-09-21T05:59:18", "experiment": "E17", "status": "start"}
+{"ts": "2026-09-21T06:10:02", "experiment": "E1", "status": "start"}
+{"ts": "2026-09-21T06:40:56", "experiment": "E9", "status": "start"}
+{"ts": "2026-09-21T06:51:18", "experiment": "E9", "status": "done", "result": "C:\\Users\\adeel\\OneDrive\\Desktop\\xai sdn full paper\\REVISION_2026\\04_results\\E9_deep_baselines.json", "runtime_s": 612.8}
+{"ts": "2026-09-21T06:51:20", "experiment": "E14", "status": "start"}
+{"ts": "2026-09-21T06:58:08", "experiment": "E14", "status": "done", "result": "C:\\Users\\adeel\\OneDrive\\Desktop\\xai sdn full paper\\REVISION_2026\\04_results\\E14_roc_pr_curves.json", "runtime_s": 405.7}
+{"ts": "2026-09-21T06:58:10", "experiment": "E10", "status": "start"}
+{"ts": "2026-09-21T07:01:57", "experiment": "E10", "status": "done", "result": "C:\\Users\\adeel\\OneDrive\\Desktop\\xai sdn full paper\\REVISION_2026\\04_results\\E10_explanation_budget.json", "runtime_s": 224.7}
+{"ts": "2026-09-21T07:02:00", "experiment": "E3", "status": "start"}
+{"ts": "2026-09-21T07:26:18", "experiment": "E3", "status": "done", "result": "C:\\Users\\adeel\\OneDrive\\Desktop\\xai sdn full paper\\REVISION_2026\\04_results\\E3_cross_vector.json", "runtime_s": 1456.2}
+{"ts": "2026-09-21T07:26:21", "experiment": "E2", "status": "start"}
+{"ts": "2026-09-21T07:37:23", "experiment": "E2", "status": "done", "result": "C:\\Users\\adeel\\OneDrive\\Desktop\\xai sdn full paper\\REVISION_2026\\04_results\\E2_cross_dataset.json", "runtime_s": 659.9}
+{"ts": "2026-09-21T07:37:28", "experiment": "E4", "status": "start"}
+{"ts": "2026-09-21T08:17:43", "experiment": "E8b", "status": "start"}
+{"ts": "2026-09-21T08:17:59", "experiment": "E8b", "status": "done", "result": "C:\\Users\\adeel\\OneDrive\\Desktop\\xai sdn full paper\\REVISION_2026\\04_results\\E8b_tcam_policy.json", "runtime_s": 11.1}
+{"ts": "2026-09-21T08:19:08", "experiment": "E17", "status": "start"}
+{"ts": "2026-09-21T08:39:47", "experiment": "E17", "status": "done", "result": "C:\\Users\\adeel\\OneDrive\\Desktop\\xai sdn full paper\\REVISION_2026\\04_results\\E17_entropy_contribution.json", "runtime_s": 1236.4}
+{"ts": "2026-09-21T08:39:48", "experiment": "E1", "status": "start"}
+{"ts": "2026-09-21T08:44:56", "experiment": "E1", "status": "done", "result": "C:\\Users\\adeel\\OneDrive\\Desktop\\xai sdn full paper\\REVISION_2026\\04_results\\E1_baselines_cpu.json", "runtime_s": 306.5}
+{"ts": "2026-09-21T08:44:57", "experiment": "E9", "status": "start"}
+{"ts": "2026-09-21T08:48:43", "experiment": "E9", "status": "done", "result": "C:\\Users\\adeel\\OneDrive\\Desktop\\xai sdn full paper\\REVISION_2026\\04_results\\E9_deep_baselines.json", "runtime_s": 225.2}
+{"ts": "2026-09-21T08:48:45", "experiment": "E14", "status": "start"}
+{"ts": "2026-09-21T08:52:35", "experiment": "E10", "status": "start"}
+{"ts": "2026-09-21T08:54:51", "experiment": "E10", "status": "done", "result": "C:\\Users\\adeel\\OneDrive\\Desktop\\xai sdn full paper\\REVISION_2026\\04_results\\E10_explanation_budget.json", "runtime_s": 134.9}
+{"ts": "2026-09-21T08:54:53", "experiment": "E2", "status": "start"}
+{"ts": "2026-09-21T09:01:59", "experiment": "E2", "status": "done", "result": "C:\\Users\\adeel\\OneDrive\\Desktop\\xai sdn full paper\\REVISION_2026\\04_results\\E2_cross_dataset.json", "runtime_s": 424.3}
+{"ts": "2026-09-21T09:02:01", "experiment": "E4", "status": "start"}
+{"ts": "2026-09-21T09:17:54", "experiment": "E4b", "status": "start"}
+{"ts": "2026-09-21T09:18:03", "experiment": "E4b", "status": "skipped", "reason": "mininet unavailable in WSL"}
+{"ts": "2026-09-21T09:26:22", "experiment": "E14", "status": "start"}
+{"ts": "2026-09-21T09:30:07", "experiment": "E14", "status": "done", "result": "C:\\Users\\adeel\\OneDrive\\Desktop\\xai sdn full paper\\REVISION_2026\\04_results\\E14_roc_pr_curves.json", "runtime_s": 223.5}
+{"ts": "2026-09-21T09:30:09", "experiment": "E4", "status": "start"}
+{"ts": "2026-09-21T09:33:45", "experiment": "E19", "status": "start"}
+{"ts": "2026-09-21T09:35:45", "experiment": "E19", "status": "done", "result": "C:\\Users\\adeel\\OneDrive\\Desktop\\xai sdn full paper\\REVISION_2026\\04_results\\E19_shap_sample.json", "runtime_s": 117.0}
+{"ts": "2026-09-21T09:35:47", "experiment": "E20", "status": "start"}
+{"ts": "2026-09-21T09:41:48", "experiment": "E20", "status": "done", "result": "C:\\Users\\adeel\\OneDrive\\Desktop\\xai sdn full paper\\REVISION_2026\\04_results\\E20_few_shot_transfer.json", "runtime_s": 359.1}
+{"ts": "2026-09-21T09:41:50", "experiment": "E21", "status": "start"}
+{"ts": "2026-09-21T09:51:07", "experiment": "E21", "status": "done", "result": "C:\\Users\\adeel\\OneDrive\\Desktop\\xai sdn full paper\\REVISION_2026\\04_results\\E21_entropy_under_shift.json", "runtime_s": 555.1}
+{"ts": "2026-09-21T09:51:10", "experiment": "E22", "status": "start"}
+{"ts": "2026-09-21T09:57:05", "experiment": "E4b", "status": "start"}
+{"ts": "2026-09-21T09:57:22", "experiment": "E4", "status": "start"}
+{"ts": "2026-09-21T09:58:34", "experiment": "E4b", "status": "done", "result": "C:\\Users\\adeel\\OneDrive\\Desktop\\xai sdn full paper\\REVISION_2026\\04_results\\E4b_mininet_testbed.json", "runtime_s": 83.3}
+{"ts": "2026-09-21T11:14:33", "experiment": "E4", "status": "start"}

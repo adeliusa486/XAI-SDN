@@ -1,0 +1,122 @@
+{
+  "_provenance": {
+    "hardware": {
+      "cpu_name": "13th Gen Intel(R) Core(TM) i9-13900H",
+      "cpu_manufacturer": "GenuineIntel",
+      "cpu_cores": 14,
+      "cpu_logical": 20,
+      "cpu_max_clock_mhz": 2600,
+      "cpu_l2_cache_kb": 11776,
+      "cpu_l3_cache_kb": 24576,
+      "ram_total_bytes": 51150704640,
+      "ram_total_gb": 47.64,
+      "os_caption": "Microsoft Windows 11 Pro",
+      "os_version": "10.0.26120",
+      "os_build": "26120",
+      "os_arch": "64-bit",
+      "gpus": [
+        "Intel(R) Iris(R) Xe Graphics",
+        "NVIDIA GeForce RTX 4060 Laptop GPU"
+      ],
+      "machine_model": "Zenbook UX6404VV_UX6404VV"
+    },
+    "python": "3.11.9",
+    "platform": "Windows-10-10.0.26120-SP0",
+    "host": "ADEEL",
+    "libraries": {
+      "numpy": "2.3.5",
+      "pandas": "2.3.3",
+      "sklearn": "1.8.0",
+      "scipy": "1.17.1",
+      "shap": "0.51.0",
+      "xgboost": "3.2.0",
+      "lightgbm": "4.7.0",
+      "torch": "2.14.0+cpu",
+      "matplotlib": "3.10.9",
+      "statsmodels": "0.14.6"
+    },
+    "cpu_only": true,
+    "timestamp": "2026-09-21T09:35:45"
+  },
+  "experiment": "E19",
+  "objective": "per-flow TreeSHAP sample for the attribution figure",
+  "protocol": "chronological 70/30, repaired 88-dimensional feature set",
+  "n_train": 2513555,
+  "n_explained": 1500,
+  "n_explained_benign": 525,
+  "n_explained_attack": 975,
+  "benign_oversampled": true,
+  "oversampling_note": "Test flows are 2.8% benign, so a sample drawn at the natural ratio would show one class only. Benign flows are deliberately over-represented in this figure sample; no metric is computed from it, and every reported number comes from the full test partition.",
+  "shap_base_value": 0.5009640549898726,
+  "top_features": [
+    {
+      "feature": "H_src_ip",
+      "mean_abs_shap": 0.07266427839720413
+    },
+    {
+      "feature": "ACK_Flag_Count",
+      "mean_abs_shap": 0.06379460963074411
+    },
+    {
+      "feature": "H_dst_ip",
+      "mean_abs_shap": 0.06287259117879207
+    },
+    {
+      "feature": "Destination_Port",
+      "mean_abs_shap": 0.03566992082177364
+    },
+    {
+      "feature": "Init_Win_bytes_forward",
+      "mean_abs_shap": 0.029596280157116416
+    },
+    {
+      "feature": "Packet_Length_Std",
+      "mean_abs_shap": 0.023605052623657998
+    },
+    {
+      "feature": "URG_Flag_Count",
+      "mean_abs_shap": 0.01933420053889491
+    },
+    {
+      "feature": "Packet_Length_Variance",
+      "mean_abs_shap": 0.016037550907387663
+    },
+    {
+      "feature": "H_src_port",
+      "mean_abs_shap": 0.014413614892518151
+    },
+    {
+      "feature": "Flow_Bytes_s",
+      "mean_abs_shap": 0.012857079554958607
+    },
+    {
+      "feature": "Fwd_Packets_s",
+      "mean_abs_shap": 0.011320795423973242
+    },
+    {
+      "feature": "Source_Port",
+      "mean_abs_shap": 0.011118117533937842
+    },
+    {
+      "feature": "Average_Packet_Size",
+      "mean_abs_shap": 0.009901611147034101
+    },
+    {
+      "feature": "Flow_IAT_Max",
+      "mean_abs_shap": 0.008798950082846143
+    },
+    {
+      "feature": "Fwd_Packet_Length_Max",
+      "mean_abs_shap": 0.008513737927597066
+    }
+  ],
+  "fit_seconds": 112.9,
+  "shap_seconds": 3.5,
+  "artifacts": [
+    "feature_names.json",
+    "feature_values.npy",
+    "shap_values.npy",
+    "y.npy"
+  ],
+  "total_runtime_s": 117.0
+}

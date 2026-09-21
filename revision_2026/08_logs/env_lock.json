@@ -1,0 +1,28 @@
+{
+  "python": "3.11.9 (tags/v3.11.9:de54cf5, Apr  2 2024, 10:12:12) [MSC v.1938 64 bit (AMD64)]",
+  "python_executable": "C:\\Users\\adeel\\xaisdn_revision\\venv\\Scripts\\python.exe",
+  "platform": "Windows-10-10.0.26120-SP0",
+  "machine": "AMD64",
+  "processor": "Intel64 Family 6 Model 186 Stepping 2, GenuineIntel",
+  "key_libraries": {
+    "numpy": "2.3.5",
+    "pandas": "2.3.3",
+    "sklearn": "1.8.0",
+    "scipy": "1.17.1",
+    "shap": "0.51.0",
+    "xgboost": "3.2.0",
+    "lightgbm": "4.7.0",
+    "torch": "2.14.0+cpu",
+    "matplotlib": "3.10.9",
+    "seaborn": "0.13.2",
+    "statsmodels": "0.14.6",
+    "psutil": "7.2.2",
+    "networkx": "3.6.1",
+    "datasketch": "2.0.0",
+    "pyarrow": "25.0.1"
+  },
+  "n_pip_packages": 74,
+  "torch_cuda_available": false,
+  "torch_num_threads": 14,
+  "torch_build": "PyTorch built with:"
+}
