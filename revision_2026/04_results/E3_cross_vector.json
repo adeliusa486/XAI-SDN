@@ -1,0 +1,596 @@
+{
+  "_provenance": {
+    "hardware": {
+      "cpu_name": "13th Gen Intel(R) Core(TM) i9-13900H",
+      "cpu_manufacturer": "GenuineIntel",
+      "cpu_cores": 14,
+      "cpu_logical": 20,
+      "cpu_max_clock_mhz": 2600,
+      "cpu_l2_cache_kb": 11776,
+      "cpu_l3_cache_kb": 24576,
+      "ram_total_bytes": 51150704640,
+      "ram_total_gb": 47.64,
+      "os_caption": "Microsoft Windows 11 Pro",
+      "os_version": "10.0.26120",
+      "os_build": "26120",
+      "os_arch": "64-bit",
+      "gpus": [
+        "Intel(R) Iris(R) Xe Graphics",
+        "NVIDIA GeForce RTX 4060 Laptop GPU"
+      ],
+      "machine_model": "Zenbook UX6404VV_UX6404VV"
+    },
+    "python": "3.11.9",
+    "platform": "Windows-10-10.0.26120-SP0",
+    "host": "ADEEL",
+    "libraries": {
+      "numpy": "2.3.5",
+      "pandas": "2.3.3",
+      "sklearn": "1.8.0",
+      "scipy": "1.17.1",
+      "shap": "0.51.0",
+      "xgboost": "3.2.0",
+      "lightgbm": "4.7.0",
+      "torch": "2.14.0+cpu",
+      "matplotlib": "3.10.9",
+      "statsmodels": "0.14.6"
+    },
+    "cpu_only": true,
+    "timestamp": "2026-09-21T07:26:18"
+  },
+  "experiment": "E3",
+  "objective": "cross-vector and cross-day generalization",
+  "tau": 0.7,
+  "max_rows_per_partition": 1200000,
+  "truncation_policy": "contiguous tail of each capture, because benign traffic is concentrated late (see E18)",
+  "partitions": {
+    "SYN_0311": {
+      "status": "ok",
+      "n": 1200000,
+      "benign": 30449,
+      "attack": 1169551,
+      "benign_pct": 2.5374,
+      "cleaning": {
+        "rows_in": 4320541,
+        "n_cic_features_present": 80,
+        "missing_cic_features": [],
+        "nan_cells_total": 566152,
+        "nan_top_columns": {
+          "Flow_Packets_s": 283076,
+          "Flow_Bytes_s": 283076
+        },
+        "rows_dropped_nan_inf": 283076,
+        "rows_dropped_duplicate": 446671,
+        "label_counts": {
+          "Syn": 3559780,
+          "BENIGN": 31014
+        },
+        "rows_out": 3590794,
+        "truncated_to": 1200000,
+        "truncation_side": "tail (benign traffic is concentrated late)",
+        "n_final": 1200000,
+        "benign": 30449,
+        "attack": 1169551
+      }
+    },
+    "LDAP_0311": {
+      "status": "ok",
+      "n": 1200000,
+      "benign": 1291,
+      "attack": 1198709,
+      "benign_pct": 0.1076,
+      "cleaning": {
+        "rows_in": 2113234,
+        "n_cic_features_present": 80,
+        "missing_cic_features": [],
+        "nan_cells_total": 108224,
+        "nan_top_columns": {
+          "Flow_Packets_s": 54112,
+          "Flow_Bytes_s": 54112
+        },
+        "rows_dropped_nan_inf": 54112,
+        "rows_dropped_duplicate": 36075,
+        "label_counts": {
+          "LDAP": 1826301,
+          "NetBIOS": 191819,
+          "BENIGN": 4927
+        },
+        "rows_out": 2023047,
+        "truncated_to": 1200000,
+        "truncation_side": "tail (benign traffic is concentrated late)",
+        "n_final": 1200000,
+        "benign": 1291,
+        "attack": 1198709
+      }
+    },
+    "NetBIOS_0311": {
+      "status": "ok",
+      "n": 1200000,
+      "benign": 827,
+      "attack": 1199173,
+      "benign_pct": 0.0689,
+      "cleaning": {
+        "rows_in": 3455899,
+        "n_cic_features_present": 80,
+        "missing_cic_features": [],
+        "nan_cells_total": 261120,
+        "nan_top_columns": {
+          "Flow_Packets_s": 130560,
+          "Flow_Bytes_s": 130560
+        },
+        "rows_dropped_nan_inf": 130560,
+        "rows_dropped_duplicate": 83457,
+        "label_counts": {
+          "NetBIOS": 3240588,
+          "BENIGN": 1294
+        },
+        "rows_out": 3241882,
+        "truncated_to": 1200000,
+        "truncation_side": "tail (benign traffic is concentrated late)",
+        "n_final": 1200000,
+        "benign": 827,
+        "attack": 1199173
+      }
+    },
+    "Portmap_0311": {
+      "status": "ok",
+      "n": 181860,
+      "benign": 4695,
+      "attack": 177165,
+      "benign_pct": 2.5817,
+      "cleaning": {
+        "rows_in": 191694,
+        "n_cic_features_present": 80,
+        "missing_cic_features": [],
+        "nan_cells_total": 19600,
+        "nan_top_columns": {
+          "Flow_Packets_s": 9800,
+          "Flow_Bytes_s": 9800
+        },
+        "rows_dropped_nan_inf": 9800,
+        "rows_dropped_duplicate": 34,
+        "label_counts": {
+          "Portmap": 177165,
+          "BENIGN": 4695
+        },
+        "rows_out": 181860,
+        "n_final": 181860,
+        "benign": 4695,
+        "attack": 177165
+      }
+    },
+    "SYN_0112": {
+      "status": "ok",
+      "n": 1200000,
+      "benign": 356,
+      "attack": 1199644,
+      "benign_pct": 0.0297,
+      "cleaning": {
+        "rows_in": 1582681,
+        "n_cic_features_present": 80,
+        "missing_cic_features": [],
+        "nan_cells_total": 404634,
+        "nan_top_columns": {
+          "Flow_Packets_s": 202317,
+          "Flow_Bytes_s": 202317
+        },
+        "rows_dropped_nan_inf": 202317,
+        "rows_dropped_duplicate": 268,
+        "label_counts": {
+          "Syn": 1379715,
+          "BENIGN": 381
+        },
+        "rows_out": 1380096,
+        "truncated_to": 1200000,
+        "truncation_side": "tail (benign traffic is concentrated late)",
+        "n_final": 1200000,
+        "benign": 356,
+        "attack": 1199644
+      }
+    }
+  },
+  "zero_shot": {
+    "SYN_0311": {
+      "accuracy": 0.9923611111111111,
+      "macro_f1": 0.9758724069616118,
+      "avg_precision": 0.9999395811239311,
+      "roc_auc": 0.9993445100649648,
+      "precision": 0.9991547249957279,
+      "recall": 0.9925037890269779,
+      "fpr": 0.009202657807308971,
+      "fnr": 0.007496210973022128,
+      "confusion": {
+        "tn": 29823,
+        "fp": 277,
+        "fn": 2473,
+        "tp": 327427
+      },
+      "n": 360000,
+      "n_benign": 30100,
+      "n_attack": 329900,
+      "bootstrap_ci": {
+        "fpr": {
+          "mean": 0.009199200943106228,
+          "lo95": 0.008215236825753994,
+          "hi95": 0.010224103945919397
+        },
+        "fnr": {
+          "mean": 0.007504131569727182,
+          "lo95": 0.007212907832038639,
+          "hi95": 0.007802722425521119
+        },
+        "macro_f1": {
+          "mean": 0.9758531356234582,
+          "lo95": 0.9749561111065193,
+          "hi95": 0.9767545284964352
+        },
+        "n_boot": 500
+      },
+      "condition": "in-distribution held-out"
+    },
+    "LDAP_0311": {
+      "accuracy": 0.9998683333333334,
+      "macro_f1": 0.9691798306431824,
+      "avg_precision": 0.9999999903936319,
+      "roc_auc": 0.9999912644853368,
+      "precision": 0.9999274228868172,
+      "recall": 0.9999407696113068,
+      "fpr": 0.06738962044926414,
+      "fnr": 5.923038869316907e-05,
+      "confusion": {
+        "tn": 1204,
+        "fp": 87,
+        "fn": 71,
+        "tp": 1198638
+      },
+      "n": 1200000,
+      "n_benign": 1291,
+      "n_attack": 1198709,
+      "bootstrap_ci": {
+        "fpr": {
+          "mean": 0.06729049608506583,
+          "lo95": 0.053778856435954966,
+          "hi95": 0.08140133166657985
+        },
+        "fnr": {
+          "mean": 6.0238230575842295e-05,
+          "lo95": 4.711290184536436e-05,
+          "hi95": 7.424744789739327e-05
+        },
+        "macro_f1": {
+          "mean": 0.9689919156579251,
+          "lo95": 0.9643689968224802,
+          "hi95": 0.9737083260851541
+        },
+        "n_boot": 500
+      },
+      "condition": "zero-shot"
+    },
+    "NetBIOS_0311": {
+      "accuracy": 0.99987,
+      "macro_f1": 0.9566341422733717,
+      "avg_precision": 0.9999999865137474,
+      "roc_auc": 0.9999820835816625,
+      "precision": 0.9999958299521196,
+      "recall": 0.999874079886722,
+      "fpr": 0.006045949214026602,
+      "fnr": 0.00012592011327806747,
+      "confusion": {
+        "tn": 822,
+        "fp": 5,
+        "fn": 151,
+        "tp": 1199022
+      },
+      "n": 1200000,
+      "n_benign": 827,
+      "n_attack": 1199173,
+      "bootstrap_ci": {
+        "fpr": {
+          "mean": 0.005986913429987741,
+          "lo95": 0.0012161658141517477,
+          "hi95": 0.011877962085308055
+        },
+        "fnr": {
+          "mean": 0.0001259252669747339,
+          "lo95": 0.0001059091643137767,
+          "hi95": 0.00014676551324146255
+        },
+        "macro_f1": {
+          "mean": 0.9566926991623043,
+          "lo95": 0.94940913284543,
+          "hi95": 0.9633091762535104
+        },
+        "n_boot": 500
+      },
+      "condition": "zero-shot"
+    },
+    "Portmap_0311": {
+      "accuracy": 0.9989442428241504,
+      "macro_f1": 0.9896343371132827,
+      "avg_precision": 0.9999981119184242,
+      "roc_auc": 0.9999315488016847,
+      "precision": 0.9997966618656274,
+      "recall": 0.9991194649055964,
+      "fpr": 0.0076677316293929714,
+      "fnr": 0.0008805350944035221,
+      "confusion": {
+        "tn": 4659,
+        "fp": 36,
+        "fn": 156,
+        "tp": 177009
+      },
+      "n": 181860,
+      "n_benign": 4695,
+      "n_attack": 177165,
+      "bootstrap_ci": {
+        "fpr": {
+          "mean": 0.007702858956146139,
+          "lo95": 0.005125246948862782,
+          "hi95": 0.010252505439500762
+        },
+        "fnr": {
+          "mean": 0.0008793416252914653,
+          "lo95": 0.0007481172353079206,
+          "hi95": 0.0010222245459597576
+        },
+        "macro_f1": {
+          "mean": 0.9896362720110019,
+          "lo95": 0.9881920684670016,
+          "hi95": 0.9909451116049228
+        },
+        "n_boot": 500
+      },
+      "condition": "zero-shot"
+    },
+    "SYN_0112": {
+      "accuracy": 0.9652766666666667,
+      "macro_f1": 0.49947052491065164,
+      "avg_precision": 0.9999988612862327,
+      "roc_auc": 0.9970219149564932,
+      "precision": 0.999996545720839,
+      "recall": 0.9652696966766807,
+      "fpr": 0.011235955056179775,
+      "fnr": 0.03473030332331925,
+      "confusion": {
+        "tn": 352,
+        "fp": 4,
+        "fn": 41664,
+        "tp": 1157980
+      },
+      "n": 1200000,
+      "n_benign": 356,
+      "n_attack": 1199644,
+      "bootstrap_ci": {
+        "fpr": {
+          "mean": 0.011330908889517231,
+          "lo95": 0.0026666666666666666,
+          "hi95": 0.022535211267605635
+        },
+        "fnr": {
+          "mean": 0.03473372693943963,
+          "lo95": 0.03442229905104479,
+          "hi95": 0.035038970139436014
+        },
+        "macro_f1": {
+          "mean": 0.49948058417729035,
+          "lo95": 0.4987302442076991,
+          "hi95": 0.5003220159557813
+        },
+        "n_boot": 500
+      },
+      "condition": "zero-shot"
+    }
+  },
+  "leave_one_out": {
+    "SYN_0311": {
+      "accuracy": 0.9325008333333333,
+      "macro_f1": 0.6966219886289351,
+      "avg_precision": 0.9999649429504645,
+      "roc_auc": 0.9986986666703143,
+      "precision": 0.9999935695217378,
+      "recall": 0.9307494927540569,
+      "fpr": 0.00022989260731058492,
+      "fnr": 0.0692505072459431,
+      "confusion": {
+        "tn": 30442,
+        "fp": 7,
+        "fn": 80992,
+        "tp": 1088559
+      },
+      "n": 1200000,
+      "n_benign": 30449,
+      "n_attack": 1169551,
+      "bootstrap_ci": {
+        "fpr": {
+          "mean": 0.00023244829925855,
+          "lo95": 9.817251370272941e-05,
+          "hi95": 0.00039943260821382806
+        },
+        "fnr": {
+          "mean": 0.06924797232730026,
+          "lo95": 0.06880670482394231,
+          "hi95": 0.06972059570936882
+        },
+        "macro_f1": {
+          "mean": 0.6966481249121411,
+          "lo95": 0.6948284053257996,
+          "hi95": 0.6982972675906678
+        },
+        "n_boot": 500
+      },
+      "train_partitions": [
+        "LDAP_0311",
+        "NetBIOS_0311",
+        "Portmap_0311"
+      ],
+      "fit_seconds": 175.2
+    },
+    "LDAP_0311": {
+      "accuracy": 0.999855,
+      "macro_f1": 0.9662949802786118,
+      "avg_precision": 0.9999999917436638,
+      "roc_auc": 0.9999924159952773,
+      "precision": 0.9999282560292048,
+      "recall": 0.9999265876872535,
+      "fpr": 0.06661502711076685,
+      "fnr": 7.341231274646307e-05,
+      "confusion": {
+        "tn": 1205,
+        "fp": 86,
+        "fn": 88,
+        "tp": 1198621
+      },
+      "n": 1200000,
+      "n_benign": 1291,
+      "n_attack": 1198709,
+      "bootstrap_ci": {
+        "fpr": {
+          "mean": 0.06673025360226353,
+          "lo95": 0.05342321804348999,
+          "hi95": 0.08039761618689435
+        },
+        "fnr": {
+          "mean": 7.407646908084817e-05,
+          "lo95": 5.9626697344629213e-05,
+          "hi95": 8.843148130760367e-05
+        },
+        "macro_f1": {
+          "mean": 0.9661288993494641,
+          "lo95": 0.9608914982547775,
+          "hi95": 0.9709695895437063
+        },
+        "n_boot": 500
+      },
+      "train_partitions": [
+        "SYN_0311",
+        "NetBIOS_0311",
+        "Portmap_0311"
+      ],
+      "fit_seconds": 279.4
+    },
+    "NetBIOS_0311": {
+      "accuracy": 0.9999225,
+      "macro_f1": 0.9733635530729465,
+      "avg_precision": 0.9999999999687068,
+      "roc_auc": 0.9999999601700515,
+      "precision": 1.0,
+      "recall": 0.9999224465527493,
+      "fpr": 0.0,
+      "fnr": 7.75534472507303e-05,
+      "confusion": {
+        "tn": 827,
+        "fp": 0,
+        "fn": 93,
+        "tp": 1199080
+      },
+      "n": 1200000,
+      "n_benign": 827,
+      "n_attack": 1199173,
+      "bootstrap_ci": {
+        "fpr": {
+          "mean": 0.0,
+          "lo95": 0.0,
+          "hi95": 0.0
+        },
+        "fnr": {
+          "mean": 7.747848906871839e-05,
+          "lo95": 6.337803729611416e-05,
+          "hi95": 9.299845484805623e-05
+        },
+        "macro_f1": {
+          "mean": 0.9734173416036597,
+          "lo95": 0.9683618450900034,
+          "hi95": 0.9780876059905964
+        },
+        "n_boot": 500
+      },
+      "train_partitions": [
+        "SYN_0311",
+        "LDAP_0311",
+        "Portmap_0311"
+      ],
+      "fit_seconds": 211.8
+    },
+    "Portmap_0311": {
+      "accuracy": 0.9968987132959419,
+      "macro_f1": 0.9708668545541973,
+      "avg_precision": 0.9999999784286026,
+      "roc_auc": 0.9999991957101414,
+      "precision": 0.9999943375820343,
+      "recall": 0.9968221714221206,
+      "fpr": 0.00021299254526091586,
+      "fnr": 0.003177828577879378,
+      "confusion": {
+        "tn": 4694,
+        "fp": 1,
+        "fn": 563,
+        "tp": 176602
+      },
+      "n": 181860,
+      "n_benign": 4695,
+      "n_attack": 177165,
+      "bootstrap_ci": {
+        "fpr": {
+          "mean": 0.00021615145941212367,
+          "lo95": 0.0,
+          "hi95": 0.0006513678871752328
+        },
+        "fnr": {
+          "mean": 0.003169523363777876,
+          "lo95": 0.0029123111454437845,
+          "hi95": 0.0034424602652579663
+        },
+        "macro_f1": {
+          "mean": 0.9709394800984988,
+          "lo95": 0.9684103909151152,
+          "hi95": 0.9732655953827041
+        },
+        "n_boot": 500
+      },
+      "train_partitions": [
+        "SYN_0311",
+        "LDAP_0311",
+        "NetBIOS_0311"
+      ],
+      "fit_seconds": 321.0
+    }
+  },
+  "cross_day": {
+    "accuracy": 0.9652766666666667,
+    "macro_f1": 0.49947052491065164,
+    "avg_precision": 0.9999988612862327,
+    "roc_auc": 0.9970219149564932,
+    "precision": 0.999996545720839,
+    "recall": 0.9652696966766807,
+    "fpr": 0.011235955056179775,
+    "fnr": 0.03473030332331925,
+    "confusion": {
+      "tn": 352,
+      "fp": 4,
+      "fn": 41664,
+      "tp": 1157980
+    },
+    "n": 1200000,
+    "n_benign": 356,
+    "n_attack": 1199644,
+    "bootstrap_ci": {
+      "fpr": {
+        "mean": 0.011330908889517231,
+        "lo95": 0.0026666666666666666,
+        "hi95": 0.022535211267605635
+      },
+      "fnr": {
+        "mean": 0.03473372693943963,
+        "lo95": 0.03442229905104479,
+        "hi95": 0.035038970139436014
+      },
+      "macro_f1": {
+        "mean": 0.49948058417729035,
+        "lo95": 0.4987302442076991,
+        "hi95": 0.5003220159557813
+      },
+      "n_boot": 500
+    }
+  },
+  "total_runtime_s": 1456.2
+}

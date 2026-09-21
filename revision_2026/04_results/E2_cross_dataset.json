@@ -1,0 +1,398 @@
+{
+  "_provenance": {
+    "hardware": {
+      "cpu_name": "13th Gen Intel(R) Core(TM) i9-13900H",
+      "cpu_manufacturer": "GenuineIntel",
+      "cpu_cores": 14,
+      "cpu_logical": 20,
+      "cpu_max_clock_mhz": 2600,
+      "cpu_l2_cache_kb": 11776,
+      "cpu_l3_cache_kb": 24576,
+      "ram_total_bytes": 51150704640,
+      "ram_total_gb": 47.64,
+      "os_caption": "Microsoft Windows 11 Pro",
+      "os_version": "10.0.26120",
+      "os_build": "26120",
+      "os_arch": "64-bit",
+      "gpus": [
+        "Intel(R) Iris(R) Xe Graphics",
+        "NVIDIA GeForce RTX 4060 Laptop GPU"
+      ],
+      "machine_model": "Zenbook UX6404VV_UX6404VV"
+    },
+    "python": "3.11.9",
+    "platform": "Windows-10-10.0.26120-SP0",
+    "host": "ADEEL",
+    "libraries": {
+      "numpy": "2.3.5",
+      "pandas": "2.3.3",
+      "sklearn": "1.8.0",
+      "scipy": "1.17.1",
+      "shap": "0.51.0",
+      "xgboost": "3.2.0",
+      "lightgbm": "4.7.0",
+      "torch": "2.14.0+cpu",
+      "matplotlib": "3.10.9",
+      "statsmodels": "0.14.6"
+    },
+    "cpu_only": true,
+    "timestamp": "2026-09-21T09:01:59"
+  },
+  "experiment": "E2",
+  "objective": "cross-dataset validation with confidence intervals",
+  "tau": 0.7,
+  "repudiated_artifact": "model/artifacts/insdn_transfer.json in the repository is flagged synthetic:true and reports accuracy 1.0; it is not used here and is removed from the repository",
+  "source": {
+    "name": "CICDDoS2019_0311_Syn",
+    "cleaning": {
+      "rows_in": 4320541,
+      "n_cic_features_present": 80,
+      "missing_cic_features": [],
+      "nan_cells_total": 566152,
+      "nan_top_columns": {
+        "Flow_Packets_s": 283076,
+        "Flow_Bytes_s": 283076
+      },
+      "rows_dropped_nan_inf": 283076,
+      "rows_dropped_duplicate": 446671,
+      "label_counts": {
+        "Syn": 3559780,
+        "BENIGN": 31014
+      },
+      "rows_out": 3590794,
+      "truncated_to": 1500000
+    },
+    "n": 1500000
+  },
+  "transfers": {
+    "InSDN": {
+      "status": "ok",
+      "caveat": "the available export is pre-binarised and mixes several attack families, so this measures attack detection in general rather than DDoS detection specifically",
+      "schema": {
+        "n_shared_cic_features": 79,
+        "n_shared_entropy_features": 8,
+        "shared_entropy_features": [
+          "H_src_ip",
+          "H_dst_ip",
+          "H_dst_port",
+          "H_proto",
+          "H_pkt_len",
+          "H_iat",
+          "H_tcp_flags",
+          "H_src_port"
+        ],
+        "unavailable_entropy_features": [],
+        "transfer_dimension": 87
+      },
+      "target_cleaning": {
+        "rows_in": 343889,
+        "dropped_nan_inf": 0,
+        "dropped_duplicate": 120517,
+        "rows_out": 223372
+      },
+      "target_class_balance": {
+        "n": 223372,
+        "benign": 68419,
+        "attack": 154953
+      },
+      "zero_shot": {
+        "accuracy": 0.6026762530666332,
+        "macro_f1": 0.6026418974616436,
+        "avg_precision": 0.9567894823623749,
+        "roc_auc": 0.8990051758543736,
+        "precision": 0.9989448614753851,
+        "recall": 0.4276909772640736,
+        "fpr": 0.0010231076163054122,
+        "fnr": 0.5723090227359264,
+        "confusion": {
+          "tn": 68349,
+          "fp": 70,
+          "fn": 88681,
+          "tp": 66272
+        },
+        "n": 223372,
+        "n_benign": 68419,
+        "n_attack": 154953,
+        "bootstrap_ci": {
+          "accuracy": {
+            "mean": 0.6027074790036352,
+            "lo95": 0.6006162365918736,
+            "hi95": 0.6047400748527121
+          },
+          "macro_f1": {
+            "mean": 0.6026719307330075,
+            "lo95": 0.6005728893748329,
+            "hi95": 0.6046985994905043
+          },
+          "fpr": {
+            "mean": 0.0010229213817467841,
+            "lo95": 0.0007771791010591816,
+            "hi95": 0.0012772535397932694
+          },
+          "fnr": {
+            "mean": 0.5722799915392743,
+            "lo95": 0.5697552147115823,
+            "hi95": 0.5747280020047306
+          },
+          "n_boot": 1000
+        },
+        "fit_seconds": 72.8
+      },
+      "in_distribution": {
+        "accuracy": 1.0,
+        "macro_f1": 1.0,
+        "avg_precision": 1.0,
+        "roc_auc": 1.0,
+        "precision": 1.0,
+        "recall": 1.0,
+        "fpr": 0.0,
+        "fnr": 0.0,
+        "confusion": {
+          "tn": 20445,
+          "fp": 0,
+          "fn": 0,
+          "tp": 46567
+        },
+        "n": 67012,
+        "n_benign": 20445,
+        "n_attack": 46567,
+        "bootstrap_ci": {
+          "accuracy": {
+            "mean": 1.0,
+            "lo95": 1.0,
+            "hi95": 1.0
+          },
+          "macro_f1": {
+            "mean": 1.0,
+            "lo95": 1.0,
+            "hi95": 1.0
+          },
+          "fpr": {
+            "mean": 0.0,
+            "lo95": 0.0,
+            "hi95": 0.0
+          },
+          "fnr": {
+            "mean": 0.0,
+            "lo95": 0.0,
+            "hi95": 0.0
+          },
+          "n_boot": 1000
+        },
+        "note": "a chronological split of this corpus leaves too few minority-class flows in one partition to support a meaningful reference, so a stratified split of the same sizes was used; the in-distribution row is therefore an upper bound and is labelled accordingly",
+        "split": "stratified (chronological split degenerate)"
+      },
+      "joint": {
+        "accuracy": 0.9999850772995882,
+        "macro_f1": 0.9999824037041324,
+        "avg_precision": 1.0,
+        "roc_auc": 1.0,
+        "precision": 1.0,
+        "recall": 0.9999785255653145,
+        "fpr": 0.0,
+        "fnr": 2.1474434685506904e-05,
+        "confusion": {
+          "tn": 20445,
+          "fp": 0,
+          "fn": 1,
+          "tp": 46566
+        },
+        "n": 67012,
+        "n_benign": 20445,
+        "n_attack": 46567,
+        "bootstrap_ci": {
+          "accuracy": {
+            "mean": 0.9999857488211066,
+            "lo95": 0.9999552318987645,
+            "hi95": 1.0
+          },
+          "macro_f1": {
+            "mean": 0.9999831967355083,
+            "lo95": 0.9999470547914365,
+            "hi95": 1.0
+          },
+          "fpr": {
+            "mean": 0.0,
+            "lo95": 0.0,
+            "hi95": 0.0
+          },
+          "fnr": {
+            "mean": 2.050951560568205e-05,
+            "lo95": 0.0,
+            "hi95": 6.450256968000137e-05
+          },
+          "n_boot": 1000
+        }
+      },
+      "transfer_gap_macro_f1": 0.397358,
+      "joint_gain_macro_f1": -1.8e-05
+    },
+    "CICIDS2017_DDoS": {
+      "status": "ok",
+      "caveat": "ISCX exports carry no address, source-port or timestamp fields, so three of the eight entropy features cannot be computed",
+      "schema": {
+        "n_shared_cic_features": 78,
+        "n_shared_entropy_features": 4,
+        "shared_entropy_features": [
+          "H_dst_port",
+          "H_pkt_len",
+          "H_iat",
+          "H_tcp_flags"
+        ],
+        "unavailable_entropy_features": [
+          "H_src_ip",
+          "H_dst_ip",
+          "H_proto",
+          "H_src_port"
+        ],
+        "transfer_dimension": 82
+      },
+      "target_cleaning": {
+        "rows_in": 225745,
+        "dropped_nan_inf": 34,
+        "dropped_duplicate": 2629,
+        "rows_out": 223082
+      },
+      "target_class_balance": {
+        "n": 223082,
+        "benign": 95068,
+        "attack": 128014
+      },
+      "zero_shot": {
+        "accuracy": 0.3628486386171901,
+        "macro_f1": 0.27877658589115023,
+        "avg_precision": 0.5749421075855035,
+        "roc_auc": 0.5693831398866471,
+        "precision": 0.12643495741416708,
+        "recall": 0.018669832987017045,
+        "fpr": 0.17369672234611017,
+        "fnr": 0.9813301670129829,
+        "confusion": {
+          "tn": 78555,
+          "fp": 16513,
+          "fn": 125624,
+          "tp": 2390
+        },
+        "n": 223082,
+        "n_benign": 95068,
+        "n_attack": 128014,
+        "bootstrap_ci": {
+          "accuracy": {
+            "mean": 0.36288908562770644,
+            "lo95": 0.3608940882724738,
+            "hi95": 0.36487513560036217
+          },
+          "macro_f1": {
+            "mean": 0.2787913759698291,
+            "lo95": 0.2774271360776105,
+            "hi95": 0.28002609430290726
+          },
+          "fpr": {
+            "mean": 0.1736900008761398,
+            "lo95": 0.171421812737669,
+            "hi95": 0.17607200762778397
+          },
+          "fnr": {
+            "mean": 0.981340786657046,
+            "lo95": 0.9806171785791157,
+            "hi95": 0.982060438400082
+          },
+          "n_boot": 1000
+        },
+        "fit_seconds": 70.3
+      },
+      "in_distribution": {
+        "accuracy": 0.999252895031752,
+        "macro_f1": 0.9992236701030965,
+        "avg_precision": 0.9999923806155133,
+        "roc_auc": 0.9999949095952181,
+        "precision": 1.0,
+        "recall": 0.9981478051491017,
+        "fpr": 0.0,
+        "fnr": 0.0018521948508983144,
+        "confusion": {
+          "tn": 39930,
+          "fp": 0,
+          "fn": 50,
+          "tp": 26945
+        },
+        "n": 66925,
+        "n_benign": 39930,
+        "n_attack": 26995,
+        "bootstrap_ci": {
+          "accuracy": {
+            "mean": 0.9992470078446022,
+            "lo95": 0.9990287635412776,
+            "hi95": 0.9994471423234964
+          },
+          "macro_f1": {
+            "mean": 0.9992175118940422,
+            "lo95": 0.9989924622172857,
+            "hi95": 0.9994262568768215
+          },
+          "fpr": {
+            "mean": 0.0,
+            "lo95": 0.0,
+            "hi95": 0.0
+          },
+          "fnr": {
+            "mean": 0.0018669794148318548,
+            "lo95": 0.0013654846570406432,
+            "hi95": 0.002394729518912828
+          },
+          "n_boot": 1000
+        },
+        "split": "chronological"
+      },
+      "joint": {
+        "accuracy": 0.9992827792304819,
+        "macro_f1": 0.9992547322788157,
+        "avg_precision": 0.9999894984413434,
+        "roc_auc": 0.9999929200976686,
+        "precision": 1.0,
+        "recall": 0.9982218929431376,
+        "fpr": 0.0,
+        "fnr": 0.001778107056862382,
+        "confusion": {
+          "tn": 39930,
+          "fp": 0,
+          "fn": 48,
+          "tp": 26947
+        },
+        "n": 66925,
+        "n_benign": 39930,
+        "n_attack": 26995,
+        "bootstrap_ci": {
+          "accuracy": {
+            "mean": 0.9992780276428838,
+            "lo95": 0.9990586477400075,
+            "hi95": 0.9994770265222264
+          },
+          "macro_f1": {
+            "mean": 0.9992497573488643,
+            "lo95": 0.9990232127362426,
+            "hi95": 0.999457202943039
+          },
+          "fpr": {
+            "mean": 0.0,
+            "lo95": 0.0,
+            "hi95": 0.0
+          },
+          "fnr": {
+            "mean": 0.0017900600504286968,
+            "lo95": 0.0012922211048038122,
+            "hi95": 0.0023229617643031903
+          },
+          "n_boot": 1000
+        }
+      },
+      "transfer_gap_macro_f1": 0.720447,
+      "joint_gain_macro_f1": 3.1e-05
+    }
+  },
+  "sanity_gate": {
+    "targets_with_near_perfect_zero_shot": [],
+    "action": "none"
+  },
+  "total_runtime_s": 424.3
+}

@@ -1,0 +1,108 @@
+
+==============================================================
+STEP 1  Environment
+==============================================================
+$ mn --version 2>&1
+2.3.0
+$ ovs-vsctl --version | head -1
+ovs-vsctl (Open vSwitch) 3.7.1
+$ /opt/xaisdn/bin/python -c 'import os_ken, sklearn; print("os-ken", os_ken.__version__, "| scikit-learn", sklearn.__version__)'
+os-ken 4.2.2 | scikit-learn 1.8.0
+Detector: 176K Random Forest, 200 trees, running inside the controller process
+
+==============================================================
+STEP 2  Starting the XAI-SDN controller (OpenFlow 1.3, port 6653)
+==============================================================
+controller process started, pid 1074
+$ grep -v Warning /opt/xaisdn/demo_ctl.log | tail -3
+XAI-SDN controller listening on 0.0.0.0:6653 (app xaisdn_controller)
+$ ss -lntp 2>/dev/null | grep 6653 || netstat -lntp 2>/dev/null | grep 6653
+LISTEN 0      50            0.0.0.0:6653      0.0.0.0:*    users:(("python",pid=1074,fd=4))        
+
+==============================================================
+STEP 3  Building the topology and measuring baseline traffic
+==============================================================
+$ python3 -u /opt/xaisdn/demo_topo.py
+*** Error: Warning: sch_htb: quantum of class 50001 is big. Consider r2q change.
+*** Error: Warning: sch_htb: quantum of class 50001 is big. Consider r2q change.
+*** Error: Warning: sch_htb: quantum of class 50001 is big. Consider r2q change.
+*** Error: Warning: sch_htb: quantum of class 50001 is big. Consider r2q change.
+*** Error: Warning: sch_htb: quantum of class 50001 is big. Consider r2q change.
+*** Error: Warning: sch_htb: quantum of class 50001 is big. Consider r2q change.
+*** Error: Warning: sch_htb: quantum of class 50001 is big. Consider r2q change.
+*** Error: Warning: sch_htb: quantum of class 50001 is big. Consider r2q change.
+*** Error: Warning: sch_htb: quantum of class 50001 is big. Consider r2q change.
+*** Error: Warning: sch_htb: quantum of class 50001 is big. Consider r2q change.
+*** Error: Warning: sch_htb: quantum of class 50001 is big. Consider r2q change.
+*** Error: Warning: sch_htb: quantum of class 50001 is big. Consider r2q change.
+switch s1 controller : tcp:127.0.0.1:6653
+openflow connected   : True
+
+--- BASELINE: benign client pings the server, no attack ---
+--- 10.0.0.3 ping statistics ---
+8 packets transmitted, 8 received, 0% packet loss, time 2107ms
+rtt min/avg/max/mdev = 4.271/5.672/12.544/2.613 ms
+
+--- STEP 4  attacker starts a SYN flood with randomised sources ---
+flood running from h1 -> h3
+--- 10.0.0.3 ping statistics ---
+8 packets transmitted, 8 received, 0% packet loss, time 2105ms
+rtt min/avg/max/mdev = 4.079/4.218/4.667/0.185 ms
+
+--- STEP 5  detector reacting: rules installed by XAI-SDN ---
+flow table entries                   : 1097
+drop rules installed by the detector : 1094
+--- 10.0.0.3 ping statistics ---
+8 packets transmitted, 8 received, 0% packet loss, time 2104ms
+rtt min/avg/max/mdev = 4.143/4.202/4.309/0.054 ms
+
+--- STEP 6  flow table after mitigation ---
+OFPST_FLOW reply (OF1.3) (xid=0x2): flags=[more]
+ cookie=0x0, duration=15.566s, table=0, n_packets=1, n_bytes=54, idle_timeout=10, hard_timeout=60, priority=100,tcp,nw_src=144.204.166.209 actions=drop
+ cookie=0x0, duration=15.498s, table=0, n_packets=1, n_bytes=54, idle_timeout=10, hard_timeout=60, priority=100,tcp,nw_src=130.152.5.161 actions=drop
+ cookie=0x0, duration=14.048s, table=0, n_packets=1, n_bytes=54, idle_timeout=10, hard_timeout=60, priority=100,tcp,nw_src=147.123.200.248 actions=drop
+ cookie=0x0, duration=11.787s, table=0, n_packets=1, n_bytes=54, idle_timeout=10, hard_timeout=60, priority=100,tcp,nw_src=120.240.0.195 actions=drop
+ cookie=0x0, duration=11.457s, table=0, n_packets=1, n_bytes=54, idle_timeout=10, hard_timeout=60, priority=100,tcp,nw_src=129.98.183.84 actions=drop
+ cookie=0x0, duration=10.634s, table=0, n_packets=1, n_bytes=54, idle_timeout=10, hard_timeout=60, priority=100,tcp,nw_src=42.72.131.102 actions=drop
+ cookie=0x0, duration=9.995s, table=0, n_packets=0, n_bytes=0, idle_timeout=10, hard_timeout=60, priority=100,tcp,nw_src=68.6.168.1 actions=drop
+ovs-ofctl: write to stdout failed
+
+
+==============================================================
+STEP 6  Controller summary
+==============================================================
+$ cat /opt/xaisdn/demo_ctl.json 2>/dev/null | head -30
+{
+  "packet_in": 1842,
+  "flow_mod": 1822,
+  "packet_out": 23,
+  "alerts": 1818,
+  "explanations": 0,
+  "drops_installed": 1818,
+  "bytes_in": 100040,
+  "detect_enabled": true,
+  "explain_enabled": false,
+  "skipped_non_tcp": 1,
+  "wall_seconds": 24.85,
+  "decide_ms": {
+    "p50": 8.3301045,
+    "p95": 11.890456599999998,
+    "p99": 12.500408519999995,
+    "mean": 8.859088323982398,
+    "n": 1818
+  },
+  "install_ms": {
+    "p50": 0.143575,
+    "p95": 0.188169,
+    "mean": 0.14617184356328083
+  },
+  "controller_cpu_percent": {
+    "mean": 102.18333333333334,
+    "p95": 106.375,
+    "max": 108.2
+  },
+  "controller_rss_gb": {
+$ grep -viE 'warning|warn\(' /opt/xaisdn/demo_ctl.log | tail -6
+XAI-SDN controller listening on 0.0.0.0:6653 (app xaisdn_controller)
+
+Demonstration complete. Every line above was produced by the running system.

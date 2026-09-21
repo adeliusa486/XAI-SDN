@@ -1,0 +1,70 @@
+{
+  "file": "05_manuscript\\XAI-SDN-journal.tex",
+  "unfilled_placeholders": {
+    "count": 1,
+    "items": [
+      {
+        "line": 1164,
+        "context": "\\FILL{E14: per-model ROC-AUC and average precision with bootstrap intervals, and the chance-AP baseline}"
+      }
+    ]
+  },
+  "uncited_floats": {
+    "fig": [],
+    "tab": [],
+    "alg": [],
+    "eq": [],
+    "sec": [
+      "sec:intro",
+      "sec:terminology",
+      "sec:rolling",
+      "sec:environment",
+      "sec:memorization",
+      "sec:globalshap",
+      "sec:cases",
+      "sec:hyperparam",
+      "sec:related_quant",
+      "sec:dl-discussion",
+      "sec:sdiot"
+    ]
+  },
+  "informal": {
+    "count": 0,
+    "items": []
+  },
+  "overclaim": {
+    "count": 3,
+    "items": [
+      {
+        "line": 117,
+        "pattern": "\\bguarantee(?:s|d)?\\b",
+        "match": "guarantees",
+        "context": "Guidotti et al.~\\cite{guidotti2018survey} organize the space of black-box explanation methods, and Doshi-Velez and Kim~\\cite{doshivelez2017rigorous} set out what rigorous"
+      },
+      {
+        "line": 438,
+        "pattern": "\\bnear-perfect\\b",
+        "match": "near-perfect",
+        "context": "We also report, for comparison only, a \\emph{stratified random} split of the same proportions, which assigns 30\\% of each class to the test partition irrespective of time"
+      },
+      {
+        "line": 495,
+        "pattern": "\\bnear-perfect\\b",
+        "match": "near-perfect",
+        "context": "We report this prominently for two reasons. It is the largest single effect we measure, larger than any architectural choice examined in this paper. It also explains a go"
+      }
+    ]
+  },
+  "british": {
+    "count": 0,
+    "items": []
+  },
+  "em_dashes": {
+    "count": 0,
+    "items": []
+  },
+  "PASS": false,
+  "failures": [
+    "1 unfilled \\FILL placeholder line(s)"
+  ]
+}

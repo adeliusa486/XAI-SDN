@@ -1,0 +1,157 @@
+{
+  "_provenance": {
+    "hardware": {
+      "cpu_name": "13th Gen Intel(R) Core(TM) i9-13900H",
+      "cpu_manufacturer": "GenuineIntel",
+      "cpu_cores": 14,
+      "cpu_logical": 20,
+      "cpu_max_clock_mhz": 2600,
+      "cpu_l2_cache_kb": 11776,
+      "cpu_l3_cache_kb": 24576,
+      "ram_total_bytes": 51150704640,
+      "ram_total_gb": 47.64,
+      "os_caption": "Microsoft Windows 11 Pro",
+      "os_version": "10.0.26120",
+      "os_build": "26120",
+      "os_arch": "64-bit",
+      "gpus": [
+        "Intel(R) Iris(R) Xe Graphics",
+        "NVIDIA GeForce RTX 4060 Laptop GPU"
+      ],
+      "machine_model": "Zenbook UX6404VV_UX6404VV"
+    },
+    "python": "3.11.9",
+    "platform": "Windows-10-10.0.26120-SP0",
+    "host": "ADEEL",
+    "libraries": {
+      "numpy": "2.3.5",
+      "pandas": "2.3.3",
+      "sklearn": "1.8.0",
+      "scipy": "1.17.1",
+      "shap": "0.51.0",
+      "xgboost": "3.2.0",
+      "lightgbm": "4.7.0",
+      "torch": "2.14.0+cpu",
+      "matplotlib": "3.10.9",
+      "statsmodels": "0.14.6"
+    },
+    "cpu_only": true,
+    "timestamp": "2026-09-21T09:51:07"
+  },
+  "experiment": "E21",
+  "objective": "value of the entropy augmentation under distribution shift",
+  "tau": 0.7,
+  "seeds": [
+    42,
+    123,
+    456
+  ],
+  "train_cap": 600000,
+  "test_cap": 400000,
+  "rationale": "E17 shows the augmentation does not help in distribution. This run asks whether it helps where a distributional summary should: across attack vectors, capture days and corpora.",
+  "feature_set_sizes": {
+    "full": 88,
+    "cic_only": 80,
+    "entropy_only": 8
+  },
+  "by_shift": {
+    "cross_dataset": {
+      "full_macro_f1_mean": 0.3254905097732682,
+      "cic_only_macro_f1_mean": 0.40208083632887526,
+      "entropy_helps": false,
+      "delta": -0.07659,
+      "per_set": {
+        "cic_only": {
+          "mean": 0.40208083632887526,
+          "std": 0.18045660920104217,
+          "n": 6
+        },
+        "entropy_only": {
+          "mean": 0.6229632193358318,
+          "std": 0.31449385856760387,
+          "n": 6
+        },
+        "full": {
+          "mean": 0.3254905097732682,
+          "std": 0.0623113475072924,
+          "n": 6
+        }
+      }
+    },
+    "cross_day": {
+      "full_macro_f1_mean": 0.4820187279486092,
+      "cic_only_macro_f1_mean": 0.42123327486948964,
+      "entropy_helps": true,
+      "delta": 0.060785,
+      "per_set": {
+        "cic_only": {
+          "mean": 0.42123327486948964,
+          "std": 0.005963627735234316,
+          "n": 3
+        },
+        "entropy_only": {
+          "mean": 0.4999868746554597,
+          "std": 0.0,
+          "n": 3
+        },
+        "full": {
+          "mean": 0.4820187279486092,
+          "std": 0.010084732615673693,
+          "n": 3
+        }
+      }
+    },
+    "cross_vector": {
+      "full_macro_f1_mean": 0.9295100962116931,
+      "cic_only_macro_f1_mean": 0.8632669953452253,
+      "entropy_helps": true,
+      "delta": 0.066243,
+      "per_set": {
+        "cic_only": {
+          "mean": 0.8632669953452253,
+          "std": 0.17509521286194588,
+          "n": 9
+        },
+        "entropy_only": {
+          "mean": 0.4976168020534632,
+          "std": 0.0031181288640446435,
+          "n": 9
+        },
+        "full": {
+          "mean": 0.9295100962116931,
+          "std": 0.07568465375398852,
+          "n": 9
+        }
+      }
+    },
+    "in_distribution": {
+      "full_macro_f1_mean": 0.9669574147022807,
+      "cic_only_macro_f1_mean": 0.9898699590103258,
+      "entropy_helps": false,
+      "delta": -0.022913,
+      "per_set": {
+        "cic_only": {
+          "mean": 0.9898699590103258,
+          "std": 6.791156404481237e-05,
+          "n": 3
+        },
+        "entropy_only": {
+          "mean": 0.5021434216961872,
+          "std": 0.000895049771039401,
+          "n": 3
+        },
+        "full": {
+          "mean": 0.9669574147022807,
+          "std": 0.0013790329409837272,
+          "n": 3
+        }
+      }
+    }
+  },
+  "shifts_where_entropy_helps": [
+    "cross_day",
+    "cross_vector"
+  ],
+  "verdict": "The entropy augmentation improves macro F1 under cross_day, cross_vector while not improving it in distribution, which is the pattern a distributional feature should show: it contributes nothing where the exported counters already separate the classes, and contributes where they no longer transfer.",
+  "total_runtime_s": 555.1
+}

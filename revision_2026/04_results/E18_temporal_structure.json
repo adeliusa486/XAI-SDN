@@ -1,0 +1,117 @@
+{
+  "_provenance": {
+    "hardware": {
+      "cpu_name": "13th Gen Intel(R) Core(TM) i9-13900H",
+      "cpu_manufacturer": "GenuineIntel",
+      "cpu_cores": 14,
+      "cpu_logical": 20,
+      "cpu_max_clock_mhz": 2600,
+      "cpu_l2_cache_kb": 11776,
+      "cpu_l3_cache_kb": 24576,
+      "ram_total_bytes": 51150704640,
+      "ram_total_gb": 47.64,
+      "os_caption": "Microsoft Windows 11 Pro",
+      "os_version": "10.0.26120",
+      "os_build": "26120",
+      "os_arch": "64-bit",
+      "gpus": [
+        "Intel(R) Iris(R) Xe Graphics",
+        "NVIDIA GeForce RTX 4060 Laptop GPU"
+      ],
+      "machine_model": "Zenbook UX6404VV_UX6404VV"
+    },
+    "python": "3.11.9",
+    "platform": "Windows-10-10.0.26120-SP0",
+    "host": "ADEEL",
+    "libraries": {
+      "numpy": "2.3.5",
+      "pandas": "2.3.3",
+      "sklearn": "1.8.0",
+      "scipy": "1.17.1",
+      "shap": "0.51.0",
+      "xgboost": "3.2.0",
+      "lightgbm": "4.7.0",
+      "torch": "2.14.0+cpu",
+      "matplotlib": "3.10.9",
+      "statsmodels": "0.14.6"
+    },
+    "cpu_only": true,
+    "timestamp": "2026-09-21T05:27:50"
+  },
+  "experiment": "E18",
+  "objective": "verify timestamp parsing and characterize the temporal distribution of each class",
+  "timestamp_examples": [
+    "2018-11-03 11:36:28.607338",
+    "2018-11-03 11:36:28.607339",
+    "2018-11-03 11:36:28.607388",
+    "2018-11-03 11:36:28.607391",
+    "2018-11-03 11:36:28.607442",
+    "2018-11-03 12:37:00.711502",
+    "2018-11-03 12:37:00.730301",
+    "2018-11-03 12:37:00.788605",
+    "2018-11-03 12:37:00.788788",
+    "2018-11-03 12:37:00.815399"
+  ],
+  "timestamp_parse": {
+    "n_rows": 4320541,
+    "n_unparseable": 0,
+    "unparseable_rate": 0.0,
+    "min": "2018-11-03 11:30:25.830707",
+    "max": "2018-11-03 17:36:41.528982",
+    "span_seconds": 21975.698275,
+    "n_distinct": 3836523,
+    "monotone_in_file_order": false,
+    "dayfirst_agreement": 1.0
+  },
+  "benign_position_in_timeline": {
+    "n_benign": 35790,
+    "n_attack": 4284751,
+    "min": 0.00029394473838918284,
+    "p05": 0.9901726288843524,
+    "median": 0.9952517509385401,
+    "p95": 0.9994478815148107,
+    "max": 0.9999997685474501,
+    "fraction_in_last_30pct": 0.9786532550991898,
+    "fraction_in_last_10pct": 0.9729533389214865
+  },
+  "chronological_split_consequences": {
+    "50/50": {
+      "train_benign": 527,
+      "test_benign": 35263,
+      "train_benign_pct": 0.0244,
+      "test_benign_pct": 1.63234
+    },
+    "60/40": {
+      "train_benign": 586,
+      "test_benign": 35204,
+      "train_benign_pct": 0.02261,
+      "test_benign_pct": 2.03701
+    },
+    "70/30": {
+      "train_benign": 764,
+      "test_benign": 35026,
+      "train_benign_pct": 0.02526,
+      "test_benign_pct": 2.70229
+    },
+    "80/19": {
+      "train_benign": 918,
+      "test_benign": 34872,
+      "train_benign_pct": 0.02656,
+      "test_benign_pct": 4.03561
+    },
+    "90/9": {
+      "train_benign": 968,
+      "test_benign": 34822,
+      "train_benign_pct": 0.02489,
+      "test_benign_pct": 8.05964
+    }
+  },
+  "cleaned_matrix": {
+    "n": 3590794,
+    "benign_total": 31014,
+    "benign_in_first_70pct": 582,
+    "benign_in_last_30pct": 30432
+  },
+  "verdict": "Timestamps parse cleanly (0 unparseable of 4,320,541) and the clustering is a property of the capture, not of our preprocessing. 97.9% of benign flows fall in the final 30% of the timeline, so a chronological 70/30 split leaves only 582 benign flows for training against 30,432 at test, a ratio of 1 to 52. A chronological split of this partition is therefore close to a zero-shot problem for the benign class rather than a conventional held-out evaluation, and results under it must be described that way.",
+  "total_runtime_s": 17.3
+}
