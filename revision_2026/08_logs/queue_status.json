@@ -1,0 +1,173 @@
+{
+  "E5": {
+    "status": "already-complete",
+    "started": "2026-09-21T01:57:29",
+    "script": "e5_leakage_audit.py",
+    "log": "C:\\Users\\adeel\\OneDrive\\Desktop\\xai sdn full paper\\REVISION_2026\\08_logs\\E5.log",
+    "returncode": 0,
+    "runtime_s": 2529.0,
+    "finished": "2026-09-21T02:39:38"
+  },
+  "E12": {
+    "status": "already-complete",
+    "started": "2026-09-21T02:39:38",
+    "script": "e12_pr_threshold.py",
+    "log": "C:\\Users\\adeel\\OneDrive\\Desktop\\xai sdn full paper\\REVISION_2026\\08_logs\\E12.log",
+    "returncode": 0,
+    "runtime_s": 137.9,
+    "finished": "2026-09-21T02:41:56"
+  },
+  "E11": {
+    "status": "already-complete",
+    "started": "2026-09-21T02:41:56",
+    "script": "e11_entropy_numerics.py",
+    "log": "C:\\Users\\adeel\\OneDrive\\Desktop\\xai sdn full paper\\REVISION_2026\\08_logs\\E11.log",
+    "returncode": 0,
+    "runtime_s": 109.8,
+    "finished": "2026-09-21T02:43:45"
+  },
+  "E6": {
+    "status": "already-complete",
+    "started": "2026-09-21T02:43:45",
+    "script": "e6_collinearity_shap_stability.py",
+    "log": "C:\\Users\\adeel\\OneDrive\\Desktop\\xai sdn full paper\\REVISION_2026\\08_logs\\E6.log",
+    "returncode": 0,
+    "runtime_s": 732.4,
+    "finished": "2026-09-21T02:55:58"
+  },
+  "E15": {
+    "status": "already-complete",
+    "started": "2026-09-21T02:55:58",
+    "script": "e15_protocol.py",
+    "log": "C:\\Users\\adeel\\OneDrive\\Desktop\\xai sdn full paper\\REVISION_2026\\08_logs\\E15.log",
+    "returncode": 0,
+    "runtime_s": 1240.7,
+    "finished": "2026-09-21T03:16:38"
+  },
+  "E13": {
+    "status": "already-complete",
+    "started": "2026-09-21T04:30:37",
+    "script": "e13_case_studies.py",
+    "log": "C:\\Users\\adeel\\OneDrive\\Desktop\\xai sdn full paper\\REVISION_2026\\08_logs\\E13.log",
+    "returncode": 0,
+    "runtime_s": 123.2,
+    "finished": "2026-09-21T04:32:40"
+  },
+  "E5b": {
+    "status": "already-complete",
+    "started": "2026-09-21T05:33:25",
+    "script": "e5b_duplicate_leakage.py",
+    "log": "C:\\Users\\adeel\\OneDrive\\Desktop\\xai sdn full paper\\REVISION_2026\\08_logs\\E5b.log",
+    "returncode": 0,
+    "runtime_s": 65.9,
+    "finished": "2026-09-21T05:34:30"
+  },
+  "E17": {
+    "status": "already-complete",
+    "started": "2026-09-21T08:19:07",
+    "script": "e17_entropy_contribution.py",
+    "log": "C:\\Users\\adeel\\OneDrive\\Desktop\\xai sdn full paper\\REVISION_2026\\08_logs\\E17.log",
+    "returncode": 0,
+    "runtime_s": 1240.2,
+    "finished": "2026-09-21T08:39:47"
+  },
+  "E1": {
+    "status": "already-complete",
+    "started": "2026-09-21T08:39:47",
+    "script": "e1_baselines_cpu.py",
+    "log": "C:\\Users\\adeel\\OneDrive\\Desktop\\xai sdn full paper\\REVISION_2026\\08_logs\\E1.log",
+    "returncode": 0,
+    "runtime_s": 308.9,
+    "finished": "2026-09-21T08:44:56"
+  },
+  "E9": {
+    "status": "already-complete",
+    "started": "2026-09-21T08:44:56",
+    "script": "e9_deep_baselines.py",
+    "log": "C:\\Users\\adeel\\OneDrive\\Desktop\\xai sdn full paper\\REVISION_2026\\08_logs\\E9.log",
+    "returncode": 0,
+    "runtime_s": 228.1,
+    "finished": "2026-09-21T08:48:44"
+  },
+  "E14": {
+    "status": "already-complete",
+    "started": "2026-09-21T09:26:21",
+    "script": "e14_roc_pr_curves.py",
+    "log": "C:\\Users\\adeel\\OneDrive\\Desktop\\xai sdn full paper\\REVISION_2026\\08_logs\\E14.log",
+    "returncode": 0,
+    "runtime_s": 227.0,
+    "finished": "2026-09-21T09:30:08"
+  },
+  "E10": {
+    "status": "already-complete",
+    "started": "2026-09-21T08:52:33",
+    "script": "e10_explanation_budget.py",
+    "log": "C:\\Users\\adeel\\OneDrive\\Desktop\\xai sdn full paper\\REVISION_2026\\08_logs\\E10.log",
+    "returncode": 0,
+    "runtime_s": 138.0,
+    "finished": "2026-09-21T08:54:51"
+  },
+  "E3": {
+    "status": "already-complete",
+    "started": "2026-09-21T07:01:57",
+    "script": "e3_cross_vector.py",
+    "log": "C:\\Users\\adeel\\OneDrive\\Desktop\\xai sdn full paper\\REVISION_2026\\08_logs\\E3.log",
+    "returncode": 0,
+    "runtime_s": 1461.7,
+    "finished": "2026-09-21T07:26:19"
+  },
+  "E2": {
+    "status": "already-complete",
+    "started": "2026-09-21T08:54:51",
+    "script": "e2_cross_dataset.py",
+    "log": "C:\\Users\\adeel\\OneDrive\\Desktop\\xai sdn full paper\\REVISION_2026\\08_logs\\E2.log",
+    "returncode": 0,
+    "runtime_s": 428.0,
+    "finished": "2026-09-21T09:01:59"
+  },
+  "E4": {
+    "status": "running",
+    "started": "2026-09-21T11:14:31",
+    "script": "e4_controller_testbed.py",
+    "log": "C:\\Users\\adeel\\OneDrive\\Desktop\\xai sdn full paper\\REVISION_2026\\08_logs\\E4.log"
+  },
+  "E8b": {
+    "status": "already-complete"
+  },
+  "E19": {
+    "status": "done",
+    "started": "2026-09-21T09:33:44",
+    "script": "e19_shap_sample.py",
+    "log": "C:\\Users\\adeel\\OneDrive\\Desktop\\xai sdn full paper\\REVISION_2026\\08_logs\\E19.log",
+    "returncode": 0,
+    "runtime_s": 121.4,
+    "finished": "2026-09-21T09:35:45"
+  },
+  "E20": {
+    "status": "done",
+    "started": "2026-09-21T09:35:45",
+    "script": "e20_few_shot_transfer.py",
+    "log": "C:\\Users\\adeel\\OneDrive\\Desktop\\xai sdn full paper\\REVISION_2026\\08_logs\\E20.log",
+    "returncode": 0,
+    "runtime_s": 363.7,
+    "finished": "2026-09-21T09:41:49"
+  },
+  "E21": {
+    "status": "done",
+    "started": "2026-09-21T09:41:49",
+    "script": "e21_entropy_under_shift.py",
+    "log": "C:\\Users\\adeel\\OneDrive\\Desktop\\xai sdn full paper\\REVISION_2026\\08_logs\\E21.log",
+    "returncode": 0,
+    "runtime_s": 559.2,
+    "finished": "2026-09-21T09:51:08"
+  },
+  "E22": {
+    "status": "failed",
+    "started": "2026-09-21T09:51:08",
+    "script": "e22_model_size_pareto.py",
+    "log": "C:\\Users\\adeel\\OneDrive\\Desktop\\xai sdn full paper\\REVISION_2026\\08_logs\\E22.log",
+    "returncode": 4294967295,
+    "runtime_s": 356.2,
+    "finished": "2026-09-21T09:57:04"
+  }
+}

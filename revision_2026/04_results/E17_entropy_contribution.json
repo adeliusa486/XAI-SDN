@@ -1,0 +1,263 @@
+{
+  "_provenance": {
+    "hardware": {
+      "cpu_name": "13th Gen Intel(R) Core(TM) i9-13900H",
+      "cpu_manufacturer": "GenuineIntel",
+      "cpu_cores": 14,
+      "cpu_logical": 20,
+      "cpu_max_clock_mhz": 2600,
+      "cpu_l2_cache_kb": 11776,
+      "cpu_l3_cache_kb": 24576,
+      "ram_total_bytes": 51150704640,
+      "ram_total_gb": 47.64,
+      "os_caption": "Microsoft Windows 11 Pro",
+      "os_version": "10.0.26120",
+      "os_build": "26120",
+      "os_arch": "64-bit",
+      "gpus": [
+        "Intel(R) Iris(R) Xe Graphics",
+        "NVIDIA GeForce RTX 4060 Laptop GPU"
+      ],
+      "machine_model": "Zenbook UX6404VV_UX6404VV"
+    },
+    "python": "3.11.9",
+    "platform": "Windows-10-10.0.26120-SP0",
+    "host": "ADEEL",
+    "libraries": {
+      "numpy": "2.3.5",
+      "pandas": "2.3.3",
+      "sklearn": "1.8.0",
+      "scipy": "1.17.1",
+      "shap": "0.51.0",
+      "xgboost": "3.2.0",
+      "lightgbm": "4.7.0",
+      "torch": "2.14.0+cpu",
+      "matplotlib": "3.10.9",
+      "statsmodels": "0.14.6"
+    },
+    "cpu_only": true,
+    "timestamp": "2026-09-21T08:39:47"
+  },
+  "experiment": "E17",
+  "objective": "isolate the contribution of the entropy augmentation",
+  "seeds": [
+    42,
+    123,
+    456,
+    789,
+    1024
+  ],
+  "tau": 0.7,
+  "variant_dims": {
+    "natural": 88,
+    "scrambled": 88,
+    "cic_only": 80,
+    "entropy_only": 8
+  },
+  "variant_description": {
+    "natural": "80 flow statistics + 8 entropy features over the true arrival order",
+    "scrambled": "80 flow statistics + 8 entropy features computed over a random permutation and returned to chronological positions; the split is identical to 'natural'",
+    "cic_only": "80 exported flow statistics only",
+    "entropy_only": "8 entropy features only"
+  },
+  "summary": {
+    "natural": {
+      "accuracy": {
+        "mean": 0.9976127838045075,
+        "std": 6.105857309546454e-05,
+        "min": 0.9975511446866895,
+        "max": 0.9976857481819245
+      },
+      "macro_f1": {
+        "mean": 0.9790927473173923,
+        "std": 0.0005131388805434764,
+        "min": 0.9785746385170111,
+        "max": 0.9797060737358052
+      },
+      "avg_precision": {
+        "mean": 0.9999906607762586,
+        "std": 2.224813130022337e-06,
+        "min": 0.9999884073781836,
+        "max": 0.9999935305593342
+      },
+      "fpr": {
+        "mean": 0.0012026813880126185,
+        "std": 0.00015690505239633704,
+        "min": 0.000952944269190326,
+        "max": 0.0013801261829652998
+      },
+      "fnr": {
+        "mean": 0.0024216521494909277,
+        "std": 6.410038788226578e-05,
+        "min": 0.0023452292019724764,
+        "max": 0.0024856563680376305
+      }
+    },
+    "scrambled": {
+      "accuracy": {
+        "mean": 0.9975843778255129,
+        "std": 4.120439031549564e-05,
+        "min": 0.9975492880867552,
+        "max": 0.9976532576830747
+      },
+      "macro_f1": {
+        "mean": 0.9788558153707922,
+        "std": 0.0003473536296025344,
+        "min": 0.9785544607513672,
+        "max": 0.9794353419856832
+      },
+      "avg_precision": {
+        "mean": 0.9999981576333361,
+        "std": 3.560524779067292e-07,
+        "min": 0.9999976687605997,
+        "max": 0.9999984828344538
+      },
+      "fpr": {
+        "mean": 0.0010909568874868558,
+        "std": 0.00019075874439668765,
+        "min": 0.0009200841219768665,
+        "max": 0.0014129863301787593
+      },
+      "fnr": {
+        "mean": 0.0024541319021862693,
+        "std": 4.160161785071285e-05,
+        "min": 0.002383440675731702,
+        "max": 0.0024808799338177276
+      }
+    },
+    "cic_only": {
+      "accuracy": {
+        "mean": 0.99805112704899,
+        "std": 0.00012016304333019986,
+        "min": 0.997857483675845,
+        "max": 0.9981601094651321
+      },
+      "macro_f1": {
+        "mean": 0.9828129528922733,
+        "std": 0.0010228935049825644,
+        "min": 0.9811661473999915,
+        "max": 0.9837434515619274
+      },
+      "avg_precision": {
+        "mean": 0.9999980753062939,
+        "std": 2.484803882133991e-07,
+        "min": 0.9999977621881349,
+        "max": 0.9999983326978269
+      },
+      "fpr": {
+        "mean": 0.0009463722397476341,
+        "std": 8.505638213423228e-05,
+        "min": 0.0008215036803364879,
+        "max": 0.0010515247108307045
+      },
+      "fnr": {
+        "mean": 0.0019780169391463175,
+        "std": 0.0001255222921539182,
+        "min": 0.0018666304931381746,
+        "max": 0.002180919864807806
+      }
+    },
+    "entropy_only": {
+      "accuracy": {
+        "mean": 0.968930171419872,
+        "std": 0.0001778374171711992,
+        "min": 0.9687487816062932,
+        "max": 0.969224999489435
+      },
+      "macro_f1": {
+        "mean": 0.49314719233548027,
+        "std": 4.0171447803182236e-05,
+        "min": 0.4931004138923403,
+        "max": 0.49319765317095615
+      },
+      "avg_precision": {
+        "mean": 0.9989499712372201,
+        "std": 0.0002238155773152855,
+        "min": 0.9987360988022244,
+        "max": 0.9992869277803194
+      },
+      "fpr": {
+        "mean": 0.9988564668769715,
+        "std": 4.873947481003206e-05,
+        "min": 0.998784174553102,
+        "max": 0.9989156151419558
+      },
+      "fnr": {
+        "mean": 0.0029350232994461247,
+        "std": 0.00018394246009245422,
+        "min": 0.0026299046814787074,
+        "max": 0.003121877406128738
+      }
+    }
+  },
+  "paired_tests": [
+    {
+      "pair": "natural vs cic_only",
+      "mean_macro_f1_difference": -0.0037202055748810415,
+      "difference_per_seed": [
+        -0.0023530365251875907,
+        -0.004037377826122235,
+        -0.0032255787738039166,
+        -0.003969273033550991,
+        -0.005015761715740474
+      ],
+      "wilcoxon_p": 0.0625,
+      "a_better": false
+    },
+    {
+      "pair": "natural vs scrambled",
+      "mean_macro_f1_difference": 0.0002369319466001718,
+      "difference_per_seed": [
+        -0.0006222311108792233,
+        0.0010092822511108546,
+        0.0006760441980686593,
+        0.00023461826555837284,
+        -0.00011305387085780438
+      ],
+      "wilcoxon_p": 0.4375,
+      "a_better": true
+    },
+    {
+      "pair": "scrambled vs cic_only",
+      "mean_macro_f1_difference": -0.003957137521481214,
+      "difference_per_seed": [
+        -0.0017308054143083673,
+        -0.005046660077233089,
+        -0.003901622971872576,
+        -0.0042038912991093635,
+        -0.00490270784488267
+      ],
+      "wilcoxon_p": 0.0625,
+      "a_better": false
+    },
+    {
+      "pair": "natural vs entropy_only",
+      "mean_macro_f1_difference": 0.48594555498191216,
+      "difference_per_seed": [
+        0.48563390457111694,
+        0.4865821357334129,
+        0.4864460841343906,
+        0.4855914258459694,
+        0.4854742246246708
+      ],
+      "wilcoxon_p": 0.0625,
+      "a_better": true
+    },
+    {
+      "pair": "cic_only vs entropy_only",
+      "mean_macro_f1_difference": 0.48966576055679323,
+      "difference_per_seed": [
+        0.4879869410963045,
+        0.49061951355953515,
+        0.4896716629081945,
+        0.4895606988795204,
+        0.4904899863404113
+      ],
+      "wilcoxon_p": 0.0625,
+      "a_better": true
+    }
+  ],
+  "verdict_in_distribution": "The entropy augmentation does NOT improve in-distribution detection under the chronological protocol. The flow statistics alone match or exceed the full feature set. The claim that the entropy features improve accuracy is not supported in this setting and must be restated.",
+  "verdict_temporal_coherence": "Destroying the temporal coherence of the entropy features while holding the split fixed does not measurably change performance. The collapse in single-feature AUC observed in E5 therefore reflects the loss of arrival-order information in the features themselves rather than a change in what the classifier can do with the full representation.",
+  "total_runtime_s": 1236.4
+}

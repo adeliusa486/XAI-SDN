@@ -1,0 +1,771 @@
+{
+  "_provenance": {
+    "hardware": {
+      "cpu_name": "13th Gen Intel(R) Core(TM) i9-13900H",
+      "cpu_manufacturer": "GenuineIntel",
+      "cpu_cores": 14,
+      "cpu_logical": 20,
+      "cpu_max_clock_mhz": 2600,
+      "cpu_l2_cache_kb": 11776,
+      "cpu_l3_cache_kb": 24576,
+      "ram_total_bytes": 51150704640,
+      "ram_total_gb": 47.64,
+      "os_caption": "Microsoft Windows 11 Pro",
+      "os_version": "10.0.26120",
+      "os_build": "26120",
+      "os_arch": "64-bit",
+      "gpus": [
+        "Intel(R) Iris(R) Xe Graphics",
+        "NVIDIA GeForce RTX 4060 Laptop GPU"
+      ],
+      "machine_model": "Zenbook UX6404VV_UX6404VV"
+    },
+    "python": "3.11.9",
+    "platform": "Windows-10-10.0.26120-SP0",
+    "host": "ADEEL",
+    "libraries": {
+      "numpy": "2.3.5",
+      "pandas": "2.3.3",
+      "sklearn": "1.8.0",
+      "scipy": "1.17.1",
+      "shap": "0.51.0",
+      "xgboost": "3.2.0",
+      "lightgbm": "4.7.0",
+      "torch": "2.14.0+cpu",
+      "matplotlib": "3.10.9",
+      "statsmodels": "0.14.6"
+    },
+    "cpu_only": true,
+    "timestamp": "2026-09-21T08:44:56"
+  },
+  "experiment": "E1",
+  "objective": "unified CPU-only classical baseline comparison",
+  "cpu_only_guarantee": {
+    "torch_version": "2.14.0+cpu",
+    "torch_cuda_available": false,
+    "note": "the installed torch build has no CUDA support, so no model in this comparison can be timed on a GPU even accidentally"
+  },
+  "tau": 0.7,
+  "protocol_A": {
+    "description": "full imbalanced temporal split, natural class prevalence, no resampling and no class balancing of the data itself",
+    "n_train": 2513556,
+    "n_test": 1077238,
+    "train_benign": 582,
+    "test_benign": 30432,
+    "test_attack_prevalence": 0.9717499754000509,
+    "results": {
+      "Majority baseline": {
+        "model": "Majority baseline",
+        "protocol": "A",
+        "status": "ok",
+        "score_file": "scores/E1_A_Majority_baseline_score.npy",
+        "n_train": 2513556,
+        "n_test": 1077238,
+        "train_capped_to": null,
+        "train_benign": 582,
+        "test_benign": 30432,
+        "accuracy": 0.9717499754000509,
+        "macro_f1": 0.4928363065925188,
+        "avg_precision": 0.9717499754000509,
+        "roc_auc": 0.5,
+        "precision": 0.9717499754000509,
+        "recall": 1.0,
+        "fpr": 1.0,
+        "fnr": 0.0,
+        "confusion": {
+          "tn": 0,
+          "fp": 30432,
+          "fn": 0,
+          "tp": 1046806
+        },
+        "train_time_s": 0.05,
+        "peak_rss_gb": 1.505,
+        "batch_throughput_flows_per_s": 63672945.9,
+        "single_flow_latency_ms": {
+          "p50": 0.005799998689326458,
+          "p95": 0.006299998858594336,
+          "p99": 0.00650000038149301,
+          "mean": 0.005820050008878752
+        },
+        "single_flow_latency_ms_parallel_dispatch": {
+          "p50": 0.005800000508315861,
+          "mean": 0.005816999973831116,
+          "note": "same single-sample probe with the fitted n_jobs setting; the gap against the serial figure is joblib dispatch overhead"
+        },
+        "exact_per_prediction_explanation": false,
+        "hardware": "CPU only"
+      },
+      "Decision Tree": {
+        "model": "Decision Tree",
+        "protocol": "A",
+        "status": "ok",
+        "score_file": "scores/E1_A_Decision_Tree_score.npy",
+        "n_train": 2513556,
+        "n_test": 1077238,
+        "train_capped_to": null,
+        "train_benign": 582,
+        "test_benign": 30432,
+        "accuracy": 0.9771424699091565,
+        "macro_f1": 0.6681117004605062,
+        "avg_precision": 0.9776901436164508,
+        "roc_auc": 0.6075342396615256,
+        "precision": 0.9776944480532529,
+        "recall": 0.9992758925722627,
+        "fpr": 0.7842074132492114,
+        "fnr": 0.0007241074277373267,
+        "confusion": {
+          "tn": 6567,
+          "fp": 23865,
+          "fn": 758,
+          "tp": 1046048
+        },
+        "train_time_s": 10.91,
+        "peak_rss_gb": 1.507,
+        "batch_throughput_flows_per_s": 11775512.3,
+        "single_flow_latency_ms": {
+          "p50": 0.0304000004689442,
+          "p95": 0.03541500036590149,
+          "p99": 0.08480299997245311,
+          "mean": 0.03217450000283861
+        },
+        "single_flow_latency_ms_parallel_dispatch": {
+          "p50": 0.029999999242136255,
+          "mean": 0.03019100002347841,
+          "note": "same single-sample probe with the fitted n_jobs setting; the gap against the serial figure is joblib dispatch overhead"
+        },
+        "exact_per_prediction_explanation": false,
+        "hardware": "CPU only"
+      },
+      "Naive Bayes": {
+        "model": "Naive Bayes",
+        "protocol": "A",
+        "status": "ok",
+        "score_file": "scores/E1_A_Naive_Bayes_score.npy",
+        "n_train": 2513556,
+        "n_test": 1077238,
+        "train_capped_to": null,
+        "train_benign": 582,
+        "test_benign": 30432,
+        "accuracy": 0.9858954102993025,
+        "macro_f1": 0.8958986643486528,
+        "avg_precision": 0.9995516333602574,
+        "roc_auc": 0.9921659227503465,
+        "precision": 0.9997936122507117,
+        "recall": 0.985688847790326,
+        "fpr": 0.006999211356466877,
+        "fnr": 0.014311152209674,
+        "confusion": {
+          "tn": 30219,
+          "fp": 213,
+          "fn": 14981,
+          "tp": 1031825
+        },
+        "train_time_s": 2.908,
+        "peak_rss_gb": 1.506,
+        "batch_throughput_flows_per_s": 2260330.9,
+        "single_flow_latency_ms": {
+          "p50": 0.1534000002720859,
+          "p95": 0.16920499874686357,
+          "p99": 0.21108300048581433,
+          "mean": 0.1632699500050876
+        },
+        "single_flow_latency_ms_parallel_dispatch": {
+          "p50": 0.1569500000186963,
+          "mean": 0.16854500003319117,
+          "note": "same single-sample probe with the fitted n_jobs setting; the gap against the serial figure is joblib dispatch overhead"
+        },
+        "exact_per_prediction_explanation": false,
+        "hardware": "CPU only"
+      },
+      "Logistic Regression": {
+        "model": "Logistic Regression",
+        "protocol": "A",
+        "status": "ok",
+        "score_file": "scores/E1_A_Logistic_Regression_score.npy",
+        "n_train": 2513556,
+        "n_test": 1077238,
+        "train_capped_to": null,
+        "train_benign": 582,
+        "test_benign": 30432,
+        "accuracy": 0.9834976114841846,
+        "macro_f1": 0.8087298615235239,
+        "avg_precision": 0.9501144208547275,
+        "roc_auc": 0.5881678639165685,
+        "precision": 0.98532190225732,
+        "recall": 0.9978830843537388,
+        "fpr": 0.5113367507886435,
+        "fnr": 0.002116915646261103,
+        "confusion": {
+          "tn": 14871,
+          "fp": 15561,
+          "fn": 2216,
+          "tp": 1044590
+        },
+        "train_time_s": 35.993,
+        "peak_rss_gb": 1.521,
+        "batch_throughput_flows_per_s": 3236091.8,
+        "single_flow_latency_ms": {
+          "p50": 0.10859999929380137,
+          "p95": 0.1576299995576846,
+          "p99": 0.26260799868396134,
+          "mean": 0.11667345000296336
+        },
+        "single_flow_latency_ms_parallel_dispatch": {
+          "p50": 0.10750000001280569,
+          "mean": 0.11859799998092058,
+          "note": "same single-sample probe with the fitted n_jobs setting; the gap against the serial figure is joblib dispatch overhead"
+        },
+        "exact_per_prediction_explanation": false,
+        "hardware": "CPU only"
+      },
+      "Linear SVM": {
+        "model": "Linear SVM",
+        "protocol": "A",
+        "status": "ok",
+        "score_file": "scores/E1_A_Linear_SVM_score.npy",
+        "n_train": 300000,
+        "n_test": 1077238,
+        "train_capped_to": 300000,
+        "train_benign": 49,
+        "test_benign": 30432,
+        "accuracy": 0.9964102640270767,
+        "macro_f1": 0.9682525887382638,
+        "avg_precision": 0.9936531748491166,
+        "roc_auc": 0.9655336446873326,
+        "precision": 0.999042051178009,
+        "recall": 0.9972621479051514,
+        "fpr": 0.03289300736067297,
+        "fnr": 0.0027378520948485204,
+        "confusion": {
+          "tn": 29431,
+          "fp": 1001,
+          "fn": 2866,
+          "tp": 1043940
+        },
+        "train_time_s": 6.444,
+        "peak_rss_gb": 1.526,
+        "batch_throughput_flows_per_s": 3309851.0,
+        "single_flow_latency_ms": {
+          "p50": 0.11809999887191225,
+          "p95": 0.15740999979243497,
+          "p99": 0.24286200068672764,
+          "mean": 0.12495425003180571
+        },
+        "single_flow_latency_ms_parallel_dispatch": {
+          "p50": 0.1172499996755505,
+          "mean": 0.12618999999176594,
+          "note": "same single-sample probe with the fitted n_jobs setting; the gap against the serial figure is joblib dispatch overhead"
+        },
+        "exact_per_prediction_explanation": false,
+        "hardware": "CPU only"
+      },
+      "XGBoost": {
+        "model": "XGBoost",
+        "protocol": "A",
+        "status": "ok",
+        "score_file": "scores/E1_A_XGBoost_score.npy",
+        "n_train": 2513556,
+        "n_test": 1077238,
+        "train_capped_to": null,
+        "train_benign": 582,
+        "test_benign": 30432,
+        "accuracy": 0.9951542741715387,
+        "macro_f1": 0.9580185554266822,
+        "avg_precision": 0.9992338802205728,
+        "roc_auc": 0.9865110473276916,
+        "precision": 0.999037940041817,
+        "recall": 0.9959725106657776,
+        "fpr": 0.03299158780231336,
+        "fnr": 0.004027489334222387,
+        "confusion": {
+          "tn": 29428,
+          "fp": 1004,
+          "fn": 4216,
+          "tp": 1042590
+        },
+        "train_time_s": 13.256,
+        "peak_rss_gb": 1.649,
+        "batch_throughput_flows_per_s": 1260009.6,
+        "single_flow_latency_ms": {
+          "p50": 0.41679999958432745,
+          "p95": 0.49810000018624123,
+          "p99": 0.6140190004953183,
+          "mean": 0.36227039999812405
+        },
+        "single_flow_latency_ms_parallel_dispatch": {
+          "p50": 0.43104999986098846,
+          "mean": 0.4397430000699387,
+          "note": "same single-sample probe with the fitted n_jobs setting; the gap against the serial figure is joblib dispatch overhead"
+        },
+        "exact_per_prediction_explanation": true,
+        "hardware": "CPU only"
+      },
+      "LightGBM": {
+        "model": "LightGBM",
+        "protocol": "A",
+        "status": "ok",
+        "score_file": "scores/E1_A_LightGBM_score.npy",
+        "n_train": 2513556,
+        "n_test": 1077238,
+        "train_capped_to": null,
+        "train_benign": 582,
+        "test_benign": 30432,
+        "accuracy": 0.9975929181852107,
+        "macro_f1": 0.9788758513066754,
+        "avg_precision": 0.999986665114641,
+        "roc_auc": 0.9995360632899222,
+        "precision": 0.9998918079466584,
+        "recall": 0.9976308886269281,
+        "fpr": 0.0037131966351209252,
+        "fnr": 0.0023691113730719923,
+        "confusion": {
+          "tn": 30319,
+          "fp": 113,
+          "fn": 2480,
+          "tp": 1044326
+        },
+        "train_time_s": 5.867,
+        "peak_rss_gb": 1.682,
+        "batch_throughput_flows_per_s": 764705.5,
+        "single_flow_latency_ms": {
+          "p50": 0.2550999997765757,
+          "p95": 0.29391500047495356,
+          "p99": 0.3653520003535959,
+          "mean": 0.26097930003925285
+        },
+        "single_flow_latency_ms_parallel_dispatch": {
+          "p50": 0.698299999385199,
+          "mean": 0.7185290001325484,
+          "note": "same single-sample probe with the fitted n_jobs setting; the gap against the serial figure is joblib dispatch overhead"
+        },
+        "exact_per_prediction_explanation": true,
+        "hardware": "CPU only"
+      },
+      "XAI-SDN (Random Forest)": {
+        "model": "XAI-SDN (Random Forest)",
+        "protocol": "A",
+        "status": "ok",
+        "score_file": "scores/E1_A_XAI-SDN_Random_Forest_score.npy",
+        "n_train": 2513556,
+        "n_test": 1077238,
+        "train_capped_to": null,
+        "train_benign": 582,
+        "test_benign": 30432,
+        "accuracy": 0.9975789936857036,
+        "macro_f1": 0.9788131108748039,
+        "avg_precision": 0.999991896953794,
+        "roc_auc": 0.9997281264377706,
+        "precision": 0.9999722290319615,
+        "recall": 0.9975363152293739,
+        "fpr": 0.000952944269190326,
+        "fnr": 0.002463684770626076,
+        "confusion": {
+          "tn": 30403,
+          "fp": 29,
+          "fn": 2579,
+          "tp": 1044227
+        },
+        "train_time_s": 53.302,
+        "peak_rss_gb": 1.625,
+        "batch_throughput_flows_per_s": 27647.3,
+        "single_flow_latency_ms": {
+          "p50": 7.048049999866635,
+          "p95": 7.977374999791209,
+          "p99": 9.111463999488473,
+          "mean": 7.221695099978206
+        },
+        "single_flow_latency_ms_parallel_dispatch": {
+          "p50": 27.287499999147258,
+          "mean": 27.81965200000741,
+          "note": "same single-sample probe with the fitted n_jobs setting; the gap against the serial figure is joblib dispatch overhead"
+        },
+        "exact_per_prediction_explanation": true,
+        "hardware": "CPU only"
+      }
+    }
+  },
+  "protocol_B": {
+    "description": "identically subsampled temporal protocol applied to every model, preserving the natural class ratio; the training block is the contiguous tail of the training partition and the test block is the contiguous head of the test partition",
+    "n_train": 100000,
+    "n_test": 40000,
+    "train_benign": 31,
+    "test_benign": 1174,
+    "svm_train_cap": 40000,
+    "results": {
+      "Majority baseline": {
+        "model": "Majority baseline",
+        "protocol": "B",
+        "status": "ok",
+        "score_file": "scores/E1_B_Majority_baseline_score.npy",
+        "n_train": 100000,
+        "n_test": 40000,
+        "train_capped_to": null,
+        "train_benign": 31,
+        "test_benign": 1174,
+        "accuracy": 0.97065,
+        "macro_f1": 0.4925532184812118,
+        "avg_precision": 0.97065,
+        "roc_auc": 0.5,
+        "precision": 0.97065,
+        "recall": 1.0,
+        "fpr": 1.0,
+        "fnr": 0.0,
+        "confusion": {
+          "tn": 0,
+          "fp": 1174,
+          "fn": 0,
+          "tp": 38826
+        },
+        "train_time_s": 0.001,
+        "peak_rss_gb": 1.668,
+        "batch_throughput_flows_per_s": 73139513.5,
+        "single_flow_latency_ms": {
+          "p50": 0.006000000212225132,
+          "p95": 0.0073999999585794285,
+          "p99": 0.008501999254804103,
+          "mean": 0.006208900002093287
+        },
+        "single_flow_latency_ms_parallel_dispatch": {
+          "p50": 0.006000000212225132,
+          "mean": 0.006562000016856473,
+          "note": "same single-sample probe with the fitted n_jobs setting; the gap against the serial figure is joblib dispatch overhead"
+        },
+        "exact_per_prediction_explanation": false,
+        "hardware": "CPU only"
+      },
+      "Decision Tree": {
+        "model": "Decision Tree",
+        "protocol": "B",
+        "status": "ok",
+        "score_file": "scores/E1_B_Decision_Tree_score.npy",
+        "n_train": 100000,
+        "n_test": 40000,
+        "train_capped_to": null,
+        "train_benign": 31,
+        "test_benign": 1174,
+        "accuracy": 0.979575,
+        "macro_f1": 0.7427832095585096,
+        "avg_precision": 0.9804704897421663,
+        "roc_auc": 0.6706300314573446,
+        "precision": 0.9804818850656082,
+        "recall": 0.9988409828465461,
+        "fpr": 0.6575809199318569,
+        "fnr": 0.0011590171534538712,
+        "confusion": {
+          "tn": 402,
+          "fp": 772,
+          "fn": 45,
+          "tp": 38781
+        },
+        "train_time_s": 0.274,
+        "peak_rss_gb": 1.67,
+        "batch_throughput_flows_per_s": 10808765.9,
+        "single_flow_latency_ms": {
+          "p50": 0.030199998946045525,
+          "p95": 0.043599999207799556,
+          "p99": 0.10892899974351164,
+          "mean": 0.034334300008595164
+        },
+        "single_flow_latency_ms_parallel_dispatch": {
+          "p50": 0.03215000015188707,
+          "mean": 0.04282049999346782,
+          "note": "same single-sample probe with the fitted n_jobs setting; the gap against the serial figure is joblib dispatch overhead"
+        },
+        "exact_per_prediction_explanation": false,
+        "hardware": "CPU only"
+      },
+      "Naive Bayes": {
+        "model": "Naive Bayes",
+        "protocol": "B",
+        "status": "ok",
+        "score_file": "scores/E1_B_Naive_Bayes_score.npy",
+        "n_train": 100000,
+        "n_test": 40000,
+        "train_capped_to": null,
+        "train_benign": 31,
+        "test_benign": 1174,
+        "accuracy": 0.98775,
+        "macro_f1": 0.9093264248704662,
+        "avg_precision": 0.9993084628395377,
+        "roc_auc": 0.9884615377865041,
+        "precision": 0.9995048730911554,
+        "recall": 0.9878689537938495,
+        "fpr": 0.016183986371379896,
+        "fnr": 0.012131046206150518,
+        "confusion": {
+          "tn": 1155,
+          "fp": 19,
+          "fn": 471,
+          "tp": 38355
+        },
+        "train_time_s": 0.112,
+        "peak_rss_gb": 1.671,
+        "batch_throughput_flows_per_s": 2130935.3,
+        "single_flow_latency_ms": {
+          "p50": 0.155399999130168,
+          "p95": 0.18960500119646895,
+          "p99": 0.31131100024140324,
+          "mean": 0.1621758999881422
+        },
+        "single_flow_latency_ms_parallel_dispatch": {
+          "p50": 0.15514999904553406,
+          "mean": 0.1593270000830671,
+          "note": "same single-sample probe with the fitted n_jobs setting; the gap against the serial figure is joblib dispatch overhead"
+        },
+        "exact_per_prediction_explanation": false,
+        "hardware": "CPU only"
+      },
+      "Logistic Regression": {
+        "model": "Logistic Regression",
+        "protocol": "B",
+        "status": "ok",
+        "score_file": "scores/E1_B_Logistic_Regression_score.npy",
+        "n_train": 100000,
+        "n_test": 40000,
+        "train_capped_to": null,
+        "train_benign": 31,
+        "test_benign": 1174,
+        "accuracy": 0.985775,
+        "macro_f1": 0.844786649873346,
+        "avg_precision": 0.9569010119693919,
+        "roc_auc": 0.668289137111181,
+        "precision": 0.986767437717892,
+        "recall": 0.9987379590995724,
+        "fpr": 0.44293015332197616,
+        "fnr": 0.0012620409004275486,
+        "confusion": {
+          "tn": 654,
+          "fp": 520,
+          "fn": 49,
+          "tp": 38777
+        },
+        "train_time_s": 1.406,
+        "peak_rss_gb": 1.651,
+        "batch_throughput_flows_per_s": 3109549.4,
+        "single_flow_latency_ms": {
+          "p50": 0.10879999899771065,
+          "p95": 0.1298550007049925,
+          "p99": 0.21874299940463948,
+          "mean": 0.11511464998966403
+        },
+        "single_flow_latency_ms_parallel_dispatch": {
+          "p50": 0.10884999937843531,
+          "mean": 0.16135599993504002,
+          "note": "same single-sample probe with the fitted n_jobs setting; the gap against the serial figure is joblib dispatch overhead"
+        },
+        "exact_per_prediction_explanation": false,
+        "hardware": "CPU only"
+      },
+      "Linear SVM": {
+        "model": "Linear SVM",
+        "protocol": "B",
+        "status": "ok",
+        "score_file": "scores/E1_B_Linear_SVM_score.npy",
+        "n_train": 100000,
+        "n_test": 40000,
+        "train_capped_to": null,
+        "train_benign": 31,
+        "test_benign": 1174,
+        "accuracy": 0.992475,
+        "macro_f1": 0.9323714497672176,
+        "avg_precision": 0.9780786714393023,
+        "roc_auc": 0.8587665091386188,
+        "precision": 0.9953964457474989,
+        "recall": 0.9968577757173028,
+        "fpr": 0.1524701873935264,
+        "fnr": 0.0031422242826971616,
+        "confusion": {
+          "tn": 995,
+          "fp": 179,
+          "fn": 122,
+          "tp": 38704
+        },
+        "train_time_s": 51.353,
+        "peak_rss_gb": 1.654,
+        "batch_throughput_flows_per_s": 645230.0,
+        "single_flow_latency_ms": {
+          "p50": 0.5260999996608007,
+          "p95": 1.0382750000644592,
+          "p99": 1.4409160009199693,
+          "mean": 0.5877749999972366
+        },
+        "single_flow_latency_ms_parallel_dispatch": {
+          "p50": 0.3847500001938897,
+          "mean": 0.4567949999636767,
+          "note": "same single-sample probe with the fitted n_jobs setting; the gap against the serial figure is joblib dispatch overhead"
+        },
+        "exact_per_prediction_explanation": false,
+        "hardware": "CPU only"
+      },
+      "XGBoost": {
+        "model": "XGBoost",
+        "protocol": "B",
+        "status": "ok",
+        "score_file": "scores/E1_B_XGBoost_score.npy",
+        "n_train": 100000,
+        "n_test": 40000,
+        "train_capped_to": null,
+        "train_benign": 31,
+        "test_benign": 1174,
+        "accuracy": 0.996325,
+        "macro_f1": 0.9685674249502768,
+        "avg_precision": 0.9999532593516027,
+        "roc_auc": 0.9984243794727905,
+        "precision": 0.9989164925315378,
+        "recall": 0.9972956266419409,
+        "fpr": 0.03577512776831346,
+        "fnr": 0.0027043733580590324,
+        "confusion": {
+          "tn": 1132,
+          "fp": 42,
+          "fn": 105,
+          "tp": 38721
+        },
+        "train_time_s": 1.127,
+        "peak_rss_gb": 1.661,
+        "batch_throughput_flows_per_s": 498938.5,
+        "single_flow_latency_ms": {
+          "p50": 1.1304500003461726,
+          "p95": 1.488940000035654,
+          "p99": 4.399478999457642,
+          "mean": 1.1827696500176899
+        },
+        "single_flow_latency_ms_parallel_dispatch": {
+          "p50": 1.118349999160273,
+          "mean": 1.0987664999902336,
+          "note": "same single-sample probe with the fitted n_jobs setting; the gap against the serial figure is joblib dispatch overhead"
+        },
+        "exact_per_prediction_explanation": true,
+        "hardware": "CPU only"
+      },
+      "LightGBM": {
+        "model": "LightGBM",
+        "protocol": "B",
+        "status": "ok",
+        "score_file": "scores/E1_B_LightGBM_score.npy",
+        "n_train": 100000,
+        "n_test": 40000,
+        "train_capped_to": null,
+        "train_benign": 31,
+        "test_benign": 1174,
+        "accuracy": 0.9961,
+        "macro_f1": 0.9664948453608248,
+        "avg_precision": 0.9959613727003415,
+        "roc_auc": 0.9679281218060115,
+        "precision": 0.9986588951359158,
+        "recall": 0.9973213825786844,
+        "fpr": 0.044293015332197615,
+        "fnr": 0.0026786174213156134,
+        "confusion": {
+          "tn": 1122,
+          "fp": 52,
+          "fn": 104,
+          "tp": 38722
+        },
+        "train_time_s": 2.548,
+        "peak_rss_gb": 1.686,
+        "batch_throughput_flows_per_s": 232439.8,
+        "single_flow_latency_ms": {
+          "p50": 0.9867999997368315,
+          "p95": 1.7510000005131576,
+          "p99": 2.454632999197201,
+          "mean": 1.0304989000323985
+        },
+        "single_flow_latency_ms_parallel_dispatch": {
+          "p50": 1.6166499999599182,
+          "mean": 2.0259495000027528,
+          "note": "same single-sample probe with the fitted n_jobs setting; the gap against the serial figure is joblib dispatch overhead"
+        },
+        "exact_per_prediction_explanation": true,
+        "hardware": "CPU only"
+      },
+      "XAI-SDN (Random Forest)": {
+        "model": "XAI-SDN (Random Forest)",
+        "protocol": "B",
+        "status": "ok",
+        "score_file": "scores/E1_B_XAI-SDN_Random_Forest_score.npy",
+        "n_train": 100000,
+        "n_test": 40000,
+        "train_capped_to": null,
+        "train_benign": 31,
+        "test_benign": 1174,
+        "accuracy": 0.9965,
+        "macro_f1": 0.9705724526080384,
+        "avg_precision": 0.9999603798215043,
+        "roc_auc": 0.9986804250756289,
+        "precision": 0.9995609504132231,
+        "recall": 0.9968320197805595,
+        "fpr": 0.014480408858603067,
+        "fnr": 0.003167980219440581,
+        "confusion": {
+          "tn": 1157,
+          "fp": 17,
+          "fn": 123,
+          "tp": 38703
+        },
+        "train_time_s": 4.161,
+        "peak_rss_gb": 1.675,
+        "batch_throughput_flows_per_s": 8561.5,
+        "single_flow_latency_ms": {
+          "p50": 7.345500001065375,
+          "p95": 32.424244999856455,
+          "p99": 39.17942700065395,
+          "mean": 12.109282999971583
+        },
+        "single_flow_latency_ms_parallel_dispatch": {
+          "p50": 27.617850000751787,
+          "mean": 27.859947000060856,
+          "note": "same single-sample probe with the fitted n_jobs setting; the gap against the serial figure is joblib dispatch overhead"
+        },
+        "exact_per_prediction_explanation": true,
+        "hardware": "CPU only"
+      },
+      "SVM (RBF)": {
+        "model": "SVM (RBF)",
+        "protocol": "B",
+        "status": "ok",
+        "score_file": "scores/E1_B_SVM_RBF_score.npy",
+        "n_train": 40000,
+        "n_test": 40000,
+        "train_capped_to": 40000,
+        "train_benign": 15,
+        "test_benign": 1174,
+        "accuracy": 0.99355,
+        "macro_f1": 0.9488320529347882,
+        "avg_precision": 0.9998227703758753,
+        "roc_auc": 0.9969685657348107,
+        "precision": 1.0,
+        "recall": 0.9933549683201978,
+        "fpr": 0.0,
+        "fnr": 0.006645031679802195,
+        "confusion": {
+          "tn": 1174,
+          "fp": 0,
+          "fn": 258,
+          "tp": 38568
+        },
+        "train_time_s": 4.666,
+        "peak_rss_gb": 1.701,
+        "batch_throughput_flows_per_s": 47976.8,
+        "single_flow_latency_ms": {
+          "p50": 0.139899999339832,
+          "p95": 0.15980499983925256,
+          "p99": 0.22453999961726365,
+          "mean": 0.14921455001513095
+        },
+        "single_flow_latency_ms_parallel_dispatch": {
+          "p50": 0.1436000002286164,
+          "mean": 0.14760650001335307,
+          "note": "same single-sample probe with the fitted n_jobs setting; the gap against the serial figure is joblib dispatch overhead"
+        },
+        "exact_per_prediction_explanation": false,
+        "hardware": "CPU only"
+      }
+    },
+    "error": "a contiguous block contains a single class; falling back to a stratified subsample of the same sizes, which is reported as such"
+  },
+  "training_caps_note": "Two models are trained on a capped subset because they do not scale to the full partition on a single machine: the RBF SVM, whose kernel computation is quadratic in the sample count, and the linear SVM, whose liblinear solver is single-threaded and had not converged after more than thirty minutes on 2.5M samples. Both caps are recorded per model in the 'train_capped_to' field and stated in the paper, because a model that cannot be trained at the deployment scale is a deployment fact rather than an inconvenience to be hidden.",
+  "latency_measurement_note": "Per-flow latency is measured with the estimator forced to serial execution. With the fitted n_jobs=-1 setting, joblib dispatch adds roughly 25 ms to every single-sample call regardless of model size, which would make a Random Forest appear two orders of magnitude slower than a linear SVM. Both figures are recorded per model so the overhead is visible. Batch throughput retains the parallel setting, since a controller processing a poll batch can use every core.",
+  "comparability_statement": "Every figure in both protocols was measured on one machine, on the CPU only, with the same thread budget and the same measurement harness. Latency is reported as a distribution over single-flow inference calls rather than as a mean, and throughput is measured in batch mode; the two answer different operational questions and are not interchangeable. Results from Protocol A and Protocol B are never compared with one another.",
+  "total_runtime_s": 306.5
+}

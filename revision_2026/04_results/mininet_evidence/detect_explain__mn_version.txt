@@ -1,0 +1,2 @@
+2.3.0
+ovs-vsctl (Open vSwitch) 3.7.1

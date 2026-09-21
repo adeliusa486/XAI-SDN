@@ -1,0 +1,410 @@
+{
+  "_provenance": {
+    "hardware": {
+      "cpu_name": "13th Gen Intel(R) Core(TM) i9-13900H",
+      "cpu_manufacturer": "GenuineIntel",
+      "cpu_cores": 14,
+      "cpu_logical": 20,
+      "cpu_max_clock_mhz": 2600,
+      "cpu_l2_cache_kb": 11776,
+      "cpu_l3_cache_kb": 24576,
+      "ram_total_bytes": 51150704640,
+      "ram_total_gb": 47.64,
+      "os_caption": "Microsoft Windows 11 Pro",
+      "os_version": "10.0.26120",
+      "os_build": "26120",
+      "os_arch": "64-bit",
+      "gpus": [
+        "Intel(R) Iris(R) Xe Graphics",
+        "NVIDIA GeForce RTX 4060 Laptop GPU"
+      ],
+      "machine_model": "Zenbook UX6404VV_UX6404VV"
+    },
+    "python": "3.11.9",
+    "platform": "Windows-10-10.0.26120-SP0",
+    "host": "ADEEL",
+    "libraries": {
+      "numpy": "2.3.5",
+      "pandas": "2.3.3",
+      "sklearn": "1.8.0",
+      "scipy": "1.17.1",
+      "shap": "0.51.0",
+      "xgboost": "3.2.0",
+      "lightgbm": "4.7.0",
+      "torch": "2.14.0+cpu",
+      "matplotlib": "3.10.9",
+      "statsmodels": "0.14.6"
+    },
+    "cpu_only": true,
+    "timestamp": "2026-09-21T02:41:55"
+  },
+  "experiment": "E12",
+  "objective": "precision-recall based threshold selection",
+  "protocol": {
+    "type": "chronological train / validation / test",
+    "train": [
+      0,
+      2154476
+    ],
+    "validation": [
+      2154476,
+      2513556
+    ],
+    "test": [
+      2513556,
+      3590794
+    ],
+    "n_train": 2154476,
+    "n_validation": 359080,
+    "n_test": 1077238,
+    "train_benign": 522,
+    "validation_benign": 60,
+    "test_benign": 30432,
+    "statement": "the threshold is selected on the validation partition only; no test observation participates in any tuning decision"
+  },
+  "train_time_s": 128.33,
+  "validation_curves": {
+    "average_precision": 1.0,
+    "pr_auc_note": "average precision is the PR-AUC estimator used here",
+    "roc_auc": 1.0,
+    "positive_prevalence": 0.9998329063161413,
+    "baseline_precision_of_random_classifier": 0.9998329063161413
+  },
+  "validation_sweep": [
+    {
+      "tau": 0.05,
+      "precision": 0.9999693619770995,
+      "recall": 1.0,
+      "f1": 0.999984680753874,
+      "macro_f1": 0.9495336247806068,
+      "accuracy": 0.9999693661579593,
+      "fpr": 0.18333333333333332,
+      "fnr": 0.0,
+      "alerts": 359031,
+      "false_alerts": 11,
+      "missed_attacks": 0,
+      "alert_rate": 0.999863540158182
+    },
+    {
+      "tau": 0.1,
+      "precision": 0.999988858683542,
+      "recall": 1.0,
+      "f1": 0.9999944293107386,
+      "macro_f1": 0.9827558353450245,
+      "accuracy": 0.999988860421076,
+      "fpr": 0.06666666666666667,
+      "fnr": 0.0,
+      "alerts": 359024,
+      "false_alerts": 4,
+      "missed_attacks": 0,
+      "alert_rate": 0.9998440458950651
+    },
+    {
+      "tau": 0.15,
+      "precision": 0.9999972146476112,
+      "recall": 1.0,
+      "f1": 0.999998607321866,
+      "macro_f1": 0.9957976229886641,
+      "accuracy": 0.9999972151052691,
+      "fpr": 0.016666666666666666,
+      "fnr": 0.0,
+      "alerts": 359021,
+      "false_alerts": 1,
+      "missed_attacks": 0,
+      "alert_rate": 0.9998356912108722
+    },
+    {
+      "tau": 0.2,
+      "precision": 0.9999972146476112,
+      "recall": 1.0,
+      "f1": 0.999998607321866,
+      "macro_f1": 0.9957976229886641,
+      "accuracy": 0.9999972151052691,
+      "fpr": 0.016666666666666666,
+      "fnr": 0.0,
+      "alerts": 359021,
+      "false_alerts": 1,
+      "missed_attacks": 0,
+      "alert_rate": 0.9998356912108722
+    },
+    {
+      "tau": 0.25,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0,
+      "macro_f1": 1.0,
+      "accuracy": 1.0,
+      "fpr": 0.0,
+      "fnr": 0.0,
+      "alerts": 359020,
+      "false_alerts": 0,
+      "missed_attacks": 0,
+      "alert_rate": 0.9998329063161413
+    },
+    {
+      "tau": 0.3,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0,
+      "macro_f1": 1.0,
+      "accuracy": 1.0,
+      "fpr": 0.0,
+      "fnr": 0.0,
+      "alerts": 359020,
+      "false_alerts": 0,
+      "missed_attacks": 0,
+      "alert_rate": 0.9998329063161413
+    },
+    {
+      "tau": 0.35,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0,
+      "macro_f1": 1.0,
+      "accuracy": 1.0,
+      "fpr": 0.0,
+      "fnr": 0.0,
+      "alerts": 359020,
+      "false_alerts": 0,
+      "missed_attacks": 0,
+      "alert_rate": 0.9998329063161413
+    },
+    {
+      "tau": 0.4,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0,
+      "macro_f1": 1.0,
+      "accuracy": 1.0,
+      "fpr": 0.0,
+      "fnr": 0.0,
+      "alerts": 359020,
+      "false_alerts": 0,
+      "missed_attacks": 0,
+      "alert_rate": 0.9998329063161413
+    },
+    {
+      "tau": 0.45,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0,
+      "macro_f1": 1.0,
+      "accuracy": 1.0,
+      "fpr": 0.0,
+      "fnr": 0.0,
+      "alerts": 359020,
+      "false_alerts": 0,
+      "missed_attacks": 0,
+      "alert_rate": 0.9998329063161413
+    },
+    {
+      "tau": 0.5,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0,
+      "macro_f1": 1.0,
+      "accuracy": 1.0,
+      "fpr": 0.0,
+      "fnr": 0.0,
+      "alerts": 359020,
+      "false_alerts": 0,
+      "missed_attacks": 0,
+      "alert_rate": 0.9998329063161413
+    },
+    {
+      "tau": 0.55,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0,
+      "macro_f1": 1.0,
+      "accuracy": 1.0,
+      "fpr": 0.0,
+      "fnr": 0.0,
+      "alerts": 359020,
+      "false_alerts": 0,
+      "missed_attacks": 0,
+      "alert_rate": 0.9998329063161413
+    },
+    {
+      "tau": 0.6,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0,
+      "macro_f1": 1.0,
+      "accuracy": 1.0,
+      "fpr": 0.0,
+      "fnr": 0.0,
+      "alerts": 359020,
+      "false_alerts": 0,
+      "missed_attacks": 0,
+      "alert_rate": 0.9998329063161413
+    },
+    {
+      "tau": 0.65,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0,
+      "macro_f1": 1.0,
+      "accuracy": 1.0,
+      "fpr": 0.0,
+      "fnr": 0.0,
+      "alerts": 359020,
+      "false_alerts": 0,
+      "missed_attacks": 0,
+      "alert_rate": 0.9998329063161413
+    },
+    {
+      "tau": 0.7,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0,
+      "macro_f1": 1.0,
+      "accuracy": 1.0,
+      "fpr": 0.0,
+      "fnr": 0.0,
+      "alerts": 359020,
+      "false_alerts": 0,
+      "missed_attacks": 0,
+      "alert_rate": 0.9998329063161413
+    },
+    {
+      "tau": 0.75,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0,
+      "macro_f1": 1.0,
+      "accuracy": 1.0,
+      "fpr": 0.0,
+      "fnr": 0.0,
+      "alerts": 359020,
+      "false_alerts": 0,
+      "missed_attacks": 0,
+      "alert_rate": 0.9998329063161413
+    },
+    {
+      "tau": 0.8,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0,
+      "macro_f1": 1.0,
+      "accuracy": 1.0,
+      "fpr": 0.0,
+      "fnr": 0.0,
+      "alerts": 359020,
+      "false_alerts": 0,
+      "missed_attacks": 0,
+      "alert_rate": 0.9998329063161413
+    },
+    {
+      "tau": 0.85,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0,
+      "macro_f1": 1.0,
+      "accuracy": 1.0,
+      "fpr": 0.0,
+      "fnr": 0.0,
+      "alerts": 359020,
+      "false_alerts": 0,
+      "missed_attacks": 0,
+      "alert_rate": 0.9998329063161413
+    },
+    {
+      "tau": 0.9,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0,
+      "macro_f1": 1.0,
+      "accuracy": 1.0,
+      "fpr": 0.0,
+      "fnr": 0.0,
+      "alerts": 359020,
+      "false_alerts": 0,
+      "missed_attacks": 0,
+      "alert_rate": 0.9998329063161413
+    },
+    {
+      "tau": 0.95,
+      "precision": 1.0,
+      "recall": 0.9999972146398529,
+      "f1": 0.9999986073179868,
+      "macro_f1": 0.9958670722540348,
+      "accuracy": 0.9999972151052691,
+      "fpr": 0.0,
+      "fnr": 2.7853601470670156e-06,
+      "alerts": 359019,
+      "false_alerts": 0,
+      "missed_attacks": 1,
+      "alert_rate": 0.9998301214214103
+    }
+  ],
+  "threshold_selection": {
+    "criterion_max_f1_grid": {
+      "tau": 0.25,
+      "note": "0.05 grid, for comparability with the sweep table"
+    },
+    "criterion_max_f1_fine": {
+      "tau": 0.94,
+      "f1": 1.0
+    },
+    "criterion_precision_target": {
+      "precision_target": 0.999,
+      "tau": 0.0,
+      "recall_at_target": 1.0
+    },
+    "submitted_paper_tau": 0.7,
+    "selected": 0.94,
+    "selected_on": "validation partition"
+  },
+  "test_operating_point": {
+    "tau": 0.94,
+    "precision": 1.0,
+    "recall": 0.9963297879454264,
+    "f1": 0.9981615201672911,
+    "macro_f1": 0.969392632243878,
+    "accuracy": 0.996433471526255,
+    "fpr": 0.0,
+    "fnr": 0.003670212054573627,
+    "alerts": 1042964,
+    "false_alerts": 0,
+    "missed_attacks": 3842,
+    "alert_rate": 0.968183446926306,
+    "confusion": {
+      "tn": 30432,
+      "fp": 0,
+      "fn": 3842,
+      "tp": 1042964
+    }
+  },
+  "test_operating_point_at_submitted_tau_0.70": {
+    "tau": 0.7,
+    "precision": 0.9999664820626364,
+    "recall": 0.9974933273213948,
+    "f1": 0.9987283736238195,
+    "macro_f1": 0.978411670776419,
+    "accuracy": 0.9975316503873796,
+    "fpr": 0.001150105152471083,
+    "fnr": 0.0025066726786052047,
+    "alerts": 1044217,
+    "false_alerts": 35,
+    "missed_attacks": 2624,
+    "alert_rate": 0.9693466067851301,
+    "confusion": {
+      "tn": 30397,
+      "fp": 35,
+      "fn": 2624,
+      "tp": 1044182
+    }
+  },
+  "test_curves": {
+    "average_precision": 0.9999900388732432,
+    "roc_auc": 0.9996648885330528,
+    "positive_prevalence": 0.9717499754000509
+  },
+  "why_fnr_is_misleading_here": {
+    "test_prevalence_positive": 0.9717499754000509,
+    "negatives_in_test": 30432,
+    "note": "FNR is normalised by the positive class, which holds 97.17% of the test flows, so a change of one false negative moves it by a negligible amount. Precision is normalised by the alert volume and is driven by the 30,432 negatives, which is the quantity an operator experiences as false alarms."
+  },
+  "total_runtime_s": 133.3
+}

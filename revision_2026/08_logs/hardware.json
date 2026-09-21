@@ -1,0 +1,20 @@
+﻿{
+    "cpu_name":  "13th Gen Intel(R) Core(TM) i9-13900H",
+    "cpu_manufacturer":  "GenuineIntel",
+    "cpu_cores":  14,
+    "cpu_logical":  20,
+    "cpu_max_clock_mhz":  2600,
+    "cpu_l2_cache_kb":  11776,
+    "cpu_l3_cache_kb":  24576,
+    "ram_total_bytes":  51150704640,
+    "ram_total_gb":  47.64,
+    "os_caption":  "Microsoft Windows 11 Pro",
+    "os_version":  "10.0.26120",
+    "os_build":  "26120",
+    "os_arch":  "64-bit",
+    "gpus":  [
+                 "Intel(R) Iris(R) Xe Graphics",
+                 "NVIDIA GeForce RTX 4060 Laptop GPU"
+             ],
+    "machine_model":  "Zenbook UX6404VV_UX6404VV"
+}
