@@ -1,0 +1,860 @@
+{
+  "manuscript_id": "Access-2026-39885",
+  "title": "XAI-SDN: An explainable entropy-guided machine learning framework for real-time DDoS detection in software defined networks",
+  "decision_date": "2026-09-20",
+  "associate_editor": "Prof. Vicente Alarcon-Aquino",
+  "n_reviewers": 7,
+  "n_concerns": 47,
+  "comments": [
+    {
+      "id": "R1.1",
+      "reviewer": 1,
+      "verbatim": "Please fix the broken cross reference in Section V, particularly the reference shown as “Eq. (??)” in the Figure 2 caption.",
+      "type": "figure",
+      "severity": "minor",
+      "requires_experiment": false,
+      "experiments": [],
+      "verified_finding": "The literal string 'Eq. (??)' is rendered INSIDE the graphic entropyengine_standalone.pdf (Fig. 2), produced by \\node{Eq.~(\\ref{eq:rolling}) Applied Per Feature} in a standalone .tex with no eq:rolling label. Not a body-text defect.",
+      "target_locations": [
+        "Fig. 2 graphic (entropyengine_standalone)",
+        "Sec. V"
+      ],
+      "phase": 6,
+      "status": "manuscript done, response pending"
+    },
+    {
+      "id": "R1.2",
+      "reviewer": 1,
+      "verbatim": "Section V A contains some informal and repetitive wording. Please rewrite these sentences in a more formal academic style.",
+      "type": "text",
+      "severity": "minor",
+      "requires_experiment": false,
+      "experiments": [],
+      "verified_finding": "Sec. V-A (Entropy feature extraction, tex L209-L233) contains 'a bunch of', 'that means', 'things like', 'The key to making the system fast', 'we can update the calculation'.",
+      "target_locations": [
+        "Sec. V-A"
+      ],
+      "phase": 5,
+      "status": "resolved"
+    },
+    {
+      "id": "R1.3",
+      "reviewer": 1,
+      "verbatim": "Please check the formatting and spacing around “Acc” in Equation (4) and ensure the notation is consistent throughout the paper.",
+      "type": "text",
+      "severity": "minor",
+      "requires_experiment": false,
+      "experiments": [],
+      "verified_finding": "Eq. (4) uses \\mathrm{Acc} inside an aligned block with \\tfrac; spacing is cramped and the symbol is never defined in a notation table.",
+      "target_locations": [
+        "Eq. (4)",
+        "Sec. IV-C",
+        "new notation table"
+      ],
+      "phase": 5,
+      "status": "resolved"
+    },
+    {
+      "id": "R1.4",
+      "reviewer": 1,
+      "verbatim": "Please clarify the hardware used for the latency and throughput comparisons in Table 8. The DNN baseline appears to use a GPU while the other methods use a CPU.",
+      "type": "experiment",
+      "severity": "major",
+      "requires_experiment": true,
+      "experiments": [
+        "E1",
+        "E9"
+      ],
+      "verified_finding": "Table 8 caption states the asymmetry in full capitals; the DNN train-time cell is '---'. No hardware specification appears anywhere in the paper.",
+      "target_locations": [
+        "Table 8",
+        "Sec. VII-B",
+        "new experimental-environment table"
+      ],
+      "phase": 3,
+      "status": "manuscript done, response pending"
+    },
+    {
+      "id": "R1.5",
+      "reviewer": 1,
+      "verbatim": "If possible, provide CPU only results for all baseline models so that the performance comparison is more consistent.",
+      "type": "experiment",
+      "severity": "major",
+      "requires_experiment": true,
+      "experiments": [
+        "E1",
+        "E9"
+      ],
+      "target_locations": [
+        "Table 8",
+        "Sec. VII-B"
+      ],
+      "phase": 3,
+      "status": "manuscript done, response pending"
+    },
+    {
+      "id": "R1.6",
+      "reviewer": 1,
+      "verbatim": "Please clearly explain whether the reported latency and throughput values are directly comparable across the different hardware setups.",
+      "type": "experiment",
+      "severity": "major",
+      "requires_experiment": true,
+      "experiments": [
+        "E1",
+        "E9"
+      ],
+      "target_locations": [
+        "Table 8",
+        "Sec. VI-C",
+        "Sec. VII-B"
+      ],
+      "phase": 3,
+      "status": "manuscript done, response pending"
+    },
+    {
+      "id": "R1.7",
+      "reviewer": 1,
+      "verbatim": "Check the paper once more for minor grammar, formatting, and cross reference issues before final submission.",
+      "type": "text",
+      "severity": "minor",
+      "requires_experiment": false,
+      "experiments": [],
+      "target_locations": [
+        "whole manuscript"
+      ],
+      "phase": 5,
+      "status": "resolved"
+    },
+    {
+      "id": "R2.1",
+      "reviewer": 2,
+      "verbatim": "The manuscript repeatedly uses terms such as “robustness,” “generalization,” and “real-time deployment” more strongly than the experimental evidence supports. In particular, the evaluation is conducted on an offline replay of the CIC-DDoS2019 dataset rather than on live SDN traffic or a real controller/switch environment, while the split-sensitivity analysis shows that the false-positive rate varies substantially across different partitioning strategies. Therefore, statements such as “generalizes robustly,” “exceptional robustness,” and “real-world SDN deployment” should be moderated unless additional cross-dataset, cross-environment, and online deployment experiments are provided.",
+      "type": "text+experiment",
+      "severity": "critical",
+      "requires_experiment": true,
+      "experiments": [
+        "E2",
+        "E3",
+        "E4"
+      ],
+      "resolution_strategy": "Do both: provide the cross-dataset, cross-environment and control-plane deployment experiments the reviewer names as the price of the claims, AND moderate the language regardless.",
+      "target_locations": [
+        "Abstract",
+        "Sec. VI-B",
+        "Sec. VIII",
+        "Sec. IX",
+        "new cross-dataset section",
+        "new deployment section"
+      ],
+      "phase": 3,
+      "status": "response written, experiment pending"
+    },
+    {
+      "id": "R2.2",
+      "reviewer": 2,
+      "verbatim": "The extremely high classification performance, including 99.9987% accuracy, 99.9621% macro-F1, and an AUC of 1.0000, requires more cautious interpretation. Although the manuscript performs a feature-removal experiment, removing three potentially leakage-prone features does not establish that the dataset is free from other artifacts or shortcut patterns. The statement that this experiment “confirms” that the performance is not caused by dataset-level leakage is therefore too strong. It would be more appropriate to state that the results suggest that the performance is not solely dependent on those three features, while explicitly acknowledging that potential dataset-specific artifacts cannot be completely excluded.",
+      "type": "text+experiment",
+      "severity": "critical",
+      "requires_experiment": true,
+      "experiments": [
+        "E5"
+      ],
+      "target_locations": [
+        "Sec. VII-D (leakage ablation)",
+        "Sec. VIII-B",
+        "Abstract"
+      ],
+      "phase": 3,
+      "status": "resolved"
+    },
+    {
+      "id": "R2.3",
+      "reviewer": 2,
+      "verbatim": "The comparison with previous methods in Table 9 is not sufficiently controlled to support claims such as “surpasses” or “outperforming.” The compared studies appear to involve different datasets, task formulations, class settings, and even different detection granularities, including multi-class DDoS classification and packet-level adversarial detection. Consequently, the reported accuracy and F1 values are not directly comparable under an identical experimental protocol. The comparison should therefore be presented as a contextual comparison rather than a definitive quantitative ranking, and the corresponding claims should be weakened accordingly.",
+      "type": "text",
+      "severity": "major",
+      "requires_experiment": false,
+      "experiments": [],
+      "target_locations": [
+        "Table 9",
+        "Sec. VII-E"
+      ],
+      "phase": 5,
+      "status": "resolved"
+    },
+    {
+      "id": "R2.4",
+      "reviewer": 2,
+      "verbatim": "The terminology surrounding “alert,” “DDoS flow,” “positive prediction,” and “per-decision explanation” should be made consistent throughout the manuscript. Algorithm 1 indicates that SHAP is generated only after the prediction satisfies the alert condition, whereas Table 6 describes the explanation cost as being measured “per DDoS flow.” These are not necessarily equivalent concepts because classification is performed for every flow while explanation is conditionally generated only for an alerted flow. The manuscript should explicitly define the explanation trigger and then use the same terminology consistently in the Abstract, problem formulation, algorithm, experiments, and computational-cost analysis.",
+      "type": "text+experiment",
+      "severity": "major",
+      "requires_experiment": true,
+      "experiments": [
+        "E10"
+      ],
+      "target_locations": [
+        "Abstract",
+        "Sec. III-B",
+        "Algorithm 1",
+        "Table 6",
+        "Sec. VI-C",
+        "Sec. VIII-A"
+      ],
+      "phase": 3,
+      "status": "response written, experiment pending"
+    },
+    {
+      "id": "R2.5",
+      "reviewer": 2,
+      "verbatim": "The interpretation of entropy is currently too absolute. The manuscript states that high entropy corresponds to benign traffic and low entropy corresponds to DDoS traffic, but entropy depends on the specific feature distribution, observation window, traffic composition, and attack strategy. This is particularly important because the manuscript later acknowledges that adaptive attackers may manipulate source-address distributions to evade entropy-based detection. The corresponding statements should therefore be reformulated using expressions such as “may indicate” or “is often associated with,” rather than presenting a deterministic relationship between entropy and attack/benign traffic.",
+      "type": "text",
+      "severity": "major",
+      "requires_experiment": false,
+      "experiments": [],
+      "target_locations": [
+        "Sec. V-A",
+        "Sec. II-A"
+      ],
+      "phase": 5,
+      "status": "resolved"
+    },
+    {
+      "id": "R2.6",
+      "reviewer": 2,
+      "verbatim": "The complexity claim that the rolling entropy computation is “O(1) time, independent of N” needs more precise qualification. The claimed complexity depends on maintaining appropriate data structures for the sliding window and on the assumed expected O(1) operations for hash-table updates. Therefore, the manuscript should specify whether the complexity is intended to be expected or amortized O(1) per update under the adopted implementation assumptions. Without these qualifications, the current statement is unnecessarily absolute and may be challenged from an algorithmic-complexity perspective.",
+      "type": "text+experiment",
+      "severity": "major",
+      "requires_experiment": true,
+      "experiments": [
+        "E11"
+      ],
+      "target_locations": [
+        "Abstract",
+        "Sec. II-A",
+        "Sec. IV",
+        "Sec. V-A",
+        "Fig. 2 caption",
+        "Table 1"
+      ],
+      "phase": 3,
+      "status": "resolved"
+    },
+    {
+      "id": "R2.7",
+      "reviewer": 2,
+      "verbatim": "Several explanations of the experimental results imply causal mechanisms that are not directly demonstrated by the experiments. For example, the manuscript attributes the improved recall and shorter detection delay to the two-stage design and edge-aware attention, but no dedicated ablation experiment isolates these mechanisms sufficiently to establish such causality. Similarly, the additional alarm is interpreted as a possible post-fault/recovery transient without independent evidence. These statements should be presented as possible explanations or hypotheses rather than confirmed mechanisms, using wording such as “may contribute to,” “may be attributed to,” or “suggests.”",
+      "type": "text",
+      "severity": "major",
+      "requires_experiment": false,
+      "experiments": [],
+      "adjudication": "The manuscript contains no 'two-stage design', no 'edge-aware attention' and no 'post-fault/recovery transient' discussion; these appear to belong to a different manuscript. Respond politely, note the discrepancy, and apply the underlying principle in full: every mechanism-level explanation not isolated by an ablation is rehedged.",
+      "target_locations": [
+        "Sec. VI-B",
+        "Sec. VI-F",
+        "Sec. VII-A",
+        "Sec. VII-B",
+        "Sec. VII-D"
+      ],
+      "phase": 5,
+      "status": "resolved"
+    },
+    {
+      "id": "R2.8",
+      "reviewer": 2,
+      "verbatim": "The manuscript still contains numerous expressions that are grammatically understandable but not natural for an IEEE Access research article, together with several obvious formatting/notation issues. Examples include “the network ... to be able to see the whole network,” “things like destination IP addresses,” “bring the entire network to its knees,” and other conversational expressions. There are also visible technical-formatting problems such as “Eq. (??),” inconsistent capitalization of terms such as “UAV,” questionable wording such as “Detection Threshold (au),” and statements that treat t-SNE visualization or radar-chart area as stronger evidence than they actually provide. These issues should be systematically corrected before submission because they collectively reduce the technical credibility and polish of the manuscript.",
+      "type": "text+figure",
+      "severity": "critical",
+      "requires_experiment": false,
+      "experiments": [],
+      "verified_finding": "28 informal-English hits located by line. '(au)' confirmed inside fig_sensitivity.pdf. 'UAV' does not appear in the submitted text - treat as a generic acronym-consistency request. t-SNE caption and radar-chart caption both overstate their evidential weight.",
+      "target_locations": [
+        "Abstract",
+        "Sec. I",
+        "Sec. V-A",
+        "Sec. VI-A",
+        "Fig. 2",
+        "Fig. 5 caption",
+        "Fig. 6",
+        "Fig. 9 caption",
+        "whole manuscript"
+      ],
+      "phase": 5,
+      "status": "resolved"
+    },
+    {
+      "id": "R2.9",
+      "reviewer": 2,
+      "verbatim": "Please discuss 'Tensor Poincaré plot index: A novel nonlinear dynamic method for extracting abnormal state information of pumped storage units'",
+      "type": "reference",
+      "severity": "minor",
+      "requires_experiment": false,
+      "experiments": [],
+      "target_locations": [
+        "Sec. II",
+        "Sec. VIII"
+      ],
+      "phase": 4,
+      "status": "resolved"
+    },
+    {
+      "id": "R3.1",
+      "reviewer": 3,
+      "verbatim": "Has the model been evaluated after removing all known leaking features to verify that it is detecting genuine threat behaviors rather than synthetic traffic generator artifacts?",
+      "type": "experiment",
+      "severity": "critical",
+      "requires_experiment": true,
+      "experiments": [
+        "E5"
+      ],
+      "target_locations": [
+        "new Sec. VII leakage-audit subsection"
+      ],
+      "phase": 3,
+      "status": "resolved"
+    },
+    {
+      "id": "R3.2",
+      "reviewer": 3,
+      "verbatim": "What collinearity diagnostics or feature reduction techniques were applied to ensure the SHAP attributions remain causally stable and operationally trustworthy?",
+      "type": "experiment",
+      "severity": "critical",
+      "requires_experiment": true,
+      "experiments": [
+        "E6"
+      ],
+      "target_locations": [
+        "new Sec. VII collinearity/SHAP-stability subsection"
+      ],
+      "phase": 3,
+      "status": "resolved"
+    },
+    {
+      "id": "R3.3",
+      "reviewer": 3,
+      "verbatim": "How does the proposed framework physically ingest 60,000 novel flows per second without triggering hardware rate limits or saturating the OpenFlow control channel?",
+      "type": "experiment",
+      "severity": "critical",
+      "requires_experiment": true,
+      "experiments": [
+        "E7",
+        "E4"
+      ],
+      "target_locations": [
+        "new deployment section",
+        "Sec. VIII-A",
+        "Abstract"
+      ],
+      "phase": 3,
+      "status": "open"
+    },
+    {
+      "id": "R3.4",
+      "reviewer": 3,
+      "verbatim": "What specific flow-rule aggregation or eviction policies are implemented to prevent the XAI-SDN module from causing a TCAM flow table overflow during an attack?",
+      "type": "experiment",
+      "severity": "critical",
+      "requires_experiment": true,
+      "experiments": [
+        "E8"
+      ],
+      "target_locations": [
+        "new deployment section",
+        "Sec. IV (architecture)"
+      ],
+      "phase": 3,
+      "status": "open"
+    },
+    {
+      "id": "R3.5",
+      "reviewer": 3,
+      "verbatim": "AI/ML/DL references could be considered: \"Bayesian Learning for Uncertainty Quantification, Optimization, and Inverse Design\", IEEE Transactions on Microwave Theory and Techniques, 2022",
+      "type": "reference",
+      "severity": "minor",
+      "requires_experiment": false,
+      "experiments": [],
+      "target_locations": [
+        "Sec. II-C",
+        "Sec. VIII"
+      ],
+      "phase": 4,
+      "status": "resolved"
+    },
+    {
+      "id": "R4.1",
+      "reviewer": 4,
+      "verbatim": "The near-perfect accuracy on CIC-DDoS2019 is not fully convincing. Although you include a leakage-robustness ablation and temporal split, the paper still does not fully rule out dataset-level artifacts. Please add a rigorous leakage audit (duplicate/near-duplicate flow analysis, feature-distribution checks) and cross-dataset validation (e.g., InSDN, CIC-IDS2017/2018) with FPR/FNR confidence intervals.",
+      "type": "experiment",
+      "severity": "critical",
+      "requires_experiment": true,
+      "experiments": [
+        "E5",
+        "E2"
+      ],
+      "target_locations": [
+        "new leakage-audit subsection",
+        "new cross-dataset subsection"
+      ],
+      "phase": 3,
+      "status": "manuscript done, response pending"
+    },
+    {
+      "id": "R4.2",
+      "reviewer": 4,
+      "verbatim": "The evaluation is offline and the explainability cost is high (60,606 flows/s without SHAP vs. 1,953 flows/s with explanations). Please provide a Mininet/Ryu or ONOS proof-of-concept with live traffic, measure controller CPU/memory, end-to-end detection latency, and QoS impact. Also compare against modern deep learning detectors (CNN, LSTM, autoencoder, GNN, transformer) under the same protocol.",
+      "type": "experiment",
+      "severity": "critical",
+      "requires_experiment": true,
+      "experiments": [
+        "E4",
+        "E9",
+        "E10"
+      ],
+      "adjudication": "Mininet/ONOS require hardware virtualization, which is disabled in firmware on the available machine (WSL2, Hyper-V and Docker all unavailable). Substitute a REAL OpenFlow 1.3 control plane built on os-ken (the maintained Ryu fork) driven by software switch agents over real TCP sockets. Describe it accurately in the paper as a controller-in-the-loop testbed with emulated switch agents; never call it Mininet. Disclose the substitution in the response letter.",
+      "target_locations": [
+        "new deployment section",
+        "Table 8",
+        "new deep-baseline table"
+      ],
+      "phase": 3,
+      "status": "manuscript done, response pending"
+    },
+    {
+      "id": "R4.3",
+      "reviewer": 4,
+      "verbatim": "Please add a dedicated discussion subsection on DDoS detection in SDN using deep learning and QoS-aware software-defined Internet of Things. Discuss how deep learning models can be integrated into SDN for DDoS detection, their accuracy/latency/explainability trade-offs versus your RF+SHAP approach, and how XAI-SDN can be adapted to SD-IoT environments with QoS constraints (latency, energy, reliability, scalability, heterogeneous traffic). Also address lightweight/edge inference and cross-layer coordination between security enforcement and QoS policies.",
+      "type": "text+reference",
+      "severity": "major",
+      "requires_experiment": false,
+      "experiments": [
+        "E9"
+      ],
+      "target_locations": [
+        "new Sec. VIII subsection"
+      ],
+      "phase": 5,
+      "status": "response written, experiment pending"
+    },
+    {
+      "id": "R5.1",
+      "reviewer": 5,
+      "verbatim": "Does the paper contain a brief introduction/summary at the beginning of each section/subsection, improving the \"fluidity\" of the text? No. Please, write a brief introduction summarizing the content of the following section(s) before its/their respective subsection: II, III, V, VI, VII, and VIII.",
+      "type": "structure",
+      "severity": "minor",
+      "requires_experiment": false,
+      "experiments": [],
+      "target_locations": [
+        "Sec. II",
+        "Sec. III",
+        "Sec. V",
+        "Sec. VI",
+        "Sec. VII",
+        "Sec. VIII"
+      ],
+      "phase": 5,
+      "status": "resolved"
+    },
+    {
+      "id": "R5.2",
+      "reviewer": 5,
+      "verbatim": "Does the end of the Introduction contain a table summarizing the used symbols, notations, and acronyms? No.",
+      "type": "structure",
+      "severity": "minor",
+      "requires_experiment": false,
+      "experiments": [],
+      "target_locations": [
+        "end of Sec. I",
+        "new Table"
+      ],
+      "phase": 5,
+      "status": "resolved"
+    },
+    {
+      "id": "R5.3",
+      "reviewer": 5,
+      "verbatim": "Did the authors mention the hardware configuration and/or software, library, programming language, etc., used during the tests? Hardware configuration missing.",
+      "type": "text",
+      "severity": "major",
+      "requires_experiment": false,
+      "experiments": [],
+      "target_locations": [
+        "Sec. V (experimental setup)",
+        "new environment table"
+      ],
+      "phase": 5,
+      "status": "resolved"
+    },
+    {
+      "id": "R5.4",
+      "reviewer": 5,
+      "verbatim": "Are the references recent? More or less.",
+      "type": "reference",
+      "severity": "minor",
+      "requires_experiment": false,
+      "experiments": [],
+      "target_locations": [
+        "references.bib",
+        "Sec. II"
+      ],
+      "phase": 4,
+      "status": "resolved"
+    },
+    {
+      "id": "R5.5",
+      "reviewer": 5,
+      "verbatim": "Is there any ArXiV or blog reference? Please, replace the following arXiv reference(s) with its/their (respective) final published version(s) if possible: 23, 25, 31, and 34.",
+      "type": "reference",
+      "severity": "minor",
+      "requires_experiment": false,
+      "experiments": [],
+      "adjudication": "The submitted PDF contains only 32 references, so reference 34 does not exist. The preprint-flavoured entries are [23] Doshi-Velez & Kim, [25] Lundberg & Lee (SHAP), [31] Kumar et al., [32] You et al. All four are handled; the numbering discrepancy is explained in the response.",
+      "target_locations": [
+        "references [23], [25], [31], [32]"
+      ],
+      "phase": 4,
+      "status": "resolved"
+    },
+    {
+      "id": "R5.6",
+      "reviewer": 5,
+      "verbatim": "Are all the inserted figures, tables, and algorithms mentioned in the text? No.",
+      "type": "structure",
+      "severity": "minor",
+      "requires_experiment": false,
+      "experiments": [],
+      "verified_finding": "Never cited in body text: Fig. 7 (fig:ablation), Fig. 9 (fig:radar), Table 5 (tab:ablation), Eq. (4) (eq:metrics), Eq. (5) (eq:srcip).",
+      "target_locations": [
+        "Fig. 7",
+        "Fig. 9",
+        "Table 5",
+        "Eq. (4)",
+        "Eq. (5)"
+      ],
+      "phase": 5,
+      "status": "resolved"
+    },
+    {
+      "id": "R5.7",
+      "reviewer": 5,
+      "verbatim": "Is the font size of texts in figures (such as titles and names of axes in graphics) big enough to read? Increase the font size in the graphics, if possible, please.",
+      "type": "figure",
+      "severity": "minor",
+      "requires_experiment": false,
+      "experiments": [],
+      "target_locations": [
+        "all figures"
+      ],
+      "phase": 6,
+      "status": "resolved"
+    },
+    {
+      "id": "R6.1",
+      "reviewer": 6,
+      "verbatim": "Relying solely on the SYN-flood partition of CIC-DDoS2019 is methodologically bankrupt; this dataset is notorious for temporal leakage and trivial separability at the flow level, meaning the 99.9987% accuracy reflects dataset artifacts rather than genuine detection capability. You must validate the framework on rigorous, modern datasets.",
+      "type": "experiment",
+      "severity": "critical",
+      "requires_experiment": true,
+      "experiments": [
+        "E5",
+        "E3",
+        "E2"
+      ],
+      "resolution_strategy": "Answer with evidence, not rhetoric: a systematic leakage audit, cross-vector and cross-day evaluation inside CIC-DDoS2019, and genuine cross-dataset transfer to InSDN and CIC-IDS2017. Report degradation honestly where it occurs.",
+      "target_locations": [
+        "new leakage-audit subsection",
+        "new cross-vector subsection",
+        "new cross-dataset subsection",
+        "Sec. VIII-B"
+      ],
+      "phase": 3,
+      "status": "response written, experiment pending"
+    },
+    {
+      "id": "R6.2",
+      "reviewer": 6,
+      "verbatim": "The manuscript contains highly informal phrasing entirely inappropriate, the authors need to thoroughly rewrite the manuscript using formal, precise academic English and consider professional proofreading.",
+      "type": "text",
+      "severity": "critical",
+      "requires_experiment": false,
+      "experiments": [],
+      "target_locations": [
+        "whole manuscript"
+      ],
+      "phase": 5,
+      "status": "resolved"
+    },
+    {
+      "id": "R6.3",
+      "reviewer": 6,
+      "verbatim": "You claim a throughput of 1,953 flows/s when SHAP is enabled (Table 6), but since 99.14% of the test traffic is DDoS, Algorithm 1 will trigger SHAP for almost every flow, creating a massive bottleneck at the SDN controller.",
+      "type": "experiment",
+      "severity": "critical",
+      "requires_experiment": true,
+      "experiments": [
+        "E10",
+        "E4"
+      ],
+      "resolution_strategy": "The objection is correct. Convert it into a contribution: formally define the explanation trigger, measure the saturation it causes, then implement and measure episode-level deduplication, a token-bucket explanation budget and asynchronous off-path explanation, reporting a throughput-versus-coverage curve.",
+      "target_locations": [
+        "Table 6",
+        "Algorithm 1",
+        "Sec. VI-C",
+        "new explanation-budget subsection",
+        "Sec. VIII-A"
+      ],
+      "phase": 3,
+      "status": "manuscript done, response pending"
+    },
+    {
+      "id": "R6.4",
+      "reviewer": 6,
+      "verbatim": "Eq. (6) updates entropy via incremental addition and subtraction, which inevitably leads to catastrophic cancellation and floating-point drift over continuous streaming.",
+      "type": "experiment",
+      "severity": "critical",
+      "requires_experiment": true,
+      "experiments": [
+        "E11"
+      ],
+      "verified_finding": "The implementation does not compute Eq. (6) as printed. features/entropy.py maintains S = sum(c*log2 c) and returns H = log2|W| - S/|W|. The manuscript equation and the executed code disagree; the drift study must target the executed form and the equation must be corrected.",
+      "target_locations": [
+        "Eq. (6)",
+        "Sec. V-A",
+        "new numerical-stability subsection"
+      ],
+      "phase": 3,
+      "status": "resolved"
+    },
+    {
+      "id": "R6.5",
+      "reviewer": 6,
+      "verbatim": "Comparing models trained on a tiny, class-balanced subset (10K train/3K test in Table 8) against the proposed RF trained on 2.5M imbalanced flows (Table 4) is completely unfair and renders the comparison meaningless. You must either use subsampling consistently for all models or employ computationally efficient baselines that can handle the full imbalanced dataset without artificial balancing.",
+      "type": "experiment",
+      "severity": "critical",
+      "requires_experiment": true,
+      "experiments": [
+        "E1",
+        "E9"
+      ],
+      "resolution_strategy": "Run BOTH protocols for EVERY model: the full imbalanced temporal split, and an identically-applied subsampled protocol. Report them as separate tables, never mixed.",
+      "target_locations": [
+        "Table 8",
+        "Table 4",
+        "Sec. VII-B"
+      ],
+      "phase": 3,
+      "status": "manuscript done, response pending"
+    },
+    {
+      "id": "R6.6",
+      "reviewer": 6,
+      "verbatim": "Feeding all 80 CICFlowMeter features plus 8 entropy features into the RF ignores severe multicollinearity and redundancy inherent in flow-level statistics.",
+      "type": "experiment",
+      "severity": "major",
+      "requires_experiment": true,
+      "experiments": [
+        "E6"
+      ],
+      "target_locations": [
+        "new collinearity subsection",
+        "Sec. V-B",
+        "Sec. VII-A"
+      ],
+      "phase": 3,
+      "status": "resolved"
+    },
+    {
+      "id": "R6.7",
+      "reviewer": 6,
+      "verbatim": "The detection threshold τ=0.7 is selected based on a sweep that claims \"zero FNR below τ=0.5\", but in highly imbalanced datasets, FNR is misleading; the focus must be on the Precision-Recall curve.",
+      "type": "experiment",
+      "severity": "critical",
+      "requires_experiment": true,
+      "experiments": [
+        "E12"
+      ],
+      "target_locations": [
+        "Sec. VI-F",
+        "Fig. 6",
+        "new PR-curve figure",
+        "Table 3"
+      ],
+      "phase": 3,
+      "status": "resolved"
+    },
+    {
+      "id": "R6.8",
+      "reviewer": 6,
+      "verbatim": "Removing the top 3 SHAP features and observing a mere 0.001% drop in accuracy (Section VIII.C) does not prove robustness against leakage; it merely confirms that the remaining 85 features contain enough redundant information to achieve the same trivial separation on this specific dataset.",
+      "type": "experiment",
+      "severity": "critical",
+      "requires_experiment": true,
+      "experiments": [
+        "E5",
+        "E6"
+      ],
+      "resolution_strategy": "The reviewer's alternative explanation is the more likely one. Test it directly: progressive removal curves and removal of the full objectively-flagged suspect set, plus redundancy quantification from E6.",
+      "target_locations": [
+        "Sec. VII-D",
+        "new leakage-audit subsection"
+      ],
+      "phase": 3,
+      "status": "resolved"
+    },
+    {
+      "id": "R7.1",
+      "reviewer": 7,
+      "verbatim": "The novelty beyond combining entropy features, Random Forest, and TreeSHAP is unclear.",
+      "type": "text",
+      "severity": "critical",
+      "requires_experiment": false,
+      "experiments": [
+        "E10",
+        "E11",
+        "E4"
+      ],
+      "resolution_strategy": "The revision's genuine novelty is operational, not architectural: a numerically-characterised amortised-O(1) streaming entropy engine, a formally-defined and budgeted explanation trigger with a measured throughput-coverage frontier, and a controller-in-the-loop accounting of control-channel and TCAM cost. State that explicitly and support it with a positioning table.",
+      "target_locations": [
+        "Sec. I (contributions)",
+        "Table 1",
+        "Sec. II-D"
+      ],
+      "phase": 5,
+      "status": "response written, experiment pending"
+    },
+    {
+      "id": "R7.2",
+      "reviewer": 7,
+      "verbatim": "Input features and entropy calculations lack detail, particularly TTL data and binning methods.",
+      "type": "text+experiment",
+      "severity": "critical",
+      "requires_experiment": true,
+      "experiments": [
+        "E16"
+      ],
+      "verified_finding": "features/pipeline.py:269 hard-codes \"ttl\": 64 for every flow record, so H_ttl is identically 0 and carries no information. CICFlowMeter CSVs contain no TTL column. H_tcp_flags is in fact the entropy of SYN_Flag_Count, and H_pkt_len / H_iat are computed from flow-level means rather than packet-level distributions.",
+      "resolution_strategy": "Confirm empirically that H_ttl is all-zero, replace it with source-port entropy (genuinely present and discriminative for randomised-source SYN floods), re-baseline, and give a complete feature specification with exact source columns and bin widths.",
+      "target_locations": [
+        "Sec. V-A",
+        "new feature-specification table",
+        "Eq. (7)"
+      ],
+      "phase": 2,
+      "status": "resolved"
+    },
+    {
+      "id": "R7.3",
+      "reviewer": 7,
+      "verbatim": "Rolling-window handling is unclear, and Figure 2 contains an unresolved equation reference.",
+      "type": "text+figure",
+      "severity": "major",
+      "requires_experiment": false,
+      "experiments": [
+        "E11"
+      ],
+      "target_locations": [
+        "Sec. V-A",
+        "Fig. 2",
+        "Algorithm 1"
+      ],
+      "phase": 5,
+      "status": "resolved"
+    },
+    {
+      "id": "R7.4",
+      "reviewer": 7,
+      "verbatim": "Testing only SYN-flood traffic provides limited evidence of generalization.",
+      "type": "experiment",
+      "severity": "critical",
+      "requires_experiment": true,
+      "experiments": [
+        "E3",
+        "E2"
+      ],
+      "target_locations": [
+        "new cross-vector subsection",
+        "new cross-dataset subsection",
+        "Sec. VIII-B"
+      ],
+      "phase": 3,
+      "status": "manuscript done, response pending"
+    },
+    {
+      "id": "R7.5",
+      "reviewer": 7,
+      "verbatim": "The SHAP analysis lacks individual alert examples demonstrating practical usefulness.",
+      "type": "experiment",
+      "severity": "major",
+      "requires_experiment": true,
+      "experiments": [
+        "E13"
+      ],
+      "target_locations": [
+        "new alert case-study subsection",
+        "new waterfall figure",
+        "new case-study table"
+      ],
+      "phase": 3,
+      "status": "resolved"
+    },
+    {
+      "id": "R7.6",
+      "reviewer": 7,
+      "verbatim": "Baseline ROC curves are missing, and Figure 6 does not match its caption.",
+      "type": "figure+experiment",
+      "severity": "major",
+      "requires_experiment": true,
+      "experiments": [
+        "E14"
+      ],
+      "verified_finding": "Sec. VI-E 'ROC analysis' contains prose but no figure whatsoever. Fig. 6 (fig_sensitivity) caption promises an ROC curve; the panels show accuracy vs threshold and accuracy vs window size.",
+      "target_locations": [
+        "Sec. VI-E",
+        "Fig. 6",
+        "new ROC/PR figure"
+      ],
+      "phase": 3,
+      "status": "manuscript done, response pending"
+    },
+    {
+      "id": "R7.7",
+      "reviewer": 7,
+      "verbatim": "Table 9 compares different tasks and protocols, weakening the claim of superiority.",
+      "type": "text",
+      "severity": "major",
+      "requires_experiment": false,
+      "experiments": [],
+      "target_locations": [
+        "Table 9",
+        "Sec. VII-E"
+      ],
+      "phase": 5,
+      "status": "resolved"
+    },
+    {
+      "id": "R7.8",
+      "reviewer": 7,
+      "verbatim": "Data splitting, cross-validation, and separation of tuning from testing are insufficiently documented.",
+      "type": "experiment",
+      "severity": "critical",
+      "requires_experiment": true,
+      "experiments": [
+        "E15"
+      ],
+      "target_locations": [
+        "Sec. V-B",
+        "new protocol table",
+        "Sec. VI-A"
+      ],
+      "phase": 3,
+      "status": "resolved"
+    }
+  ],
+  "concerns_per_reviewer": {
+    "1": 7,
+    "2": 9,
+    "3": 5,
+    "4": 3,
+    "5": 7,
+    "6": 8,
+    "7": 8
+  }
+}

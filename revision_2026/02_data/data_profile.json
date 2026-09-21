@@ -1,0 +1,207 @@
+{
+  "generated": "2026-09-21T01:55:41",
+  "datasets": {
+    "CICDDoS2019_0311_Syn": {
+      "status": "ok",
+      "path": "C:\\Users\\adeel\\xaisdn_revision\\data\\CICDDoS2019\\03-11\\Syn.csv",
+      "bytes": 1877372065,
+      "n_columns": 88,
+      "label_column": " Label",
+      "n_rows": 4320541,
+      "label_counts": {
+        "Syn": 4284751,
+        "BENIGN": 35790
+      },
+      "scan_seconds": 9.4,
+      "has_source_ip": true,
+      "has_destination_ip": true,
+      "has_source_port": true,
+      "has_timestamp": true,
+      "n_canonical_cic_features_present": 80,
+      "missing_cic_features": []
+    },
+    "CICDDoS2019_0311_LDAP": {
+      "status": "ok",
+      "path": "C:\\Users\\adeel\\xaisdn_revision\\data\\CICDDoS2019\\03-11\\LDAP.csv",
+      "bytes": 871398918,
+      "n_columns": 88,
+      "label_column": " Label",
+      "n_rows": 2113234,
+      "label_counts": {
+        "LDAP": 1905191,
+        "NetBIOS": 202919,
+        "BENIGN": 5124
+      },
+      "scan_seconds": 4.7,
+      "has_source_ip": true,
+      "has_destination_ip": true,
+      "has_source_port": true,
+      "has_timestamp": true,
+      "n_canonical_cic_features_present": 80,
+      "missing_cic_features": []
+    },
+    "CICDDoS2019_0311_NetBIOS": {
+      "status": "ok",
+      "path": "C:\\Users\\adeel\\xaisdn_revision\\data\\CICDDoS2019\\03-11\\NetBIOS.csv",
+      "bytes": 1418468105,
+      "n_columns": 88,
+      "label_column": " Label",
+      "n_rows": 3455899,
+      "label_counts": {
+        "NetBIOS": 3454578,
+        "BENIGN": 1321
+      },
+      "scan_seconds": 7.3,
+      "has_source_ip": true,
+      "has_destination_ip": true,
+      "has_source_port": true,
+      "has_timestamp": true,
+      "n_canonical_cic_features_present": 80,
+      "missing_cic_features": []
+    },
+    "CICDDoS2019_0311_Portmap": {
+      "status": "ok",
+      "path": "C:\\Users\\adeel\\xaisdn_revision\\data\\CICDDoS2019\\03-11\\Portmap.csv",
+      "bytes": 78611080,
+      "n_columns": 88,
+      "label_column": " Label",
+      "n_rows": 191694,
+      "label_counts": {
+        "Portmap": 186960,
+        "BENIGN": 4734
+      },
+      "scan_seconds": 0.4,
+      "has_source_ip": true,
+      "has_destination_ip": true,
+      "has_source_port": true,
+      "has_timestamp": true,
+      "n_canonical_cic_features_present": 80,
+      "missing_cic_features": []
+    },
+    "CICDDoS2019_0112_Syn": {
+      "status": "ok",
+      "path": "C:\\Users\\adeel\\xaisdn_revision\\data\\CICDDoS2019\\01-12\\Syn.csv",
+      "bytes": 637312127,
+      "n_columns": 88,
+      "label_column": " Label",
+      "n_rows": 1582681,
+      "label_counts": {
+        "Syn": 1582289,
+        "BENIGN": 392
+      },
+      "scan_seconds": 3.3,
+      "has_source_ip": true,
+      "has_destination_ip": true,
+      "has_source_port": true,
+      "has_timestamp": true,
+      "n_canonical_cic_features_present": 80,
+      "missing_cic_features": []
+    },
+    "InSDN": {
+      "status": "ok",
+      "path": "C:\\Users\\adeel\\xaisdn_revision\\data\\InSDN\\Dataset.csv",
+      "bytes": 140906680,
+      "n_columns": 84,
+      "label_column": "target",
+      "n_rows": 343889,
+      "label_counts": {
+        "1": 275465,
+        "0": 68424
+      },
+      "scan_seconds": 0.8,
+      "has_source_ip": true,
+      "has_destination_ip": true,
+      "has_source_port": true,
+      "has_timestamp": true,
+      "n_canonical_cic_features_present": 79,
+      "missing_cic_features": [
+        "Fwd_Header_Length_2"
+      ]
+    },
+    "CICIDS2017_DDoS": {
+      "status": "ok",
+      "path": "C:\\Users\\adeel\\xaisdn_revision\\data\\CICIDS2017\\Friday-WorkingHours-Afternoon-DDos.csv",
+      "bytes": 77123859,
+      "n_columns": 79,
+      "label_column": " Label",
+      "n_rows": 225745,
+      "label_counts": {
+        "DDoS": 128027,
+        "BENIGN": 97718
+      },
+      "scan_seconds": 0.5,
+      "has_source_ip": false,
+      "has_destination_ip": false,
+      "has_source_port": false,
+      "has_timestamp": false,
+      "n_canonical_cic_features_present": 78,
+      "missing_cic_features": [
+        "Protocol",
+        "Source_Port"
+      ]
+    },
+    "CICIDS2017_Benign": {
+      "status": "ok",
+      "path": "C:\\Users\\adeel\\xaisdn_revision\\data\\CICIDS2017\\Monday-WorkingHours.csv",
+      "bytes": 176927918,
+      "n_columns": 79,
+      "label_column": " Label",
+      "n_rows": 529918,
+      "label_counts": {
+        "BENIGN": 529918
+      },
+      "scan_seconds": 1.0,
+      "has_source_ip": false,
+      "has_destination_ip": false,
+      "has_source_port": false,
+      "has_timestamp": false,
+      "n_canonical_cic_features_present": 78,
+      "missing_cic_features": [
+        "Protocol",
+        "Source_Port"
+      ]
+    }
+  },
+  "transfer_schemas": {
+    "CICDDoS2019_0311_Syn -> InSDN": {
+      "n_shared_cic_features": 79,
+      "n_shared_entropy_features": 8,
+      "shared_entropy_features": [
+        "H_src_ip",
+        "H_dst_ip",
+        "H_dst_port",
+        "H_proto",
+        "H_pkt_len",
+        "H_iat",
+        "H_tcp_flags",
+        "H_src_port"
+      ],
+      "unavailable_entropy_features": [],
+      "total_transfer_dimension": 87,
+      "dropped_cic_features": [
+        "Fwd_Header_Length_2"
+      ]
+    },
+    "CICDDoS2019_0311_Syn -> CICIDS2017_DDoS": {
+      "n_shared_cic_features": 78,
+      "n_shared_entropy_features": 4,
+      "shared_entropy_features": [
+        "H_dst_port",
+        "H_pkt_len",
+        "H_iat",
+        "H_tcp_flags"
+      ],
+      "unavailable_entropy_features": [
+        "H_src_ip",
+        "H_dst_ip",
+        "H_proto",
+        "H_src_port"
+      ],
+      "total_transfer_dimension": 82,
+      "dropped_cic_features": [
+        "Protocol",
+        "Source_Port"
+      ]
+    }
+  }
+}
