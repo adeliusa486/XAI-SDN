@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="assets/fig10.png" width="600" alt="SHAP Beeswarm Plot of XAI-SDN Feature Importances">
+  <img src="assets/fig10.png" width="600" alt="SHAP beeswarm plot of XAI-SDN feature attributions">
 </p>
 
 <h1 align="center">XAI-SDN: Explainable Entropy-Guided Machine Learning for Real-Time DDoS Detection</h1>
@@ -8,35 +8,95 @@
   <a href="https://www.python.org/downloads/"><img src="https://img.shields.io/badge/python-3.10+-blue.svg" alt="Python 3.10+"></a>
   <a href="LICENSE"><img src="https://img.shields.io/badge/License-MIT-yellow.svg" alt="License: MIT"></a>
   <a href="https://www.unb.ca/cic/datasets/ddos-2019.html"><img src="https://img.shields.io/badge/dataset-CIC--DDoS2019-orange.svg" alt="Dataset: CIC-DDoS2019"></a>
-
-</a>
- 
-
-This repository contains the official codebase for **XAI-SDN**, an end-to-end explainable machine learning framework for real-time Distributed Denial of Service (DDoS) detection in Software Defined Networks (SDN). 
-
-By combining an $\mathcal{O}(1)$ Shannon entropy feature augmentation technique with an optimized Random Forest classifier and TreeSHAP, the system achieves **99.999% accuracy** while sustaining massive detection throughput without sacrificing per-packet explainability.
-
----
-
-## Core Innovations
-
-1. **$\mathcal{O}(1)$ Rolling Entropy Engine:** Recalculating Shannon entropy over a sliding window of $N=1,000$ normally requires $\mathcal{O}(N)$ time. XAI-SDN implements a circular buffer and stateful hash-map to update entropy in strict $\mathcal{O}(1)$ time, yielding an extraction latency of **0.0150 ms/flow**.
-2. **Explainable by Design:** Every single detected DDoS alert is attributed in real-time using TreeSHAP, providing precise features (e.g., *Source IP Entropy*, *Destination Port*) that triggered the classification.
-3. **High Throughput Evaluation:** Reaches **599,052 flows/second** without explanations, and gracefully degrades to 1,953 flows/second when full SHAP attributions are extracted for active alerts.
-
-<p align="center">
-  <img src="assets/fig8.png" width="600" alt="Accuracy vs Throughput Tradeoff">
 </p>
 
+This repository contains the codebase for **XAI-SDN**, an explainable machine learning
+framework for real-time DDoS detection in Software Defined Networks. It combines a
+rolling Shannon entropy feature engine maintained at expected amortized
+$\mathcal{O}(1)$ cost per update, a Random Forest classifier, and exact TreeSHAP
+attribution, all running inside the controller process.
+
 ---
 
-## Reproducing the Paper Results
+## ⚠️ Corrections in the 2026 revision
 
-This repository is strictly structured for academic reproducibility. To strictly reproduce the empirical results reported in the XAI-SDN manuscript (including the 99.999% accuracy on the CIC-DDoS2019 SYN partition), follow these steps:
+**Read this section before using any number from an earlier version of this
+repository or of the manuscript.** A revision undertaken in response to peer
+review found several errors in the originally reported results. They are listed
+here rather than quietly overwritten.
 
-### 1. Environment Setup
+| What was reported | What is correct | Why |
+| --- | --- | --- |
+| 99.999% accuracy, described as a temporal split | **99.7579% accuracy, 97.8813% macro F1** under a genuine chronological split | The pipeline sorted by timestamp and then called `train_test_split(..., stratify=...)`, discarding the ordering. The published figures came from a stratified random split. |
+| 599,052 flows/s "detection throughput" | **27,647 flows/s** batch throughput; **7.05 ms** median single-flow latency | The original figure was an offline feature-extraction rate measured with no control channel and no per-flow inference. |
+| 1,953 flows/s with SHAP | **561 flows/s** when every alert is attributed | Re-measured with the explanation trigger defined explicitly. |
+| Entropy features improve accuracy ($p < 0.01$) | **They do not, in distribution.** The 80 flow statistics alone reach 98.28% macro F1 against 97.91% for the full 88-dimensional vector | The original ablation used stratified random resplits. Under the chronological protocol the effect reverses. |
+| `FIN_Flag_Count` among the three most influential features | It is **constant** across all 3,590,794 flows and carries no information | 12 of the 80 exported statistics are constant on this partition. |
+| Transfer to InSDN with accuracy 1.0 | **Zero-shot macro F1 0.6026 on InSDN, 0.2788 on CIC-IDS2017** | The file `model/artifacts/insdn_transfer.json` was flagged `"synthetic": true` and was produced from synthetic data by `scripts/run_insdn_transfer.py --use-synthetic`. It was never committed (artifacts are gitignored), was never used in the paper, and has been deleted from the working tree. |
 
-Clone the repository and install the required dependencies. A Python 3.10+ environment is recommended.
+Two further findings from the revision that were not in the original work:
+
+- **11.06% of the partition consists of exact duplicate flow records.** Under a
+  stratified random split, 15.49% of test rows have a feature-identical twin in
+  the training partition, and a lookup table that learns nothing reaches 99.28%
+  accuracy. Under a chronological split that falls to 0.04%.
+- **97.9% of benign flows occur in the final 30% of the capture.** A chronological
+  split therefore leaves 582 benign flows for training against 30,432 at test.
+  Any evaluation that splits this corpus randomly obtains a benign class that is
+  easy by construction.
+
+The full revision, including 20+ experiments, the response to reviewers, and the
+raw result files, is in [`REVISION_2026/`](../REVISION_2026) of the paper
+repository.
+
+---
+
+## What the system does
+
+1. **Rolling entropy engine.** Eight Shannon entropy features over a sliding
+   window of $N = 1{,}000$ flows, maintained by a circular buffer and a hash map
+   of key multiplicities so that each admit/evict pair costs expected amortized
+   $\mathcal{O}(1)$ rather than $\mathcal{O}(N)$. Accumulated drift over
+   12,000,000 updates is at most $7.5 \times 10^{-14}$ bits and changes zero
+   decisions.
+2. **Exact per-decision explanation.** Every admitted alert carries a TreeSHAP
+   attribution vector whose contributions sum exactly to the score, so an analyst
+   can see which features drove a decision rather than inferring it.
+3. **A budgeted explanation trigger.** Attributing every positive prediction is
+   untenable when 97% of traffic is hostile. The trigger is defined formally and
+   three budget policies are measured, giving a throughput-versus-coverage
+   frontier rather than a single operating point.
+4. **Measured control-plane cost.** The detector runs inside a live OpenFlow 1.3
+   controller against Mininet and Open vSwitch, with controller CPU, memory,
+   end-to-end detection latency, ingest saturation, and flow-table occupancy all
+   measured rather than assumed.
+
+---
+
+## Headline results
+
+All figures below are from the chronological protocol on the CIC-DDoS2019 SYN
+partition (03-11), 2,513,556 training and 1,077,238 test flows, measured on one
+CPU-only machine.
+
+| Metric | Value |
+| --- | --- |
+| Accuracy | 99.7579% |
+| Macro F1 | 97.8813% |
+| False positive rate | 0.0953% (29 false alarms in 1,077,238 flows) |
+| False negative rate | 0.2464% |
+| ROC-AUC / average precision | 0.999728 / 0.999992 |
+| Single-flow latency (p50) | 7.05 ms |
+| Batch throughput | 27,647 flows/s |
+
+The same table under a stratified random split gives 99.9981% accuracy and
+99.9458% macro F1. Both are reported in the paper so the gap is visible.
+
+---
+
+## Reproducing the results
+
+### 1. Environment
 
 ```bash
 git clone https://github.com/adeliusa486/XAI-SDN.git
@@ -44,66 +104,73 @@ cd XAI-SDN
 pip install -r requirements.txt
 ```
 
-### 2. Dataset Acquisition
+### 2. Dataset
 
-Register and download the `CIC-DDoS2019` dataset from the [UNB Canadian Institute for Cybersecurity](https://www.unb.ca/cic/datasets/ddos-2019.html). Place the raw `Syn.csv` file into the `data/raw/` directory.
+Register and download `CIC-DDoS2019` from the
+[UNB Canadian Institute for Cybersecurity](https://www.unb.ca/cic/datasets/ddos-2019.html)
+and place `Syn.csv` (03-11) into `data/raw/`.
 
-Alternatively, for a quick functionality check without the 1.8GB dataset, you can generate synthetic test data:
+A synthetic generator is provided for a functionality check only:
+
 ```bash
 python scripts/generate_synthetic_data.py
 ```
 
-### 3. Execution Pipeline
+Output produced from synthetic data is never a result. Any artifact generated
+this way carries `"synthetic": true` and must not be reported.
 
-We provide automated scripts to run the preprocessing, training, evaluation, and global SHAP extraction protocols exactly as described in the paper.
+### 3. Pipeline
 
 ```bash
-# 1. Preprocess (deduplication, NaN removal, O(1) entropy computation)
+# Preprocess: deduplication, NaN and infinity removal, rolling entropy
 python scripts/preprocess_data.py
 
-# 2. Train Random Forest (200 trees, stratified 5-fold CV)
+# Train (200 trees; see the revision for the depth and size frontier)
 python model/train.py --config configs/model_config.yaml
 
-# 3. Evaluate on the held-out test partition
+# Evaluate on the held-out chronological test partition
 python model/evaluate.py --config configs/model_config.yaml
 
-# 4. Run global SHAP importance analysis
+# Global TreeSHAP attribution
 python explainability/global_importance.py \
     --artifacts-dir model/artifacts \
     --output-dir model/artifacts/shap \
     --max-samples 2000
 
-# 5. Run comparative baseline evaluation (vs SVM, XGBoost, Naive Bayes)
+# Baselines, all CPU-only under one harness
 python model/baselines.py
 ```
 
-### 4. Multi-seed Wilcoxon Ablation
+### 4. Live deployment on Mininet
 
-To reproduce the statistical ablation study showing the significant $p < 0.01$ improvement of the entropy features across multiple temporal splits:
+The controller application, topology and narrated demonstration used for the
+supplementary video are in [`sdn/`](sdn/). They require Mininet, Open vSwitch and
+os-ken, and hardware virtualization enabled on the host.
 
 ```bash
-python model/ablation.py --seeds "42,123,456,789,1024" --output model/artifacts/ablation_results.json
+sudo python sdn/run_topology.py          # 1 switch, 3 hosts, TCLink 100 Mbit/1 ms
+sudo bash sdn/demo_session.sh            # six-step narrated demonstration
 ```
 
 ---
 
-## Repository Structure
+## Repository structure
 
 ```
 XAI-SDN/
-├── assets/                     # High-quality figures and diagrams
-├── configs/                    # YAML configuration files
-├── data/                       # Data directory (raw CSVs gitignored)
-├── explainability/             # TreeSHAP wrappers and global importance scripts
-├── features/                   # CICFlowMeter and O(1) Entropy extraction module
-├── model/                      # ML training, evaluation, ablation, and baselines
-├── scripts/                    # Reproducibility and synthetic data scripts
-├── sdn/                        # Ryu OpenFlow application and Mininet topology
-└── tests/                      # Full pytest suite
+├── assets/            Figures and diagrams
+├── configs/           YAML configuration
+├── data/              Data directory (raw CSVs gitignored)
+├── explainability/    TreeSHAP wrappers and global importance
+├── features/          CICFlowMeter and rolling entropy extraction
+├── model/             Training, evaluation, ablation, baselines
+├── scripts/           Reproducibility and synthetic data scripts
+├── sdn/               OpenFlow controller app, Mininet topology, live demo
+└── tests/             pytest suite
 ```
 
 ---
 
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+MIT. See [LICENSE](LICENSE).
