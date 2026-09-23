@@ -164,7 +164,7 @@ Table~\ref{tab:relwork} places XAI-SDN against the approaches above. What distin
 
 \begin{table}[!t]
 \caption{Qualitative positioning. \checkmark\ means the property is present and
-reported, \texttimes\ that it is absent or not reported. The columns are the axes
+reported, $\times$ that it is absent or not reported. The columns are the axes
 on which this work differs: whether an attribution is produced for each decision,
 whether the cost of producing it is budgeted rather than incurred per positive
 prediction, whether control-plane cost is measured rather than assumed, and
@@ -178,12 +178,12 @@ whether the evaluation protocol is audited.}
 \toprule
 \textbf{Approach} & \textbf{XAI} & \textbf{Budget} & \textbf{Ctrl.\ cost} & \textbf{Audit} \\
 \midrule
-Mousavi and St-Hilaire~\cite{mousavi2015early} & intrinsic & n/a & \texttimes & \texttimes \\
-Lall et al.~\cite{lall2006entropy}             & intrinsic & n/a & \texttimes & \texttimes \\
-Braga et al.~\cite{braga2010lightweight}       & \texttimes & n/a & \texttimes & \texttimes \\
-Lo et al.~\cite{lo2022egraphsage}              & \texttimes & n/a & \texttimes & \texttimes \\
-Manocchio et al.~\cite{manocchio2024flowtransformer} & \texttimes & n/a & \texttimes & \texttimes \\
-Gaspar et al.~\cite{gaspar2024xai}             & post-hoc & \texttimes & \texttimes & \texttimes \\
+Mousavi and St-Hilaire~\cite{mousavi2015early} & intrinsic & n/a & $\times$ & $\times$ \\
+Lall et al.~\cite{lall2006entropy}             & intrinsic & n/a & $\times$ & $\times$ \\
+Braga et al.~\cite{braga2010lightweight}       & $\times$ & n/a & $\times$ & $\times$ \\
+Lo et al.~\cite{lo2022egraphsage}              & $\times$ & n/a & $\times$ & $\times$ \\
+Manocchio et al.~\cite{manocchio2024flowtransformer} & $\times$ & n/a & $\times$ & $\times$ \\
+Gaspar et al.~\cite{gaspar2024xai}             & post-hoc & $\times$ & $\times$ & $\times$ \\
 \midrule
 \textbf{XAI-SDN (this work)} & \textbf{exact} & \checkmark & \checkmark & \checkmark \\
 \bottomrule
@@ -1727,12 +1727,12 @@ the solver does not converge on the full partition.}
 \textbf{FPR (\%)} & \textbf{Lat.\ p50 (ms)} & \textbf{Flows/s} &
 \textbf{Train (s)} & \textbf{Exact XAI} \\
 \midrule
-Majority baseline      & 97.175 & 49.284 & 100.000 & 0.0058 & 63,672,946 & 0.1 & \texttimes \\
-Decision Tree          & 97.714 & 66.811 & 78.421  & 0.0304 & 11,775,512 & 10.9 & \texttimes \\
-Logistic Regression    & 98.350 & 80.873 & 51.134  & 0.1086 & 3,236,092 & 36.0 & \texttimes \\
-Naive Bayes            & 98.590 & 89.590 & 0.700   & 0.1534 & 2,260,331 & 2.9 & \texttimes \\
+Majority baseline      & 97.175 & 49.284 & 100.000 & 0.0058 & 63,672,946 & 0.1 & $\times$ \\
+Decision Tree          & 97.714 & 66.811 & 78.421  & 0.0304 & 11,775,512 & 10.9 & $\times$ \\
+Logistic Regression    & 98.350 & 80.873 & 51.134  & 0.1086 & 3,236,092 & 36.0 & $\times$ \\
+Naive Bayes            & 98.590 & 89.590 & 0.700   & 0.1534 & 2,260,331 & 2.9 & $\times$ \\
 XGBoost                & 99.515 & 95.802 & 3.299   & 0.4168 & 1,260,010 & 13.3 & \checkmark \\
-Linear SVM$^{\dagger}$ & 99.641 & 96.825 & 3.289   & 0.1181 & 3,309,851 & 6.4 & \texttimes \\
+Linear SVM$^{\dagger}$ & 99.641 & 96.825 & 3.289   & 0.1181 & 3,309,851 & 6.4 & $\times$ \\
 LightGBM               & 99.759 & \textbf{97.888} & 0.371 & \textbf{0.2551} & 764,706 & 5.9 & \checkmark \\
 \midrule
 \textbf{XAI-SDN (RF)}  & \textbf{99.758} & 97.881 & \textbf{0.095} & 7.0480 & 27,647 & 53.3 & \checkmark \\
