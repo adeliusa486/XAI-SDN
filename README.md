@@ -215,7 +215,7 @@ Python 3.11. The analysis experiments run on Windows or Linux. The testbed
 experiments need Linux, because Mininet does not run on Windows.
 
 ```bash
-git clone https://github.com/adeliusa486/xAI-SDN.git
+git clone https://github.com/adeliusa486/XAI-SDN.git
 cd xAI-SDN
 python -m venv .venv
 source .venv/bin/activate        # Windows: .venv\Scripts\activate

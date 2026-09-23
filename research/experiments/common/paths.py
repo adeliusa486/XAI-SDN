@@ -17,21 +17,39 @@ import sys
 import time
 from pathlib import Path
 
-PROJECT = Path(__file__).resolve().parents[2]          # research/
+PROJECT = Path(__file__).resolve().parents[2]          # research/ or REVISION_2026/
 REPO = PROJECT.parent                                   # repository root
 
-DATA_META = PROJECT / "data_profiles"
-EXP = PROJECT / "experiments"
-RESULTS = PROJECT / "results"
-MANUSCRIPT = PROJECT / "paper"
-FIGURES = PROJECT / "figures"
-LOGS = PROJECT / "logs"
-PACKAGE = PROJECT / "package"
+# The same tree is laid out two ways: the numbered working tree the revision was
+# produced in, and the flat layout published in the repository. Detect which one
+# this copy is sitting in rather than assuming, because a script that resolves to
+# a directory that does not exist fails at the point of use, not at import, and
+# the mkdir loop below would otherwise scatter empty directories into the tree.
+_NUMBERED = (PROJECT / "04_results").is_dir()
 
-# Retained for scripts that still reference them; not published in this repository.
-SUBMITTED = PROJECT / "_submitted"
-MATRIX = PROJECT / "_matrix"
-RESPONSE = PROJECT / "_response"
+if _NUMBERED:
+    DATA_META = PROJECT / "02_data"
+    EXP = PROJECT / "03_experiments"
+    RESULTS = PROJECT / "04_results"
+    MANUSCRIPT = PROJECT / "05_manuscript"
+    FIGURES = PROJECT / "06_figures"
+    LOGS = PROJECT / "08_logs"
+    PACKAGE = PROJECT / "09_package"
+    SUBMITTED = PROJECT / "00_submitted"
+    MATRIX = PROJECT / "01_matrix"
+    RESPONSE = PROJECT / "07_response"
+else:
+    DATA_META = PROJECT / "data_profiles"
+    EXP = PROJECT / "experiments"
+    RESULTS = PROJECT / "results"
+    MANUSCRIPT = PROJECT / "paper"
+    FIGURES = PROJECT / "figures"
+    LOGS = PROJECT / "logs"
+    PACKAGE = PROJECT / "package"
+    # Peer-review process material; deliberately not published in the repository.
+    SUBMITTED = PROJECT / "_submitted"
+    MATRIX = PROJECT / "_matrix"
+    RESPONSE = PROJECT / "_response"
 
 DATA_ROOT = Path(os.environ.get("XAISDN_DATA", Path.home() / "xaisdn_data"))
 VENV_PY = Path(os.environ.get("XAISDN_PYTHON", sys.executable))

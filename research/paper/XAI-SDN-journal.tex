@@ -11,6 +11,18 @@
 \usepackage{algorithm}
 \usepackage{algpseudocode}
 \usepackage{url}
+% hyperref is loaded last so that it can patch the cross-referencing commands of
+% every package above it. hidelinks keeps the printed page identical to the
+% pre-hyperlink build: no coloured text, no rules around links. Citations,
+% cross-references, DOIs and the repository URL all become clickable.
+\usepackage[hidelinks,breaklinks=true,bookmarks=true,bookmarksnumbered=true]{hyperref}
+\hypersetup{
+  pdftitle={XAI-SDN: An explainable entropy-guided machine learning framework for real-time DDoS detection in software defined networks},
+  pdfauthor={Adeel Ahmad and Arshad Ali and Rafi us Shan and Gahangir Hossain},
+  pdfsubject={IEEE Access},
+  pdfkeywords={DDoS detection; software defined networks; explainable AI; Shannon entropy; random forest; SHAP; network security; evaluation methodology}
+}
+\urlstyle{same}
 % \usetikzlibrary{shapes.geometric, arrows.meta, positioning, fit, backgrounds, calc}
 % \pgfplotsset{compat=1.16}
 
@@ -56,25 +68,23 @@
 
 \begin{abstract}
 Software-defined networking concentrates forwarding decisions in a logically centralized
-controller, which simplifies management but creates a single point of failure. A distributed
-denial-of-service campaign that saturates the control channel can disable forwarding across a
-domain. Machine learning detects such traffic well, yet an operator who cannot see why a flow
-was flagged will not authorize autonomous mitigation. We present XAI-SDN, a controller-embedded
-detector that augments exported flow statistics with eight windowed Shannon entropy features
-maintained at expected amortized constant cost per update, classifies with a Random Forest, and
-attributes alerts with exact Shapley-value attribution under an explicit explanation budget.
+controller. That simplifies management and creates a single point of failure: a distributed
+denial-of-service campaign that saturates the control channel can disable forwarding
+domain-wide. Machine learning detects such traffic well. An operator who cannot see why a flow was
+flagged will not authorize autonomous mitigation. We present XAI-SDN, a controller-embedded detector. It augments exported flow statistics with eight windowed Shannon
+entropy features at expected amortized constant cost per update, classifies with a Random
+Forest, and attributes alerts with exact Shapley values under an explicit explanation budget.
 Under a chronological split of the CIC-DDoS2019 SYN partition, where every training flow
 precedes every test flow, it attains 99.76\% accuracy and 97.88\% macro F1 over 1,077,238
-held-out flows at a false positive rate of 0.095\%. A stratified random split of the same data
-instead yields 99.95\% macro F1. Both are reported, because the protocol moves the headline
-metric further than any architectural choice examined here. Attributing every positive
-prediction reduces sustained throughput from 35,715 to 661 flows per second, whereas one exact
-attribution per attack episode restores 35,652 flows per second, with every alert still
-resolvable to an attribution. A live OpenFlow 1.3 control plane on Mininet quantifies
-controller CPU and memory, detection latency, the offered rate at which one controller
-saturates, and the flow-rule aggregation bounding flow-table occupancy during a flood. Transfer
-to an unseen corpus fails without target-domain labels, a limitation reported rather than
-bounded away.
+held-out flows at a 0.095\% false positive rate. A stratified random split of the same data
+yields 99.95\% macro F1. We report both, because the protocol moves the headline metric
+further than any architectural choice examined here. Attribution, not classification, is the
+binding cost: explaining every positive prediction cuts sustained throughput from 35,715 to 661
+flows per second, whereas one exact attribution per attack episode restores 35,652, with every
+alert still resolvable to an attribution. A live OpenFlow 1.3 control plane under Mininet
+supplies the deployment figures: controller CPU and memory, detection latency, the offered rate at
+which one controller saturates, and the flow-rule aggregation bounding flow-table occupancy during a flood. Transfer to an unseen corpus fails without target-domain labels, a limitation
+reported rather than bounded away.
 \end{abstract}
 
 \begin{keywords}
@@ -591,6 +601,8 @@ XAI-SDN is implemented in Python using scikit-learn~\cite{pedregosa2011sklearn} 
 
 This section reports detection performance under the chronological protocol, then works through the questions that performance raises. We begin with the effect of split methodology, because it turns out to dominate, and because it determines how every subsequent number should be read. We then audit the data for leakage, quantify redundancy among the features and the stability of the attributions built on them, select the operating threshold on the precision--recall plane, measure the numerical behavior of the streaming entropy engine, test generalization across attack vectors, capture days and corpora, and finally account for the cost of running the detector inside a live control plane.
 
+One convention applies throughout. In the tables that follow, bold marks the row the accompanying text is about, which is not in general the best row in any column: several bolded rows are beaten elsewhere in their own table, and we say so where it matters. Where bold instead marks the best value in a column, the caption states that rule explicitly.
+
 \subsection{Sensitivity to the evaluation protocol}
 \label{sec:splitresult}
 The same model, the same features, and the same hyperparameters produce materially different headline figures depending only on how the data are partitioned (Table~\ref{tab:splitcompare}). We report this first because it determines how every subsequent number should be read.
@@ -948,7 +960,7 @@ cost. Even 41 features hold $97.95\%$. Only at 29 features does performance fall
 below the full set.
 
 \begin{table}[!t]
-\caption{Feature-set reduction by correlation clustering. Batch inference latency is per flow.}
+\caption{Feature-set reduction by correlation clustering. Batch inference latency is per flow. Bold marks the best value in each column rather than a row under discussion.}
 \centering
 \label{tab:reduced}
 \footnotesize
@@ -1881,9 +1893,9 @@ Majority baseline      & 97.175 & 49.284 & 100.000 & 0.0058 & 63,672,946 & 0.1 &
 Decision Tree          & 97.714 & 66.811 & 78.421  & 0.0304 & 11,775,512 & 10.9 & $\times$ \\
 Logistic Regression    & 98.350 & 80.873 & 51.134  & 0.1086 & 3,236,092 & 36.0 & $\times$ \\
 Naive Bayes            & 98.590 & 89.590 & 0.700   & 0.1534 & 2,260,331 & 2.9 & $\times$ \\
-XGBoost                & 99.515 & 95.802 & 3.299   & 0.4168 & 1,260,010 & 13.3 & \checkmark \\
+XGBoost                & 99.515 & 95.802 & 3.299   & 0.4168 & \textbf{1,260,010} & 13.3 & \checkmark \\
 Linear SVM$^{\dagger}$ & 99.641 & 96.825 & 3.289   & 0.1181 & 3,309,851 & 6.4 & $\times$ \\
-LightGBM               & \textbf{99.759} & \textbf{97.888} & 0.371 & \textbf{0.2551} & 764,706 & 5.9 & \checkmark \\
+LightGBM               & \textbf{99.759} & \textbf{97.888} & 0.371 & \textbf{0.2551} & 764,706 & \textbf{5.9} & \checkmark \\
 \midrule
 \textbf{XAI-SDN (RF)}  & 99.758 & 97.881 & \textbf{0.095} & 7.0480 & 27,647 & 53.3 & \checkmark \\
 \bottomrule
@@ -1950,7 +1962,10 @@ full training partition, since protocol~B's 31 cannot fit a reconstruction model
 Its ROC-AUC below 0.5 is
 discussed in the text. The detector's average precision is printed to five decimal
 places because it is the only entry that would otherwise round to $1.0000$ and be
-misread as exact.}
+misread as exact. The final row is set in bold because it is this paper's method,
+not because it is best in any column: four of the five deep baselines have lower
+single-flow latency, and the parameter counts are not commensurable across model
+families.}
 \centering
 \label{tab:deep}
 \footnotesize
@@ -2118,7 +2133,7 @@ The authors declare that they have no known competing financial interests or per
 The authors gratefully acknowledge the support provided by the Higher Colleges of Technology (HCT), United Arab Emirates, toward the publication of this research in the IEEE Access journal. This support contributed significantly to the successful dissemination of the research findings.
 
 \section*{Data availability}
-The datasets, implementation code, trained-model artifacts, per-seed manifests, and experimental configuration files supporting this study are publicly available at: \url{https://github.com/adeliusa486/xAI-SDN}
+The datasets, implementation code, trained-model artifacts, per-seed manifests, and experimental configuration files supporting this study are publicly available at: \url{https://github.com/adeliusa486/XAI-SDN}
 
 \bibliographystyle{IEEEtran}
 \bibliography{references}

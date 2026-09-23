@@ -22,197 +22,297 @@
 \BIBdecl
 
 \bibitem{mckeown2008openflow}
+\BIBentryALTinterwordspacing
 N.~McKeown, T.~Anderson, H.~Balakrishnan, G.~Parulkar, L.~Peterson, J.~Rexford,
   S.~Shenker, and J.~Turner, ``{OpenFlow}: Enabling innovation in campus
   networks,'' \emph{ACM SIGCOMM Computer Communication Review}, vol.~38, no.~2,
-  pp. 69--74, 2008.
+  pp. 69--74, 2008. [Online]. Available:
+  \url{https://doi.org/10.1145/1355734.1355746}
+\BIBentrySTDinterwordspacing
 
 \bibitem{kreutz2015sdn}
+\BIBentryALTinterwordspacing
 D.~Kreutz, F.~M.~V. Ramos, P.~E. Verissimo, C.~E. Rothenberg, S.~Azodolmolky,
   and S.~Uhlig, ``Software-defined networking: A comprehensive survey,''
   \emph{Proceedings of the {IEEE}}, vol. 103, no.~1, pp. 14--76, 2015.
+  [Online]. Available: \url{https://doi.org/10.1109/JPROC.2014.2371999}
+\BIBentrySTDinterwordspacing
 
 \bibitem{mirkovic2004taxonomy}
+\BIBentryALTinterwordspacing
 J.~Mirkovic and P.~Reiher, ``A taxonomy of {DDoS} attack and {DDoS} defense
   mechanisms,'' \emph{ACM SIGCOMM Computer Communication Review}, vol.~34,
-  no.~2, pp. 39--53, 2004.
+  no.~2, pp. 39--53, 2004. [Online]. Available:
+  \url{https://doi.org/10.1145/997150.997156}
+\BIBentrySTDinterwordspacing
 
 \bibitem{sharafaldin2019ddos}
+\BIBentryALTinterwordspacing
 I.~Sharafaldin, A.~H. Lashkari, S.~Hakak, and A.~A. Ghorbani, ``Developing
   realistic {Distributed Denial of Service} ({DDoS}) attack dataset and
   taxonomy,'' in \emph{2019 International Carnahan Conference on Security
   Technology (ICCST)}.\hskip 1em plus 0.5em minus 0.4em\relax IEEE, 2019, pp.
-  1--8.
+  1--8. [Online]. Available: \url{https://doi.org/10.1109/CCST.2019.8888419}
+\BIBentrySTDinterwordspacing
 
 \bibitem{bhuyan2014network}
+\BIBentryALTinterwordspacing
 M.~H. Bhuyan, D.~K. Bhattacharyya, and J.~K. Kalita, ``Network anomaly
   detection: Methods, systems and tools,'' \emph{IEEE Communications Surveys \&
-  Tutorials}, vol.~16, no.~1, pp. 303--336, 2014.
+  Tutorials}, vol.~16, no.~1, pp. 303--336, 2014. [Online]. Available:
+  \url{https://doi.org/10.1109/SURV.2013.052213.00046}
+\BIBentrySTDinterwordspacing
 
 \bibitem{arrieta2020xai}
+\BIBentryALTinterwordspacing
 A.~B. Arrieta, N.~D{\'i}az-Rodr{\'i}guez, J.~Del~Ser, A.~Bennetot, S.~Tabik,
   A.~Barbado, S.~Garc{\'i}a, S.~Gil-L{\'o}pez, D.~Molina, R.~Benjamins,
   R.~Chatila, and F.~Herrera, ``Explainable artificial intelligence ({XAI}):
   Concepts, taxonomies, opportunities and challenges toward responsible {AI},''
-  \emph{Information Fusion}, vol.~58, pp. 82--115, 2020.
+  \emph{Information Fusion}, vol.~58, pp. 82--115, 2020. [Online]. Available:
+  \url{https://doi.org/10.1016/j.inffus.2019.12.012}
+\BIBentrySTDinterwordspacing
 
 \bibitem{guidotti2018survey}
+\BIBentryALTinterwordspacing
 R.~Guidotti, A.~Monreale, S.~Ruggieri, F.~Turini, F.~Giannotti, and
   D.~Pedreschi, ``A survey of methods for explaining black box models,''
   \emph{ACM Computing Surveys}, vol.~51, no.~5, pp. 93:1--93:42, 2018.
+  [Online]. Available: \url{https://doi.org/10.1145/3236009}
+\BIBentrySTDinterwordspacing
 
 \bibitem{warnecke2020evaluating}
+\BIBentryALTinterwordspacing
 A.~Warnecke, D.~Arp, C.~Wressnegger, and K.~Rieck, ``Evaluating explanation
   methods for deep learning in security,'' in \emph{Proceedings of the 2020
   {IEEE} European Symposium on Security and Privacy ({EuroS\&P})}.\hskip 1em
-  plus 0.5em minus 0.4em\relax IEEE, 2020, pp. 158--174.
+  plus 0.5em minus 0.4em\relax IEEE, 2020, pp. 158--174. [Online]. Available:
+  \url{https://doi.org/10.1109/EuroSP48549.2020.00018}
+\BIBentrySTDinterwordspacing
 
 \bibitem{samed2025xaiids}
-L.~S. Al and {\c{S}}.~Sa{\u{g}}{\i}ro{\u{g}}lu, ``Explainable artificial
+\BIBentryALTinterwordspacing
+S.~Al and {\c{S}}.~Sa{\u{g}}{\i}ro{\u{g}}lu, ``Explainable artificial
   intelligence models in intrusion detection systems,'' \emph{Engineering
   Applications of Artificial Intelligence}, vol. 144, p. 110145, 2025.
+  [Online]. Available: \url{https://doi.org/10.1016/j.engappai.2025.110145}
+\BIBentrySTDinterwordspacing
 
 \bibitem{mousavi2015early}
+\BIBentryALTinterwordspacing
 S.~M. Mousavi and M.~St-Hilaire, ``Early detection of {DDoS} attacks against
   {SDN} controllers,'' in \emph{Proceedings of the 2015 International
   Conference on Computing, Networking and Communications ({ICNC})}.\hskip 1em
-  plus 0.5em minus 0.4em\relax IEEE, 2015, pp. 77--81.
+  plus 0.5em minus 0.4em\relax IEEE, 2015, pp. 77--81. [Online]. Available:
+  \url{https://doi.org/10.1109/ICCNC.2015.7069319}
+\BIBentrySTDinterwordspacing
 
 \bibitem{jain2024ddossurvey}
+\BIBentryALTinterwordspacing
 A.~K. Jain, H.~Shukla, and D.~Goel, ``A comprehensive survey on {DDoS}
   detection, mitigation, and defense strategies in software-defined networks,''
   \emph{Cluster Computing}, vol.~27, no.~9, pp. 13\,129--13\,164, 2024.
+  [Online]. Available: \url{https://doi.org/10.1007/s10586-024-04596-z}
+\BIBentrySTDinterwordspacing
 
 \bibitem{nychis2008entropy}
+\BIBentryALTinterwordspacing
 G.~Nychis, V.~Sekar, D.~G. Andersen, H.~Kim, and H.~Zhang, ``An empirical
   evaluation of entropy-based traffic anomaly detection,'' in \emph{Proceedings
   of the 8th {ACM SIGCOMM} Conference on Internet Measurement ({IMC}
   2008)}.\hskip 1em plus 0.5em minus 0.4em\relax ACM, 2008, pp. 151--156.
+  [Online]. Available: \url{https://doi.org/10.1145/1452520.1452539}
+\BIBentrySTDinterwordspacing
 
 \bibitem{lakhina2005mining}
+\BIBentryALTinterwordspacing
 A.~Lakhina, M.~Crovella, and C.~Diot, ``Mining anomalies using traffic feature
   distributions,'' in \emph{Proceedings of the {ACM SIGCOMM} 2005
   Conference}.\hskip 1em plus 0.5em minus 0.4em\relax ACM, 2005, pp. 217--228.
+  [Online]. Available: \url{https://doi.org/10.1145/1080091.1080118}
+\BIBentrySTDinterwordspacing
 
 \bibitem{lall2006entropy}
+\BIBentryALTinterwordspacing
 A.~Lall, V.~Sekar, M.~Ogihara, J.~Xu, and H.~Zhang, ``Data streaming algorithms
   for estimating entropy of network traffic,'' in \emph{Proceedings of the {ACM
   SIGMETRICS} International Conference on Measurement and Modeling of Computer
   Systems}.\hskip 1em plus 0.5em minus 0.4em\relax ACM, 2006, pp. 145--156.
+  [Online]. Available: \url{https://doi.org/10.1145/1140103.1140295}
+\BIBentrySTDinterwordspacing
 
 \bibitem{braga2010lightweight}
+\BIBentryALTinterwordspacing
 R.~Braga, E.~Mota, and A.~Passito, ``Lightweight {DDoS} flooding attack
   detection using {NOX}/{OpenFlow},'' in \emph{Proceedings of the 35th Annual
   {IEEE} Conference on Local Computer Networks ({LCN})}.\hskip 1em plus 0.5em
-  minus 0.4em\relax IEEE, 2010, pp. 408--415.
+  minus 0.4em\relax IEEE, 2010, pp. 408--415. [Online]. Available:
+  \url{https://doi.org/10.1109/LCN.2010.5735752}
+\BIBentrySTDinterwordspacing
 
 \bibitem{tang2016deep}
+\BIBentryALTinterwordspacing
 T.~A. Tang, L.~Mhamdi, D.~McLernon, S.~A.~R. Zaidi, and M.~Ghogho, ``Deep
   learning approach for network intrusion detection in software defined
   networking,'' in \emph{Proceedings of the 2016 International Conference on
   Wireless Networks and Mobile Communications ({WINCOM})}.\hskip 1em plus 0.5em
-  minus 0.4em\relax IEEE, 2016, pp. 258--263.
+  minus 0.4em\relax IEEE, 2016, pp. 258--263. [Online]. Available:
+  \url{https://doi.org/10.1109/WINCOM.2016.7777224}
+\BIBentrySTDinterwordspacing
 
 \bibitem{niyaz2017deep}
+\BIBentryALTinterwordspacing
 Q.~Niyaz, W.~Sun, and A.~Y. Javaid, ``A deep learning based {DDoS} detection
   system in software-defined networking ({SDN}),'' \emph{EAI Endorsed
-  Transactions on Security and Safety}, vol.~4, no.~12, 2017.
+  Transactions on Security and Safety}, vol.~4, no.~12, 2017. [Online].
+  Available: \url{https://doi.org/10.4108/eai.28-12-2017.153515}
+\BIBentrySTDinterwordspacing
 
 \bibitem{lo2022egraphsage}
+\BIBentryALTinterwordspacing
 W.~W. Lo, S.~Layeghy, M.~Sarhan, M.~Gallagher, and M.~Portmann,
   ``{E-GraphSAGE}: A graph neural network based intrusion detection system for
   {IoT},'' in \emph{Proc. IEEE/IFIP Network Operations and Management Symposium
-  (NOMS)}, 2022, pp. 1--9.
+  (NOMS)}, 2022, pp. 1--9. [Online]. Available:
+  \url{https://doi.org/10.1109/NOMS54207.2022.9789878}
+\BIBentrySTDinterwordspacing
 
 \bibitem{manocchio2024flowtransformer}
+\BIBentryALTinterwordspacing
 L.~D. Manocchio, S.~Layeghy, W.~W. Lo, G.~K. Kulatilleke, M.~Sarhan, and
   M.~Portmann, ``{FlowTransformer}: A transformer framework for flow-based
   network intrusion detection systems,'' \emph{Expert Systems with
-  Applications}, vol. 241, p. 122564, 2024.
+  Applications}, vol. 241, p. 122564, 2024. [Online]. Available:
+  \url{https://doi.org/10.1016/j.eswa.2023.122564}
+\BIBentrySTDinterwordspacing
 
 \bibitem{bhayo2023sdiot}
+\BIBentryALTinterwordspacing
 J.~Bhayo, S.~A. Shah, S.~Hameed, A.~Ahmed, J.~Nasir, and D.~Draheim, ``Towards
   a machine learning-based framework for {DDoS} attack detection in
   software-defined {IoT} ({SD-IoT}) networks,'' \emph{Engineering Applications
-  of Artificial Intelligence}, vol. 123, p. 106432, 2023.
+  of Artificial Intelligence}, vol. 123, p. 106432, 2023. [Online]. Available:
+  \url{https://doi.org/10.1016/j.engappai.2023.106432}
+\BIBentrySTDinterwordspacing
 
 \bibitem{sharafaldin2018cicids}
+\BIBentryALTinterwordspacing
 I.~Sharafaldin, A.~H. Lashkari, and A.~A. Ghorbani, ``Toward generating a new
   intrusion detection dataset and intrusion traffic characterization,'' in
   \emph{Proceedings of the 4th International Conference on Information Systems
   Security and Privacy ({ICISSP})}.\hskip 1em plus 0.5em minus 0.4em\relax
-  SciTePress, 2018, pp. 108--116.
+  SciTePress, 2018, pp. 108--116. [Online]. Available:
+  \url{https://doi.org/10.5220/0006639801080116}
+\BIBentrySTDinterwordspacing
 
 \bibitem{elsayed2020insdn}
+\BIBentryALTinterwordspacing
 M.~S. Elsayed, N.-A. Le-Khac, and A.~D. Jurcut, ``{InSDN}: A novel {SDN}
   intrusion dataset,'' \emph{IEEE Access}, vol.~8, pp. 165\,263--165\,284,
-  2020.
+  2020. [Online]. Available: \url{https://doi.org/10.1109/ACCESS.2020.3022633}
+\BIBentrySTDinterwordspacing
 
 \bibitem{ring2019survey}
+\BIBentryALTinterwordspacing
 M.~Ring, S.~Wunderlich, D.~Scheuring, D.~Landes, and A.~Hotho, ``A survey of
   network-based intrusion detection data sets,'' \emph{Computers \& Security},
-  vol.~86, pp. 147--167, 2019.
+  vol.~86, pp. 147--167, 2019. [Online]. Available:
+  \url{https://doi.org/10.1016/j.cose.2019.06.005}
+\BIBentrySTDinterwordspacing
 
 \bibitem{sommer2010outside}
+\BIBentryALTinterwordspacing
 R.~Sommer and V.~Paxson, ``Outside the closed world: On using machine learning
   for network intrusion detection,'' in \emph{Proceedings of the 2010 {IEEE}
   Symposium on Security and Privacy}.\hskip 1em plus 0.5em minus 0.4em\relax
-  IEEE, 2010, pp. 305--316.
+  IEEE, 2010, pp. 305--316. [Online]. Available:
+  \url{https://doi.org/10.1109/SP.2010.25}
+\BIBentrySTDinterwordspacing
 
 \bibitem{arp2022dos}
+\BIBentryALTinterwordspacing
 D.~Arp, E.~Quiring, F.~Pendlebury, A.~Warnecke, F.~Pierazzi, C.~Wressnegger,
   L.~Cavallaro, and K.~Rieck, ``Dos and don'ts of machine learning in computer
   security,'' in \emph{Proceedings of the 31st {USENIX} Security
   Symposium}.\hskip 1em plus 0.5em minus 0.4em\relax USENIX Association, 2022,
-  pp. 3971--3988.
+  pp. 3971--3988. [Online]. Available:
+  \url{https://www.usenix.org/conference/usenixsecurity22/presentation/arp}
+\BIBentrySTDinterwordspacing
 
 \bibitem{doshivelez2017rigorous}
+\BIBentryALTinterwordspacing
 F.~Doshi-Velez and B.~Kim, ``Towards a rigorous science of interpretable
-  machine learning,'' arXiv:1702.08608 [stat.ML], 2017, preprint.
+  machine learning,'' arXiv:1702.08608 [stat.ML], 2017, preprint. [Online].
+  Available: \url{https://doi.org/10.48550/arXiv.1702.08608}
+\BIBentrySTDinterwordspacing
 
 \bibitem{ribeiro2016lime}
+\BIBentryALTinterwordspacing
 M.~T. Ribeiro, S.~Singh, and C.~Guestrin, ````{Why} should {I} trust you?'':
   {Explaining} the predictions of any classifier,'' in \emph{Proceedings of the
   22nd {ACM SIGKDD} International Conference on Knowledge Discovery and Data
   Mining}.\hskip 1em plus 0.5em minus 0.4em\relax ACM, 2016, pp. 1135--1144.
+  [Online]. Available: \url{https://doi.org/10.1145/2939672.2939778}
+\BIBentrySTDinterwordspacing
 
 \bibitem{lundberg2017shap}
+\BIBentryALTinterwordspacing
 S.~M. Lundberg and S.-I. Lee, ``A unified approach to interpreting model
   predictions,'' in \emph{Advances in Neural Information Processing Systems 30
   (NeurIPS 2017)}, I.~Guyon, U.~V. Luxburg, S.~Bengio, H.~Wallach, R.~Fergus,
   S.~Vishwanathan, and R.~Garnett, Eds.\hskip 1em plus 0.5em minus 0.4em\relax
-  Curran Associates, Inc., 2017, pp. 4765--4774.
+  Curran Associates, Inc., 2017, pp. 4765--4774. [Online]. Available:
+  \url{https://papers.nips.cc/paper_files/paper/2017/hash/8a20a8621978632d76c43dfd28b67767-Abstract.html}
+\BIBentrySTDinterwordspacing
 
 \bibitem{lundberg2020treeshap}
+\BIBentryALTinterwordspacing
 S.~M. Lundberg, G.~Erion, H.~Chen, A.~DeGrave, J.~M. Prutkin, B.~Nair, R.~Katz,
   J.~Himmelfarb, N.~Bansal, and S.-I. Lee, ``From local explanations to global
   understanding with explainable {AI} for trees,'' \emph{Nature Machine
-  Intelligence}, vol.~2, no.~1, pp. 56--67, 2020.
+  Intelligence}, vol.~2, no.~1, pp. 56--67, 2020. [Online]. Available:
+  \url{https://doi.org/10.1038/s42256-019-0138-9}
+\BIBentrySTDinterwordspacing
 
 \bibitem{gaspar2024xai}
+\BIBentryALTinterwordspacing
 D.~Gaspar, P.~Silva, and C.~Silva, ``Explainable {AI} for intrusion detection
   systems: {LIME} and {SHAP} applicability on multi-layer perceptron,''
-  \emph{IEEE Access}, vol.~12, pp. 30\,164--30\,175, 2024.
+  \emph{IEEE Access}, vol.~12, pp. 30\,164--30\,175, 2024. [Online]. Available:
+  \url{https://doi.org/10.1109/ACCESS.2024.3368377}
+\BIBentrySTDinterwordspacing
 
 \bibitem{swaminathan2022bayesian}
+\BIBentryALTinterwordspacing
 M.~Swaminathan, O.~W. Bhatti, Y.~Guo, E.~Huang, and O.~Akinwande, ``Bayesian
   learning for uncertainty quantification, optimization, and inverse design,''
   \emph{IEEE Transactions on Microwave Theory and Techniques}, vol.~70, no.~11,
-  pp. 4620--4634, 2022.
+  pp. 4620--4634, 2022. [Online]. Available:
+  \url{https://doi.org/10.1109/TMTT.2022.3206455}
+\BIBentrySTDinterwordspacing
 
 \bibitem{chen2025tppi}
+\BIBentryALTinterwordspacing
 F.~Chen, C.~Ding, X.~Hu, X.~He, X.~Yin, J.~Yang, and Z.~Zhao, ``Tensor
   {Poincar\'{e}} plot index: A novel nonlinear dynamic method for extracting
   abnormal state information of pumped storage units,'' \emph{Reliability
   Engineering \& System Safety}, vol. 254, no. Part B, p. 110607, 2025.
+  [Online]. Available: \url{https://doi.org/10.1016/j.ress.2024.110607}
+\BIBentrySTDinterwordspacing
 
 \bibitem{breiman2001rf}
+\BIBentryALTinterwordspacing
 L.~Breiman, ``Random forests,'' \emph{Machine Learning}, vol.~45, no.~1, pp.
-  5--32, 2001.
+  5--32, 2001. [Online]. Available:
+  \url{https://doi.org/10.1023/A:1010933404324}
+\BIBentrySTDinterwordspacing
 
 \bibitem{shannon1948mathematical}
+\BIBentryALTinterwordspacing
 C.~E. Shannon, ``A mathematical theory of communication,'' \emph{Bell System
-  Technical Journal}, vol.~27, no.~3, pp. 379--423, 1948.
+  Technical Journal}, vol.~27, no.~3, pp. 379--423, 1948. [Online]. Available:
+  \url{https://doi.org/10.1002/j.1538-7305.1948.tb01338.x}
+\BIBentrySTDinterwordspacing
 
 \bibitem{pedregosa2011sklearn}
 \BIBentryALTinterwordspacing
@@ -225,29 +325,46 @@ F.~Pedregosa, G.~Varoquaux, A.~Gramfort, V.~Michel, B.~Thirion, O.~Grisel,
 \BIBentrySTDinterwordspacing
 
 \bibitem{chen2016xgboost}
+\BIBentryALTinterwordspacing
 T.~Chen and C.~Guestrin, ``{XGBoost}: A scalable tree boosting system,'' in
   \emph{Proceedings of the 22nd {ACM SIGKDD} International Conference on
   Knowledge Discovery and Data Mining}.\hskip 1em plus 0.5em minus 0.4em\relax
-  ACM, 2016, pp. 785--794.
+  ACM, 2016, pp. 785--794. [Online]. Available:
+  \url{https://doi.org/10.1145/2939672.2939785}
+\BIBentrySTDinterwordspacing
 
 \bibitem{cortes1995svm}
+\BIBentryALTinterwordspacing
 C.~Cortes and V.~Vapnik, ``Support-vector networks,'' \emph{Machine Learning},
-  vol.~20, no.~3, pp. 273--297, 1995.
+  vol.~20, no.~3, pp. 273--297, 1995. [Online]. Available:
+  \url{https://doi.org/10.1007/BF00994018}
+\BIBentrySTDinterwordspacing
 
 \bibitem{kumar2026meta}
+\BIBentryALTinterwordspacing
 A.~I. Kumar, G.~Ishigaki, and A.~K. Belman, ``Enhanced multi-class {DDoS}
   attack identification using a meta-learning ensemble,'' arXiv:2607.16521
-  [cs.CR], 2026, preprint.
+  [cs.CR], 2026, preprint. [Online]. Available:
+  \url{https://arxiv.org/abs/2607.16521}
+\BIBentrySTDinterwordspacing
 
 \bibitem{you2026plaa}
+\BIBentryALTinterwordspacing
 J.~You, Z.~Zhou, S.~Yang, Y.~Sun, L.~Zhang, and C.~Xu, ``{PLAA}: Packet-level
-  adversarial attacks in network traffic detection,'' arXiv:2606.28439 [cs.CR],
-  2026, preprint.
+  adversarial attacks in network traffic detection,'' in \emph{2025 IEEE 24th
+  International Conference on Trust, Security and Privacy in Computing and
+  Communications (TrustCom)}.\hskip 1em plus 0.5em minus 0.4em\relax IEEE,
+  2025, pp. 1327--1336. [Online]. Available:
+  \url{https://doi.org/10.1109/Trustcom66490.2025.00153}
+\BIBentrySTDinterwordspacing
 
 \bibitem{gali2025qos}
+\BIBentryALTinterwordspacing
 M.~Gali and A.~Mahamkali, ``Deep learning based attack detection and
   {QoS}-aware secure routing protocol for {SDN-IoT} network,''
   \emph{Concurrency and Computation: Practice and Experience}, vol.~37, no.
-  4--5, p. e70045, 2025.
+  6--8, p. e70045, 2025. [Online]. Available:
+  \url{https://doi.org/10.1002/cpe.70045}
+\BIBentrySTDinterwordspacing
 
 \end{thebibliography}
