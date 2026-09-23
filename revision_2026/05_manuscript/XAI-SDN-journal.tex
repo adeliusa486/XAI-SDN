@@ -1862,7 +1862,10 @@ and 1,077,238 test flows at the natural class prevalence. All figures measured b
 us on the CPU of Table~\ref{tab:environment} under one harness. Latency is the
 median of single-flow inference calls with the estimator forced to serial
 execution; throughput is measured in batch mode, and the two answer different
-questions. $^{\dagger}$ trained on a capped subsample of 300,000 flows because
+questions. Bold marks the best value in each column among the three methods that
+admit exact TreeSHAP attribution, which are the only ones this paper treats as
+candidates; on accuracy and macro F1 that method is LightGBM rather than ours.
+$^{\dagger}$ trained on a capped subsample of 300,000 flows because
 the solver does not converge on the full partition.}
 \centering
 \label{tab:comparison}
@@ -1881,9 +1884,9 @@ Logistic Regression    & 98.350 & 80.873 & 51.134  & 0.1086 & 3,236,092 & 36.0 &
 Naive Bayes            & 98.590 & 89.590 & 0.700   & 0.1534 & 2,260,331 & 2.9 & $\times$ \\
 XGBoost                & 99.515 & 95.802 & 3.299   & 0.4168 & 1,260,010 & 13.3 & \checkmark \\
 Linear SVM$^{\dagger}$ & 99.641 & 96.825 & 3.289   & 0.1181 & 3,309,851 & 6.4 & $\times$ \\
-LightGBM               & 99.759 & \textbf{97.888} & 0.371 & \textbf{0.2551} & 764,706 & 5.9 & \checkmark \\
+LightGBM               & \textbf{99.759} & \textbf{97.888} & 0.371 & \textbf{0.2551} & 764,706 & 5.9 & \checkmark \\
 \midrule
-\textbf{XAI-SDN (RF)}  & \textbf{99.758} & 97.881 & \textbf{0.095} & 7.0480 & 27,647 & 53.3 & \checkmark \\
+\textbf{XAI-SDN (RF)}  & 99.758 & 97.881 & \textbf{0.095} & 7.0480 & 27,647 & 53.3 & \checkmark \\
 \bottomrule
 \end{tabular}
 \end{table*}
@@ -2116,7 +2119,7 @@ The authors declare that they have no known competing financial interests or per
 The authors gratefully acknowledge the support provided by the Higher Colleges of Technology (HCT), United Arab Emirates, toward the publication of this research in the IEEE Access journal. This support contributed significantly to the successful dissemination of the research findings.
 
 \section*{Data availability}
-The datasets, implementation code, trained-model artifacts, per-seed manifests, and experimental configuration files supporting this study are publicly available at: \url{https://github.com/adeliusa486/XAI-SDN}
+The datasets, implementation code, trained-model artifacts, per-seed manifests, and experimental configuration files supporting this study are publicly available at: \url{https://github.com/adeliusa486/xAI-SDN}
 
 \bibliographystyle{IEEEtran}
 \bibliography{references}
