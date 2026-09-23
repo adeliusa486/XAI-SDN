@@ -30,13 +30,13 @@
     "location": "Throughout"
   },
   "R5.7": {
-    "response": "Thank you, and we are sorry the figures were hard to read. All figures have been regenerated at larger type. Axis labels, tick labels and legends are set so that they remain legible at single-column width in print, and every figure is vector rather than raster so that text stays selectable and scales without loss. Two figures were rebuilt for other reasons at the same time, Fig. 2 to resolve the broken equation reference and Fig. 6 to correct an axis label and a caption that did not match the panels.",
-    "action": "Regenerated every figure with larger fonts in vector format, and rebuilt two figures that had content defects.",
-    "location": "All figures"
+    "response": "Thank you, and we are sorry the figures were hard to read. All figures have been regenerated at larger type. Axis labels, tick labels and legends are set so that they remain legible at single-column width in print, and every plotted figure is vector rather than raster so that its text stays selectable and scales without loss. One figure is an exception and we would rather state it than let the reviewer find it: the system architecture diagram, Fig. 1, is a raster image, and its labels are therefore fixed at the resolution of the source file. Fig. 2 was rebuilt at the same time, to resolve the broken equation reference Reviewer 1 identified. The hyperparameter sensitivity figure of the submitted version, its Fig. 6, carried an axis label and a caption that did not match its panels; we removed that figure rather than repairing it, for the reason given in our reply to Reviewer 7, Concern 6.",
+    "action": "Regenerated every plotted figure with larger fonts in vector format, rebuilt Fig. 2, and removed the mislabelled former Fig. 6.",
+    "location": "All figures; Fig. 1 remains a raster diagram, Fig. 2 was rebuilt, and the former Fig. 6 was removed"
   },
   "R1.2": {
     "response": "Thank you for this, and we agree the wording did not meet the standard the journal expects. Section V-A has been rewritten in full rather than edited. The constructions that prompted the comment are gone, including \"a bunch of\", \"things like\", \"The key to making the system fast\" and \"we can update the calculation\". The section now states the entropy definition once, specifies every feature's source field and bin width in a table, gives the window admit and evict semantics including what happens during warm-up, and states the update recurrence the implementation actually executes. The repetition the reviewer noticed came largely from the same material being described twice, once in prose and once in a bulleted restatement of the architecture; the bulleted restatement has been removed, as has an orphaned sentence fragment that appeared twice in the submitted version.",
     "action": "Rewrote Sec. V-A, removed the duplicated architecture list and the orphaned fragment, and added the feature specification table.",
-    "location": "Sec. V-A, Sec. V-B, Table 4, and Sec. IV"
+    "location": "Sec. V-A, Sec. V-B, Table 3, and Sec. IV"
   }
 }

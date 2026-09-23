@@ -1,13 +1,8 @@
 {
-  "file": "05_manuscript\\XAI-SDN-journal.tex",
+  "file": "C:\\Users\\adeel\\OneDrive\\Desktop\\xai sdn full paper\\REVISION_2026\\05_manuscript\\XAI-SDN-journal.tex",
   "unfilled_placeholders": {
-    "count": 1,
-    "items": [
-      {
-        "line": 1164,
-        "context": "\\FILL{E14: per-model ROC-AUC and average precision with bootstrap intervals, and the chance-AP baseline}"
-      }
-    ]
+    "count": 0,
+    "items": []
   },
   "uncited_floats": {
     "fig": [],
@@ -20,12 +15,12 @@
       "sec:rolling",
       "sec:environment",
       "sec:memorization",
+      "sec:entropyshift",
       "sec:globalshap",
       "sec:cases",
       "sec:hyperparam",
       "sec:related_quant",
-      "sec:dl-discussion",
-      "sec:sdiot"
+      "sec:dl-discussion"
     ]
   },
   "informal": {
@@ -63,8 +58,6 @@
     "count": 0,
     "items": []
   },
-  "PASS": false,
-  "failures": [
-    "1 unfilled \\FILL placeholder line(s)"
-  ]
+  "PASS": true,
+  "failures": []
 }

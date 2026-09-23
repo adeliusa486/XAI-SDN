@@ -224,15 +224,15 @@ F.~Pedregosa, G.~Varoquaux, A.~Gramfort, V.~Michel, B.~Thirion, O.~Grisel,
   \url{https://jmlr.org/papers/v12/pedregosa11a.html}
 \BIBentrySTDinterwordspacing
 
-\bibitem{cortes1995svm}
-C.~Cortes and V.~Vapnik, ``Support-vector networks,'' \emph{Machine Learning},
-  vol.~20, no.~3, pp. 273--297, 1995.
-
 \bibitem{chen2016xgboost}
 T.~Chen and C.~Guestrin, ``{XGBoost}: A scalable tree boosting system,'' in
   \emph{Proceedings of the 22nd {ACM SIGKDD} International Conference on
   Knowledge Discovery and Data Mining}.\hskip 1em plus 0.5em minus 0.4em\relax
   ACM, 2016, pp. 785--794.
+
+\bibitem{cortes1995svm}
+C.~Cortes and V.~Vapnik, ``Support-vector networks,'' \emph{Machine Learning},
+  vol.~20, no.~3, pp. 273--297, 1995.
 
 \bibitem{kumar2026meta}
 A.~I. Kumar, G.~Ishigaki, and A.~K. Belman, ``Enhanced multi-class {DDoS}
@@ -249,10 +249,5 @@ M.~Gali and A.~Mahamkali, ``Deep learning based attack detection and
   {QoS}-aware secure routing protocol for {SDN-IoT} network,''
   \emph{Concurrency and Computation: Practice and Experience}, vol.~37, no.
   4--5, p. e70045, 2025.
-
-\bibitem{misrak2025lightweight}
-S.~F. Misrak and H.~M. Melaku, ``Lightweight intrusion detection system for
-  {IoT} with improved feature engineering and advanced dynamic quantization,''
-  \emph{Discover Internet of Things}, vol.~5, p.~57, 2025.
 
 \end{thebibliography}
