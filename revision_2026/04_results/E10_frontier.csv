@@ -1,0 +1,17 @@
+policy,explained,coverage_of_alerts,sustained_flows_per_s,modelled_seconds,granularity,episode_window_s,distinct_signatures,inherited_by_reference,audit_coverage,audit_note,explanation_reduction_factor,budget_per_s
+P0 always,59998,1.0,660.8,90.793,,,,,,,,
+"P1 episode dedup (fine, window 1.0s)",54614,0.910264,724.7,,fine,1.0,53817.0,5384.0,1.0,every alert is covered either by its own explanation or by an explicit reference to its episode representative,1.1,
+"P1 episode dedup (fine, window 5.0s)",53817,0.89698,735.2,,fine,5.0,53817.0,6181.0,1.0,every alert is covered either by its own explanation or by an explicit reference to its episode representative,1.11,
+"P1 episode dedup (medium, window 1.0s)",41402,0.690056,949.8,,medium,1.0,38046.0,18596.0,1.0,every alert is covered either by its own explanation or by an explicit reference to its episode representative,1.45,
+"P1 episode dedup (medium, window 5.0s)",38046,0.634121,1031.1,,medium,5.0,38046.0,21952.0,1.0,every alert is covered either by its own explanation or by an explicit reference to its episode representative,1.58,
+"P1 episode dedup (coarse, window 1.0s)",3,5e-05,35620.4,,coarse,1.0,2.0,59995.0,1.0,every alert is covered either by its own explanation or by an explicit reference to its episode representative,19999.33,
+"P1 episode dedup (coarse, window 5.0s)",2,3.3e-05,35651.8,,coarse,5.0,2.0,59996.0,1.0,every alert is covered either by its own explanation or by an explicit reference to its episode representative,29999.0,
+P2 token bucket (50/s),83,0.001383,33273.2,,,,,,,,,50.0
+P2 token bucket (100/s),167,0.002783,31120.1,,,,,,,,,100.0
+P2 token bucket (250/s),419,0.006984,26060.8,,,,,,,,,250.0
+P2 token bucket (500/s),839,0.013984,20505.0,,,,,,,,,500.0
+P2 token bucket (1000/s),1679,0.027984,14375.6,,,,,,,,,1000.0
+P2 token bucket (2000/s),3359,0.055985,8996.8,,,,,,,,,2000.0
+P3 async off-path (queue 128),9760,0.488,1314.5,,,,,,,,,
+P3 async off-path (queue 1024),20000,1.0,669.3,,,,,,,,,
+P3 async off-path (queue 8192),20000,1.0,673.7,,,,,,,,,

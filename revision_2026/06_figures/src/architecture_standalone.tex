@@ -1,0 +1,25 @@
+% Figure 1, the XAI-SDN system architecture, as a vector standalone.
+% Rebuilt in Phase 2.1 from paper/figures/architecture_tikz.tex, which is the
+% source the original raster fig1.jpg was produced from. Two changes only:
+%   1. the entropy module label now reads "Expected amortized O(1)" rather than
+%      bare "O(1)", so the figure carries the same qualified complexity claim as
+%      the abstract, Sec. II-A, Sec. IV, Sec. V-C and the Fig. 2 caption;
+%   2. the SOC line now reads "Threat Alerts & SHAP Explanations", since
+%      "Real-time" is the claim Reviewer 2 asked to be moderated and the
+%      qualified statement lives in Sec. VII-R.
+% Layout, colours, geometry and typography are otherwise untouched.
+\documentclass[tikz,border=4pt]{standalone}
+\usepackage{amsmath,amssymb}
+\usepackage{xcolor}
+\usetikzlibrary{shapes.geometric, arrows.meta, positioning, fit, backgrounds, calc}
+
+\definecolor{xsdnblue}{RGB}{0,114,178}
+\definecolor{xsdnteal}{RGB}{0,158,115}
+\definecolor{xsdnorange}{RGB}{230,159,0}
+\definecolor{xsdnred}{RGB}{213,94,0}
+\definecolor{xsdngray}{RGB}{153,153,153}
+\definecolor{cmlow}{RGB}{240,248,255}
+
+\begin{document}
+\input{architecture_body}
+\end{document}

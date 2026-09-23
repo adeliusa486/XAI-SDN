@@ -36,6 +36,28 @@ OVERCLAIM = [
     r"\bensuring every\b", r"\bcompletely eliminat", r"\bfully rules out\b",
 ]
 
+# Over-claim hits that are legitimate in context and are therefore not failures.
+# Each entry is (pattern, substring that must appear in the same line). Keep this
+# list short and justify every addition; it is the escape hatch that lets the
+# over-claim check be enforcing rather than advisory.
+OVERCLAIM_ALLOW = [
+    # SHAP's additive-consistency guarantee is a property of the method, not a
+    # claim about our results.
+    (r"\bguarantee(?:s|d)?\b", "consistency guarantees"),
+    # Naming the fact that an exact and an inherited attribution differ in what
+    # they guarantee is the opposite of an over-claim.
+    (r"\bguarantee(?:s|d)?\b", "do not carry the same guarantee"),
+    # "near-perfect" describes the literature's figures and the gap our protocol
+    # audit explains, never our own performance.
+    (r"\bnear-perfect\b", "gap between near-perfect and realistic"),
+    (r"\bnear-perfect\b", "explains a good deal of the near-perfect performance"),
+]
+
+
+def allowed(hit) -> bool:
+    line = hit.get("full", hit.get("context", ""))
+    return any(hit["pattern"] == p and s in line for p, s in OVERCLAIM_ALLOW)
+
 BRITISH = [
     r"\banalys(?:e|ed|ing)\b", r"\brecognise", r"\boptimis(?:e|ed|es|ing|ation)\b", r"\bbehaviour", r"\bcolour",
     r"\bneighbour", r"\bcentre\b", r"\bmodelling\b", r"\blabelled\b",
@@ -61,7 +83,7 @@ def find(patterns, text, label):
         for p in patterns:
             for m in re.finditer(p, ln, flags=re.I if label == "british" else 0):
                 hits.append({"line": i, "pattern": p, "match": m.group(0),
-                             "context": ln.strip()[:170]})
+                             "context": ln.strip()[:170], "full": ln.strip()})
     return hits
 
 
@@ -98,9 +120,15 @@ def main(argv: list[str]) -> int:
     for label, pats in (("informal", INFORMAL), ("overclaim", OVERCLAIM),
                         ("british", BRITISH)):
         hits = find(pats, body, label)
+        if label == "overclaim":
+            waived = [h for h in hits if allowed(h)]
+            hits = [h for h in hits if not allowed(h)]
+            report["overclaim_waived"] = {"count": len(waived), "items": waived[:20]}
         report[label] = {"count": len(hits), "items": hits[:60]}
     if report["informal"]["count"]:
         failures.append(f"{report['informal']['count']} conversational phrase(s)")
+    if report["overclaim"]["count"]:
+        failures.append(f"{report['overclaim']['count']} over-claiming phrase(s)")
     if report["british"]["count"]:
         failures.append(f"{report['british']['count']} British spelling(s)")
 

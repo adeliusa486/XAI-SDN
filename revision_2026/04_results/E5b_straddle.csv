@@ -1,0 +1,3 @@
+split,n_train,n_test,test_rows_with_identical_training_twin,straddle_rate,lookup_baseline_accuracy,lookup_accuracy_on_straddling_rows,test_benign,benign_rows_with_training_twin,benign_straddle_rate
+stratified random 70/30,2826225,1211240,187580,0.154866,0.99276,1.0,10616,1847,0.173983
+temporal 70/30,2826226,1211239,438,0.000362,0.971403,1.0,34639,1,2.9e-05
