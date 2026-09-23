@@ -99,7 +99,7 @@ The same table under a stratified random split gives 99.9981% accuracy and
 ### 1. Environment
 
 ```bash
-git clone https://github.com/adeliusa486/XAI-SDN.git
+git clone https://github.com/adeliusa486/xAI-SDN.git
 cd XAI-SDN
 pip install -r requirements.txt
 ```
