@@ -503,7 +503,7 @@ All corpora are publicly released and pre-anonymized. No additional personally i
 \centering
 \label{tab:dataset}
 \footnotesize
-\setlength{\tabcolsep}{3pt}
+\setlength{\tabcolsep}{2pt}
 \renewcommand{\arraystretch}{1.2}
 \begin{tabular}{@{}llrrr@{}}
 \toprule
@@ -536,7 +536,7 @@ Hyperparameters are selected by nested cross-validation with forward-chaining ou
 \label{sec:environment}
 Every timing figure in this paper was measured on the single machine described in Table~\ref{tab:environment}, on the CPU, with the same thread budget and the same measurement harness for every method. The installed PyTorch build carries no CUDA support, so no model in the comparison can be timed on a GPU even inadvertently. Latency and throughput figures across all methods and all tables are therefore directly comparable with one another. They are not comparable with figures published elsewhere on different hardware, and we make no such comparison.
 
-\begin{table}[!t]
+\begin{table*}[!t]
 \caption{Measurement environment and detector configuration. Every timing figure
 in this paper was produced on this machine, on the CPU. The tree depth is the
 scikit-learn default inherited from the submitted version;
@@ -564,7 +564,7 @@ XGBoost / LightGBM & 3.2.0 / 4.7.0 & OpenFlow & os-ken, OF 1.3 \\
 PyTorch & 2.14.0+cpu (no CUDA) & Emulator & Mininet 2.3.0, OVS 3.7.1 \\
 \bottomrule
 \end{tabular}
-\end{table}
+\end{table*}
 
 
 \subsection{Implementation, hyperparameters, and reproducibility}
@@ -618,7 +618,7 @@ Table~\ref{tab:results} reports the operating point of the full 88-dimensional d
 
 The gap between ROC-AUC and macro F1 is the point made in Section~\ref{sec:setup} in concrete form. At 97.2\% positive prevalence a ROC-AUC of 0.9997 is close to uninformative, because the measure is insensitive to the minority class that the operator actually cares about. Macro F1 and the absolute false-alarm count are the figures that discriminate between models here, and they are what we report throughout. The lower half of Table~\ref{tab:results} gives the per-class breakdown, where the asymmetry is plain: the majority class is detected almost perfectly while the benign class carries essentially all of the error.
 
-\begin{table}[!t]
+\begin{table*}[!t]
 \caption{Detection performance on the chronological test partition, repaired
 88-dimensional feature set, at the fixed $\tau=0.70$ of Table~\ref{tab:environment}
 used throughout this paper. Section~\ref{sec:threshold} reports separately what
@@ -648,7 +648,7 @@ Benign   & 92.1806 & 99.9047 & 95.8873 & 30,432 \\
 DDoS-SYN & 99.9972 & 99.7536 & 99.8753 & 1,046,806 \\
 \bottomrule
 \end{tabular}
-\end{table}
+\end{table*}
 
 
 
@@ -893,7 +893,7 @@ held fixed.}
 \centering
 \label{tab:entropycontrib}
 \footnotesize
-\setlength{\tabcolsep}{3pt}
+\setlength{\tabcolsep}{1.5pt}
 \renewcommand{\arraystretch}{1.2}
 \begin{tabular}{@{}lrrrr@{}}
 \toprule
@@ -1818,12 +1818,13 @@ cannot be fitted on 2.5 million flows on a single machine. On the same CPU,
 harness and test block as every other protocol-B row, but fitted on 40,000 of the
 100,000 training flows for the same quadratic reason, it reaches 94.88\% macro F1
 at a false positive rate of 0.00\%, against 97.06\% for the detector on the full
-protocol-B training block. It is the one model in either table not trained on the
-same sample count as its peers and we say so rather than presenting the figure as
-like-for-like. We report it here rather than in Table~\ref{tab:comparison}
+protocol-B training block. Two models in this comparison are fitted on fewer
+flows than their peers, and we state both caps rather than presenting either
+figure as like-for-like; this is the first. We report it here rather than in
+Table~\ref{tab:comparison}
 because a figure measured on 40,000 flows does not belong in a column measured on
-1,077,238. For the same reason the linear support vector machine in
-Table~\ref{tab:comparison} is fitted on a capped subsample of 300,000 flows, its
+1,077,238. The second is the linear support vector machine in
+Table~\ref{tab:comparison}, fitted on a capped subsample of 300,000 flows, its
 liblinear solver being single-threaded and still unconverged after thirty minutes
 on the full partition; the cap is marked in the table and stated here because a
 model that cannot be trained at the deployment scale is a deployment fact rather
@@ -1938,15 +1939,17 @@ because it bears on any work applying this family of methods to this family of
 datasets, and because the corpus itself, rather than the method, is what fails
 here.
 
-\begin{table}[!t]
+\begin{table*}[!t]
 \caption{Deep-learning baselines under protocol~B of Section~\ref{sec:protocol},
 CPU-only, same splits, metric definitions and timing harness as
 Table~\ref{tab:comparison}'s protocol-B run. $^{s}$ classifies a window of
 sixteen flows rather than a single flow, over 39,985 windows. $^{t}$ transductive
-over a graph built on a 30,000-flow subsample: single-flow latency is undefined.
-$^{u}$ unsupervised, and the only row not fitted on protocol~B's training block:
-it is trained on the 582 benign flows of the full training partition, since
-protocol~B's 31 cannot fit a reconstruction model. Its ROC-AUC below 0.5 is
+over a graph of 20,000 training and 10,000 test nodes drawn from protocol~B's
+blocks, so its figures are computed on 10,000 test flows and single-flow latency
+is undefined. $^{u}$ unsupervised, and the one row whose training data comes from
+outside protocol~B's training block: it is trained on the 582 benign flows of the
+full training partition, since protocol~B's 31 cannot fit a reconstruction model.
+Its ROC-AUC below 0.5 is
 discussed in the text. The detector's average precision is printed to five decimal
 places because it is the only entry that would otherwise round to $1.0000$ and be
 misread as exact.}
@@ -1970,7 +1973,7 @@ GNN$^{t}$            &  7,809 &  2.80 & 0.9973 & 0.9999 & n/a \\
 \textbf{0.99996} & \textbf{7.35} \\
 \bottomrule
 \end{tabular}
-\end{table}
+\end{table*}
 
 \subsection{Why we do not tabulate against other papers}
 \label{sec:related_quant}
