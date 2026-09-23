@@ -91,9 +91,37 @@ def copy_supplementary() -> list[str]:
         taken.append(f.name)
     ev = RESULTS / "mininet_evidence"
     if ev.exists():
-        shutil.copytree(ev, sup / "mininet_evidence", dirs_exist_ok=True)
+        # Older runs captured the flow table after the topology had been torn
+        # down, so those files hold "s1 is not a bridge or a socket" rather than
+        # a dump. Shipping an error message as evidence is worse than shipping
+        # nothing, so skip any capture that only records the failure.
+        dest = sup / "mininet_evidence"
+        dest.mkdir(parents=True, exist_ok=True)
+        skipped = []
+        for f in sorted(ev.iterdir()):
+            if f.is_dir():
+                continue
+            if f.suffix == ".txt":
+                head = f.read_text(encoding="utf-8", errors="ignore").strip()
+                if "is not a bridge or a socket" in head or not head:
+                    skipped.append(f.name)
+                    continue
+            shutil.copy2(f, dest / f.name)
         taken.append("mininet_evidence/")
+        if skipped:
+            print(f"  skipped {len(skipped)} stale evidence capture(s): "
+                  f"{', '.join(skipped)}")
     return taken
+
+
+def zip_supplementary() -> str | None:
+    """IEEE Access requires supplementary material as a single .zip."""
+    sup = PACKAGE / "supplementary"
+    if not sup.exists():
+        return None
+    archive = shutil.make_archive(str(PACKAGE / "supplementary"), "zip",
+                                  root_dir=str(sup))
+    return Path(archive).name
 
 
 def find_video() -> Path | None:
@@ -119,6 +147,7 @@ def main(argv: list[str]) -> int:
     hl = highlight()
     source = copy_source()
     sup = copy_supplementary()
+    sup_zip = zip_supplementary()
 
     for name in ("Response_to_Reviewers.docx", "Response_to_Reviewers.md"):
         f = RESPONSE / name
@@ -143,6 +172,7 @@ def main(argv: list[str]) -> int:
         "Response to Reviewers document": (PACKAGE / "Response_to_Reviewers.docx").exists(),
         "Video submitted for peer review": bool(video),
         "Supplementary material": len(sup) > 0,
+        "Supplementary material zipped for upload": bool(sup_zip),
         "Automated manuscript gate passes": passed,
     }
     manifest = {
@@ -151,6 +181,7 @@ def main(argv: list[str]) -> int:
         "checklist": checklist,
         "latex_source_files": source,
         "supplementary_files": sup,
+        "supplementary_zip": sup_zip,
         "video": video.name if video else None,
         "build_seconds": round(time.time() - t0, 1),
     }

@@ -82,33 +82,59 @@ def run_condition(tag: str, env: dict, attack_s: int) -> dict:
 
     result: dict = {"condition": tag}
 
-    if env["XAISDN_DETECT"] == "1" or True:
-        # The controller is always started: without it the switch has no
-        # forwarding logic at all and the comparison would measure the absence
-        # of a controller rather than the absence of a detector.
-        start = (f"cd {WSL_DIR} && {envs} XAISDN_OUT={ctl_out} "
-                 f"nohup /opt/xaisdn/bin/python {WSL_DIR}/run_controller.py "
-                 f"{WSL_DIR}/xaisdn_controller.py 6653 "
-                 f"> {WSL_DIR}/ctl_{tag}.log 2>&1 & "
-                 f"echo $!")
-        r = wsl(start, timeout=120)
-        pid = r.stdout.strip().splitlines()[-1] if r.stdout.strip() else ""
-        result["controller_pid"] = pid
-        time.sleep(8)
-
-    # run_topology exposes two modes. Whether explanations are generated is a
-    # property of the controller, set through the environment above, not of
-    # the topology, so both detecting conditions use the same mode here.
+    # The controller has to be started and used inside one WSL invocation. A
+    # background process left behind by a previous invocation does not survive,
+    # and a topology that finds no controller measures the absence of a switch
+    # rather than the absence of a detector.
     mode = "nodetect" if tag == "no_controller" else "detect"
-    r = wsl(f"cd {WSL_DIR} && python3 run_topology.py --mode {mode} "
-            f"--out {mn_out} --attack-seconds {attack_s}",
-            timeout=attack_s + 600)
     result["topology_mode"] = mode
-    result["topology_returncode"] = r.returncode
-    if r.returncode != 0:
-        result["topology_stderr"] = (r.stderr or "")[-900:]
+    lines = [
+        "#!/usr/bin/env bash",
+        "export PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+        "export PYTHONUNBUFFERED=1",
+        f"cd {WSL_DIR}",
+        f"rm -f {ctl_out} {mn_out} {WSL_DIR}/ctl_{tag}.log",
+        "mn -c >/dev/null 2>&1",
+        "pkill -f run_controller.py >/dev/null 2>&1",
+        "sleep 1",
+        (f"{envs} XAISDN_OUT={ctl_out} nohup {WSL_DIR}/bin/python "
+         f"{WSL_DIR}/run_controller.py {WSL_DIR}/xaisdn_controller.py 6653 "
+         f"> {WSL_DIR}/ctl_{tag}.log 2>&1 &"),
+        "CTL=$!",
+        "for i in $(seq 1 25); do",
+        f'  if grep -q "listening on" {WSL_DIR}/ctl_{tag}.log 2>/dev/null; then break; fi',
+        "  sleep 1",
+        "done",
+        'echo "CONTROLLER_PID=$CTL"',
+        f'echo "CONTROLLER_READY=$(grep -c \'listening on\' '
+        f'{WSL_DIR}/ctl_{tag}.log 2>/dev/null || echo 0)"',
+        (f"python3 run_topology.py --mode {mode} --out {mn_out} "
+         f"--attack-seconds {attack_s}"),
+        'echo "TOPOLOGY_RC=$?"',
+        "kill -TERM $CTL 2>/dev/null",
+        "sleep 3",
+        "pkill -f run_controller.py >/dev/null 2>&1",
+        "mn -c >/dev/null 2>&1",
+    ]
+    local = HERE / "mininet" / f"_cond_{tag}.sh"
+    local.write_bytes(("\n".join(lines) + "\n").encode("utf-8"))
+    src = local.as_posix().replace("C:/", "/mnt/c/")
+    wsl(f"cp '{src}' {WSL_DIR}/cond_{tag}.sh && "
+        f"sed -i 's/\\r$//' {WSL_DIR}/cond_{tag}.sh", timeout=60)
 
-    wsl("pkill -f run_controller.py 2>/dev/null; sleep 2", timeout=120)
+    r = wsl(f"bash {WSL_DIR}/cond_{tag}.sh", timeout=attack_s + 600)
+    stdout = r.stdout or ""
+    result["controller_pid"] = next(
+        (l.split("=", 1)[1].strip() for l in stdout.splitlines()
+         if l.startswith("CONTROLLER_PID=")), "")
+    result["controller_ready"] = next(
+        (l.split("=", 1)[1].strip() == "1" for l in stdout.splitlines()
+         if l.startswith("CONTROLLER_READY=")), False)
+    rc_line = next((l for l in stdout.splitlines()
+                    if l.startswith("TOPOLOGY_RC=")), "TOPOLOGY_RC=1")
+    result["topology_returncode"] = int(rc_line.split("=", 1)[1].strip() or 1)
+    if result["topology_returncode"] != 0 or not result["controller_ready"]:
+        result["topology_stderr"] = ((r.stderr or "") + stdout)[-1200:]
 
     # Verbatim terminal evidence for the paper. Reviewer 4 asked for a live
     # proof of concept, so we capture what the session actually printed rather
@@ -117,8 +143,6 @@ def run_condition(tag: str, env: dict, attack_s: int) -> dict:
     evid = {}
     for name, cmd in (
         ("ovs_show", "ovs-vsctl show 2>&1 | head -25"),
-        ("flow_table", "ovs-ofctl -O OpenFlow13 dump-flows s1 2>&1 | head -20"),
-        ("ofctl_show", "ovs-ofctl -O OpenFlow13 show s1 2>&1 | head -12"),
         ("controller_tail", f"tail -25 {WSL_DIR}/ctl_{tag}.log 2>&1"),
         ("mn_version", "mn --version 2>&1; ovs-vsctl --version 2>&1 | head -1"),
     ):
@@ -135,6 +159,16 @@ def run_condition(tag: str, env: dict, attack_s: int) -> dict:
                 result[key] = {"unparseable": g.stdout[-500:]}
         else:
             result[key] = {"missing": path}
+
+    # The flow table and the OpenFlow connection state can only be read while
+    # the topology is up, so run_topology captures them inside the namespace and
+    # hands them back here. Reading them after teardown returns
+    # "s1 is not a bridge or a socket", which is what earlier runs recorded.
+    ft = (result.get("mininet") or {}).get("flow_table") or {}
+    if ft.get("dump_head"):
+        result["terminal_evidence"]["flow_table"] = ft["dump_head"]
+    if ft.get("ofctl_show"):
+        result["terminal_evidence"]["ofctl_show"] = ft["ofctl_show"]
     return result
 
 
@@ -237,7 +271,7 @@ def main() -> int:
     out["total_runtime_s"] = round(time.time() - t_all, 1)
     p = save_result("E4b_mininet_testbed", out)
     log_event("E4b", "done" if status == "ok" else "failed",
-              result=str(p), runtime_s=out["total_runtime_s"], status=status)
+              result=str(p), runtime_s=out["total_runtime_s"], detail=status)
     print(f"\nstatus: {status}")
     print(f"Wrote {p}")
     # A non-zero exit keeps a run whose conditions produced nothing out of the
