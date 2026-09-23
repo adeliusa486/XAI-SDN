@@ -29,10 +29,11 @@ here rather than quietly overwritten.
 | --- | --- | --- |
 | 99.999% accuracy, described as a temporal split | **99.7579% accuracy, 97.8813% macro F1** under a genuine chronological split | The pipeline sorted by timestamp and then called `train_test_split(..., stratify=...)`, discarding the ordering. The published figures came from a stratified random split. |
 | 599,052 flows/s "detection throughput" | **27,647 flows/s** batch throughput; **7.05 ms** median single-flow latency | The original figure was an offline feature-extraction rate measured with no control channel and no per-flow inference. |
-| 1,953 flows/s with SHAP | **561 flows/s** when every alert is attributed | Re-measured with the explanation trigger defined explicitly. |
+| 1,953 flows/s with SHAP | **661 flows/s** when every alert is attributed | Re-measured with the explanation trigger defined explicitly. Budgeting the trigger by attack episode restores 35,652 flows/s. |
 | Entropy features improve accuracy ($p < 0.01$) | **They do not, in distribution.** The 80 flow statistics alone reach 98.28% macro F1 against 97.91% for the full 88-dimensional vector | The original ablation used stratified random resplits. Under the chronological protocol the effect reverses. |
 | `FIN_Flag_Count` among the three most influential features | It is **constant** across all 3,590,794 flows and carries no information | 12 of the 80 exported statistics are constant on this partition. |
 | Transfer to InSDN with accuracy 1.0 | **Zero-shot macro F1 0.6026 on InSDN, 0.2788 on CIC-IDS2017** | The file `model/artifacts/insdn_transfer.json` was flagged `"synthetic": true` and was produced from synthetic data by `scripts/run_insdn_transfer.py --use-synthetic`. It was never committed (artifacts are gitignored), was never used in the paper, and has been deleted from the working tree. |
+| `H_ttl` among the eight entropy features | **`H_src_port` replaces it.** CICFlowMeter exports no TTL column, so the pipeline supplied a constant 64 and the feature was zero to float tolerance, with a single-feature AUC of 0.500021 | Source-port entropy is exported, is non-degenerate, reaches a single-feature AUC of 0.9876 and carries the highest mutual information of the eight. Dimensionality is unchanged at 88. `features/entropy.py` in this repository still computes the submitted eight, including `H_ttl`, because it reproduces the submitted results; every number in the revision comes from `revision_2026/03_experiments/common/data.py`, which computes the repaired eight. |
 
 Two further findings from the revision that were not in the original work:
 
@@ -46,8 +47,7 @@ Two further findings from the revision that were not in the original work:
   easy by construction.
 
 The full revision, including 20+ experiments, the response to reviewers, and the
-raw result files, is in [`REVISION_2026/`](../REVISION_2026) of the paper
-repository.
+raw result files, is in [`revision_2026/`](revision_2026/).
 
 ---
 
@@ -162,8 +162,12 @@ XAI-SDN/
 ├── configs/           YAML configuration
 ├── data/              Data directory (raw CSVs gitignored)
 ├── explainability/    TreeSHAP wrappers and global importance
-├── features/          CICFlowMeter and rolling entropy extraction
+├── features/          CICFlowMeter and rolling entropy extraction as
+│                   submitted; the revision's repaired feature set is in
+│                   revision_2026/03_experiments/common/data.py
 ├── model/             Training, evaluation, ablation, baselines
+├── revision_2026/     The 2026 revision: experiments, raw results,
+│                   manuscript, figures, response to reviewers
 ├── scripts/           Reproducibility and synthetic data scripts
 ├── sdn/               OpenFlow controller app, Mininet topology, live demo
 └── tests/             pytest suite

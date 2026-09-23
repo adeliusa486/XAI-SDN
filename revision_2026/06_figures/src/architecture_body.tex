@@ -8,7 +8,7 @@
     module/.style={draw=xsdnteal, thick, fill=white, align=center, inner sep=2mm, minimum height=1.2cm, font=\sffamily},
     dashboard/.style={draw=xsdnblue, ultra thick, fill=cmlow, align=center, inner sep=3mm, minimum width=9.5cm},
     switch/.style={draw=xsdnorange, thick, fill=white, cylinder, shape border rotate=90, aspect=0.25, minimum width=1.6cm, minimum height=1cm, align=center, font=\sffamily\bfseries},
-    host/.style={draw=xsdngray, thick, fill=white, rectangle, minimum width=0.8cm, minimum height=0.6cm, align=center, font=\sffamily\scriptsize},
+    host/.style={draw=xsdngray, thick, fill=white, rectangle, minimum width=0.8cm, minimum height=0.6cm, align=center, font=\sffamily\small},
     arrow/.style={->, ultra thick, draw=xsdngray},
     openflow/.style={<->, ultra thick, draw=xsdnblue},
     mitigation/.style={->, dashed, ultra thick, draw=xsdnred}
@@ -31,7 +31,7 @@
 \node[dashboard] (dash) at (3, 4.8) {
     \textbf{\normalsize Security Operations Center (SOC)}\\[2mm]
     \textcolor{xsdnblue}{\rule{8.5cm}{1.5pt}}\\[1.5mm]
-    Threat Alerts \& SHAP Explanations
+    \normalsize Threat Alerts \& SHAP Explanations
 };
 
 % ----------------------------------------------------
@@ -42,7 +42,7 @@
 \node[anchor=north west, font=\sffamily\bfseries\large, text=xsdnblue, inner sep=4mm] at (controller.north west) {SDN Controller (XAI-SDN Module)};
 
 % Machine Learning Pipeline
-\node[module, text width=3.0cm] (entropy) at (-0.8, 0.8) {\textbf{Rolling Entropy}\\{\scriptsize expected amortized $\mathcal{O}(1)$}};
+\node[module, text width=3.0cm] (entropy) at (-0.8, 0.8) {\textbf{Rolling Entropy}\\{\small expected\\amortized $\mathcal{O}(1)$}};
 \node[module, text width=2.4cm] (rf) at (3, 0.8) {\textbf{Random Forest}\\Classifier};
 \node[module, text width=2.2cm] (shap) at (6.8, 0.8) {\textbf{SHAP}\\TreeExplainer};
 

@@ -59,8 +59,19 @@ def allowed(hit) -> bool:
     return any(hit["pattern"] == p and s in line for p, s in OVERCLAIM_ALLOW)
 
 BRITISH = [
+    # "favour" and "labelling" were absent from this list until Phase 3, so the
+    # gate passed while the manuscript carried eight of them, one of which sat
+    # three lines from an American "labeled". Any -our/-ll- pair added here must
+    # cover every inflection, not just the one that happened to be present.
+    r"\bfavour(?:s|ed|ing|ite|able|ably)?\b", r"\blabell(?:ed|ing|er)\b",
+    r"\bmodell(?:ed|ing)\b", r"\bcancell(?:ed|ing)\b",
+    r"\btravell(?:ed|ing)\b", r"\bsignall(?:ed|ing)\b",
+    r"\bspecialis", r"\bprioritis", r"\butilis", r"\brealis(?:e|ed|es|ing)\b",
+    r"\borganis", r"\bstandardis", r"\bsynthesis(?:e|ed|es|ing)\b",
+    r"\bpractise\b", r"\blicence\b", r"\bjudgement\b", r"\backnowledgement\b",
+    r"\bfibre\b", r"\bmetre\b", r"\benquir",
     r"\banalys(?:e|ed|ing)\b", r"\brecognise", r"\boptimis(?:e|ed|es|ing|ation)\b", r"\bbehaviour", r"\bcolour",
-    r"\bneighbour", r"\bcentre\b", r"\bmodelling\b", r"\blabelled\b",
+    r"\bneighbour", r"\bcentre\b",
     r"\bdefence\b", r"\bprogramme\b", r"\bgrey\b", r"\bartefact(?:s)?\b",
     r"\bfulfil\b", r"\bwhilst\b", r"\bamongst\b", r"\btowards\b",
     r"\bfavourab(?:le|ly)\b", r"\bgeneralis(?:e|ed|es|ing|ation)\b", r"\bcharacteris(?:e|ed|es|ing|ation)\b", r"\bsummaris(?:e|ed|es|ing|ation)\b",

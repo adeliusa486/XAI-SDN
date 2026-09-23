@@ -254,9 +254,13 @@ def fig_rocpr() -> str | None:
 
     if prev:
         axes[1].axhline(prev, color="#666666", linestyle="--", linewidth=1.1)
-        axes[1].annotate(f"chance AP = {prev:.4f}", (0.02, prev),
-                         textcoords="offset points", xytext=(0, -13),
-                         fontsize=plt.rcParams["xtick.labelsize"] - 1,
+        # Anchored in axes coordinates. The data-coordinate anchor this used to
+        # carry sat at recall 0.02, outside the panel's own x range, so the
+        # label was clipped away and the chance line went unlabeled.
+        axes[1].annotate(f"chance AP = {prev:.4f}", xy=(0.03, prev),
+                         xycoords=("axes fraction", "data"),
+                         textcoords="offset points", xytext=(0, 4),
+                         fontsize=plt.rcParams["xtick.labelsize"] - 2,
                          color="#444444")
     axes[1].set_xlabel("Recall")
     axes[1].set_ylabel("Precision")
@@ -264,8 +268,11 @@ def fig_rocpr() -> str | None:
     axes[1].set_ylim(min(0.955, (prev or 0.97) - 0.015), 1.002)
     axes[1].set_title("Precision-recall")
 
+    # One column, not two. With two columns the legend is wider than the canvas,
+    # so bbox_inches="tight" grows the saved figure and LaTeX scales it further
+    # down, which shrinks the printed legend text however large it is set here.
     fig.legend(handles=handles, loc="upper center", bbox_to_anchor=(0.5, 0.02),
-               ncol=2, frameon=False,
+               ncol=1, frameon=False,
                fontsize=plt.rcParams["legend.fontsize"] - 1.5)
     plt.tight_layout()
     plt.savefig(OUT / "fig_rocpr.pdf", format="pdf", bbox_inches="tight", dpi=300)
@@ -289,9 +296,12 @@ def fig_mininet() -> str | None:
     d = load("E4b_mininet_testbed.json")
     if not d or not d.get("results"):
         return "no E4b result yet"
-    order = [("no_controller", "No detector"),
+    # Short tick labels. At the type size Reviewer 5 asked for, "No detector"
+    # and "Detect + explain" are wider than the bar spacing and run into each
+    # other; the caption and Table 15 carry the full condition names.
+    order = [("no_controller", "None"),
              ("detect", "Detect"),
-             ("detect_explain", "Detect\n+ explain")]
+             ("detect_explain", "Detect\n+expl.")]
     idle, attack, pkt, labels = [], [], [], []
     for key, lab in order:
         r = (d["results"].get(key) or {})
@@ -304,7 +314,9 @@ def fig_mininet() -> str | None:
         labels.append(lab)
 
     S.okabe_style()
-    fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(7.1, 2.7))
+    # Taller than wide enough: the legend sits above ax1 and the x labels run to
+    # two lines, so at the larger type size the panel needs the vertical room.
+    fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(7.1, 3.5))
     x = np.arange(len(labels))
     w = 0.38
 
@@ -319,9 +331,11 @@ def fig_mininet() -> str | None:
     ax1.set_xticklabels(labels)
     ax1.set_ylabel("Benign throughput (Mbit/s)")
     ax1.set_ylim(0, max(idle + attack) * 1.34)
-    # above the axes, so it cannot sit on top of the annotated bars
-    ax1.legend(loc="upper center", bbox_to_anchor=(0.5, 1.21), ncol=2,
-               borderpad=0.3, handlelength=1.4, columnspacing=1.2)
+    # Above the whole figure and in one row, so it can neither sit on top of the
+    # annotated bars nor overrun ax1's own width at the larger type size.
+    fig.legend(*ax1.get_legend_handles_labels(), loc="upper center",
+               bbox_to_anchor=(0.5, 1.04), ncol=2, frameon=False,
+               borderpad=0.3, handlelength=1.4, columnspacing=1.8)
 
     ax2.bar(x, pkt, 0.55, color=S.O_BLUE, edgecolor="white", linewidth=0.8)
     for xi, v in zip(x, pkt):

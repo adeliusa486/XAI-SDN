@@ -305,10 +305,31 @@
         "bytes_out_per_s": 2222.8
       }
     ],
-    "saturation_point_per_s": 500,
-    "max_achieved_rate_per_s": 77.4,
+    "achieved_rate_definition": "completed packet_in request/response exchanges per second of wall time for the synchronous switch agent, including classification and rule installation",
+    "sweep_session_seconds": 45,
+    "fixed_load_session_seconds": 150,
+    "sweep_has_background_agent": false,
+    "fixed_load_has_background_agent": true,
+    "lowest_offered_rate_tested": 500,
+    "first_offered_rate_below_0.9_saturation_ratio": 500,
+    "saturated_at_every_offered_rate": true,
+    "knee_located": false,
+    "max_achieved_rate_sweep_per_s": 77.4,
+    "fixed_load_achieved_rate_per_s": {
+      "detection_only": 114.05635377044557,
+      "with_explanations": 60.971420456635656
+    },
+    "max_achieved_rate_any_session_per_s": 114.05635377044557,
+    "min_achieved_rate_any_session_per_s": 34.1,
     "bytes_per_packet_in": 386.0,
-    "answer_to_60k_question": "A single controller instance on this hardware sustained at most 77 packet_in events per second end to end, including classification and rule installation. The 60,606 flows/s figure in the submitted manuscript was an offline feature-and-inference rate measured without any control channel, and it is not an ingest rate. Reaching that order of magnitude at the control plane requires the flows not to arrive as individual table-miss events: switch-side aggregation, packet_in rate limiting and sampled export are the mechanisms, and their cost is quantified in the flow-table analysis of E8b."
+    "answer_to_60k_question": "Across every session measured here a single controller instance on this hardware absorbed between 34 and 114 packet_in events per second end to end, including classification and rule installation. The spread is a property of the session configuration, not of the offered rate: the sweep sessions run 45 s with no background traffic and the fixed-load sessions run 150 s with it, and the sweep is saturated at every offered rate tested, so it bounds goodput rather than locating the knee. The 60,606 flows/s figure in the submitted manuscript was an offline feature-and-inference rate measured without any control channel, and it is not an ingest rate; it is two to three orders of magnitude above anything measured here. Reaching that order of magnitude at the control plane requires the flows not to arrive as individual table-miss events: switch-side aggregation, packet_in rate limiting and sampled export are the mechanisms, and their cost is quantified in the flow-table analysis of E8b.",
+    "_derived_field_correction": {
+      "date": "2026-09-23",
+      "what": "The derived fields max_achieved_rate_per_s and answer_to_60k_question were recomputed. They previously ranged over the E7 sweep sessions alone while being worded as a statement about the controller, which produced the claim that the controller sustained 'at most 77' events per second even though the E4 fixed-load session in this same file records 114.06.",
+      "previous_max_achieved_rate_per_s": 77.4,
+      "previous_answer_to_60k_question": "A single controller instance on this hardware sustained at most 77 packet_in events per second end to end, including classification and rule installation. The 60,606 flows/s figure in the submitted manuscript was an offline feature-and-inference rate measured without any control channel, and it is not an ingest rate. Reaching that order of magnitude at the control plane requires the flows not to arrive as individual table-miss events: switch-side aggregation, packet_in rate limiting and sampled export are the mechanisms, and their cost is quantified in the flow-table analysis of E8b.",
+      "measurements_changed": "none; every session record is byte-identical"
+    }
   },
   "flow_table_analysis": "see E8b_tcam_policy.json",
   "total_runtime_s": 661.6

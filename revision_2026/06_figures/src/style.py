@@ -18,7 +18,14 @@ import matplotlib
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt  # noqa: E402
 
-SCALE = 1.35          # Reviewer 5: the submitted figures were too small to read
+# Reviewer 5 asked for larger type. 1.35 was not enough: measured in the
+# compiled PDF, a 7.2-inch canvas placed at a 242.7 pt column is scaled by
+# 0.43, so a "12 pt" tick label printed at 5.3 pt and the ROC legend at
+# 4.6 pt. The scale below puts every tick label, axis label, legend entry
+# and panel title at or above 6.5 pt on the printed page; verify with
+# fontsize_in_pdf.py against the compiled manuscript, never against the
+# standalone figure, because only the manuscript applies the scale factor.
+SCALE = 1.80
 
 # IEEE palette (generate_ieee_figs.py)
 C_BLUE = "#1F6BB0"
