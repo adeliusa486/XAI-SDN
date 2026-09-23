@@ -1,0 +1,345 @@
+{
+  "_provenance": {
+    "hardware": {
+      "cpu_name": "13th Gen Intel(R) Core(TM) i9-13900H",
+      "cpu_manufacturer": "GenuineIntel",
+      "cpu_cores": 14,
+      "cpu_logical": 20,
+      "cpu_max_clock_mhz": 2600,
+      "cpu_l2_cache_kb": 11776,
+      "cpu_l3_cache_kb": 24576,
+      "ram_total_bytes": 51150704640,
+      "ram_total_gb": 47.64,
+      "os_caption": "Microsoft Windows 11 Pro",
+      "os_version": "10.0.26120",
+      "os_build": "26120",
+      "os_arch": "64-bit",
+      "gpus": [
+        "Intel(R) Iris(R) Xe Graphics",
+        "NVIDIA GeForce RTX 4060 Laptop GPU"
+      ],
+      "machine_model": "Zenbook UX6404VV_UX6404VV"
+    },
+    "python": "3.11.9",
+    "platform": "Windows-10-10.0.26120-SP0",
+    "host": "ADEEL",
+    "libraries": {
+      "numpy": "2.3.5",
+      "pandas": "2.3.3",
+      "sklearn": "1.8.0",
+      "scipy": "1.17.1",
+      "shap": "0.51.0",
+      "xgboost": "3.2.0",
+      "lightgbm": "4.7.0",
+      "torch": "2.14.0+cpu",
+      "matplotlib": "3.10.9",
+      "statsmodels": "0.14.6"
+    },
+    "cpu_only": true,
+    "timestamp": "2026-09-21T13:46:42"
+  },
+  "experiment": "E4b",
+  "objective": "Mininet proof of concept with live traffic",
+  "platform": "Mininet + Open vSwitch + os-ken inside WSL2 Ubuntu",
+  "conditions": [
+    "no_controller",
+    "detect",
+    "detect_explain"
+  ],
+  "staged": "total 272\ndrwxr-xr-x 6 root root   4096 Sep 21 13:43 .\ndrwxr-xr-x 3 root root   4096 Sep 21 06:03 ..\n-rw-r--r-- 1 root root     69 Sep 21 06:03 .gitignore\ndrwxr-xr-x 2 root root   4096 Sep 21 13:40 __pycache__\ndrwxr-xr-x 2 root root   4096 Sep 21 06:07 bin\n-rw-r--r-- 1 root root      0 Sep 21 13:42 ctl_detect.log\n-rw-r--r-- 1 root root      0 Sep 21 13:42 ctl_detect_explain.log\n-rw-r--r-- 1 root root      0 Sep 21 13:42 ctl_no_controller.log\n-rw-r--r-- 1 root root    727 Sep 21 09:26 demo_ctl.json\n-rw-r--r-- 1 root root     69 Sep 21 09:25 demo_ctl.log\n-rwxr-xr-x 1 root root   4625 Sep 21 09:25 demo_session.sh\n-rw-r--r-- 1 root root   2401 Sep 21 09:25 demo_topo.py\n-rw-r--r-- 1 root root   5257 Sep 21 09:25 dryrun.out\ndrwxr-xr-x 3 root root   4096 Sep 21 06:06 include\ndrwxr-xr-x 3 root root   4096 Sep 21 06:03 lib\nlrwxrwxrwx 1 root root      3 Sep 21 06:03 lib64 -> lib\n-rw-r--r-- 1 root root    881 Sep 21 13:42 mn_detect_explain.json\n-rwxr-xr-x 1 root root 179334 Sep 21 13:43 model.joblib\n-rw-r--r-- 1 root root    150 Sep 21 06:03 pyvenv.cfg\n",
+  "results": {
+    "no_controller": {
+      "condition": "no_controller",
+      "topology_mode": "nodetect",
+      "controller_pid": "16643",
+      "controller_ready": true,
+      "topology_returncode": 0,
+      "terminal_evidence": {
+        "ovs_show": "d0b0da6e-dd0b-48d2-9c8d-d4e104da0a75\n    ovs_version: \"3.7.1\"",
+        "flow_table": "ovs-ofctl: s1 is not a bridge or a socket",
+        "ofctl_show": "ovs-ofctl: s1 is not a bridge or a socket",
+        "controller_tail": "XAI-SDN controller listening on 0.0.0.0:6653 (app xaisdn_controller)",
+        "mn_version": "2.3.0\novs-vsctl (Open vSwitch) 3.7.1"
+      },
+      "mininet": {
+        "mode": "nodetect",
+        "topology": "1 switch, 3 hosts, 100 Mbit/s, 1 ms",
+        "reachability_before": 0.0,
+        "baseline": {
+          "ping": {
+            "loss_percent": 0.0,
+            "rtt_min_ms": 4.216,
+            "rtt_avg_ms": 4.475,
+            "rtt_max_ms": 5.268,
+            "rtt_mdev_ms": 0.258
+          },
+          "iperf": {
+            "throughput_mbps": 95.392,
+            "retransmits": 0,
+            "bytes": 125304832
+          }
+        },
+        "under_attack": {
+          "ping": {
+            "loss_percent": 0.0,
+            "rtt_min_ms": 4.038,
+            "rtt_avg_ms": 4.138,
+            "rtt_max_ms": 4.503,
+            "rtt_mdev_ms": 0.102
+          },
+          "iperf": {
+            "throughput_mbps": 25.775,
+            "retransmits": 333,
+            "bytes": 32243712
+          }
+        },
+        "flow_table": {
+          "entries": 4,
+          "drop_rules": 0
+        },
+        "qos_impact": {
+          "throughput_retained_fraction": 0.2702,
+          "rtt_inflation_factor": 0.925,
+          "added_loss_percent": 0
+        },
+        "status": "ok"
+      },
+      "controller": {
+        "packet_in": 40160,
+        "flow_mod": 1433,
+        "packet_out": 40160,
+        "alerts": 0,
+        "explanations": 0,
+        "drops_installed": 0,
+        "bytes_in": 1705016,
+        "detect_enabled": false,
+        "explain_enabled": false,
+        "skipped_non_tcp": 1428,
+        "wall_seconds": 49.18,
+        "decide_ms": {
+          "p50": null,
+          "p95": null,
+          "p99": null,
+          "mean": null,
+          "n": 0
+        },
+        "install_ms": {
+          "p50": 0.0124745,
+          "p95": 0.11659249999999952,
+          "mean": 0.03193324982569721
+        },
+        "controller_cpu_percent": {
+          "mean": 32.53051058530511,
+          "p95": 91.89,
+          "max": 294.4
+        },
+        "controller_rss_gb": {
+          "mean": 0.05748210066133834,
+          "max": 0.05764007568359375
+        },
+        "packet_in_per_s": 816.6
+      }
+    },
+    "detect": {
+      "condition": "detect",
+      "topology_mode": "detect",
+      "controller_pid": "17170",
+      "controller_ready": true,
+      "topology_returncode": 0,
+      "terminal_evidence": {
+        "ovs_show": "d0b0da6e-dd0b-48d2-9c8d-d4e104da0a75\n    ovs_version: \"3.7.1\"",
+        "flow_table": "ovs-ofctl: s1 is not a bridge or a socket",
+        "ofctl_show": "ovs-ofctl: s1 is not a bridge or a socket",
+        "controller_tail": "XAI-SDN controller listening on 0.0.0.0:6653 (app xaisdn_controller)",
+        "mn_version": "2.3.0\novs-vsctl (Open vSwitch) 3.7.1"
+      },
+      "mininet": {
+        "mode": "detect",
+        "topology": "1 switch, 3 hosts, 100 Mbit/s, 1 ms",
+        "reachability_before": 0.0,
+        "baseline": {
+          "ping": {
+            "loss_percent": 0.0,
+            "rtt_min_ms": 4.143,
+            "rtt_avg_ms": 4.447,
+            "rtt_max_ms": 4.876,
+            "rtt_mdev_ms": 0.185
+          },
+          "iperf": {
+            "throughput_mbps": 95.293,
+            "retransmits": 0,
+            "bytes": 125173760
+          }
+        },
+        "under_attack": {
+          "ping": {
+            "loss_percent": 0.0,
+            "rtt_min_ms": 4.109,
+            "rtt_avg_ms": 4.285,
+            "rtt_max_ms": 4.764,
+            "rtt_mdev_ms": 0.137
+          },
+          "iperf": {
+            "throughput_mbps": 95.394,
+            "retransmits": 0,
+            "bytes": 125304832
+          }
+        },
+        "flow_table": {
+          "entries": 999,
+          "drop_rules": 997
+        },
+        "qos_impact": {
+          "throughput_retained_fraction": 1.0011,
+          "rtt_inflation_factor": 0.964,
+          "added_loss_percent": 0
+        },
+        "status": "ok"
+      },
+      "controller": {
+        "packet_in": 2335,
+        "flow_mod": 2311,
+        "packet_out": 30,
+        "alerts": 2304,
+        "explanations": 0,
+        "drops_installed": 2304,
+        "bytes_in": 126774,
+        "detect_enabled": true,
+        "explain_enabled": false,
+        "skipped_non_tcp": 3,
+        "wall_seconds": 50.14,
+        "decide_ms": {
+          "p50": 10.8390235,
+          "p95": 16.1209243,
+          "p99": 17.686000119999996,
+          "mean": 10.99902387109375,
+          "n": 2304
+        },
+        "install_ms": {
+          "p50": 0.1764765,
+          "p95": 0.24074739999999992,
+          "mean": 0.16973753641816625
+        },
+        "controller_cpu_percent": {
+          "mean": 101.0086956521739,
+          "p95": 104.875,
+          "max": 105.4
+        },
+        "controller_rss_gb": {
+          "mean": 0.18154243800951086,
+          "max": 0.18993377685546875
+        },
+        "packet_in_per_s": 46.6
+      }
+    },
+    "detect_explain": {
+      "condition": "detect_explain",
+      "topology_mode": "detect",
+      "controller_pid": "17724",
+      "controller_ready": true,
+      "topology_returncode": 0,
+      "terminal_evidence": {
+        "ovs_show": "d0b0da6e-dd0b-48d2-9c8d-d4e104da0a75\n    ovs_version: \"3.7.1\"",
+        "flow_table": "ovs-ofctl: s1 is not a bridge or a socket",
+        "ofctl_show": "ovs-ofctl: s1 is not a bridge or a socket",
+        "controller_tail": "XAI-SDN controller listening on 0.0.0.0:6653 (app xaisdn_controller)",
+        "mn_version": "2.3.0\novs-vsctl (Open vSwitch) 3.7.1"
+      },
+      "mininet": {
+        "mode": "detect",
+        "topology": "1 switch, 3 hosts, 100 Mbit/s, 1 ms",
+        "reachability_before": 0.0,
+        "baseline": {
+          "ping": {
+            "loss_percent": 0.0,
+            "rtt_min_ms": 4.14,
+            "rtt_avg_ms": 4.464,
+            "rtt_max_ms": 5.098,
+            "rtt_mdev_ms": 0.234
+          },
+          "iperf": {
+            "throughput_mbps": 95.196,
+            "retransmits": 0,
+            "bytes": 125042688
+          }
+        },
+        "under_attack": {
+          "ping": {
+            "loss_percent": 0.0,
+            "rtt_min_ms": 4.092,
+            "rtt_avg_ms": 4.244,
+            "rtt_max_ms": 4.499,
+            "rtt_mdev_ms": 0.112
+          },
+          "iperf": {
+            "throughput_mbps": 95.482,
+            "retransmits": 0,
+            "bytes": 125435904
+          }
+        },
+        "flow_table": {
+          "entries": 621,
+          "drop_rules": 619
+        },
+        "qos_impact": {
+          "throughput_retained_fraction": 1.003,
+          "rtt_inflation_factor": 0.951,
+          "added_loss_percent": 0
+        },
+        "status": "ok"
+      },
+      "controller": {
+        "packet_in": 1788,
+        "flow_mod": 1764,
+        "packet_out": 30,
+        "alerts": 1757,
+        "explanations": 1757,
+        "drops_installed": 1757,
+        "bytes_in": 97236,
+        "detect_enabled": true,
+        "explain_enabled": true,
+        "skipped_non_tcp": 3,
+        "wall_seconds": 50.2,
+        "decide_ms": {
+          "p50": 13.119549,
+          "p95": 20.266532399999996,
+          "p99": 23.518324040000003,
+          "mean": 13.669699669322709,
+          "n": 1757
+        },
+        "install_ms": {
+          "p50": 0.204083,
+          "p95": 0.2853081999999999,
+          "mean": 0.20697743592613319
+        },
+        "controller_cpu_percent": {
+          "mean": 100.94285714285715,
+          "p95": 105.42,
+          "max": 106.0
+        },
+        "controller_rss_gb": {
+          "mean": 0.2487522670200893,
+          "max": 0.25498199462890625
+        },
+        "packet_in_per_s": 35.6
+      }
+    }
+  },
+  "conditions_completed": [
+    "no_controller",
+    "detect",
+    "detect_explain"
+  ],
+  "conditions_failed": [],
+  "comparison": {
+    "qos_cost_of_detection": {
+      "throughput_retained_no_controller": 0.2702,
+      "throughput_retained_detect": 1.0011,
+      "throughput_retained_detect_explain": 1.003
+    },
+    "interpretation": "The first row is the network's own resilience to the flood with no detection logic. The second shows what the detector recovers or costs. The third isolates the additional cost of attributing every admitted alert on the data path."
+  },
+  "terminal_evidence_dir": "C:\\Users\\adeel\\OneDrive\\Desktop\\xai sdn full paper\\REVISION_2026\\04_results\\mininet_evidence",
+  "status": "ok",
+  "total_runtime_s": 173.2
+}

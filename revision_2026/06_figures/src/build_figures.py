@@ -238,8 +238,8 @@ def fig_rocpr() -> str | None:
         ls = "-" if ours else styles[i % len(styles)]
         r = sub[sub["curve"] == "roc"]
         ln, = axes[0].plot(r["x"], r["y"], color=col, linewidth=lw, linestyle=ls,
-                           label=f"{name}  AUC {info.get('roc_auc', float('nan')):.3f}"
-                                 f"  AP {info.get('average_precision', float('nan')):.4f}")
+                           label=f"{name}  AUC {info.get('roc_auc', float('nan')):.6f}"
+                                 f"  AP {info.get('average_precision', float('nan')):.6f}")
         handles.append(ln)
         pr = sub[sub["curve"] == "pr"]
         axes[1].plot(pr["x"], pr["y"], color=col, linewidth=lw, linestyle=ls)

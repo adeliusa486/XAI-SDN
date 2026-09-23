@@ -55,11 +55,11 @@
 
 
 \begin{abstract}
-Software-defined networking concentrates forwarding decisions in a logically centralized controller, which simplifies management and creates a single point of failure. A distributed denial-of-service campaign aimed at the controller, or one that merely generates enough table-miss events to saturate the control channel, can disable forwarding across an entire domain. Machine learning detects such traffic well, but an operator who cannot see why a flow was flagged will not authorize the system to act on its own. We present XAI-SDN, a controller-embedded detector that augments CICFlowMeter flow statistics with eight windowed Shannon entropy features maintained at expected amortized $\mathcal{O}(1)$ cost per update, classifies with a Random Forest, and attributes alerts with exact TreeSHAP.
+Software-defined networking concentrates forwarding decisions in a logically centralized controller, which simplifies management and creates a single point of failure. A distributed denial-of-service campaign aimed at the controller, or one that merely generates enough table-miss events to saturate the control channel, can disable forwarding across an entire domain. Machine learning detects such traffic well, but an operator who cannot see why a flow was flagged will not authorize the system to act on its own. We present XAI-SDN, a controller-embedded detector that augments CICFlowMeter flow statistics with eight windowed Shannon entropy features maintained at expected amortized $\mathcal{O}(1)$ cost per update, classifies with a Random Forest, and attributes alerts with exact TreeSHAP under an explicit explanation budget.
 
 Evaluated on the SYN partition of CIC-DDoS2019 under a chronological split, in which every training flow precedes every test flow, XAI-SDN attains 99.76\% accuracy and 97.88\% macro F1 over 1,077,238 held-out flows, with a false positive rate of 0.095\% and an average precision of 0.99999. Because a random split of the same data instead yields 99.95\% macro F1, we report both protocols and quantify the difference rather than selecting the more favorable one.
 
-Two operational contributions follow. Attributing every positive prediction is untenable when almost all traffic is hostile: it reduces sustained throughput from 35,715 to 661 flows/s. We define the explanation trigger formally as an admission decision and show that attributing one representative per attack episode, with every other alert carrying a reference to it, restores 35,652 flows/s without leaving any alert unexplained. We also run the detector inside a live OpenFlow 1.3 control plane against Mininet, reporting controller CPU and memory, end-to-end detection latency, the offered rate at which a single controller saturates, and the flow-rule aggregation that keeps a bounded TCAM from overflowing during a flood. Supporting analyses cover a leakage audit with a label-permutation control, collinearity and attribution-stability diagnostics, the numerical behavior of the streaming entropy engine over $10^{7}$ updates, and transfer to other attack vectors, a second capture day, InSDN and CIC-IDS2017. We also report where the entropy augmentation does and does not pay. In distribution it does not: the eighty exported flow statistics alone reach a slightly higher macro F1 than the full 88-dimensional vector. Under distribution shift it does, wherever the full feature set is computable, raising macro F1 from 0.6426 to 0.8364 on a held-out attack vector, from 0.4212 to 0.4820 across capture days, and from 0.2383 to 0.3811 on InSDN. On the one corpus whose export allows only four of the eight entropy features, a partial summary is worse than none.
+Two operational contributions follow. Attributing every positive prediction is untenable when almost all traffic is hostile: it reduces sustained throughput from 35,715 to 661 flows/s. We define the explanation trigger formally as an admission decision and show that computing one exact attribution per attack episode, with every other alert in that episode carrying a reference to its representative, restores 35,652 flows/s while leaving every alert resolvable to an attribution. The inherited attribution is exact for the representative flow and an episode-level summary for the rest, and we state throughout which of the two an alert carries. We also run the detector inside a live OpenFlow 1.3 control plane against Mininet, reporting controller CPU and memory, end-to-end detection latency, the offered rate at which a single controller saturates, and the flow-rule aggregation that keeps a bounded TCAM from overflowing during a flood. Supporting analyses cover a leakage audit with a label-permutation control, collinearity and attribution-stability diagnostics, the numerical behavior of the streaming entropy engine over $10^{7}$ updates, and transfer to other attack vectors, a second capture day, InSDN and CIC-IDS2017. We also report where the entropy augmentation does and does not pay. In distribution it does not: the eighty exported flow statistics alone reach a slightly higher macro F1 than the full 88-dimensional vector. Under distribution shift it does, wherever the full feature set is computable, raising macro F1 from 0.6426 to 0.8364 on a held-out attack vector, from 0.4212 to 0.4820 across capture days, and from 0.2383 to 0.3811 on InSDN. On the one corpus whose export allows only four of the eight entropy features, a partial summary is worse than none.
 \end{abstract}
 
 \begin{keywords}
@@ -79,7 +79,7 @@ DDoS traffic takes several forms: UDP amplification, TCP SYN flooding, ICMP swee
 
 Three requirements therefore apply at once: accurate detection, processing cheap enough to keep pace with the control channel, and decisions an operator can inspect. Systems in the literature typically satisfy two~\cite{mousavi2015early,jain2024ddossurvey}. The difficulty is not that any one requirement is hard in isolation but that the third is usually paid for by sacrificing one of the others, and the size of that payment is rarely measured.
 
-This paper measures it. We present XAI-SDN, a controller-embedded detector that augments CICFlowMeter flow statistics with windowed Shannon entropy features maintained at amortized constant cost per update, classifies with a Random Forest, and attributes every alert with exact TreeSHAP values. The contribution is less the combination itself than the operational accounting that surrounds it, and the methodological care that the accounting turned out to require.
+This paper measures it. We present XAI-SDN, a controller-embedded detector that augments CICFlowMeter flow statistics with windowed Shannon entropy features maintained at expected amortized constant cost per update, classifies with a Random Forest, and attributes alerts with exact TreeSHAP under an explanation budget: every admitted alert receives an attribution computed for that specific flow, and every alert the budget declines carries a reference to the exact attribution of its episode representative. Section~\ref{sec:terminology} fixes the distinction and Section~\ref{sec:latency} measures what it buys. The contribution is less the combination itself than the operational accounting that surrounds it, and the methodological care that the accounting turned out to require.
 
 Our contributions are as follows.
 
@@ -115,8 +115,12 @@ $g_{\theta}(\cdot)$ & scoring function & $H(\cdot)$ & Shannon entropy, in bits \
 $s_i$ & DDoS score of $f_i$ & $S$ & running $\sum_k n_k\log_2 n_k$ \\
 $\tau$ & detection threshold & $T$ & trees in the ensemble \\
 $B(f_i)$ & budget admission decision & $L,\ D$ & max leaves, max depth \\
-$\boldsymbol{\phi}_i$ & TreeSHAP attribution & $\mathcal{C}$ & $\{\mathrm{Benign},\mathrm{DDoS}\}$ \\
-$\phi_0$ & TreeSHAP base value & & \\
+$\boldsymbol{\phi}_i$ & exact TreeSHAP attribution & $\mathcal{C}$ & $\{\mathrm{Benign},\mathrm{DDoS}\}$ \\
+ & computed for flow $f_i$ & $\sigma(f_i)$ & attack-episode signature \\
+$\phi_0$ & TreeSHAP base value & $\rho(i)$ & episode representative of $f_i$ \\
+$\mathbf{a}_i$ & attribution the alert record & $\mathrm{Acc}$ & accuracy, Eq.~(\ref{eq:metrics}) \\
+ & for $f_i$ carries, Eq.~(\ref{eq:deliver}) & $\mathrm{F1}_c$ & per-class F1 \\
+$\mathrm{TP},\mathrm{FP}$ & true, false positive count & $\mathrm{TN},\mathrm{FN}$ & true, false negative count \\
 \midrule
 \textbf{Acronym} & \textbf{Expansion} & \textbf{Acronym} & \textbf{Expansion} \\
 \midrule
@@ -221,9 +225,29 @@ classified, so the number of classifications equals the number of flows. A
 An \emph{alert} is a positive prediction dispatched to the security operations
 center: in the configuration evaluated here the two coincide numerically, but
 alerting is a policy decision layered on classification and the concepts are
-distinct. A \emph{per-decision explanation} is a TreeSHAP attribution vector
-computed for one specific flow, generated only for alerts the explanation budget
-admits, so explanations are in general a strict subset of alerts.
+distinct. A \emph{per-decision explanation} is an exact TreeSHAP attribution
+vector $\boldsymbol{\phi}_i$ computed for one specific flow $f_i$, generated only
+for alerts the explanation budget admits, so per-decision explanations are in
+general a strict subset of alerts.
+
+The fifth term is the one this distinction forces, and we state it separately
+because conflating it with the fourth would overstate what the system delivers.
+Alerts are grouped into \emph{attack episodes} by a signature $\sigma(f_i)$, and
+the first alert of an episode that the budget admits becomes its
+\emph{representative}, written $\rho(i)$ for the representative of $f_i$'s
+episode. An alert the budget declines carries the representative's attribution by
+reference rather than one of its own. Equation~(\ref{eq:deliver}) writes this as
+$\mathbf{a}_i$, the attribution the alert record actually carries, and the two
+cases it distinguishes do not carry the same guarantee. Only the admitted case is
+an exact attribution of $f_i$'s own score. The inherited case is exact for
+$f_{\rho(i)}$ and is an episode-level summary for $f_i$: it identifies the
+evidence that placed this episode over the threshold, not the evidence that
+placed this particular flow there. Section~\ref{sec:latency} quantifies the trade
+and
+Section~\ref{sec:limitations} records the limit. We therefore never describe the
+system as computing an exact per-flow attribution for every alert; we describe it
+as computing one for every \emph{admitted} alert, and as leaving every remaining
+alert resolvable to its episode representative.
 
 Costs are reported against the quantity that drives them. Classification cost is
 per flow. Explanation cost is per generated explanation, never per flow and never
@@ -261,7 +285,32 @@ g_{\theta}(\mathbf{x}_i) = \phi_0 + \sum_{j=1}^{d} \phi_{ij},
 \label{eq:efficiency}
 \end{equation}
 so the evidence decomposes exactly across features and can be audited after the
-fact. The design objective is to maximize macro-averaged F1 under severe class
+fact.
+
+Equation~(\ref{eq:efficiency}) is a property of an attribution computed for
+$\mathbf{x}_i$, and it is the reason a budgeted alert and an admitted one must be
+labeled differently. With $\rho(i)$ the representative of $f_i$'s episode as
+defined in Section~\ref{sec:terminology}, the attribution the alert record
+carries is
+\begin{equation}
+\mathbf{a}_i =
+\begin{cases}
+\boldsymbol{\phi}_i, & B(f_i) = 1,\\[2pt]
+\boldsymbol{\phi}_{\rho(i)}, & B(f_i) = 0 .
+\end{cases}
+\label{eq:deliver}
+\end{equation}
+In the first case $\mathbf{a}_i$ satisfies~(\ref{eq:efficiency}) with respect to
+$\mathbf{x}_i$. In the second it satisfies~(\ref{eq:efficiency}) with respect to
+$\mathbf{x}_{\rho(i)}$, and it does so with respect to $\mathbf{x}_i$ only in the
+degenerate case $g_{\theta}(\mathbf{x}_i) = g_{\theta}(\mathbf{x}_{\rho(i)})$,
+which the budget does not enforce and which flows differing in duration, byte
+counts, ports or window composition will not in general satisfy. An inherited
+attribution is therefore an audit reference to an exact decomposition of the
+representative's score, not an exact decomposition of this flow's score, and no
+claim in this paper treats it as the latter.
+
+The design objective is to maximize macro-averaged F1 under severe class
 imbalance, subject to a per-flow latency budget set by the control channel and an
 explanation budget set by the operator.
 
@@ -272,8 +321,8 @@ XAI-SDN comprises five stages: flow-statistics collection, feature extraction, R
 
 \begin{figure}[!t]
 \centering
-\includegraphics[width=\columnwidth]{figures/fig1.jpg}
-\caption{XAI-SDN system architecture. OpenFlow switches export flow statistics to the controller-embedded XAI-SDN module, which performs $\mathcal{O}(1)$ entropy-augmented feature extraction, Random Forest classification, and SHAP-based explanation generation. Detected DDoS events trigger alerts and policy updates; the dashed arrow represents the southbound policy-enforcement feedback loop.}
+\includegraphics[width=\columnwidth]{figures/fig1_architecture.pdf}
+\caption{XAI-SDN system architecture. OpenFlow switches export flow statistics to the controller-embedded XAI-SDN module, which performs entropy-augmented feature extraction at expected amortized $\mathcal{O}(1)$ cost per update under the data-structure assumptions of Section~\ref{sec:complexity}, Random Forest classification, and TreeSHAP attribution for the alerts the explanation budget admits. Detected DDoS events trigger alerts and policy updates; the dashed arrow represents the southbound policy-enforcement feedback loop.}
 \label{fig:architecture}
 \end{figure}
 
@@ -300,17 +349,18 @@ Positive predictions that the explanation budget admits are attributed with Tree
   \If{$\mathcal{P}.\textsc{Admit}(\sigma, t_i)$} \Comment{$B(f_i)=1$; Eq.~(\ref{eq:trigger})}
     \State $\boldsymbol{\phi}_i \leftarrow \mathcal{E}.\textsc{SHAPValues}(\mathbf{x})$ \Comment{Eq.~(\ref{eq:shap})}
     \State $\mathcal{P}.\textsc{Record}(\sigma, \boldsymbol{\phi}_i)$
+    \State $\mathbf{a}_i \leftarrow \boldsymbol{\phi}_i$ \Comment{exact for $f_i$}
   \Else
-    \State $\boldsymbol{\phi}_i \leftarrow \mathcal{P}.\textsc{Representative}(\sigma)$ \Comment{inherit by reference}
+    \State $\mathbf{a}_i \leftarrow \mathcal{P}.\textsc{Representative}(\sigma)$ \Comment{$\boldsymbol{\phi}_{\rho(i)}$, by reference}
   \EndIf
-  \State $\mathcal{A}\leftarrow\mathcal{A}\cup\{\textsc{FormatAlert}(f_i,\hat{y}_i,s_i,\boldsymbol{\phi}_i)\}$
+  \State $\mathcal{A}\leftarrow\mathcal{A}\cup\{\textsc{FormatAlert}(f_i,\hat{y}_i,s_i,\mathbf{a}_i)\}$
 \EndIf
 \EndFor
 \State \Return $\mathcal{Y}$,\; $\mathcal{A}$
 \end{algorithmic}
 \end{algorithm}
 
-Two properties of Algorithm~\ref{alg:xaisdn} are worth drawing out, because they determine the cost figures reported later. Classification occurs on line~8 for every flow without exception, so the classification rate equals the flow rate. Attribution occurs on line~13 only when the budget admits the alert, so the attribution rate is set by policy and not by the traffic mix. Every alert still carries an attribution: a flow whose episode has already been explained inherits the representative attribution on line~16 rather than going unexplained, so the audit trail stays complete while the number of TreeSHAP evaluations falls. Setting $\mathcal{P}$ to admit unconditionally recovers the unbudgeted behavior in which the two rates coincide.
+Two properties of Algorithm~\ref{alg:xaisdn} are worth drawing out, because they determine the cost figures reported later. Classification occurs on line~7 for every flow without exception, so the classification rate equals the flow rate. Exact TreeSHAP attribution occurs on line~12 only when the budget admits the alert, so the rate at which attributions are \emph{computed} is set by policy and not by the traffic mix. Every alert still leaves with an attribution attached, but not the same kind: an admitted alert carries its own exact vector, set on line~14, while a flow whose episode has already been explained carries a reference to the representative's vector, set on line~16. The audit trail is therefore complete in the sense of Eq.~(\ref{eq:deliver}), every alert resolving to an attribution, and incomplete in the sense that only the admitted fraction resolves to an attribution of its own score. Setting $\mathcal{P}$ to admit unconditionally recovers the unbudgeted behavior in which the two rates coincide and every alert carries an exact per-flow attribution.
 
 \subsection{Random Forest classification}
 Random Forest~\cite{breiman2001rf} is an ensemble of $T$ trees $\{h_t(\cdot)\}_{t=1}^{T}$, each fitted to a bootstrap sample with a random feature subset at each split, and the label for $\mathbf{x}$ is the majority vote:
@@ -407,7 +457,8 @@ with $\psi(m) \triangleq m \log_2 m$ and $\psi(0) \triangleq 0$.
 Equations~(\ref{eq:Ssum})--(\ref{eq:rolling}) are the recurrence the implementation executes. They are stated in this form deliberately: an update written directly on $H$, using terms of the form $-(m/N)\log_2(m/N)$, is only valid while $|W|$ is constant and therefore fails during window warm-up, whereas the $S$-form is correct throughout because the $|W|$ dependence is factored out into~(\ref{eq:Hfroms}).
 
 \subsection{Complexity and numerical behavior}
-Each admit/evict pair performs a constant number of buffer operations, a constant number of hash-map operations, and a constant number of arithmetic operations, independent of $N$ and of $|\mathcal{K}(W)|$. The circular buffer gives worst-case $\mathcal{O}(1)$ append and eviction. The hash map gives \emph{expected} $\mathcal{O}(1)$ lookup, insertion, and deletion; under adversarial key collisions the worst case degrades to $\mathcal{O}(|\mathcal{K}(W)|)$ for an individual operation. The correct statement is therefore that the engine performs \emph{expected amortized} $\mathcal{O}(1)$ work per update under these data-structure assumptions, not unconditional $\mathcal{O}(1)$. Where periodic exact resynchronization of $S$ is enabled, as discussed below, it contributes a further $\mathcal{O}(|\mathcal{K}(W)|/R)$ amortized per update for a resynchronization interval of $R$.
+\label{sec:complexity}
+Each admit/evict pair performs a constant number of buffer operations, a constant number of hash-map operations, and a constant number of arithmetic operations, independent of $N$ and of $|\mathcal{K}(W)|$. The circular buffer gives worst-case $\mathcal{O}(1)$ append and eviction. The hash map gives \emph{expected} $\mathcal{O}(1)$ lookup, insertion, and deletion; under adversarial key collisions the worst case degrades to $\mathcal{O}(|\mathcal{K}(W)|)$ for an individual operation. The correct statement is therefore that the engine performs \emph{expected amortized} $\mathcal{O}(1)$ work per update under these data-structure assumptions, not unconditional $\mathcal{O}(1)$. Where periodic exact resynchronization of $S$ is enabled, as discussed below, it contributes a further $\mathcal{O}(|\mathcal{K}(W)|/R)$ amortized per update for a resynchronization interval of $R$. So that the bound can be checked against a measurement rather than taken on trust, the running-sum recurrence costs \textbf{381.5\,ns} per admit/evict pair on the machine of Table~\ref{tab:environment}, measured over the $1.2\times10^{7}$-update stream of Section~\ref{sec:numerics}; the $\varphi$-form printed in the earlier version of this work costs 722.3\,ns on the same stream.
 
 Maintaining $S$ incrementally accumulates floating-point error, since each update adds and subtracts terms of comparable magnitude. This is a legitimate concern for a detector intended to run continuously, and Section~\ref{sec:results} reports the measured drift over more than $10^{7}$ updates, its effect on classifier decisions, and the cost of two mitigations: compensated summation, and periodic exact recomputation of $S$ from the multiplicity map.
 
@@ -563,8 +614,12 @@ The gap between ROC-AUC and macro F1 is the point made in Section~\ref{sec:setup
 
 \begin{table}[!t]
 \caption{Detection performance on the chronological test partition, repaired
-88-dimensional feature set, $\tau$ selected on the validation block. Support is
-the number of test flows in each class.}
+88-dimensional feature set, at the fixed $\tau=0.70$ of Table~\ref{tab:environment}
+used throughout this paper. Section~\ref{sec:threshold} reports separately what
+selection on the validation block returns and why this corpus does not support
+it. Support is the number of test flows in each class. Per-class figures are
+computed from the confusion matrix of Section~\ref{sec:cases}, and macro F1 is
+the unweighted mean of the two class F1 values shown.}
 \centering
 \label{tab:results}
 \footnotesize
@@ -583,7 +638,7 @@ Test flows (benign) & \multicolumn{4}{r}{1,077,238 (30,432)} \\
 \multicolumn{5}{@{}l}{\textbf{Per class}} \\
 \midrule
 \textbf{Class} & \textbf{Prec.\ (\%)} & \textbf{Rec.\ (\%)} & \textbf{F1 (\%)} & \textbf{Support} \\
-Benign   & 92.1908 & 99.9047 & 95.8934 & 30,432 \\
+Benign   & 92.1806 & 99.9047 & 95.8873 & 30,432 \\
 DDoS-SYN & 99.9972 & 99.7536 & 99.8753 & 1,046,806 \\
 \bottomrule
 \end{tabular}
@@ -1105,8 +1160,9 @@ Table~\ref{tab:budget} reports what each budget policy recovers.
 The mechanism that works is not a faster explainer but a trigger that
 distinguishes an alert from an episode. Structurally identical flood flows are
 one attack, and the alert record for each can carry a reference to the episode
-representative rather than its own attribution, so the audit trail stays complete
-while the number of TreeSHAP evaluations falls. How much it falls depends
+representative, $\boldsymbol{\phi}_{\rho(i)}$ in Eq.~(\ref{eq:deliver}), rather
+than an attribution computed for itself, so every alert still resolves to an
+attribution while the number of TreeSHAP evaluations falls. How much it falls depends
 entirely on how an episode is defined, which is the finding we did not expect. A
 signature that includes per-flow volume terms fragments the flood into 53,817
 distinct episodes and deduplicates almost nothing, giving a $1.1\times$
@@ -1123,7 +1179,7 @@ falls, and the middle rows of Table~\ref{tab:budget} are where a deployment that
 wants per-target rather than per-service explanations would sit. The token-bucket
 policy makes the opposite trade, keeping full per-flow fidelity for a fixed
 number of alerts per second and none for the rest: at 50 explanations per second
-it sustains 33,273 flows/s with 0.19\% of alerts individually attributed.
+it sustains 33,273 flows/s with 0.14\% of alerts individually attributed.
 Asynchronous off-path attribution is the least useful of the three here, because
 a queue large enough to avoid drops simply moves the bottleneck without relieving
 it, sustaining 669 flows/s at a 1,024-entry queue, while a 128-entry queue
@@ -1131,10 +1187,16 @@ reaches 1,314 flows/s only by dropping 51.2\% of the attributions.
 
 \begin{table}[!t]
 \caption{Explanation budget policies over a 60,000-flow stream at 99.998\% attack
-prevalence. ``Coverage'' is the fraction of alerts receiving their own
-attribution; under episode deduplication every remaining alert inherits its
-representative's attribution by reference, so the audit trail is complete in all
-P1 rows.}
+prevalence, all rows from one run of the same experiment. ``Explanations'' counts
+exact TreeSHAP evaluations, and ``Coverage'' is that count divided by the alerts
+eligible under the policy, so it is the fraction of alerts receiving an exact
+attribution of their own score, $\mathbf{a}_i = \boldsymbol{\phi}_i$ in
+Eq.~(\ref{eq:deliver}). Under episode deduplication every remaining alert carries
+its representative's attribution $\boldsymbol{\phi}_{\rho(i)}$ by reference: those
+alerts resolve to an attribution and are not left unexplained, but that
+attribution is exact for the representative rather than for them.
+$^{\ast}$ the P3 rows are measured on a 20,000-flow prefix of the same stream, so
+their coverage denominator is 20,000 alerts rather than 59,998.}
 \centering
 \label{tab:budget}
 \footnotesize
@@ -1150,10 +1212,10 @@ P0 attribute every alert             & 59,998 & 1.000 & 661 \\
 P1 episode, per-flow signature       & 53,817 & 0.897 & 735 \\
 P1 episode, per-target signature     & 38,046 & 0.634 & 1,031 \\
 \textbf{P1 episode, per-service signature} & \textbf{2} & \textbf{0.000} & \textbf{35,652} \\
-P2 token bucket, 50/s                & 113 & 0.002 & 33,273 \\
-P2 token bucket, 500/s               & 1,139 & 0.014 & 20,505 \\
-P3 asynchronous, 128-entry queue     & 9,632 & 0.488 & 1,314 \\
-P3 asynchronous, 1,024-entry queue   & 20,000 & 1.000 & 669 \\
+P2 token bucket, 50/s                & 83 & 0.001 & 33,273 \\
+P2 token bucket, 500/s               & 839 & 0.014 & 20,505 \\
+P3 asynchronous, 128-entry queue$^{\ast}$   & 9,760 & 0.488 & 1,314 \\
+P3 asynchronous, 1,024-entry queue$^{\ast}$ & 20,000 & 1.000 & 669 \\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -1404,8 +1466,8 @@ presence of a controller.}
 \toprule
  & \textbf{No detector} & \textbf{Detect} & \textbf{Detect\,+\,explain} \\
 \midrule
-Throughput idle (Mbit/s)      & 95.39 & 95.29 & 95.31 \\
-Throughput under attack       & \textbf{25.78} & \textbf{95.39} & \textbf{95.60} \\
+Throughput idle (Mbit/s)      & 95.39 & 95.29 & 95.20 \\
+Throughput under attack       & \textbf{25.78} & \textbf{95.39} & \textbf{95.48} \\
 Fraction retained             & \textbf{0.270} & \textbf{1.001} & \textbf{1.003} \\
 Added packet loss (\%)        & 0.0 & 0.0 & 0.0 \\
 \midrule
@@ -1679,7 +1741,20 @@ majority-class baseline, a decision tree, logistic regression, naive Bayes,
 gradient boosting in both the XGBoost~\cite{chen2016xgboost} and LightGBM
 implementations, and support vector machines with linear and RBF
 kernels~\cite{cortes1995svm}. Table~\ref{tab:comparison} reports the full-scale
-protocol, which is the one that describes deployment.
+protocol, which is the one that describes deployment. One model appears only
+under the subsampled protocol: the RBF support vector machine, whose kernel
+computation is quadratic in the sample count and which cannot be fitted on 2.5
+million flows on a single machine. Under the subsampled protocol, on the same
+CPU and harness as every other row, it reaches 94.88\% macro F1 at a false
+positive rate of 0.00\%, against 97.06\% for the detector on that same protocol.
+We report it here rather than in Table~\ref{tab:comparison} because a figure
+measured on 40,000 flows does not belong in a column measured on 1,077,238. For
+the same reason the linear support vector machine in Table~\ref{tab:comparison}
+is fitted on a capped subsample of 300,000 flows, its liblinear solver being
+single-threaded and still unconverged after thirty minutes on the full
+partition; the cap is marked in the table and stated here because a model that
+cannot be trained at the deployment scale is a deployment fact rather than an
+inconvenience to be hidden.
 
 Three readings follow, and only the first is favorable to us. The detector
 attains the joint-highest macro F1, 97.88\%, statistically indistinguishable
@@ -1783,7 +1858,9 @@ here.
 \caption{Deep-learning baselines under the subsampled protocol, CPU-only, same
 splits and harness as Table~\ref{tab:comparison}. $^{s}$ classifies a window of
 sixteen flows rather than a single flow. $^{t}$ transductive: single-flow latency
-is undefined. $^{u}$ unsupervised; its ROC-AUC below 0.5 is discussed in the text.}
+is undefined. $^{u}$ unsupervised; its ROC-AUC below 0.5 is discussed in the text.
+The detector's average precision is printed to five decimal places because it is
+the only entry that would otherwise round to $1.0000$ and be misread as exact.}
 \centering
 \label{tab:deep}
 \footnotesize
@@ -1797,11 +1874,11 @@ is undefined. $^{u}$ unsupervised; its ROC-AUC below 0.5 is discussed in the tex
 1D-CNN               & 39,297 & 81.74 & 0.8448 & 0.9908 & 0.098 \\
 LSTM$^{s}$           & 39,489 & 91.02 & 0.9963 & 0.9999 & 0.210 \\
 Transformer$^{s}$    & 73,729 & 81.41 & 0.9909 & 0.9997 & 0.361 \\
-Autoencoder$^{u}$    & 13,544 &  2.86 & 0.0073 & 0.9658 & 0.041 \\
+Autoencoder$^{u}$    & 13,544 &  2.85 & 0.0073 & 0.9658 & 0.041 \\
 GNN$^{t}$            &  7,809 &  2.80 & 0.9973 & 0.9999 & n/a \\
 \midrule
 \textbf{XAI-SDN (RF)} & \textbf{200 trees} & \textbf{97.06} & \textbf{0.9987} &
-\textbf{1.0000} & \textbf{7.35} \\
+\textbf{0.99996} & \textbf{7.35} \\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -1903,6 +1980,8 @@ The following bound what this paper establishes. We state them as limits on the 
 
 \emph{The adaptive adversary is out of scope.} The threat model assumes an attacker who floods but does not optimize against the detector. An adversary who knows the feature set can rotate spoofed sources to hold per-window entropy near its benign value, and the distributional evidence degrades accordingly. We have not measured what that evasion costs the attacker in attack effectiveness, which is the quantity that would determine whether the defense remains useful under adaptation. This is the most consequential gap in the paper.
 
+\emph{Budgeted alerts do not carry an exact attribution of their own score.} Under any policy that admits fewer alerts than it receives, the alerts the budget declines carry the attribution of their episode representative, $\boldsymbol{\phi}_{\rho(i)}$ in Eq.~(\ref{eq:deliver}). That vector satisfies the efficiency property of Eq.~(\ref{eq:efficiency}) for the representative flow and not, in general, for the flow it is attached to, so it identifies why the episode was blocked rather than why this flow was scored as it was. At the per-service granularity that recovers the classification rate, that applies to all but two of 59,998 alerts. An operator who needs a per-flow answer must tighten the granularity or re-explain the flow on demand, and the frontier in Section~\ref{sec:latency} is the cost of doing so. We flag this because the unbudgeted reading, in which every alert carries its own exact attribution, is the one a reader would otherwise carry over from the abstract.
+
 \emph{Detector confidence is uncalibrated.} The score is a forest vote fraction. It is monotone in evidence and adequate for thresholding, but it is not a calibrated posterior, and the alert payload presents it to an operator as though it were interpretable on its own scale. Bayesian treatment of this quantity~\cite{swaminathan2022bayesian} would give the operator something better to act on at borderline scores, and is not attempted here.
 
 \section{Conclusion}
@@ -1910,7 +1989,9 @@ The following bound what this paper establishes. We state them as limits on the 
 
 XAI-SDN is a controller-embedded DDoS detector that augments flow statistics with
 windowed Shannon entropy maintained at expected amortized $\mathcal{O}(1)$ cost,
-classifies with a Random Forest, and attributes alerts with exact TreeSHAP. Under
+classifies with a Random Forest, and attributes alerts with exact TreeSHAP under
+an explanation budget, every admitted alert receiving an attribution of its own
+score and every other resolving to its episode representative. Under
 a chronological split of the CIC-DDoS2019 SYN partition it reaches 99.76\%
 accuracy and 97.88\% macro F1 over 1,077,238 held-out flows, at a false positive
 rate of 0.095\%, the lowest of any method we evaluated.
