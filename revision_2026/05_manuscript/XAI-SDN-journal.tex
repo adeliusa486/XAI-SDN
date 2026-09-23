@@ -108,19 +108,23 @@ Table~\ref{tab:notation} lists the symbols, abbreviations, and acronyms used thr
 \toprule
 \textbf{Symbol} & \textbf{Meaning} & \textbf{Symbol} & \textbf{Meaning} \\
 \midrule
-$f_i$ & $i$-th flow at the controller & $W$ & sliding window of flow keys \\
-$\mathbf{x}_i$ & feature vector, $d=88$ & $N$ & window capacity, in flows \\
-$y_i,\ \hat{y}_i$ & true, predicted label & $n_k$ & multiplicity of key $k$ in $W$ \\
+$i,\ j$ & flow index, feature index & $W$ & sliding window of flow keys \\
+$f_i$ & $i$-th flow at the controller & $N$ & window capacity, in flows \\
+$\mathbf{x}_i$ & feature vector, $d=88$ & $n_k$ & multiplicity of key $k$ in $W$ \\
+$y_i,\ \hat{y}_i$ & true, predicted label & $\mathcal{K}(W)$ & distinct keys present in $W$ \\
 $g_{\theta}(\cdot)$ & scoring function & $H(\cdot)$ & Shannon entropy, in bits \\
 $s_i$ & DDoS score of $f_i$ & $S$ & running $\sum_k n_k\log_2 n_k$ \\
-$\tau$ & detection threshold & $T$ & trees in the ensemble \\
-$B(f_i)$ & budget admission decision & $L,\ D$ & max leaves, max depth \\
-$\boldsymbol{\phi}_i$ & exact TreeSHAP attribution & $\mathcal{C}$ & $\{\mathrm{Benign},\mathrm{DDoS}\}$ \\
- & computed for flow $f_i$ & $\sigma(f_i)$ & attack-episode signature \\
-$\phi_0$ & TreeSHAP base value & $\rho(i)$ & episode representative of $f_i$ \\
-$\mathbf{a}_i$ & attribution the alert record & $\mathrm{Acc}$ & accuracy, Eq.~(\ref{eq:metrics}) \\
- & for $f_i$ carries, Eq.~(\ref{eq:deliver}) & $\mathrm{F1}_c$ & per-class F1 \\
-$\mathrm{TP},\mathrm{FP}$ & true, false positive count & $\mathrm{TN},\mathrm{FN}$ & true, false negative count \\
+$\tau$ & detection threshold & $\psi(m)$ & $m\log_2 m$, with $\psi(0)=0$ \\
+$B(f_i)$ & budget admission decision & $T$ & trees in the ensemble \\
+$\mathcal{F}$ & feature index set $\{1,\ldots,d\}$ & $L,\ D$ & max leaves, max depth \\
+$\phi_{ij}$ & contribution of feature $j$ & $\mathcal{C}$ & $\{\mathrm{Benign},\mathrm{DDoS}\}$ \\
+ & to $s_i$, Eq.~(\ref{eq:shap}) & $\sigma(f_i)$ & attack-episode signature \\
+$\boldsymbol{\phi}_i$ & exact TreeSHAP attribution & $\rho(i)$ & episode representative of $f_i$ \\
+ & computed for flow $f_i$ & $\mathrm{Acc}$ & accuracy, Eq.~(\ref{eq:metrics}) \\
+$\phi_0$ & TreeSHAP base value & $P_c,\ R_c$ & per-class precision, recall \\
+$\mathbf{a}_i$ & attribution the alert record & $\mathrm{F1}_c$ & per-class F1 \\
+ & for $f_i$ carries, Eq.~(\ref{eq:deliver}) & $\mathrm{TN},\mathrm{FN}$ & true, false negative count \\
+$\mathrm{TP},\mathrm{FP}$ & true, false positive count & & \\
 \midrule
 \textbf{Acronym} & \textbf{Expansion} & \textbf{Acronym} & \textbf{Expansion} \\
 \midrule
@@ -319,12 +323,12 @@ explanation budget set by the operator.
 
 XAI-SDN comprises five stages: flow-statistics collection, feature extraction, Random Forest classification, explanation generation, and alert dispatch (Fig.~\ref{fig:architecture}).
 
-\begin{figure}[!t]
+\begin{figure*}[!t]
 \centering
-\includegraphics[width=\columnwidth]{figures/fig1_architecture.pdf}
+\includegraphics[width=\textwidth]{figures/fig1_architecture.pdf}
 \caption{XAI-SDN system architecture. OpenFlow switches export flow statistics to the controller-embedded XAI-SDN module, which performs entropy-augmented feature extraction at expected amortized $\mathcal{O}(1)$ cost per update under the data-structure assumptions of Section~\ref{sec:complexity}, Random Forest classification, and TreeSHAP attribution for the alerts the explanation budget admits. Detected DDoS events trigger alerts and policy updates; the dashed arrow represents the southbound policy-enforcement feedback loop.}
 \label{fig:architecture}
-\end{figure}
+\end{figure*}
 
 An entropy engine (Fig.~\ref{fig:entropyengine}) maintains the distributional features of Section~\ref{sec:math} from a circular buffer of recent flow keys and a hash map of key multiplicities, at expected amortized $\mathcal{O}(1)$ cost per update.
 
@@ -371,12 +375,12 @@ Random Forest~\cite{breiman2001rf} is an ensemble of $T$ trees $\{h_t(\cdot)\}_{
 where $\mathcal{C} = \{\text{Benign}, \text{DDoS}\}$ and node splits minimize the Gini impurity $G(t) = 1 - \sum_{j} \hat{p}_{tj}^{2}$. The fraction of votes for the DDoS class serves as the score $g_{\theta}(\mathbf{x})$ in Eq.~(\ref{eq:decision}).
 
 \subsection{SHAP explainability}
-SHAP~\cite{lundberg2017shap} computes the contribution $\phi_i$ of each feature $i$ to a specific prediction $f(\mathbf{x})$ relative to the expected model output:
+Subscripts are used consistently throughout: $i$ indexes flows and $j$ indexes the $d$ features of a flow, so $\phi_{ij}$ is the contribution of feature $j$ to the score of flow $f_i$ and $\boldsymbol{\phi}_i$ is the vector of all $d$ of them. SHAP~\cite{lundberg2017shap} obtains $\phi_{ij}$ by averaging the change in model output that adding feature $j$ produces over every subset $S$ of the remaining features, relative to the expected output. Writing $g_{\theta}(S)$ for the model's output when only the features in $S$ are known,
 \begin{equation}
-\phi_i = \sum_{S \subseteq \mathcal{F} \setminus \{i\}} \frac{|S|!\,(|\mathcal{F}|-|S|-1)!}{|\mathcal{F}|!} \bigl[f(S \cup \{i\}) - f(S)\bigr],
+\phi_{ij} = \sum_{S \subseteq \mathcal{F} \setminus \{j\}} \frac{|S|!\,(|\mathcal{F}|-|S|-1)!}{|\mathcal{F}|!} \bigl[g_{\theta}(S \cup \{j\}) - g_{\theta}(S)\bigr],
 \label{eq:shap}
 \end{equation}
-where $\mathcal{F}$ is the complete feature set. These values satisfy the additive efficiency property of Eq.~(\ref{eq:efficiency}), which is what makes an attribution auditable: the score decomposes exactly across features with no residual. TreeSHAP~\cite{lundberg2020treeshap} computes them exactly for tree ensembles in $\mathcal{O}(TLD^2)$ time, with $L$ the maximum leaves and $D$ the maximum depth per tree.
+where $\mathcal{F} = \{1,\ldots,d\}$ is the complete feature set. These values satisfy the additive efficiency property of Eq.~(\ref{eq:efficiency}), which is what makes an attribution auditable: the score decomposes exactly across features with no residual. TreeSHAP~\cite{lundberg2020treeshap} computes them exactly for tree ensembles in $\mathcal{O}(TLD^2)$ time, with $L$ the maximum leaves and $D$ the maximum depth per tree.
 
 \subsection{Evaluation metrics}
 Detection quality is reported from the confusion matrix, treating DDoS as the positive class. Writing $\mathrm{TP}$, $\mathrm{FP}$, $\mathrm{TN}$, and $\mathrm{FN}$ for the four counts, Eq.~(\ref{eq:metrics}) defines accuracy, the false positive rate, and the false negative rate:
@@ -520,11 +524,13 @@ CIC-IDS2017 DDoS         & cross-set  & 223,082   & 95,068 & 42.62 \\
 \label{sec:protocol}
 Split methodology turns out to matter more on this benchmark than any modeling decision we make, so the protocol is stated before any result.
 
-The primary protocol is a \emph{chronological} split: flows are ordered by export timestamp, the first 70\% form the training partition and the last 30\% the test partition, so that no training flow postdates any test flow. On the SYN partition this yields 2,513,556 training and 1,077,238 test flows, with 30,432 benign flows in the test partition, or 2.82\%. Where a threshold or a hyperparameter must be selected, the last 10\% of the training partition is held out chronologically as a validation block and the selection is made there; the test partition is read exactly once, at the reported operating point.
+The primary protocol is a \emph{chronological} split, referred to below as protocol~A: flows are ordered by export timestamp, the first 70\% form the training partition and the last 30\% the test partition, so that no training flow postdates any test flow. On the SYN partition this yields 2,513,556 training and 1,077,238 test flows, with 30,432 benign flows in the test partition, or 2.82\%. Where a threshold or a hyperparameter must be selected, a validation block is held out chronologically from the end of the training partition and the selection is made there; the test partition is read exactly once, at the reported operating point. Two validation blocks of different sizes appear later and we name both here rather than leaving a reader to reconcile them. Threshold selection (Section~\ref{sec:threshold}) uses the last 10\% of the \emph{whole corpus}, which is 359,080 flows holding 60 benign, leaving 2,154,476 for fitting. Model-size selection (Section~\ref{sec:pareto}) uses the last 10\% of the \emph{training partition}, which is 251,356 flows holding 49 benign, leaving 2,262,199 for fitting. Neither block touches the test partition.
 
 We also report, for comparison only, a \emph{stratified random} split of the same proportions, which assigns 30\% of each class to the test partition irrespective of time. This is the protocol implicitly used by much of the literature on this benchmark. Reporting both is not redundant. Section~\ref{sec:results} shows that the difference between them accounts for more of the gap between near-perfect and realistic performance figures than any architectural choice examined in this paper, and a reader comparing our numbers against published ones needs to know which convention produced each.
 
-Hyperparameters are selected by nested cross-validation with forward-chaining outer folds, so that each fold trains on an expanding temporal prefix and tests on the block that follows it. The inner selection runs on a validation block carved from the end of each outer training prefix. The outer test block is never read during selection or fitting.
+A third protocol exists because the baseline comparison needs it, and it is defined here rather than in the table that uses it. Protocol~B is a \emph{subsampled} chronological protocol applied to every method in Section~\ref{sec:comparative}: 100,000 training and 40,000 test flows drawn at the corpus's own class ratio rather than balanced, giving 31 benign flows in training and 1,174 in test, or 2.94\%. The intent was a contiguous temporal block at each end; a contiguous block of that size is single-class on this corpus, so the draw falls back to a stratified subsample of the same sizes, and we state that rather than describing an intent the run did not execute. Protocol~B exists so that models which cannot be fitted on 2.5 million flows can be compared against the rest under one procedure. It is reported in its own tables and never mixed with protocol~A, because the two answer different questions: protocol~A describes the setting the detector is claimed to operate in, protocol~B describes a comparison the full-scale setting cannot support. One model is capped further within protocol~B: the RBF support vector machine is fitted on 40,000 of the 100,000 training flows, because its kernel computation is quadratic in the sample count, and that cap is stated wherever its figures appear.
+
+Hyperparameters are selected by nested cross-validation with forward-chaining outer folds, so that each fold trains on an expanding temporal prefix and tests on the block that follows it. Five outer folds are run over a grid of sixteen configurations, with the inner selection on a validation block carved from the last 15\% of each outer training prefix. The outer test block is never read during selection or fitting. The procedure is reported here for what it establishes about the corpus rather than for a configuration it recommends: the five folds select \emph{five different} configurations, so hyperparameter selection is not stable on this data, and the settings of Table~\ref{tab:environment} are the ones inherited from the submitted work rather than a choice this procedure endorses. Section~\ref{sec:pareto} shows the same instability from the other direction, with every configuration scoring identically on the validation block.
 
 \subsection{Computing environment}
 \label{sec:environment}
@@ -562,7 +568,7 @@ PyTorch & 2.14.0+cpu (no CUDA) & Emulator & Mininet 2.3.0, OVS 3.7.1 \\
 
 
 \subsection{Implementation, hyperparameters, and reproducibility}
-XAI-SDN is implemented in Python 3.10 using scikit-learn~\cite{pedregosa2011sklearn} and SHAP~\cite{lundberg2017shap}. Random Forest hyperparameters are selected via grid search (Table~\ref{tab:environment}); we use 200 fully-grown trees with the remaining settings as listed. All random seeds, artifact hashes, and configuration files are archived to support reproducibility.
+XAI-SDN is implemented in Python using scikit-learn~\cite{pedregosa2011sklearn} and SHAP~\cite{lundberg2017shap}; every measurement reported here was produced on the interpreter and library versions of Table~\ref{tab:environment}, and each released result file carries that version block so any figure can be traced to the build that produced it. The detector uses 200 fully-grown trees with the remaining settings as listed, which are the settings inherited from the submitted version rather than the output of the selection procedure of Section~\ref{sec:protocol}. All random seeds, artifact hashes, and configuration files are archived to support reproducibility.
 
 
 
@@ -652,7 +658,7 @@ Two properties of the feature set are worth reporting before any ablation, becau
 
 Twelve of the 80 exported flow statistics are constant across all 3,590,794 flows of this partition and therefore carry no information: \texttt{Bwd\_PSH\_Flags}, \texttt{Fwd\_URG\_Flags}, \texttt{Bwd\_URG\_Flags}, \texttt{FIN\_Flag\_Count}, \texttt{PSH\_Flag\_Count}, \texttt{ECE\_Flag\_Count}, and the six bulk-rate fields. We note this in particular because \texttt{FIN\_Flag\_Count} was reported among the most influential features in an earlier version of this work, which cannot be correct for a column that never varies. The recomputed attributions in Section~\ref{sec:shapstability} do not rank it.
 
-Ranked by direction-agnostic single-feature AUC, the eight entropy features occupy the top eight positions, ahead of every exported flow statistic. The best flow statistic, \texttt{ACK\_Flag\_Count}, reaches 0.8938 against 0.9986 for destination-address entropy. This supports the paper's central design choice and simultaneously raises a question that Section~\ref{sec:leakage} addresses directly: a windowed statistic can separate classes either because it captures attack structure or because it encodes position within a temporally segregated capture.
+Ranked by direction-agnostic single-feature AUC, the eight entropy features occupy the top eight positions, ahead of every exported flow statistic. The best flow statistic, \texttt{ACK\_Flag\_Count}, reaches 0.8938 against 0.9986 for destination-address entropy. This probe is a descriptive statistic of the corpus and is computed over the whole partition, training and test flows together, rather than on the training partition alone. We state that because Section~\ref{sec:leakage} uses the same ranking to define which features to remove, so that removal is informed by the test partition; the direction of the resulting bias is toward removing more than a training-only ranking would, which makes the negative result there more conservative rather than less. No model in this paper is fitted or tuned on the ranking. This supports the paper's central design choice and simultaneously raises a question that Section~\ref{sec:leakage} addresses directly: a windowed statistic can separate classes either because it captures attack structure or because it encodes position within a temporally segregated capture.
 
 \subsection{Leakage and dataset-artifact audit}
 \label{sec:leakage}
@@ -736,9 +742,12 @@ of the capture, and 97.3\% fall in the final 10\%. Attack traffic is spread
 throughout.
 
 The consequence for chronological evaluation is severe. A 70/30 chronological
-split leaves 582 benign flows available for training against 30,432 at test, a
-ratio of one to fifty-two, and the proportion barely improves at other cut points
-(527 training benign at 50/50, 586 at 60/40). A chronological split of this
+split of the cleaned partition leaves 582 benign flows available for training
+against 30,432 at test, a ratio of one to fifty-two. Moving the cut point does
+not repair it: measured on the raw partition before deduplication, where all five
+cut points can be compared on one basis, training benign flows run 527 at 50/50,
+586 at 60/40, 764 at 70/30, 918 at 80/20 and 968 at 90/10, so even devoting nine
+tenths of the capture to training leaves under a thousand. A chronological split of this
 partition is therefore not a harder version of the same task. It is close to a
 zero-shot problem for the benign class, and the 97.88\% macro F1 of
 Table~\ref{tab:results} should be read as a model generalizing to a class it has
@@ -776,7 +785,7 @@ column stay identical. Table~\ref{tab:entropycontrib} reports the outcome.
 Three findings follow, and we state the unwelcome one first. The entropy
 augmentation does not improve in-distribution detection on this corpus. The
 eighty exported flow statistics alone reach macro F1 98.28\%, against 97.91\%
-for the full 88-dimensional vector, and the difference favours the smaller
+for the full 88-dimensional vector, and the difference favors the smaller
 feature set on every one of the five seeds. With five paired observations a
 Wilcoxon signed-rank test cannot return a $p$-value below 0.0625, which is what
 it returns, so the correct reading is that the effect is small, consistent in
@@ -786,9 +795,9 @@ entropy features improve accuracy is not supported and has been withdrawn.
 Second, destroying the temporal coherence of the entropy features changes
 nothing measurable: 97.89\% macro F1 scrambled against 97.91\% natural, with a
 $p$-value of 0.4375 and the sign of the difference varying across seeds. Taken
-with Section~\ref{sec:leakage}, where the same scrambling drops each entropy
-feature's individual AUC from about 0.99 to about 0.56, this locates the effect
-precisely. The entropy features do carry genuine arrival-order information, and
+with Section~\ref{sec:leakage}, where the same scrambling drops the eight entropy
+features' individual AUCs from a mean of 0.98, and 0.95 at worst, to a mean of
+0.55, this locates the effect precisely. The entropy features do carry genuine arrival-order information, and
 that information is almost entirely redundant with what CICFlowMeter has already
 encoded in the flow statistics. The classifier does not need it because it
 already has it.
@@ -1040,11 +1049,19 @@ partition contains only 356 flows. A macro average over a class with 356 members
 is not a stable quantity, and we report the figure with that qualification rather
 than either suppressing it or treating it as a clean negative.
 
-\emph{Across corpora it fails outright.} On InSDN the detector reaches macro F1
-$0.603$ and misses $57\%$ of attacks. On CIC-IDS2017 it reaches $0.279$ and
-misses $98\%$, which is close to a detector that has stopped firing; the low
-false positive rate in that row is not a virtue, since a model that rarely alerts
-has few false alerts. Because the corpora come from different exporter versions,
+\emph{Across corpora it fails outright.} Reviewer 4 asked for the external
+corpora with confidence intervals on the error rates, so we give them with the
+figures rather than only in the released results. On InSDN the detector reaches
+macro F1 $0.603$ and misses $57\%$ of attacks: over 1,000 bootstrap resamples the
+false positive rate is $0.102\%$ with a 95\% interval of $[0.078, 0.128]$ and the
+false negative rate is $57.23\%$ with $[56.98, 57.47]$. On CIC-IDS2017 it reaches
+$0.279$ and misses $98\%$, with a false positive rate of $17.37\%$
+$[17.14, 17.61]$ and a false negative rate of $98.13\%$ $[98.06, 98.21]$, which is
+close to a detector that has stopped firing; the low false positive rate in the
+InSDN row is not a virtue, since a model that rarely alerts has few false alerts.
+The intervals are narrow because the test partitions hold over 200,000 flows
+each, so the transfer failure is not a sampling artifact. Because the corpora
+come from different exporter versions,
 each condition runs on the intersection of their schemas, computed explicitly and
 applied symmetrically: InSDN retains all eight entropy features, while
 CIC-IDS2017 carries no address, protocol or source-port column and retains four.
@@ -1072,13 +1089,13 @@ restates the limitation.
 \label{sec:fewshot}
 Reporting a transfer failure and stopping leaves an operator with nothing to act
 on, so we measured the price of fixing it. Four conditions were compared at seven
-labelling budgets: the source model used zero-shot, a model trained on the target
+labeling budgets: the source model used zero-shot, a model trained on the target
 budget alone, the source forest warm-started and extended with target-fitted
 trees, and joint training on source data plus the budget. The train and test
 split of each target corpus stays chronological. Within the training partition
 the budget is drawn stratified rather than as a contiguous prefix, because on
 both corpora the earliest training flows are single-class, and because an
-operator labelling their own traffic samples across it rather than taking the
+operator labeling their own traffic samples across it rather than taking the
 first $n$ records in timestamp order. Every condition here is evaluated on the
 held-out 30\% of the target corpus rather than on all of it, and the source model
 is fitted on 600,000 flows rather than the full partition, so the zero-shot
@@ -1093,7 +1110,7 @@ model that achieves this is trained on the target budget \emph{alone}. Joint
 training matches it and warm-starting from the source forest is actively harmful,
 never exceeding 0.4613 at any budget and holding a false-negative rate above 0.91
 throughout. The source model contributes nothing here, and an operator is better
-off discarding it and labelling a hundred flows than adapting it. We report that
+off discarding it and labeling a hundred flows than adapting it. We report that
 because it is what we measured, and because the opposite claim is the one a paper
 proposing a detector would prefer to make.
 
@@ -1115,7 +1132,13 @@ property of how these captures are built rather than of the detector.
 vectors in the same capture, a second capture day, and two independent corpora.
 The source model is trained on the CIC-DDoS2019 03-11 SYN partition throughout.
 Bracketed dimensions are the shared schema width, which differs per corpus because
-not every entropy feature can be computed from every export. Leave-one-out results for the three reflection vectors, and the in-distribution and joint-training references for the two external corpora, are given in the text and in the released results.}
+not every entropy feature can be computed from every export. Every row's false
+positive and false negative rate carries a 95\% bootstrap interval, over 500
+resamples for the same-corpus and cross-day rows and 1,000 for the two external
+corpora; the external-corpus intervals are quoted in the text and the full set is
+in the released results. Leave-one-out results for the three reflection
+vectors, and the in-distribution and joint-training references for the two
+external corpora, are given in the text and in the released results.}
 \centering
 \label{tab:transfer}
 \footnotesize
@@ -1183,7 +1206,7 @@ it sustains 33,273 flows/s with 0.14\% of alerts individually attributed.
 Asynchronous off-path attribution is the least useful of the three here, because
 a queue large enough to avoid drops simply moves the bottleneck without relieving
 it, sustaining 669 flows/s at a 1,024-entry queue, while a 128-entry queue
-reaches 1,314 flows/s only by dropping 51.2\% of the attributions.
+reaches 1,315 flows/s only by dropping 51.2\% of the attributions.
 
 \begin{table}[!t]
 \caption{Explanation budget policies over a 60,000-flow stream at 99.998\% attack
@@ -1214,7 +1237,7 @@ P1 episode, per-target signature     & 38,046 & 0.634 & 1,031 \\
 \textbf{P1 episode, per-service signature} & \textbf{2} & \textbf{0.000} & \textbf{35,652} \\
 P2 token bucket, 50/s                & 83 & 0.001 & 33,273 \\
 P2 token bucket, 500/s               & 839 & 0.014 & 20,505 \\
-P3 asynchronous, 128-entry queue$^{\ast}$   & 9,760 & 0.488 & 1,314 \\
+P3 asynchronous, 128-entry queue$^{\ast}$   & 9,760 & 0.488 & 1,315 \\
 P3 asynchronous, 1,024-entry queue$^{\ast}$ & 20,000 & 1.000 & 669 \\
 \bottomrule
 \end{tabular}
@@ -1277,8 +1300,8 @@ shows one class only; no number in the text is computed from this sample.}
 \subsection{Individual alert case studies}
 \label{sec:cases}
 Aggregate attribution statistics say which features matter on average. They do
-not show whether an explanation is useful to the person who has to act on one
-alert at three in the morning, which is the claim the mechanism has to earn.
+not show whether an explanation is useful to the analyst who has to adjudicate a
+single alert, which is the claim the mechanism has to earn.
 Table~\ref{tab:cases} therefore reports four flows drawn from actual test
 predictions: the highest-scoring true positive, the highest-scoring false
 positive, the lowest-scoring false negative, and the flow whose score sits
@@ -1289,8 +1312,11 @@ very small population.
 
 \begin{table}[!t]
 \caption{Four alerts drawn from actual test predictions, each shown with the
-three features contributing most to its score and the signed TreeSHAP value of
-each. Scores are the forest vote fraction; the threshold is 0.70.}
+three features whose signed TreeSHAP contributions are largest in magnitude, and
+the value each feature took. Scores are the forest vote fraction; the threshold
+is 0.70. The full ten-feature attribution for each case, including the positive
+contributions that the borderline and false-negative cases carry further down
+their rankings, is in the released results.}
 \centering
 \label{tab:cases}
 \footnotesize
@@ -1305,13 +1331,13 @@ True positive  & 1.000 & $H_{\mathrm{src}}{=}0.00$ $(+0.088)$;
                          ACK count${=}1$ $(+0.047)$ \\
 False positive & 0.780 & ACK count${=}0$ $(-0.083)$;
                          dst port${=}53$ $(-0.061)$;
-                         bytes/s${=}5.8{\times}10^{7}$ $(+0.057)$ \\
+                         bytes/s${=}5.8{\times}10^{7}$ $(+0.056)$ \\
 False negative & 0.125 & ACK count${=}0$ $(-0.091)$;
                          $H_{\mathrm{src}}{=}2.74$ $(-0.072)$;
                          $H_{\mathrm{dst}}{=}4.26$ $(-0.064)$ \\
 Borderline     & 0.700 & ACK count${=}0$ $(-0.050)$;
                          $H_{\mathrm{src}}{=}3.59$ $(-0.042)$;
-                         duration${=}1.12{\times}10^{8}$ $(+0.034)$ \\
+                         $H_{\mathrm{dst}}{=}4.68$ $(-0.037)$ \\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -1326,13 +1352,14 @@ threshold. The borderline case sits between them with the same features pulling
 in the same direction but less strongly.
 
 The false positive is the case that justifies the expense of per-decision
-attribution. It is a port 53 flow carrying 58 Mbit/s, and the attribution shows
-the model was not persuaded by the entropy evidence at all. Both the ACK flag
-count and the destination port push the score down. What carried it over the
-threshold was the byte rate. An analyst reading that attribution can dismiss the
-alert on the grounds that a high-rate DNS flow is expected on this network, and
-can point at the specific feature responsible if the rule needs tuning. Without
-it the analyst sees only a score of 0.78 and has nothing to act on.
+attribution. It is a port 53 flow whose exported byte rate is
+$5.8\times10^{7}$ bytes per second, and the attribution shows the model was not
+persuaded by the entropy evidence at all. Both the ACK flag count and the
+destination port push the score down. What carried it over the threshold was the
+byte rate. An analyst reading that attribution can dismiss the alert on the
+grounds that a high-rate DNS flow is expected on this network, and can point at
+the specific feature responsible if the rule needs tuning. Without it the analyst
+sees only a score of 0.78 and has nothing to act on.
 
 \subsection{ROC and precision-recall curves}
 \label{sec:roc}
@@ -1352,8 +1379,8 @@ is worse still: AP 0.9731 is within 0.0014 of chance. Neither model is usable,
 and only the precision-recall panel says so.
 
 The detector reaches ROC-AUC 0.999728 with a bootstrap interval of
-$[0.99970, 0.99975]$ over 150 resamples, and average precision 0.999992. Its
-nearest competitor on ranking quality is LightGBM at 0.99953, and the two are
+$[0.999711, 0.999744]$ over 150 resamples, and average precision 0.999992. Its
+nearest competitor on ranking quality is LightGBM at 0.999535, and the two are
 separated far more clearly by their false-alarm counts than by either curve.
 
 Curves rank; they do not choose an operating point, and the two can diverge
@@ -1387,7 +1414,7 @@ describes.
 
 The threshold is selected, and Section~\ref{sec:threshold} reports that
 selection in full, on the validation partition alone, together with the reason
-this corpus does not really support it. We do not repeat the sweep here.
+this corpus does not support it. We do not repeat the sweep here.
 
 The window length was not tuned. It was fixed at $N = 1000$ flows before any
 evaluation and held there for every experiment in this paper. That is a
@@ -1407,12 +1434,14 @@ switch. Reviewer 4 asked for a proof of concept with live traffic, and the
 question it answers is a different one, namely whether the mitigation the
 detector installs actually protects anything.
 
-The topology is one Open vSwitch datapath speaking OpenFlow 1.3 to the detector
-running inside a controller process, with three hosts on 100\,Mbit links at 1\,ms
-delay: an attacker, a benign client, and a server. The benign client runs an
-iperf3 transfer and a ping series against the server, first with the network idle
-and then while the attacker runs a randomized-source SYN flood from hping3. Three
-conditions are compared. Detection is applied to TCP only, because the detector
+The network is emulated with Mininet 2.3.0 over Open vSwitch 3.7.1
+(Table~\ref{tab:environment}). The topology is one Open vSwitch datapath speaking
+OpenFlow 1.3 to the detector running inside an os-ken controller process, with
+three hosts on 100\,Mbit links at 1\,ms delay: an attacker, a benign client, and
+a server. The benign client runs an iperf3 transfer and a ping series against the
+server, first with the network idle and then while the attacker runs a
+randomized-source SYN flood from hping3. Three conditions are compared. A
+recording of one such session is submitted as supplementary material. Detection is applied to TCP only, because the detector
 is trained on TCP flow records and scoring an ICMP packet would evaluate the model
 on a vector whose TCP fields are all zero.
 
@@ -1446,8 +1475,12 @@ traffic, which no offline measurement in this paper can.
 \caption{The emulated network under a randomized-source SYN flood. Left: benign
 iperf3 throughput with the network idle and during the flood, for each of the
 three conditions. Right: packet-in events reaching the controller over the same
-run. Installing drop rules at the switch both preserves the benign transfer and
-removes most of the control-plane load the flood would otherwise impose.}
+run. The conditions are abbreviated on the axes: ``None'' is the learning-switch
+controller with detection disabled, ``Detect'' adds the detector, and ``Detect
+$+$expl.'' additionally attributes every admitted alert; Table~\ref{tab:mininet}
+names them in full. Installing drop rules at the switch both preserves the benign
+transfer and removes most of the control-plane load the flood would otherwise
+impose.}
 \label{fig:mininet}
 \end{figure}
 
@@ -1492,8 +1525,9 @@ test it. The hypothesis is wrong, and the way in which it is wrong is the useful
 part.
 
 The trees are not enormous. Across the whole grid, including unbounded depth,
-they average between 32.7 and 46.0 leaves, and the largest forest serializes to
-1.46\,MB. The cause is the class balance rather than the depth limit: with 533
+they average between 32.7 and 46.1 leaves, and the largest forest in the grid
+serializes to 1.47\,MB. The cause is the class balance rather than the depth
+limit: with 533
 benign flows in a 2,262,199-flow training partition and class-balanced weighting,
 splitting stops early for want of minority examples, so an unbounded tree and a
 depth-8 tree end up nearly the same size. A reader who assumed, as we did, that
@@ -1520,22 +1554,24 @@ sweep is timed immediately after being fitted, while the fitting thread pool is
 still winding down, and the resulting figures are non-monotonic in model size and
 differ by a factor of two between neighboring configurations. We therefore fitted
 only the two endpoint configurations in a single process and probed them
-alternately over five rounds, so that any machine state affects both equally.
+alternately over five rounds of 2,000 calls each, so that any machine state
+affects both equally.
 
-That gives 6.30\,ms for the inherited configuration against 0.89\,ms for the
-selected one, repeatable to within 5\% across rounds: a $7.0\times$ reduction for
-the $-0.0009$ macro F1 already noted. Latency is therefore close to linear in
-ensemble size, at 0.032\,ms per tree for the 200-tree forest and 0.035\,ms per
-tree for the 25-tree one, and almost independent of the depth limit, which is
-what the uniform 46-leaf tree size predicts. The order-of-magnitude gap against
-LightGBM in Table~\ref{tab:comparison} is a per-tree property of the prediction
-path rather than anything a change of ensemble size closes. Section~\ref{sec:latency}
-reports the batched rate of 35,715 flows/s, which is what the detector achieves
-when the per-call cost is amortized across a batch.
+Pooling all 10,000 probes per configuration gives a median of 6.61\,ms for the
+inherited configuration against 0.95\,ms for the selected one: a $7.0\times$
+reduction for the $-0.0009$ macro F1 already noted. Latency is therefore close to
+linear in ensemble size, at 0.033\,ms per tree for the 200-tree forest and
+0.038\,ms per tree for the 25-tree one, and almost independent of the depth
+limit, which is what the uniform 46-leaf tree size predicts. The order-of-magnitude
+gap against LightGBM in Table~\ref{tab:comparison} is a per-tree property of the
+prediction path rather than anything a change of ensemble size closes.
+Section~\ref{sec:latency} reports the batched rate of 35,715 flows/s, which is
+what the detector achieves when the per-call cost is amortized across a batch.
 
 One caveat applies to the selection. It was meant to be made on the validation
-block, but that block holds 49 benign flows out of 251,356 and every
-configuration scores identically on it, so validation cannot separate them. The
+block of Section~\ref{sec:protocol}, but that block holds 49 benign flows out of
+251,356 and every configuration scores identically on it, so validation cannot
+separate them. The
 choice above is therefore a reading of the frontier rather than a protocol-clean
 selection, and we label it as one. The corpus does not support model selection
 here for the same reason it does not support threshold selection
@@ -1578,42 +1614,72 @@ parser, and measure the controller itself rather than the model. Each session
 binds its own port, so a controller left behind by an earlier session cannot
 absorb the next one's traffic.
 
-At an offered rate of 3,000 packet-in events per second the controller saturates.
-It sustains 114 events per second end to end, including classification and rule
-installation, at 98.3\% of one core and 176\,MB resident, with a decision taking
-6.61\,ms at the median and 32.70\,ms at the 99th percentile. Turning on
-attribution for every alert halves the sustained rate to 61 events per second,
-nearly doubles the median decision to 11.33\,ms, and raises resident memory to
-234\,MB. Benign background traffic through the same controller pays for this: its
+One quantity carries this subsection and it needs a definition before any number
+is given. A switch agent is synchronous: it writes a packet-in and blocks until
+the controller answers. The \emph{achieved rate} is therefore the number of
+packet-in exchanges the agent completed divided by the wall time of the session,
+which is the rate at which the control plane actually absorbed novel flows
+including classification and rule installation. Two session configurations
+produce it, and they are not interchangeable. The \emph{fixed-load} session
+offers 3,000 events per second for 150 seconds with a second agent carrying
+benign background traffic through the same controller. Each \emph{sweep} session
+offers one rate for 45 seconds with no background agent and a freshly started
+controller. Every rate reported below names which of the two produced it.
+
+Under the fixed-load session the controller absorbs 114 events per second with
+detection enabled, at 98.3\% of one core and 176\,MB resident, with a decision
+taking 6.61\,ms at the median and 32.70\,ms at the 99th percentile. Turning on
+attribution for every alert halves that to 61 events per second, nearly doubles
+the median decision to 11.33\,ms, and raises resident memory to 234\,MB. Benign
+background traffic through the same controller pays for this: its
 95th-percentile round-trip time rises from 34.11\,ms to 41.16\,ms, an inflation
 of $1.21\times$. That is the quality-of-service cost of the security function,
 measured on unrelated flows rather than assumed to be negligible.
 
-Sweeping the offered rate locates the knee and shows what lies past it
-(Table~\ref{tab:saturation}). The controller reaches its maximum of 77 events per
-second at 500 offered. Above that, goodput does not plateau but collapses to
-roughly 35 events per second and stays there, while the median round-trip time
-nearly triples. Offering more work returns less, which is the behavior of a
-queue past saturation and not a gradual degradation an operator would notice from
-a throughput number alone.
+The sweep sessions answer a different question, and they answer it partly in the
+negative (Table~\ref{tab:saturation}). Their highest achieved rate is 77 events
+per second, at the lowest rate offered. That rate already returns 15.5\% of what
+is offered, so the controller is saturated at every point of the sweep and the
+sweep does not locate the knee, which lies below 500 offered and which we did not
+measure. What it does establish is that goodput does not rise with offered load:
+from 1,000 offered upward it sits at 34 to 36 events per second and stays there
+while the median round-trip time nearly triples, so offering more work returns
+less, which is queue behavior past saturation rather than a gradual degradation
+an operator would notice from a throughput number alone.
 
-The answer to the reviewer's question follows directly and it is not the answer
-the submitted manuscript implied. A single controller instance on this hardware
-ingests at most 77 novel flows per second as individual table-miss events. The
-60,606 flows per second reported earlier was an offline feature-extraction and
-inference rate measured with no control channel present, and it is not an ingest
-rate. Reaching that order of magnitude at the control plane requires that the
-flows not arrive as individual packet-in events at all: switch-side aggregation,
-packet-in rate limiting, and sampled export are the mechanisms, and
-Section~\ref{sec:flowtable} quantifies what the first of them costs in flow-table
-occupancy. At the observed 386 bytes per packet-in, 60,000 events per second
-would also require 23\,MB/s on the control channel, which is a separate
-constraint from controller CPU and one that no aggregation policy removes.
+We report the two together rather than reconciling them, because the honest
+reading is that they do not reconcile at the precision a single number implies.
+A 45-second sweep session and a 150-second fixed-load session differ in duration,
+in the presence of background traffic, and in how much of each session is spent
+on controller start-up, and the spread across sessions, 34 to 114 events per
+second, is wider than any variation the sweep attributes to offered rate. The
+defensible statement is a range and an order of magnitude, not a ceiling: on this
+hardware a single controller instance absorbed between 34 and 114 novel flows per
+second as individual table-miss events, and nothing we measured approached $10^3$.
+
+That is enough to answer the reviewer's question, and it is not the answer the
+submitted manuscript implied. The 60,606 flows per second reported earlier was an
+offline feature-extraction and inference rate measured with no control channel
+present, and it is not an ingest rate; it is between two and three orders of
+magnitude above anything this control plane sustained. Reaching that order of
+magnitude at the control plane requires that the flows not arrive as individual
+packet-in events at all: switch-side aggregation, packet-in rate limiting, and
+sampled export are the mechanisms, and Section~\ref{sec:flowtable} quantifies
+what the first of them costs in flow-table occupancy. At the observed 386 bytes
+per packet-in, 60,000 events per second would also require 23\,MB/s on the
+control channel, which is a separate constraint from controller CPU and one that
+no aggregation policy removes.
 
 \begin{table}[!t]
 \caption{Offered-rate sweep on the OpenFlow testbed, detection without
-attribution. ``Achieved'' is the end-to-end rate including classification and
-rule installation. Goodput peaks at an offered rate of 500 and collapses above it. The 2,000, 8,000 and 16,000 rows lie on the same plateau and are in the released results.}
+attribution, one 45-second session per row with no background agent.
+``Achieved'' is the synchronous agent's completed packet-in exchanges per second
+of wall time, including classification and rule installation. The controller is
+saturated at every row, including the first, so the table bounds goodput rather
+than locating the knee. The 2,000, 8,000 and 16,000 rows lie on the same plateau
+and are in the released results. The 150-second fixed-load session of the text,
+which also carries benign background traffic, achieved 114 events per second at
+3,000 offered and is not comparable row-for-row with these.}
 \centering
 \label{tab:saturation}
 \footnotesize
@@ -1658,11 +1724,14 @@ significant figures, because there is no source diversity to collapse.
 Wildcarding the source entirely changes nothing either, for the same reason. The
 aggregation that bounds the table is the one that wildcards the port: a rule
 matched on source address, destination address, and protocol occupies three
-entries for the whole window, installs 0.07 rules per thousand flows against
-913.3 for exact matching, a reduction of $1.2\times10^{4}$, and never overflows
-at any capacity tested. Choice of eviction policy moves the installation count
-by less than 0.2\% under every aggregation, so it is second-order here; the
-table reports least-recently-used and the full grid is in the released results.
+entries for the whole window and never overflows at any capacity tested. It
+installs three rules over the 40,000-flow window against 36,532 for exact
+matching at the same 4,096-entry capacity, a reduction of $1.2\times10^{4}$; the
+per-thousand-flow column rounds those to 0.07 and 913.3, so the ratio should be
+read from the counts rather than from the rounded rates. Choice of eviction
+policy moves the installation count by at most 0.4\% under every aggregation, so
+it is second-order here; the table reports least-recently-used and the full grid
+is in the released results.
 
 Two qualifications belong with that result. The first is that the reduction is
 bought with specificity: a rule matched on destination address and protocol
@@ -1734,27 +1803,31 @@ The submitted version compared methods on a 10,000-flow class-balanced subset,
 which Reviewer 6 objected to on the grounds that it is not the setting the
 proposed detector was evaluated in. The objection is correct and the comparison
 has been rebuilt rather than defended. Every method is now run twice by us, on
-the same machine, on the CPU, under the same harness: once on the full
-chronological split at the natural class prevalence, and once under a subsampled
-protocol applied identically to every model. The comparison spans a
-majority-class baseline, a decision tree, logistic regression, naive Bayes,
-gradient boosting in both the XGBoost~\cite{chen2016xgboost} and LightGBM
-implementations, and support vector machines with linear and RBF
-kernels~\cite{cortes1995svm}. Table~\ref{tab:comparison} reports the full-scale
-protocol, which is the one that describes deployment. One model appears only
-under the subsampled protocol: the RBF support vector machine, whose kernel
-computation is quadratic in the sample count and which cannot be fitted on 2.5
-million flows on a single machine. Under the subsampled protocol, on the same
-CPU and harness as every other row, it reaches 94.88\% macro F1 at a false
-positive rate of 0.00\%, against 97.06\% for the detector on that same protocol.
-We report it here rather than in Table~\ref{tab:comparison} because a figure
-measured on 40,000 flows does not belong in a column measured on 1,077,238. For
-the same reason the linear support vector machine in Table~\ref{tab:comparison}
-is fitted on a capped subsample of 300,000 flows, its liblinear solver being
-single-threaded and still unconverged after thirty minutes on the full
-partition; the cap is marked in the table and stated here because a model that
-cannot be trained at the deployment scale is a deployment fact rather than an
-inconvenience to be hidden.
+the same machine, on the CPU, under the same harness: once under protocol~A, the
+full chronological split at the natural class prevalence, and once under
+protocol~B, the subsampled protocol of Section~\ref{sec:protocol}, which applies
+the same 100,000-flow training block and 40,000-flow test block to every model at
+the corpus's own class ratio. The comparison spans a majority-class baseline, a
+decision tree, logistic regression, naive Bayes, gradient boosting in both the
+XGBoost~\cite{chen2016xgboost} and LightGBM implementations, and support vector
+machines with linear and RBF kernels~\cite{cortes1995svm}.
+Table~\ref{tab:comparison} reports protocol~A, which is the one that describes
+deployment. One model appears only under protocol~B: the RBF support vector
+machine, whose kernel computation is quadratic in the sample count and which
+cannot be fitted on 2.5 million flows on a single machine. On the same CPU,
+harness and test block as every other protocol-B row, but fitted on 40,000 of the
+100,000 training flows for the same quadratic reason, it reaches 94.88\% macro F1
+at a false positive rate of 0.00\%, against 97.06\% for the detector on the full
+protocol-B training block. It is the one model in either table not trained on the
+same sample count as its peers and we say so rather than presenting the figure as
+like-for-like. We report it here rather than in Table~\ref{tab:comparison}
+because a figure measured on 40,000 flows does not belong in a column measured on
+1,077,238. For the same reason the linear support vector machine in
+Table~\ref{tab:comparison} is fitted on a capped subsample of 300,000 flows, its
+liblinear solver being single-threaded and still unconverged after thirty minutes
+on the full partition; the cap is marked in the table and stated here because a
+model that cannot be trained at the deployment scale is a deployment fact rather
+than an inconvenience to be hidden.
 
 Three readings follow, and only the first is favorable to us. The detector
 attains the joint-highest macro F1, 97.88\%, statistically indistinguishable
@@ -1826,12 +1899,20 @@ reconstruction autoencoder trained on benign traffic alone, and a two-layer grap
 convolution over a $k$-nearest-neighbor graph in flow-feature space.
 Table~\ref{tab:deep} reports them.
 
-Three caveats attach to individual rows rather than to the table as a whole. The
-sequence models classify a window rather than a flow, so their unit of decision
-is not the unit of enforcement. The graph model is transductive over a
-constructed graph, so single-flow latency is not defined for it without an
-incremental graph-maintenance scheme we did not implement. And the autoencoder is
-unsupervised, so its operating point is set differently from the rest.
+Four caveats attach to individual rows rather than to the table as a whole, and
+two of them are departures from protocol~B that we state rather than leave in the
+released results. The sequence models classify a window of sixteen consecutive
+flows rather than a flow, so their unit of decision is not the unit of
+enforcement and their test set holds 39,985 windows rather than 40,000 flows. The
+graph model is transductive over a graph constructed on a 30,000-flow subsample,
+so single-flow latency is not defined for it without an incremental
+graph-maintenance scheme we did not implement. The autoencoder is unsupervised,
+so its operating point is set differently from the rest, and its benign training
+examples are the 582 benign flows of the whole training partition rather than the
+31 that protocol~B's training block contains, because 31 examples cannot fit a
+reconstruction model; that row is therefore trained on more benign data than any
+other row in either table, which makes its result more favorable than a strict
+protocol~B fit would be and does not change the conclusion drawn from it.
 
 On ranking quality the strongest deep model is close to the tree ensemble and
 none exceeds it. What separates them is the operating point. At the fixed
@@ -1855,12 +1936,17 @@ datasets, and because the corpus itself, rather than the method, is what fails
 here.
 
 \begin{table}[!t]
-\caption{Deep-learning baselines under the subsampled protocol, CPU-only, same
-splits and harness as Table~\ref{tab:comparison}. $^{s}$ classifies a window of
-sixteen flows rather than a single flow. $^{t}$ transductive: single-flow latency
-is undefined. $^{u}$ unsupervised; its ROC-AUC below 0.5 is discussed in the text.
-The detector's average precision is printed to five decimal places because it is
-the only entry that would otherwise round to $1.0000$ and be misread as exact.}
+\caption{Deep-learning baselines under protocol~B of Section~\ref{sec:protocol},
+CPU-only, same splits, metric definitions and timing harness as
+Table~\ref{tab:comparison}'s protocol-B run. $^{s}$ classifies a window of
+sixteen flows rather than a single flow, over 39,985 windows. $^{t}$ transductive
+over a graph built on a 30,000-flow subsample: single-flow latency is undefined.
+$^{u}$ unsupervised, and the only row not fitted on protocol~B's training block:
+it is trained on the 582 benign flows of the full training partition, since
+protocol~B's 31 cannot fit a reconstruction model. Its ROC-AUC below 0.5 is
+discussed in the text. The detector's average precision is printed to five decimal
+places because it is the only entry that would otherwise round to $1.0000$ and be
+misread as exact.}
 \centering
 \label{tab:deep}
 \footnotesize
@@ -1872,7 +1958,7 @@ the only entry that would otherwise round to $1.0000$ and be misread as exact.}
 \textbf{AP} & \textbf{Lat.\ p50 (ms)} \\
 \midrule
 1D-CNN               & 39,297 & 81.74 & 0.8448 & 0.9908 & 0.098 \\
-LSTM$^{s}$           & 39,489 & 91.02 & 0.9963 & 0.9999 & 0.210 \\
+LSTM$^{s}$           & 39,489 & 91.02 & 0.9963 & 0.9999 & 0.209 \\
 Transformer$^{s}$    & 73,729 & 81.41 & 0.9909 & 0.9997 & 0.361 \\
 Autoencoder$^{u}$    & 13,544 &  2.85 & 0.0073 & 0.9658 & 0.041 \\
 GNN$^{t}$            &  7,809 &  2.80 & 0.9973 & 0.9999 & n/a \\
@@ -1918,7 +2004,7 @@ is architecturally straightforward, since all of them consume the same exported
 flow statistics the tree ensemble consumes. The differences that matter are
 elsewhere. On accuracy the measured gap is small, which is the usual finding on
 tabular flow features. On latency it is not small and it runs in the tree
-ensemble's favour. On explainability the asymmetry is structural: TreeSHAP yields
+ensemble's favor. On explainability the asymmetry is structural: TreeSHAP yields
 exact Shapley values for a tree ensemble in time polynomial in model
 size~\cite{lundberg2020treeshap}, whereas a neural detector falls back on a
 model-agnostic approximation that costs more and is less
@@ -1932,7 +2018,7 @@ justify each decision cheaply enough to do so on the alert path.
 Software-defined IoT inherits the SDN control model and adds constraints that
 change the design problem~\cite{bhayo2023sdiot,gali2025qos}. Gateways are far
 weaker than the controller host used here and many are battery powered, so the
-binding figure is energy per decision rather than peak throughput, which favours
+binding figure is energy per decision rather than peak throughput, which favors
 a tree ensemble whose inference is comparisons rather than matrix arithmetic. The
 serialized forest is the constraint instead, and Section~\ref{sec:pareto} shows
 how far it can be shrunk. Window semantics also need re-deriving: a window of $N$
@@ -1976,7 +2062,7 @@ The following bound what this paper establishes. We state them as limits on the 
 
 \emph{The testbed is small.} Section~\ref{sec:deployment} runs the detector inside a controller process exchanging genuine OpenFlow 1.3 messages with switch agents over TCP, and Section~\ref{sec:mininet} runs it against an emulated network of three hosts and one Open vSwitch datapath under Mininet. Both are real control planes and neither is a network of operational scale. A single switch cannot exhibit multi-datapath rule distribution, controller failover, or the east-west traffic patterns of a datacenter fabric, and the QoS figures we report describe contention at one controller and one 100\,Mbit link rather than forwarding-path behavior under production load.
 
-\emph{Transferability is bounded by labeled minority traffic, not by labeled volume.} Section~\ref{sec:fewshot} shows that a hundred labeled flows from one target network are enough to reach 0.9964 macro F1, while fifty thousand from another are not enough to reach 0.90. The difference is the number of benign examples the target's own capture contains. An operator cannot infer the labelling cost of deployment from the flow count alone, and we cannot predict it from anything we measured.
+\emph{Transferability is bounded by labeled minority traffic, not by labeled volume.} Section~\ref{sec:fewshot} shows that a hundred labeled flows from one target network are enough to reach 0.9964 macro F1, while fifty thousand from another are not enough to reach 0.90. The difference is the number of benign examples the target's own capture contains. An operator cannot infer the labeling cost of deployment from the flow count alone, and we cannot predict it from anything we measured.
 
 \emph{The adaptive adversary is out of scope.} The threat model assumes an attacker who floods but does not optimize against the detector. An adversary who knows the feature set can rotate spoofed sources to hold per-window entropy near its benign value, and the distributional evidence degrades accordingly. We have not measured what that evasion costs the attacker in attack effectiveness, which is the quantity that would determine whether the defense remains useful under adaptation. This is the most consequential gap in the paper.
 
@@ -2013,7 +2099,7 @@ We are equally explicit about what the evidence does not support. The entropy
 augmentation does not improve in-distribution detection on this corpus, and buys
 robustness under shift only where its full feature set is computable. The
 detector does not transfer to another corpus without retraining, and on one of
-the two we tried, an operator is better off discarding it and labelling a hundred
+the two we tried, an operator is better off discarding it and labeling a hundred
 of their own flows. No experiment available to us can exclude dataset-specific
 artifacts.
 Section~\ref{sec:limitations} states these as limits on the claims rather than as

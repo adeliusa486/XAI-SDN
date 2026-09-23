@@ -516,28 +516,60 @@ def main() -> int:
               f"CPU {sweep[-1]['cpu_mean_percent']:.0f}%", flush=True)
     pd.DataFrame(sweep).to_csv(RESULTS / "E7_rate_sweep.csv", index=False)
 
+    # The sweep and the fixed-load session measure the same quantity under two
+    # different configurations: 45 s without background traffic versus 150 s
+    # with it. Summarising only over `sweep` and calling the result "at most"
+    # produced a ceiling the fixed-load session already exceeded, which reached
+    # the manuscript. The summary below ranges over every session that measured
+    # an achieved rate, and its wording is a range rather than a bound.
     sat = [s for s in sweep if s.get("saturation_ratio", 1) < 0.9]
+    sweep_rates = [s["achieved_rate"] for s in sweep if "achieved_rate" in s]
+    fixed_rates = [
+        out["E4"][t]["agents"]["attack_achieved_rate"]
+        for t in ("detection_only", "with_explanations")
+        if out["E4"].get(t, {}).get("agents", {}).get("attack_achieved_rate")
+    ]
+    all_rates = sweep_rates + fixed_rates
     out["E7"] = {
         "sweep": sweep,
-        "saturation_point_per_s": sat[0]["offered_rate"] if sat else None,
-        "max_achieved_rate_per_s": max((s.get("achieved_rate", 0) for s in sweep),
-                                       default=None),
+        "achieved_rate_definition": (
+            "completed packet_in request/response exchanges per second of wall "
+            "time for the synchronous switch agent, including classification and "
+            "rule installation"),
+        "sweep_session_seconds": E7_SESSION_SECONDS,
+        "fixed_load_session_seconds": E4_SESSION_SECONDS,
+        "sweep_has_background_agent": False,
+        "fixed_load_has_background_agent": True,
+        "saturated_at_every_offered_rate": bool(sat and sat[0]["offered_rate"]
+                                                == min(E7_RATES)),
+        "lowest_offered_rate_tested": min(E7_RATES),
+        "knee_located": not (sat and sat[0]["offered_rate"] == min(E7_RATES)),
+        "max_achieved_rate_sweep_per_s": max(sweep_rates, default=None),
+        "max_achieved_rate_any_session_per_s": max(all_rates, default=None),
+        "min_achieved_rate_any_session_per_s": min(all_rates, default=None),
         "bytes_per_packet_in": out["E4"]["detection_only"]
                                   .get("control_channel", {})
                                   .get("bytes_per_packet_in"),
         "answer_to_60k_question": None,     # filled below
     }
-    mx = out["E7"]["max_achieved_rate_per_s"] or 0
+    lo = out["E7"]["min_achieved_rate_any_session_per_s"] or 0
+    hi = out["E7"]["max_achieved_rate_any_session_per_s"] or 0
     out["E7"]["answer_to_60k_question"] = (
-        f"A single controller instance on this hardware sustained at most "
-        f"{mx:,.0f} packet_in events per second end to end, including "
-        f"classification and rule installation. The 60,606 flows/s figure in the "
-        f"submitted manuscript was an offline feature-and-inference rate measured "
-        f"without any control channel, and it is not an ingest rate. Reaching that "
-        f"order of magnitude at the control plane requires the flows not to arrive "
-        f"as individual table-miss events: switch-side aggregation, packet_in rate "
-        f"limiting and sampled export are the mechanisms, and their cost is "
-        f"quantified in the flow-table analysis of E8b.")
+        f"Across every session measured here a single controller instance on this "
+        f"hardware absorbed between {lo:,.0f} and {hi:,.0f} packet_in events per "
+        f"second end to end, including classification and rule installation. The "
+        f"spread is a property of the session configuration, not of the offered "
+        f"rate: the sweep sessions run 45 s with no background traffic and the "
+        f"fixed-load sessions run 150 s with it, and the sweep is saturated at "
+        f"every offered rate tested, so it bounds goodput rather than locating the "
+        f"knee. The 60,606 flows/s figure in the submitted manuscript was an "
+        f"offline feature-and-inference rate measured without any control channel, "
+        f"and it is not an ingest rate; it is two to three orders of magnitude "
+        f"above anything measured here. Reaching that order of magnitude at the "
+        f"control plane requires the flows not to arrive as individual table-miss "
+        f"events: switch-side aggregation, packet_in rate limiting and sampled "
+        f"export are the mechanisms, and their cost is quantified in the "
+        f"flow-table analysis of E8b.")
     print("\n" + out["E7"]["answer_to_60k_question"], flush=True)
 
     # ---- flow-table occupancy -----------------------------------------------

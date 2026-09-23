@@ -1,9 +1,26 @@
 """
 entropy.py — Shannon Entropy Feature Extraction for XAI-SDN.
 
-Implements the 8 entropy features described in the paper:
+SUPERSEDED FEATURE SET. This module computes the eight entropy features of the
+*submitted* version of the paper, the last of which is `H_ttl`:
+
     H_src_ip, H_dst_ip, H_dst_port, H_proto,
     H_pkt_len, H_iat, H_tcp_flags, H_ttl
+
+`H_ttl` is the defect Reviewer 7 identified. CICFlowMeter CSV output carries no
+TTL column, so `features/pipeline.py` supplies a constant 64 for every record and
+this feature is zero to floating-point tolerance across all 3,590,794 flows of
+the SYN partition, with a single-feature AUC of 0.500021, which is chance. It
+contributed nothing to any published result.
+
+The 2026 revision replaces it with source-port entropy, `H_src_port`, which is
+exported by CICFlowMeter, is non-degenerate, reaches a single-feature AUC of
+0.9876 and carries the highest mutual information of the eight; the
+representation stays 88-dimensional. Table 3 of the revised manuscript specifies
+the repaired set. **Every number in the revision is produced by
+`revision_2026/03_experiments/common/data.py`, not by this module.** This file is
+kept unchanged so that the submitted results remain reproducible, and should not
+be used to reproduce anything in the revision.
 
 Mathematical foundation:
     H(X) = -Σ p(xᵢ) log₂ p(xᵢ)
@@ -23,6 +40,9 @@ import numpy as np
 
 # ─── Constants ────────────────────────────────────────────────────────────────
 
+# Submitted feature set. H_ttl is degenerate on CICFlowMeter exports; see the
+# module docstring. The revision's repaired set is ENTROPY_FEATURES_REPAIRED in
+# revision_2026/03_experiments/common/data.py.
 ENTROPY_FEATURE_NAMES = [
     "H_src_ip",
     "H_dst_ip",

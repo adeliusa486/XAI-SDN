@@ -42,12 +42,12 @@
   "R7.8": {
     "response": "This comment led to the most consequential correction in the revision, and we would rather state it plainly than bury it. The submitted manuscript described a temporal split in which all training flows precede all test flows. The reported figures were produced by a stratified random split. We established this three ways: the reported test class counts of 9,311 and 1,068,487 are exactly 30% of each class, which a stratified split produces by construction; re-running the stratified split reproduces the published macro F1 to within 0.016 points; and the released code calls train_test_split with stratification after sorting by timestamp, so the sort is performed and the ordering then discarded. Under a genuine chronological split, macro F1 is 97.85% rather than 99.96%. The revision adopts the chronological protocol as primary, reports the stratified result beside it, and quantifies the gap. Documentation has been added throughout: split definitions, a validation block used for all tuning, nested cross-validation with forward-chaining outer folds, and an explicit statement that the test partition is read once. We also report that hyperparameter selection is unstable on this corpus, choosing five different configurations across five outer folds.",
     "action": "Corrected the protocol, reported both splits, added a protocol subsection, ran nested cross-validation with forward-chaining folds, and documented the tuning and test separation.",
-    "location": "Sec. VI-B (Evaluation protocol), Sec. VII-B, Table 6, Sec. VII-I"
+    "location": "Sec. VI-B (Evaluation protocol), which now defines both validation blocks, the subsampled protocol and the nested-CV grid; Sec. VII-A (Sensitivity to the evaluation protocol) and Table 6; Sec. VII-B"
   },
   "R5.1": {
     "response": "Added. Each of the sections named now opens with a short paragraph stating what the section establishes and how its subsections relate, before the first subsection heading.",
     "action": "Added scene-setting paragraphs to the six sections requested.",
-    "location": "Openings of Secs. II, III, V, VI, VII and IX"
+    "location": "Openings of Secs. II, III, V, VI, VII and VIII, the six the reviewer named; Secs. IV and IX open the same way"
   },
   "R5.6": {
     "response": "Corrected. Five floats were never referenced in the body of the submitted version: Fig. 7, Fig. 9, Table 7, Eq. (4) and Eq. (5), in that version's numbering. Four are now cited where they are discussed. The fifth, the radar chart, has been removed rather than cited, because Reviewer 2 separately objected to treating radar-chart area as evidence and we agree that the figure argued from area rather than from measurement. Every remaining figure, table, algorithm and numbered equation is cited at least once, and an automated check on the compiled PDF enforces this.",

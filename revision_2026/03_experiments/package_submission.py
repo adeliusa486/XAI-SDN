@@ -89,6 +89,13 @@ def copy_supplementary() -> list[str]:
     for f in sorted(RESULTS.glob("*.csv")):
         shutil.copy2(f, sup / f.name)
         taken.append(f.name)
+    # Provenance notes belong with the results they qualify. E4b_PROVENANCE.md
+    # records two defects in the surrounding code that were fixed without
+    # re-running the experiment, and a reader of E4b_mininet_testbed.json needs
+    # it to interpret two stale fields in that file.
+    for f in sorted(RESULTS.glob("*_PROVENANCE.md")):
+        shutil.copy2(f, sup / f.name)
+        taken.append(f.name)
     ev = RESULTS / "mininet_evidence"
     if ev.exists():
         # Older runs captured the flow table after the topology had been torn

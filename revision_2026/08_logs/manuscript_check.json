@@ -11,13 +11,11 @@
     "eq": [],
     "sec": [
       "sec:intro",
-      "sec:terminology",
       "sec:rolling",
       "sec:environment",
       "sec:memorization",
       "sec:entropyshift",
       "sec:globalshap",
-      "sec:cases",
       "sec:hyperparam",
       "sec:related_quant",
       "sec:dl-discussion"
@@ -27,28 +25,42 @@
     "count": 0,
     "items": []
   },
-  "overclaim": {
-    "count": 3,
+  "overclaim_waived": {
+    "count": 4,
     "items": [
       {
-        "line": 117,
+        "line": 125,
         "pattern": "\\bguarantee(?:s|d)?\\b",
         "match": "guarantees",
-        "context": "Guidotti et al.~\\cite{guidotti2018survey} organize the space of black-box explanation methods, and Doshi-Velez and Kim~\\cite{doshivelez2017rigorous} set out what rigorous"
+        "context": "Guidotti et al.~\\cite{guidotti2018survey} organize the space of black-box explanation methods, and Doshi-Velez and Kim~\\cite{doshivelez2017rigorous} set out what rigorous",
+        "full": "Guidotti et al.~\\cite{guidotti2018survey} organize the space of black-box explanation methods, and Doshi-Velez and Kim~\\cite{doshivelez2017rigorous} set out what rigorous evaluation of interpretability would require~\\cite{arrieta2020xai}. Two attribution methods dominate practice: LIME~\\cite{ribeiro2016lime}, which fits a local surrogate, and SHAP~\\cite{lundberg2017shap}, which yields additive attributions with consistency guarantees. TreeSHAP~\\cite{lundberg2020treeshap} makes the latter exact and polynomial for tree ensembles, which is what makes per-alert attribution viable in a real-time path. Gaspar et al.~\\cite{gaspar2024xai} apply both to a multilayer-perceptron intrusion detector, and Al and Sa\\u{g}{\\i}ro\\u{g}lu~\\cite{samed2025xaiids} survey the current state of the area. We use an exact method rather than a model-agnostic approximation because Warnecke et al.~\\cite{warnecke2020evaluating} find exact attributions both more faithful and cheaper in this setting."
       },
       {
-        "line": 438,
-        "pattern": "\\bnear-perfect\\b",
-        "match": "near-perfect",
-        "context": "We also report, for comparison only, a \\emph{stratified random} split of the same proportions, which assigns 30\\% of each class to the test partition irrespective of time"
+        "line": 209,
+        "pattern": "\\bguarantee(?:s|d)?\\b",
+        "match": "guarantee",
+        "context": "cases it distinguishes do not carry the same guarantee. Only the admitted case is",
+        "full": "cases it distinguishes do not carry the same guarantee. Only the admitted case is"
       },
       {
-        "line": 495,
+        "line": 493,
         "pattern": "\\bnear-perfect\\b",
         "match": "near-perfect",
-        "context": "We report this prominently for two reasons. It is the largest single effect we measure, larger than any architectural choice examined in this paper. It also explains a go"
+        "context": "We also report, for comparison only, a \\emph{stratified random} split of the same proportions, which assigns 30\\% of each class to the test partition irrespective of time",
+        "full": "We also report, for comparison only, a \\emph{stratified random} split of the same proportions, which assigns 30\\% of each class to the test partition irrespective of time. This is the protocol implicitly used by much of the literature on this benchmark. Reporting both is not redundant. Section~\\ref{sec:results} shows that the difference between them accounts for more of the gap between near-perfect and realistic performance figures than any architectural choice examined in this paper, and a reader comparing our numbers against published ones needs to know which convention produced each."
+      },
+      {
+        "line": 552,
+        "pattern": "\\bnear-perfect\\b",
+        "match": "near-perfect",
+        "context": "We report this prominently for two reasons. It is the largest single effect we measure, larger than any architectural choice examined in this paper. It also explains a go",
+        "full": "We report this prominently for two reasons. It is the largest single effect we measure, larger than any architectural choice examined in this paper. It also explains a good deal of the near-perfect performance reported on this benchmark generally, and a reader comparing our figures against published ones needs to know which convention produced each. All results in the remainder of this paper use the chronological protocol unless stated otherwise."
       }
     ]
+  },
+  "overclaim": {
+    "count": 0,
+    "items": []
   },
   "british": {
     "count": 0,
