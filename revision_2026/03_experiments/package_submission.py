@@ -68,7 +68,11 @@ def copy_source() -> list[str]:
     src = PACKAGE / "latex_source"
     src.mkdir(parents=True, exist_ok=True)
     taken = []
-    for pat in ("*.tex", "*.cls", "*.bib", "*.bbl", "*.pdf", "*.jpg", "*.png"):
+    # ieeeaccess.cls does \RequirePackage{spotcolor} and loads the template's
+    # bundled Formata/Times fonts through .fd/.map/.tfm/.pfb, so the source we
+    # ship does not compile without them.
+    for pat in ("*.tex", "*.cls", "*.sty", "*.bib", "*.bbl", "*.pdf", "*.jpg",
+                "*.png", "*.fd", "*.map", "*.tfm", "*.pfb"):
         for f in MANUSCRIPT.glob(pat):
             shutil.copy2(f, src / f.name)
             taken.append(f.name)
