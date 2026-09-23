@@ -1,0 +1,12 @@
+train 2,262,199 (benign 533) | val 251,356 (benign 49) | test 400,000 (benign 170)
+  depth=        8 trees= 25  size=    0.14 MB  leaves=       35  val F1=1.0000  test F1=0.9885  p50=0.9151 ms
+  depth=        8 trees= 50  size=    0.27 MB  leaves=       33  val F1=1.0000  test F1=0.9885  p50=1.6756 ms
+  depth=        8 trees=100  size=    0.54 MB  leaves=       33  val F1=1.0000  test F1=0.9816  p50=3.2004 ms
+  depth=        8 trees=200  size=    1.06 MB  leaves=       33  val F1=1.0000  test F1=0.9775  p50=6.1351 ms
+  depth=       12 trees= 25  size=    0.17 MB  leaves=       41  val F1=1.0000  test F1=0.9985  p50=0.8797 ms
+  depth=       12 trees= 50  size=    0.33 MB  leaves=       41  val F1=1.0000  test F1=0.9985  p50=1.6190 ms
+  depth=       12 trees=100  size=    0.66 MB  leaves=       41  val F1=1.0000  test F1=0.9985  p50=3.1509 ms
+  depth=       12 trees=200  size=    1.34 MB  leaves=       42  val F1=1.0000  test F1=0.9985  p50=6.1240 ms
+  depth=       16 trees= 25  size=    0.18 MB  leaves=       45  val F1=1.0000  test F1=0.9985  p50=0.8682 ms
+  depth=       16 trees= 50  size=    0.36 MB  leaves=       45  val F1=1.0000  test F1=0.9985  p50=1.6296 ms
+  depth=       16 trees=100  size=    0.71 MB  leaves=       45  val F1=1.0000  test F1=0.9985  p50=4.7748 ms

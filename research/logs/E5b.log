@@ -1,0 +1,13 @@
+loading RAW Syn.csv (no deduplication)...
+  loaded 4,320,541 rows x 85 cols in 28.9s
+  4,037,465 rows, 35,387 benign
+grouping identical feature rows...
+  446,671 duplicate rows (11.06%), largest group 5
+  benign duplicate rate 12.36%
+straddle analysis...
+  [stratified random 70/30] straddle=15.4866% (benign 17.3983%), lookup-only accuracy=0.992760
+  [temporal 70/30] straddle=0.0362% (benign 0.0029%), lookup-only accuracy=0.971403
+
+Before deduplication the partition contains 11.1% exactly duplicated feature vectors. Under the stratified random split that produced the submitted results, 15.5% of test rows have a feature-identical twin in the training partition, and a lookup table that learns nothing but the training labels of those twins already reaches 0.9928 accuracy. Under the temporal split the same lookup reaches 0.9714. The difference isolates how much of the reported performance was available to pure memorisation rather than to detection.
+
+Wrote C:\Users\adeel\OneDrive\Desktop\xai sdn full paper\REVISION_2026\04_results\E5b_duplicate_leakage.json

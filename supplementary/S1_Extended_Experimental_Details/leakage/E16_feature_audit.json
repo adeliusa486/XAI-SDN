@@ -1,0 +1,128 @@
+{
+  "_provenance": {
+    "hardware": {
+      "cpu_name": "13th Gen Intel(R) Core(TM) i9-13900H",
+      "cpu_manufacturer": "GenuineIntel",
+      "cpu_cores": 14,
+      "cpu_logical": 20,
+      "cpu_max_clock_mhz": 2600,
+      "cpu_l2_cache_kb": 11776,
+      "cpu_l3_cache_kb": 24576,
+      "ram_total_bytes": 51150704640,
+      "ram_total_gb": 47.64,
+      "os_caption": "Microsoft Windows 11 Pro",
+      "os_version": "10.0.26120",
+      "os_build": "26120",
+      "os_arch": "64-bit",
+      "gpus": [
+        "Intel(R) Iris(R) Xe Graphics",
+        "NVIDIA GeForce RTX 4060 Laptop GPU"
+      ],
+      "machine_model": "Zenbook UX6404VV_UX6404VV"
+    },
+    "python": "3.11.9",
+    "platform": "Windows-10-10.0.26120-SP0",
+    "host": "ADEEL",
+    "libraries": {
+      "numpy": "2.3.5",
+      "pandas": "2.3.3",
+      "sklearn": "1.8.0",
+      "scipy": "1.17.1",
+      "shap": "0.51.0",
+      "xgboost": "3.2.0",
+      "lightgbm": "4.7.0",
+      "torch": "2.14.0+cpu",
+      "matplotlib": "3.10.9",
+      "statsmodels": "0.14.6"
+    },
+    "cpu_only": true,
+    "timestamp": "2026-09-21T01:55:14"
+  },
+  "experiment": "E16",
+  "objective": "feature-set correctness audit and repair",
+  "h_ttl_defect": {
+    "column_index": 87,
+    "min": 0.0,
+    "max": 1.7763568394002505e-15,
+    "std": 7.223225658943756e-18,
+    "n_unique": 4,
+    "is_identically_zero": false,
+    "is_zero_within_float_tolerance": true,
+    "max_abs_value": 1.7763568394002505e-15,
+    "root_cause": "features/pipeline.py hard-codes 'ttl': 64 for every flow record; CICFlowMeter CSV output contains no TTL column."
+  },
+  "n_constant_features_original": 12,
+  "constant_features_original": [
+    "Bwd_PSH_Flags",
+    "Fwd_URG_Flags",
+    "Bwd_URG_Flags",
+    "FIN_Flag_Count",
+    "PSH_Flag_Count",
+    "ECE_Flag_Count",
+    "Fwd_Avg_Bytes_Bulk",
+    "Fwd_Avg_Packets_Bulk",
+    "Fwd_Avg_Bulk_Rate",
+    "Bwd_Avg_Bytes_Bulk",
+    "Bwd_Avg_Packets_Bulk",
+    "Bwd_Avg_Bulk_Rate"
+  ],
+  "h_src_port": {
+    "min": 0.0,
+    "max": 9.965784284662087,
+    "mean": 9.939273983042835,
+    "std": 0.2450121701706822,
+    "n_unique": 26420,
+    "is_constant": false
+  },
+  "protocol": {
+    "split": "temporal",
+    "train_frac": 0.7,
+    "cut_index": 2513556,
+    "note": "temporal split adopted as the revision's primary protocol"
+  },
+  "baseline_original": {
+    "tag": "original (H_ttl constant)",
+    "n_features": 88,
+    "accuracy": 0.9975381484871495,
+    "macro_f1": 0.9784668582413877,
+    "auc_roc": 0.999720552418153,
+    "avg_precision": 0.999991693547707,
+    "fpr": 0.0011172450052576235,
+    "fnr": 0.002500940957541321,
+    "confusion": {
+      "tn": 30398,
+      "fp": 34,
+      "fn": 2618,
+      "tp": 1044188
+    },
+    "train_time_s": 121.23
+  },
+  "baseline_repaired": {
+    "tag": "repaired (H_src_port)",
+    "n_features": 88,
+    "accuracy": 0.9975789936857036,
+    "macro_f1": 0.9788131108748039,
+    "auc_roc": 0.9997281264377706,
+    "avg_precision": 0.999991896953794,
+    "fpr": 0.000952944269190326,
+    "fnr": 0.002463684770626076,
+    "confusion": {
+      "tn": 30403,
+      "fp": 29,
+      "fn": 2579,
+      "tp": 1044227
+    },
+    "train_time_s": 71.05
+  },
+  "repair_delta": {
+    "accuracy": 4.085e-05,
+    "macro_f1": 0.00034625,
+    "auc_roc": 7.57e-06,
+    "avg_precision": 2e-07
+  },
+  "impurity_importance_of_slot": {
+    "H_src_port": 0.0007873197001210666
+  },
+  "decision": "Adopt the repaired feature set. H_ttl carries exactly zero information; H_src_port is well-posed, non-constant and available in every CICFlowMeter export. The 88-dimensional representation is preserved.",
+  "total_runtime_s": 433.3
+}

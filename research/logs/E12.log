@@ -1,0 +1,15 @@
+{
+  "n_train": 2154476,
+  "n_validation": 359080,
+  "n_test": 1077238,
+  "train_benign": 522,
+  "validation_benign": 60,
+  "test_benign": 30432
+}
+fitting on the training partition...
+  validation AP=1.000000  ROC-AUC=1.000000 prevalence=0.9998
+  tau(max-F1 grid)=0.25  tau(max-F1 fine)=0.9400  tau(precision>=0.999)=0.0
+  TEST @tau*=0.9400: precision=1.000000 recall=0.996330 F1=0.998162 false_alerts=0 missed=3,842
+  TEST AP=0.999990 ROC-AUC=0.999665
+
+Wrote C:\Users\adeel\OneDrive\Desktop\xai sdn full paper\REVISION_2026\04_results\E12_pr_threshold.json

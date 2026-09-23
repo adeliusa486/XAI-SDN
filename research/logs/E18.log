@@ -1,0 +1,24 @@
+Validating timestamp parsing...
+  unparseable: 0 / 4,320,541
+  span: 2018-11-03 11:30:25.830707 .. 2018-11-03 17:36:41.528982 (366.3 min)
+  already monotone in file order: False
+  agreement between dayfirst=True and dayfirst=False: 1.0000
+
+Characterizing the class timeline...
+  benign flows: 35,790
+  median position in the timeline: 0.9953
+  fraction of benign in the last 30%: 97.8653%
+  fraction of benign in the last 10%: 97.2953%
+
+  chronological split -> benign flows available for training:
+      50/50: train_benign=    527  test_benign= 35,263
+      60/40: train_benign=    586  test_benign= 35,204
+      70/30: train_benign=    764  test_benign= 35,026
+      80/19: train_benign=    918  test_benign= 34,872
+       90/9: train_benign=    968  test_benign= 34,822
+
+  cleaned matrix: 582 benign flows in the first 70% vs 30,432 in the last 30%
+
+VERDICT: Timestamps parse cleanly (0 unparseable of 4,320,541) and the clustering is a property of the capture, not of our preprocessing. 97.9% of benign flows fall in the final 30% of the timeline, so a chronological 70/30 split leaves only 582 benign flows for training against 30,432 at test, a ratio of 1 to 52. A chronological split of this partition is therefore close to a zero-shot problem for the benign class rather than a conventional held-out evaluation, and results under it must be described that way.
+
+Wrote C:\Users\adeel\OneDrive\Desktop\xai sdn full paper\REVISION_2026\04_results\E18_temporal_structure.json

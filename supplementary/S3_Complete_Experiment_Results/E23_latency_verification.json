@@ -1,0 +1,90 @@
+{
+  "_provenance": {
+    "hardware": {
+      "cpu_name": "13th Gen Intel(R) Core(TM) i9-13900H",
+      "cpu_manufacturer": "GenuineIntel",
+      "cpu_cores": 14,
+      "cpu_logical": 20,
+      "cpu_max_clock_mhz": 2600,
+      "cpu_l2_cache_kb": 11776,
+      "cpu_l3_cache_kb": 24576,
+      "ram_total_bytes": 51150704640,
+      "ram_total_gb": 47.64,
+      "os_caption": "Microsoft Windows 11 Pro",
+      "os_version": "10.0.26120",
+      "os_build": "26120",
+      "os_arch": "64-bit",
+      "gpus": [
+        "Intel(R) Iris(R) Xe Graphics",
+        "NVIDIA GeForce RTX 4060 Laptop GPU"
+      ],
+      "machine_model": "Zenbook UX6404VV_UX6404VV"
+    },
+    "python": "3.11.9",
+    "platform": "Windows-10-10.0.26120-SP0",
+    "host": "ADEEL",
+    "libraries": {
+      "numpy": "2.3.5",
+      "pandas": "2.3.3",
+      "sklearn": "1.8.0",
+      "scipy": "1.17.1",
+      "shap": "0.51.0",
+      "xgboost": "3.2.0",
+      "lightgbm": "4.7.0",
+      "torch": "2.14.0+cpu",
+      "matplotlib": "3.10.9",
+      "statsmodels": "0.14.6"
+    },
+    "cpu_only": true,
+    "timestamp": "2026-09-21T12:43:40"
+  },
+  "experiment": "E23",
+  "objective": "directly comparable latency for the baseline and selected configurations",
+  "method": "both forests are fitted in one process and probed alternately over five rounds, so machine state affects both equally",
+  "latency_probe": 2000,
+  "rounds": 5,
+  "tau": 0.7,
+  "n_train": 2262199,
+  "n_test": 1077239,
+  "configurations": {
+    "baseline": {
+      "max_depth": null,
+      "n_estimators": 200,
+      "model_size_mb": 1.463,
+      "mean_leaves_per_tree": 45.99,
+      "single_flow_latency_ms": {
+        "p50": 6.610349999391474,
+        "p95": 38.015689999156166,
+        "p99": 48.83565099989939,
+        "mean": 15.94360309001022,
+        "n": 10000
+      },
+      "macro_f1": 0.9790615468502277,
+      "fpr": 0.001018664563617245,
+      "false_positives": 31,
+      "false_negatives": 2545
+    },
+    "selected": {
+      "max_depth": 8,
+      "n_estimators": 25,
+      "model_size_mb": 0.143,
+      "mean_leaves_per_tree": 35.2,
+      "single_flow_latency_ms": {
+        "p50": 0.9492000008322066,
+        "p95": 5.618780000077092,
+        "p99": 7.2658370026329075,
+        "mean": 2.3479842599823315,
+        "n": 10000
+      },
+      "macro_f1": 0.9782079045400394,
+      "fpr": 0.0012158254468980021,
+      "false_positives": 37,
+      "false_negatives": 2648
+    }
+  },
+  "speedup": 6.96,
+  "size_reduction": 10.2,
+  "macro_f1_change": -0.000854,
+  "interpretation": "Measured in one process with interleaved probes, the selected configuration is 7.0x faster per flow and 10x smaller, for a macro F1 change of -0.0009.",
+  "total_runtime_s": 278.3
+}

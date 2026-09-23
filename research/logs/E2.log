@@ -1,0 +1,25 @@
+loading source corpus (CIC-DDoS2019 03-11 SYN)...
+  loaded 4,320,541 rows x 85 cols in 30.7s
+  cleaned: 4,320,541 -> 3,590,794 (-283,076 nan/inf, -446,671 dup)
+
+=== transfer to InSDN ===
+  shared schema: 79 CIC + 8 entropy = 87 dims; unavailable entropy: []
+  target: n=223,372 benign=68,419 attack=154,953
+  zero-shot...
+    acc=0.6027 F1=0.6026 FPR=0.0010 [0.0008, 0.0013] FNR=0.5723
+  in-distribution reference...
+    (stratified fallback) acc=1.0000 F1=1.0000
+  joint training...
+    acc=1.0000 F1=1.0000
+
+=== transfer to CICIDS2017_DDoS ===
+  shared schema: 78 CIC + 4 entropy = 82 dims; unavailable entropy: ['H_src_ip', 'H_dst_ip', 'H_proto', 'H_src_port']
+  target: n=223,082 benign=95,068 attack=128,014
+  zero-shot...
+    acc=0.3628 F1=0.2788 FPR=0.1737 [0.1714, 0.1761] FNR=0.9813
+  in-distribution reference...
+    acc=0.9993 F1=0.9992
+  joint training...
+    acc=0.9993 F1=0.9993
+
+Wrote C:\Users\adeel\OneDrive\Desktop\xai sdn full paper\REVISION_2026\04_results\E2_cross_dataset.json

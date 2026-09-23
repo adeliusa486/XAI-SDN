@@ -60,14 +60,14 @@ class OfflineFeaturePipeline:
         window_size: int = 1000,
         pkt_len_bin_size: int = 10,
         iat_bin_size: int = 1000,
-        ttl_bin_size: int = 5,
+        src_port_bin_size: int = 1,
         test_size: float = 0.30,
         random_state: int = 42,
     ) -> None:
         self.window_size = window_size
         self.pkt_len_bin_size = pkt_len_bin_size
         self.iat_bin_size = iat_bin_size
-        self.ttl_bin_size = ttl_bin_size
+        self.src_port_bin_size = src_port_bin_size
         self.test_size = test_size
         self.random_state = random_state
 
@@ -140,7 +140,7 @@ class OfflineFeaturePipeline:
             window_size=self.window_size,
             pkt_len_bin_size=self.pkt_len_bin_size,
             iat_bin_size=self.iat_bin_size,
-            ttl_bin_size=self.ttl_bin_size,
+            src_port_bin_size=self.src_port_bin_size,
         )
         test_records = self._dataframe_to_flow_records(df_test, X_cic_test)
         entropy_test = compute_entropy_features_offline(
@@ -148,7 +148,7 @@ class OfflineFeaturePipeline:
             window_size=self.window_size,
             pkt_len_bin_size=self.pkt_len_bin_size,
             iat_bin_size=self.iat_bin_size,
-            ttl_bin_size=self.ttl_bin_size,
+            src_port_bin_size=self.src_port_bin_size,
         )
 
         # Step 5: Concatenate CIC + entropy features per partition
@@ -257,6 +257,15 @@ class OfflineFeaturePipeline:
                 break
         tcp_flags = X_cic[tcp_col].values.astype(int) if tcp_col is not None else np.zeros(n, dtype=int)
 
+        # 8. Source Port (published feature set uses source-port entropy)
+        src_port_col = None
+        for candidate in ["Source_Port", "Src_Port", "Source Port", "Src Port", "source_port"]:
+            if candidate in df.columns:
+                src_port_col = candidate
+                break
+        src_ports = (df[src_port_col].values.astype(int)
+                     if src_port_col is not None else np.zeros(n, dtype=int))
+
         return [
             {
                 "src_ip": src_ips[i],
@@ -266,7 +275,7 @@ class OfflineFeaturePipeline:
                 "pkt_len_mean": float(pkt_lens[i]),
                 "iat_mean": float(iats[i]),
                 "tcp_flags": int(tcp_flags[i]),
-                "ttl": 64,
+                "src_port": int(src_ports[i]),
             }
             for i in range(n)
         ]
@@ -301,14 +310,14 @@ class OnlineFeaturePipeline:
         window_size: int = 1000,
         pkt_len_bin_size: int = 10,
         iat_bin_size: int = 1000,
-        ttl_bin_size: int = 5,
+        src_port_bin_size: int = 1,
     ) -> None:
         self.scaler = scaler
         self.entropy_extractor = EntropyFeatureExtractor(
             window_size=window_size,
             pkt_len_bin_size=pkt_len_bin_size,
             iat_bin_size=iat_bin_size,
-            ttl_bin_size=ttl_bin_size,
+            src_port_bin_size=src_port_bin_size,
         )
 
     @classmethod
@@ -369,7 +378,7 @@ class OnlineFeaturePipeline:
             cic_dict: Dict mapping CIC feature names to float values.
             flow_record: Flow record dict for entropy computation
                          (keys: src_ip, dst_ip, dst_port, protocol,
-                          pkt_len_mean, iat_mean, tcp_flags, ttl).
+                          pkt_len_mean, iat_mean, tcp_flags, src_port).
 
         Returns:
             Scaled 88-dim feature vector.

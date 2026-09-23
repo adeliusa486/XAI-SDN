@@ -1,0 +1,25 @@
+fitting detector...
+stream 60,000 flows, attack prevalence 1.0000
+measuring stage costs...
+  inference 35,715 flows/s; SHAP 1.485 ms/explanation (673/s); alert rate 1.0000
+  P0 always: 661 flows/s at 100% alert coverage
+P1 episode deduplication...
+  fine    window 1.0s:  54,614 explanations (     1.1x fewer),       725 flows/s
+  fine    window 5.0s:  53,817 explanations (     1.1x fewer),       735 flows/s
+  medium  window 1.0s:  41,402 explanations (     1.4x fewer),       950 flows/s
+  medium  window 5.0s:  38,046 explanations (     1.6x fewer),     1,031 flows/s
+  coarse  window 1.0s:       3 explanations (19,999.3x fewer),    35,620 flows/s
+  coarse  window 5.0s:       2 explanations (29,999.0x fewer),    35,652 flows/s
+P2 token bucket...
+  50/s -> coverage 0.001, 33,273 flows/s
+  100/s -> coverage 0.003, 31,120 flows/s
+  250/s -> coverage 0.007, 26,061 flows/s
+  500/s -> coverage 0.014, 20,505 flows/s
+  1000/s -> coverage 0.028, 14,376 flows/s
+  2000/s -> coverage 0.056, 8,997 flows/s
+P3 asynchronous off-path queue (measured, not modelled)...
+  cap 128: detection path 1,314 flows/s, coverage 0.488, drop rate 51.200%
+  cap 1024: detection path 669 flows/s, coverage 1.000, drop rate 0.000%
+  cap 8192: detection path 674 flows/s, coverage 1.000, drop rate 0.000%
+
+Wrote C:\Users\adeel\OneDrive\Desktop\xai sdn full paper\REVISION_2026\04_results\E10_explanation_budget.json

@@ -1,0 +1,88 @@
+recording to C:\Users\adeel\Downloads\XAI-SDN_mininet_live_demo.mp4
+  
+  ==============================================================
+  STEP 1  Environment
+  ==============================================================
+  $ mn --version
+  2.3.0
+  $ ovs-vsctl --version | head -1
+  ovs-vsctl (Open vSwitch) 3.7.1
+  $ /opt/xaisdn/bin/python -c 'import os_ken, sklearn; print("os-ken and scikit-learn", sklearn.__version__)'
+  os-ken and scikit-learn 1.9.1
+  Detector model: 176K Random Forest, 200 trees
+  
+  ==============================================================
+  STEP 2  Starting the XAI-SDN controller (OpenFlow 1.3, port 6653)
+  ==============================================================
+  controller started, pid 649
+  $ tail -4 /opt/xaisdn/demo_ctl.log
+  
+  ==============================================================
+  STEP 3  Building the topology and measuring baseline traffic
+  ==============================================================
+  $ python3 /opt/xaisdn/demo_topo.py
+  (100.00Mbit 1ms delay) *** Error: Warning: sch_htb: quantum of class 50001 is big. Consider r2q change.
+  (100.00Mbit 1ms delay) *** Error: Warning: sch_htb: quantum of class 50001 is big. Consider r2q change.
+  (100.00Mbit 1ms delay) *** Error: Warning: sch_htb: quantum of class 50001 is big. Consider r2q change.
+  (100.00Mbit 1ms delay) *** Error: Warning: sch_htb: quantum of class 50001 is big. Consider r2q change.
+  (100.00Mbit 1ms delay) *** Error: Warning: sch_htb: quantum of class 50001 is big. Consider r2q change.
+  (100.00Mbit 1ms delay) *** Error: Warning: sch_htb: quantum of class 50001 is big. Consider r2q change.
+  *** Configuring hosts
+  h1 h2 h3 
+  *** Starting controller
+  
+  *** Starting 1 switches
+  s1 (100.00Mbit 1ms delay) *** Error: Warning: sch_htb: quantum of class 50001 is big. Consider r2q change.
+  (100.00Mbit 1ms delay) *** Error: Warning: sch_htb: quantum of class 50001 is big. Consider r2q change.
+  (100.00Mbit 1ms delay) *** Error: Warning: sch_htb: quantum of class 50001 is big. Consider r2q change.
+  ...(100.00Mbit 1ms delay) *** Error: Warning: sch_htb: quantum of class 50001 is big. Consider r2q change.
+  (100.00Mbit 1ms delay) *** Error: Warning: sch_htb: quantum of class 50001 is big. Consider r2q change.
+  (100.00Mbit 1ms delay) *** Error: Warning: sch_htb: quantum of class 50001 is big. Consider r2q change.
+  
+  *** Stopping 0 controllers
+  
+  *** Stopping 3 links
+  ...
+  *** Stopping 1 switches
+  s1 
+  *** Stopping 3 hosts
+  h1 h2 h3 
+  *** Done
+  switch connected to controller: 
+  
+  --- BASELINE: benign client pings the server, no attack ---
+  --- 10.0.0.3 ping statistics ---
+  8 packets transmitted, 0 received, +8 errors, 100% packet loss, time 2221ms
+  pipe 8
+  
+  
+  --- STEP 4  attacker starts a SYN flood with randomised sources ---
+  flood running from h1 -> h3
+  --- 10.0.0.3 ping statistics ---
+  8 packets transmitted, 0 received, +8 errors, 100% packet loss, time 2236ms
+  pipe 8
+  
+  
+  --- STEP 5  detector reacting: rules installed by XAI-SDN ---
+  flow table entries : 0
+  drop rules installed by the detector : 0
+  --- 10.0.0.3 ping statistics ---
+  8 packets transmitted, 0 received, +8 errors, 100% packet loss, time 2247ms
+  pipe 8
+  
+  
+  --- STEP 6  flow table after mitigation ---
+  OFPST_FLOW reply (OF1.3) (xid=0x2):
+  
+  
+  ==============================================================
+  STEP 6  Controller summary
+  ==============================================================
+  $ cat /opt/xaisdn/demo_ctl.json 2>/dev/null | head -30
+  
+  Demonstration complete. Every line above was produced by the running system.
+wrote 7 stills to C:\Users\adeel\OneDrive\Desktop\xai sdn full paper\REVISION_2026\06_figures\mininet
+
+wrote C:\Users\adeel\Downloads\XAI-SDN_mininet_live_demo.mp4  (0.7 MB, 32 s, 316 frames)
+wrote C:\Users\adeel\Downloads\XAI-SDN_mininet_live_demo_transcript.txt
+session exit code: 0

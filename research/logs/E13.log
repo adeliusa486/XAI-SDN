@@ -1,0 +1,38 @@
+fitting detector...
+{
+  "n_test": 1077238,
+  "n_tp": 1044227,
+  "n_fp": 29,
+  "n_fn": 2579,
+  "n_tn": 30403
+}
+
+[true_positive] idx=0 score=1.0000 true=DDoS
+    H_src_ip                     value=             0 shap=+0.08834
+    H_dst_ip                     value=             0 shap=+0.07992
+    ACK_Flag_Count               value=             1 shap=+0.04681
+    Destination_Port             value=       2.3e+04 shap=+0.02982
+    Init_Win_bytes_forward       value=          5840 shap=+0.02677
+
+[false_positive] idx=1064476 score=0.7800 true=Benign
+    ACK_Flag_Count               value=             0 shap=-0.08349
+    Destination_Port             value=            53 shap=-0.06132
+    Flow_Bytes_s                 value=       5.8e+07 shap=+0.05650
+    H_src_ip                     value=          2.65 shap=-0.04400
+    H_dst_ip                     value=         4.155 shap=-0.04294
+
+[false_negative] idx=1071640 score=0.1250 true=DDoS
+    ACK_Flag_Count               value=             0 shap=-0.09124
+    H_src_ip                     value=         2.742 shap=-0.07174
+    H_dst_ip                     value=         4.261 shap=-0.06362
+    Init_Win_bytes_forward       value=           235 shap=-0.05169
+    URG_Flag_Count               value=             1 shap=-0.04545
+
+[borderline] idx=1045492 score=0.7000 true=DDoS
+    ACK_Flag_Count               value=             0 shap=-0.05041
+    H_src_ip                     value=         3.588 shap=-0.04216
+    H_dst_ip                     value=         4.677 shap=-0.03690
+    Flow_Duration                value=     1.118e+08 shap=+0.03367
+    Active_Std                   value=     4.357e+06 shap=+0.02877
+
+Wrote C:\Users\adeel\OneDrive\Desktop\xai sdn full paper\REVISION_2026\04_results\E13_case_studies.json

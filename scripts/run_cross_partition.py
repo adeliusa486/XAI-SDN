@@ -2,7 +2,7 @@
 run_cross_partition.py — Cross-partition generalization matrix for XAI-SDN.
 
 Trains on each partition → tests on every other partition.
-Produces a train×test macro-F1 heatmap (the result reviewers actually value).
+Produces a train×test macro-F1 heatmap.
 
 This directly answers: "Does the entropy feature ranking hold across attack types?"
 

@@ -1,0 +1,20 @@
+loaded (3590794, 88), chronological cut at 2,513,555
+fitted in 112.9s
+explaining 1,500 flows (525 benign, 975 attack)
+  H_src_ip                   0.072664
+  ACK_Flag_Count             0.063795
+  H_dst_ip                   0.062873
+  Destination_Port           0.035670
+  Init_Win_bytes_forward     0.029596
+  Packet_Length_Std          0.023605
+  URG_Flag_Count             0.019334
+  Packet_Length_Variance     0.016038
+  H_src_port                 0.014414
+  Flow_Bytes_s               0.012857
+  Fwd_Packets_s              0.011321
+  Source_Port                0.011118
+  Average_Packet_Size        0.009902
+  Flow_IAT_Max               0.008799
+  Fwd_Packet_Length_Max      0.008514
+
+Wrote C:\Users\adeel\OneDrive\Desktop\xai sdn full paper\REVISION_2026\04_results\E19_shap_sample.json

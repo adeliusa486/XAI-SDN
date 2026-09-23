@@ -1,0 +1,25 @@
+found 22 score files
+  E1/A/Decision_Tree                           AUC=0.607534 AP=0.977690 | F1@tau*=0.6569 (tau*=1.000) vs F1@0.70=0.6569
+  E1/A/LightGBM                                AUC=0.999535 AP=0.999987 | F1@tau*=0.9650 (tau*=1.000) vs F1@0.70=0.9780
+  E1/A/Linear_SVM                              AUC=0.965528 AP=0.993653 | F1@tau*=0.9674 (tau*=0.688) vs F1@0.70=0.9671
+  E1/A/Logistic_Regression                     AUC=0.623963 AP=0.973052 | F1@tau*=0.7767 (tau*=0.000) vs F1@0.70=0.8027
+  E1/A/Majority_baseline                       AUC=0.500000 AP=0.971750 | F1@tau*=0.4856 (tau*=1.000) vs F1@0.70=0.4856
+  E1/A/Naive_Bayes                             AUC=0.992166 AP=0.999552 | F1@tau*=0.9431 (tau*=0.000) vs F1@0.70=0.9366
+  E1/A/XAI-SDN_Random_Forest                   AUC=0.999728 AP=0.999992 | F1@tau*=0.9827 (tau*=0.560) vs F1@0.70=0.9778
+  E1/A/XGBoost                                 AUC=0.986511 AP=0.999234 | F1@tau*=0.9602 (tau*=0.000) vs F1@0.70=0.9565
+  E1/B/Decision_Tree                           AUC=0.670630 AP=0.980470 | F1@tau*=0.7408 (tau*=1.000) vs F1@0.70=0.7408
+  E1/B/LightGBM                                AUC=0.982879 AP=0.999009 | F1@tau*=0.9661 (tau*=1.000) vs F1@0.70=0.9645
+  E1/B/Linear_SVM                              AUC=0.858767 AP=0.978081 | F1@tau*=0.9349 (tau*=0.720) vs F1@0.70=0.9324
+  E1/B/Logistic_Regression                     AUC=0.814895 AP=0.988940 | F1@tau*=0.8581 (tau*=1.000) vs F1@0.70=0.8395
+  E1/B/Majority_baseline                       AUC=0.500000 AP=0.970650 | F1@tau*=0.4928 (tau*=1.000) vs F1@0.70=0.4928
+  E1/B/Naive_Bayes                             AUC=0.988462 AP=0.999308 | F1@tau*=0.9387 (tau*=0.000) vs F1@0.70=0.9089
+  E1/B/SVM_RBF                                 AUC=0.996956 AP=0.999822 | F1@tau*=0.9490 (tau*=0.584) vs F1@0.70=0.9453
+  E1/B/XAI-SDN_Random_Forest                   AUC=0.998680 AP=0.999960 | F1@tau*=0.9680 (tau*=0.845) vs F1@0.70=0.9692
+  E1/B/XGBoost                                 AUC=0.998424 AP=0.999953 | F1@tau*=0.9757 (tau*=0.921) vs F1@0.70=0.9684
+  E9/B/1D-CNN                                  AUC=0.844777 AP=0.990788 | F1@tau*=0.7265 (tau*=0.000) vs F1@0.70=0.8275
+  E9/B/Autoencoder                             AUC=0.007315 AP=0.965772 | F1@tau*=0.4850 (tau*=0.000) vs F1@0.70=0.0550
+  E9/B/GNN                                     AUC=0.997286 AP=0.999921 | F1@tau*=0.0545 (tau*=0.500) vs F1@0.70=0.0545
+  E9/B/LSTM                                    AUC=0.996322 AP=0.999891 | F1@tau*=0.4920 (tau*=0.035) vs F1@0.70=0.9090
+  E9/B/Transformer                             AUC=0.990861 AP=0.999726 | F1@tau*=0.5255 (tau*=0.001) vs F1@0.70=0.9166
+
+Wrote C:\Users\adeel\OneDrive\Desktop\xai sdn full paper\REVISION_2026\04_results\E14_roc_pr_curves.json

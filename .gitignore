@@ -40,10 +40,11 @@ data/raw/
 data/processed/
 data/splits/
 *.csv
-# Exception: the revision's experiment results are the evidence the manuscript
-# points readers to in its Data Availability statement, so they are tracked.
-!revision_2026/04_results/*.csv
-!revision_2026/04_results/**/*.csv
+# Exception: the experiment results are the evidence the article's Data
+# Availability statement points readers to, so they are tracked.
+!research/results/**
+!research/data_profiles/**
+!supplementary/**
 *.parquet
 *.h5
 *.hdf5
@@ -62,8 +63,10 @@ model/artifacts/y_test.npy
 mlruns/
 
 # Logs
-logs/
+/logs/
 *.log
+# Exception: the experiment run log and per-experiment logs are provenance.
+!research/logs/**
 
 # Testing
 .pytest_cache/
@@ -84,14 +87,41 @@ docker-compose.override.yml
 
 # Generated
 SHAP_output/
-figures/
-# Exception: the revision's manuscript artwork must ship with its LaTeX source,
-# otherwise the released source cannot be compiled by anyone who clones the repo.
-!revision_2026/05_manuscript/figures/
-!revision_2026/05_manuscript/figures/**
+/figures/
+# Exception: the manuscript artwork must ship with its LaTeX source, otherwise
+# the released source cannot be compiled by anyone who clones the repository.
+!research/paper/figures/
+!research/paper/figures/**
+!research/figures/**
+!assets/**
 
 # Generated result artifacts (do not commit — regenerate from CI)
 SMOKE_TEST_REPORT.md
 EVALUATION_REPORT.md
 model/artifacts/reproducibility_manifest.json
 data/alerts.db
+
+# build artifacts
+*.aux
+*.log
+*.out
+*.fls
+*.fdb_latexmk
+*.blg
+*.synctex.gz
+*.bak_*
+mlflow.db
+__pycache__/
+
+# ---------------------------------------------------------------------
+# Published research artifacts. These exceptions must stay LAST: a later
+# pattern overrides an earlier one, so any new ignore rule added above
+# would otherwise silently withhold the evidence the article points to.
+# ---------------------------------------------------------------------
+!research/results/**
+!research/logs/**
+!research/figures/**
+!research/paper/**
+!research/data_profiles/**
+!supplementary/**
+!assets/**

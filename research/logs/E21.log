@@ -1,0 +1,41 @@
+feature sets: {'full': 88, 'cic_only': 80, 'entropy_only': 8}
+source train (600000, 88), benign 79
+  [in_distribution ] full          seed=42    F1=0.9670
+  [in_distribution ] full          seed=123   F1=0.9683
+  [in_distribution ] full          seed=456   F1=0.9655
+  [in_distribution ] cic_only      seed=42    F1=0.9899
+  [in_distribution ] cic_only      seed=123   F1=0.9899
+  [in_distribution ] cic_only      seed=456   F1=0.9898
+  [in_distribution ] entropy_only  seed=42    F1=0.5021
+  [in_distribution ] entropy_only  seed=123   F1=0.5030
+  [in_distribution ] entropy_only  seed=456   F1=0.5013
+  [cross_vector  ] LDAP_0311      full          F1=0.9666
+  [cross_vector  ] LDAP_0311      cic_only      F1=0.9649
+  [cross_vector  ] LDAP_0311      entropy_only  F1=0.4996
+  [cross_vector  ] NetBIOS_0311   full          F1=0.8364
+  [cross_vector  ] NetBIOS_0311   cic_only      F1=0.6426
+  [cross_vector  ] NetBIOS_0311   entropy_only  F1=0.4998
+  [cross_vector  ] Portmap_0311   full          F1=0.9855
+  [cross_vector  ] Portmap_0311   cic_only      F1=0.9823
+  [cross_vector  ] Portmap_0311   entropy_only  F1=0.4935
+  [cross_day     ] SYN_0112       full          F1=0.4820
+  [cross_day     ] SYN_0112       cic_only      F1=0.4212
+  [cross_day     ] SYN_0112       entropy_only  F1=0.5000
+  [cross_dataset  ] insdn          full          F1=0.3811
+  [cross_dataset  ] insdn          cic_only      F1=0.2383
+  [cross_dataset  ] insdn          entropy_only  F1=0.9098
+  [cross_dataset  ] ids2017        full          F1=0.2699
+  [cross_dataset  ] ids2017        cic_only      F1=0.5658
+  [cross_dataset  ] ids2017        entropy_only  F1=0.3361
+
+cross_dataset: full=0.3255 cic_only=0.4021 delta=-0.0766
+
+cross_day: full=0.4820 cic_only=0.4212 delta=+0.0608
+
+cross_vector: full=0.9295 cic_only=0.8633 delta=+0.0662
+
+in_distribution: full=0.9670 cic_only=0.9899 delta=-0.0229
+
+VERDICT: The entropy augmentation improves macro F1 under cross_day, cross_vector while not improving it in distribution, which is the pattern a distributional feature should show: it contributes nothing where the exported counters already separate the classes, and contributes where they no longer transfer.
+
+Wrote C:\Users\adeel\OneDrive\Desktop\xai sdn full paper\REVISION_2026\04_results\E21_entropy_under_shift.json

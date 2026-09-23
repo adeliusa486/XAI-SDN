@@ -1,0 +1,6 @@
+fold,accuracy,macro_f1,avg_precision,roc_auc,precision,recall,fpr,fnr,selected_config
+1,0.9999443019761195,0.9259119988019235,0.9999999994827945,0.9999967706119226,1.0,0.9999442930556651,0.0,5.570694433483587e-05,"{""n_estimators"": 100, ""max_depth"": null, ""max_features"": ""sqrt"", ""min_samples_leaf"": 5}"
+2,1.0,1.0,1.0,1.0,1.0,1.0,0.0,0.0,"{""n_estimators"": 200, ""max_depth"": null, ""max_features"": ""sqrt"", ""min_samples_leaf"": 1}"
+3,0.999997679249005,0.9954122637755565,1.0,1.0,1.0,0.9999976789581307,0.0,2.32104186927428e-06,"{""n_estimators"": 100, ""max_depth"": null, ""max_features"": 0.3, ""min_samples_leaf"": 1}"
+4,0.999997679249005,0.9991562490923429,1.0,1.0,1.0,0.9999976776536871,0.0,2.3223463129268764e-06,"{""n_estimators"": 100, ""max_depth"": null, ""max_features"": ""sqrt"", ""min_samples_leaf"": 1}"
+5,0.9937502465786487,0.9769214077199446,0.9998658921086723,0.99816151439235,0.9999874398683698,0.9932928776748643,0.00016595306847223606,0.00670712232513574,"{""n_estimators"": 200, ""max_depth"": null, ""max_features"": ""sqrt"", ""min_samples_leaf"": 5}"

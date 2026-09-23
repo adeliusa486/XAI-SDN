@@ -1,0 +1,679 @@
+{
+  "_provenance": {
+    "hardware": {
+      "cpu_name": "13th Gen Intel(R) Core(TM) i9-13900H",
+      "cpu_manufacturer": "GenuineIntel",
+      "cpu_cores": 14,
+      "cpu_logical": 20,
+      "cpu_max_clock_mhz": 2600,
+      "cpu_l2_cache_kb": 11776,
+      "cpu_l3_cache_kb": 24576,
+      "ram_total_bytes": 51150704640,
+      "ram_total_gb": 47.64,
+      "os_caption": "Microsoft Windows 11 Pro",
+      "os_version": "10.0.26120",
+      "os_build": "26120",
+      "os_arch": "64-bit",
+      "gpus": [
+        "Intel(R) Iris(R) Xe Graphics",
+        "NVIDIA GeForce RTX 4060 Laptop GPU"
+      ],
+      "machine_model": "Zenbook UX6404VV_UX6404VV"
+    },
+    "python": "3.11.9",
+    "platform": "Windows-10-10.0.26120-SP0",
+    "host": "ADEEL",
+    "libraries": {
+      "numpy": "2.3.5",
+      "pandas": "2.3.3",
+      "sklearn": "1.8.0",
+      "scipy": "1.17.1",
+      "shap": "0.51.0",
+      "xgboost": "3.2.0",
+      "lightgbm": "4.7.0",
+      "torch": "2.14.0+cpu",
+      "matplotlib": "3.10.9",
+      "statsmodels": "0.14.6"
+    },
+    "cpu_only": true,
+    "timestamp": "2026-09-21T02:55:57"
+  },
+  "experiment": "E6",
+  "objective": "collinearity, redundancy and SHAP attribution stability",
+  "constant_features": [
+    "Bwd_PSH_Flags",
+    "Fwd_URG_Flags",
+    "Bwd_URG_Flags",
+    "FIN_Flag_Count",
+    "PSH_Flag_Count",
+    "ECE_Flag_Count",
+    "Fwd_Avg_Bytes_Bulk",
+    "Fwd_Avg_Packets_Bulk",
+    "Fwd_Avg_Bulk_Rate",
+    "Bwd_Avg_Bytes_Bulk",
+    "Bwd_Avg_Packets_Bulk",
+    "Bwd_Avg_Bulk_Rate"
+  ],
+  "correlation": {
+    "n_pairs": 3828,
+    "pairs_abs_r_ge_0.99": 19,
+    "pairs_abs_r_ge_0.95": 61,
+    "pairs_abs_r_ge_0.90": 103,
+    "mean_abs_r": 0.12486379304931335,
+    "median_abs_r": 0.02260347168725702,
+    "examples_r_ge_0.95": [
+      [
+        "Total_Fwd_Packets",
+        "Subflow_Fwd_Packets",
+        1.0
+      ],
+      [
+        "Total_Backward_Packets",
+        "Subflow_Bwd_Packets",
+        1.0
+      ],
+      [
+        "Total_Length_of_Bwd_Packets",
+        "Subflow_Bwd_Bytes",
+        1.0
+      ],
+      [
+        "Fwd_Packet_Length_Mean",
+        "Avg_Fwd_Segment_Size",
+        1.0
+      ],
+      [
+        "Bwd_Packet_Length_Mean",
+        "Avg_Bwd_Segment_Size",
+        1.0
+      ],
+      [
+        "Fwd_PSH_Flags",
+        "RST_Flag_Count",
+        1.0
+      ],
+      [
+        "Fwd_Header_Length",
+        "Fwd_Header_Length_2",
+        1.0
+      ],
+      [
+        "Total_Length_of_Fwd_Packets",
+        "Subflow_Fwd_Bytes",
+        0.9999999999999999
+      ],
+      [
+        "Flow_Duration",
+        "Fwd_IAT_Total",
+        0.9999105355099198
+      ],
+      [
+        "Flow_Packets_s",
+        "Fwd_Packets_s",
+        0.9998171918130623
+      ],
+      [
+        "Flow_IAT_Max",
+        "Fwd_IAT_Max",
+        0.9995911102700248
+      ],
+      [
+        "Fwd_IAT_Max",
+        "Idle_Max",
+        0.9991649421239924
+      ],
+      [
+        "Flow_IAT_Min",
+        "Fwd_IAT_Min",
+        0.9991554626050975
+      ],
+      [
+        "Flow_IAT_Max",
+        "Idle_Max",
+        0.9989297359214411
+      ],
+      [
+        "H_src_ip",
+        "H_dst_ip",
+        0.9964523621525302
+      ],
+      [
+        "Flow_IAT_Std",
+        "Fwd_IAT_Std",
+        0.995314736107749
+      ],
+      [
+        "Bwd_IAT_Mean",
+        "Bwd_IAT_Std",
+        0.9938219146542023
+      ],
+      [
+        "H_dst_ip",
+        "H_pkt_len",
+        0.9934368691504272
+      ],
+      [
+        "H_src_ip",
+        "H_pkt_len",
+        0.9901626482525263
+      ],
+      [
+        "Fwd_IAT_Mean",
+        "Fwd_IAT_Std",
+        0.9883567265661135
+      ],
+      [
+        "Flow_IAT_Std",
+        "Fwd_IAT_Mean",
+        0.9882082542063567
+      ],
+      [
+        "H_proto",
+        "H_pkt_len",
+        0.9855247441380065
+      ],
+      [
+        "Fwd_IAT_Std",
+        "Fwd_IAT_Max",
+        0.9837689379084253
+      ],
+      [
+        "H_dst_ip",
+        "H_dst_port",
+        -0.9834351850733807
+      ],
+      [
+        "Flow_IAT_Max",
+        "Fwd_IAT_Std",
+        0.9833778733753089
+      ]
+    ]
+  },
+  "vif": {
+    "n_evaluated": 76,
+    "n_vif_gt_5": 55,
+    "n_vif_gt_10": 55,
+    "n_vif_gt_100": 32,
+    "median_vif": 51.38472525405258,
+    "top10": [
+      {
+        "feature": "Fwd_IAT_Total",
+        "vif": 100559.44077659259
+      },
+      {
+        "feature": "Flow_Duration",
+        "vif": 100355.0749136188
+      },
+      {
+        "feature": "Fwd_IAT_Max",
+        "vif": 42658.412083320436
+      },
+      {
+        "feature": "Flow_IAT_Max",
+        "vif": 42495.344449510376
+      },
+      {
+        "feature": "Fwd_Packet_Length_Min",
+        "vif": 2012.8402432193277
+      },
+      {
+        "feature": "Min_Packet_Length",
+        "vif": 1961.3784554431736
+      },
+      {
+        "feature": "Fwd_IAT_Std",
+        "vif": 1959.0783099048185
+      },
+      {
+        "feature": "Flow_IAT_Std",
+        "vif": 1786.9141884251783
+      },
+      {
+        "feature": "Packet_Length_Mean",
+        "vif": 1250.9246470276132
+      },
+      {
+        "feature": "Average_Packet_Size",
+        "vif": 1242.3819999682032
+      }
+    ],
+    "condition_number": 3.893170228103794e+16,
+    "seconds": 0.4
+  },
+  "reduced_sets": {
+    "full": {
+      "tag": "full 88",
+      "n_features": 88,
+      "accuracy": 0.9975789936857036,
+      "macro_f1": 0.9788131108748039,
+      "auc_roc": 0.9997281264377706,
+      "avg_precision": 0.999991896953794,
+      "fpr": 0.000952944269190326,
+      "fnr": 0.002463684770626076,
+      "train_time_s": 68.31,
+      "inference_latency_ms_per_flow": 0.002193
+    },
+    "cut0.05_d50": {
+      "tag": "cut0.05_d50",
+      "n_features": 50,
+      "accuracy": 0.9977061707812016,
+      "macro_f1": 0.9798789948515989,
+      "auc_roc": 0.9996117753912728,
+      "avg_precision": 0.9999885658813167,
+      "fpr": 0.0012158254468980021,
+      "fnr": 0.002325168178248883,
+      "train_time_s": 45.14,
+      "inference_latency_ms_per_flow": 0.001127,
+      "features": [
+        "Destination_Port",
+        "Flow_Duration",
+        "Total_Length_of_Bwd_Packets",
+        "Fwd_Packet_Length_Min",
+        "Fwd_Packet_Length_Std",
+        "Bwd_Packet_Length_Std",
+        "Flow_IAT_Mean",
+        "Flow_IAT_Std",
+        "Flow_IAT_Min",
+        "Fwd_IAT_Total",
+        "Fwd_IAT_Std",
+        "Fwd_IAT_Min",
+        "Bwd_IAT_Total",
+        "Bwd_IAT_Std",
+        "Bwd_IAT_Min",
+        "Fwd_PSH_Flags",
+        "Bwd_PSH_Flags",
+        "Fwd_URG_Flags",
+        "Bwd_URG_Flags",
+        "Bwd_Packets_s",
+        "Max_Packet_Length",
+        "Packet_Length_Variance",
+        "FIN_Flag_Count",
+        "SYN_Flag_Count",
+        "PSH_Flag_Count",
+        "ACK_Flag_Count",
+        "URG_Flag_Count",
+        "CWE_Flag_Count",
+        "ECE_Flag_Count",
+        "Down_Up_Ratio",
+        "Average_Packet_Size",
+        "Fwd_Avg_Bytes_Bulk",
+        "Fwd_Avg_Packets_Bulk",
+        "Fwd_Avg_Bulk_Rate",
+        "Bwd_Avg_Bytes_Bulk",
+        "Bwd_Avg_Packets_Bulk",
+        "Bwd_Avg_Bulk_Rate",
+        "Init_Win_bytes_forward",
+        "min_seg_size_forward",
+        "Active_Std",
+        "Idle_Max",
+        "Protocol",
+        "Source_Port",
+        "H_dst_ip",
+        "H_dst_port",
+        "H_proto",
+        "H_pkt_len",
+        "H_iat",
+        "H_tcp_flags",
+        "H_src_port"
+      ],
+      "cut_height": 0.05
+    },
+    "cut0.1_d45": {
+      "tag": "cut0.1_d45",
+      "n_features": 45,
+      "accuracy": 0.9976699670824831,
+      "macro_f1": 0.9795680006625753,
+      "auc_roc": 0.9996437851442219,
+      "avg_precision": 0.9999893800348608,
+      "fpr": 0.0015115667718191377,
+      "fnr": 0.002353826783568302,
+      "train_time_s": 42.85,
+      "inference_latency_ms_per_flow": 0.001357,
+      "features": [
+        "Destination_Port",
+        "Flow_Duration",
+        "Fwd_Packet_Length_Min",
+        "Fwd_Packet_Length_Std",
+        "Bwd_Packet_Length_Std",
+        "Flow_IAT_Std",
+        "Flow_IAT_Min",
+        "Fwd_IAT_Total",
+        "Fwd_IAT_Min",
+        "Bwd_IAT_Total",
+        "Bwd_IAT_Std",
+        "Fwd_PSH_Flags",
+        "Bwd_PSH_Flags",
+        "Fwd_URG_Flags",
+        "Bwd_URG_Flags",
+        "Bwd_Packets_s",
+        "Max_Packet_Length",
+        "Packet_Length_Variance",
+        "FIN_Flag_Count",
+        "SYN_Flag_Count",
+        "PSH_Flag_Count",
+        "ACK_Flag_Count",
+        "URG_Flag_Count",
+        "CWE_Flag_Count",
+        "ECE_Flag_Count",
+        "Down_Up_Ratio",
+        "Fwd_Avg_Bytes_Bulk",
+        "Fwd_Avg_Packets_Bulk",
+        "Fwd_Avg_Bulk_Rate",
+        "Bwd_Avg_Bytes_Bulk",
+        "Bwd_Avg_Packets_Bulk",
+        "Bwd_Avg_Bulk_Rate",
+        "Init_Win_bytes_forward",
+        "min_seg_size_forward",
+        "Active_Std",
+        "Idle_Max",
+        "Protocol",
+        "Source_Port",
+        "H_dst_ip",
+        "H_dst_port",
+        "H_proto",
+        "H_pkt_len",
+        "H_iat",
+        "H_tcp_flags",
+        "H_src_port"
+      ],
+      "cut_height": 0.1
+    },
+    "cut0.2_d41": {
+      "tag": "cut0.2_d41",
+      "n_features": 41,
+      "accuracy": 0.9976597557828446,
+      "macro_f1": 0.9794687045633667,
+      "auc_roc": 0.9996260638544153,
+      "avg_precision": 0.9999889143935344,
+      "fpr": 0.0022016298633017878,
+      "fnr": 0.0023442739151284956,
+      "train_time_s": 57.93,
+      "inference_latency_ms_per_flow": 0.001535,
+      "features": [
+        "Destination_Port",
+        "Flow_Duration",
+        "Fwd_Packet_Length_Min",
+        "Fwd_Packet_Length_Std",
+        "Bwd_Packet_Length_Std",
+        "Fwd_IAT_Total",
+        "Fwd_IAT_Min",
+        "Bwd_IAT_Total",
+        "Bwd_IAT_Std",
+        "Fwd_PSH_Flags",
+        "Bwd_PSH_Flags",
+        "Fwd_URG_Flags",
+        "Bwd_URG_Flags",
+        "Max_Packet_Length",
+        "Packet_Length_Variance",
+        "FIN_Flag_Count",
+        "SYN_Flag_Count",
+        "PSH_Flag_Count",
+        "ACK_Flag_Count",
+        "URG_Flag_Count",
+        "CWE_Flag_Count",
+        "ECE_Flag_Count",
+        "Down_Up_Ratio",
+        "Fwd_Avg_Bytes_Bulk",
+        "Fwd_Avg_Packets_Bulk",
+        "Fwd_Avg_Bulk_Rate",
+        "Bwd_Avg_Bytes_Bulk",
+        "Bwd_Avg_Packets_Bulk",
+        "Bwd_Avg_Bulk_Rate",
+        "Init_Win_bytes_forward",
+        "min_seg_size_forward",
+        "Idle_Max",
+        "Protocol",
+        "Source_Port",
+        "H_dst_ip",
+        "H_dst_port",
+        "H_proto",
+        "H_pkt_len",
+        "H_iat",
+        "H_tcp_flags",
+        "H_src_port"
+      ],
+      "cut_height": 0.2
+    },
+    "cut0.4_d29": {
+      "tag": "cut0.4_d29",
+      "n_features": 29,
+      "accuracy": 0.9971983906991769,
+      "macro_f1": 0.975342062142518,
+      "auc_roc": 0.9996911477461139,
+      "avg_precision": 0.9999908683283775,
+      "fpr": 0.013801261829652996,
+      "fnr": 0.002481835220661708,
+      "train_time_s": 54.13,
+      "inference_latency_ms_per_flow": 0.001449,
+      "features": [
+        "Destination_Port",
+        "Flow_Duration",
+        "Fwd_Packet_Length_Min",
+        "Bwd_Packet_Length_Std",
+        "Fwd_IAT_Total",
+        "Fwd_IAT_Min",
+        "Fwd_PSH_Flags",
+        "Bwd_PSH_Flags",
+        "Fwd_URG_Flags",
+        "Bwd_URG_Flags",
+        "Packet_Length_Variance",
+        "FIN_Flag_Count",
+        "SYN_Flag_Count",
+        "PSH_Flag_Count",
+        "ACK_Flag_Count",
+        "ECE_Flag_Count",
+        "Fwd_Avg_Bytes_Bulk",
+        "Fwd_Avg_Packets_Bulk",
+        "Fwd_Avg_Bulk_Rate",
+        "Bwd_Avg_Bytes_Bulk",
+        "Bwd_Avg_Packets_Bulk",
+        "Bwd_Avg_Bulk_Rate",
+        "Init_Win_bytes_forward",
+        "min_seg_size_forward",
+        "Source_Port",
+        "H_dst_ip",
+        "H_dst_port",
+        "H_iat",
+        "H_tcp_flags"
+      ],
+      "cut_height": 0.4
+    }
+  },
+  "stability_protocol": {
+    "train_range": [
+      1913556,
+      2513556
+    ],
+    "n_train": 600000,
+    "n_benign": 79,
+    "rationale": "20 independent fits are required; a temporally-coherent tail of the training partition is used so the study is affordable, and the size is reported rather than hidden"
+  },
+  "shap_stability_across_seeds": {
+    "top5_jaccard_mean": 1.0,
+    "top5_jaccard_min": 1.0,
+    "top10_jaccard_mean": 0.7096607096607097,
+    "top10_jaccard_min": 0.5384615384615384,
+    "top20_jaccard_mean": 0.7014136909789084,
+    "top20_jaccard_min": 0.5384615384615384,
+    "spearman_mean": 0.9559780142867893,
+    "spearman_min": 0.9324140609827151,
+    "mean_cv_of_importance": 0.32128073418602215
+  },
+  "shap_stability_across_bootstraps": {
+    "top5_jaccard_mean": 0.7671957671957671,
+    "top5_jaccard_min": 0.42857142857142855,
+    "top10_jaccard_mean": 0.653909053909054,
+    "top10_jaccard_min": 0.42857142857142855,
+    "top20_jaccard_mean": 0.7189694041867956,
+    "top20_jaccard_min": 0.6,
+    "spearman_mean": 0.9403804860663934,
+    "spearman_min": 0.9165416056074439,
+    "mean_cv_of_importance": 0.3937446933971302
+  },
+  "global_shap_ranking": [
+    {
+      "rank": 1,
+      "feature": "ACK_Flag_Count",
+      "mean_abs_shap": 0.06911573415684641,
+      "std_across_seeds": 0.0074736779250009116
+    },
+    {
+      "rank": 2,
+      "feature": "H_src_ip",
+      "mean_abs_shap": 0.055232296141998684,
+      "std_across_seeds": 0.004079997052420003
+    },
+    {
+      "rank": 3,
+      "feature": "H_dst_ip",
+      "mean_abs_shap": 0.05519078393176206,
+      "std_across_seeds": 0.005306602938791424
+    },
+    {
+      "rank": 4,
+      "feature": "URG_Flag_Count",
+      "mean_abs_shap": 0.03884173152301214,
+      "std_across_seeds": 0.004910900877665476
+    },
+    {
+      "rank": 5,
+      "feature": "Init_Win_bytes_forward",
+      "mean_abs_shap": 0.026471441268528174,
+      "std_across_seeds": 0.0044899507803672425
+    },
+    {
+      "rank": 6,
+      "feature": "Flow_Bytes_s",
+      "mean_abs_shap": 0.01524371383144478,
+      "std_across_seeds": 0.0029992915750794505
+    },
+    {
+      "rank": 7,
+      "feature": "Destination_Port",
+      "mean_abs_shap": 0.014431270196166825,
+      "std_across_seeds": 0.0024464412684221306
+    },
+    {
+      "rank": 8,
+      "feature": "H_pkt_len",
+      "mean_abs_shap": 0.01428955708862597,
+      "std_across_seeds": 0.0017742126204840162
+    },
+    {
+      "rank": 9,
+      "feature": "Packet_Length_Variance",
+      "mean_abs_shap": 0.014096962459189354,
+      "std_across_seeds": 0.0027483826002640474
+    },
+    {
+      "rank": 10,
+      "feature": "Packet_Length_Std",
+      "mean_abs_shap": 0.013688190895433036,
+      "std_across_seeds": 0.0042735370773595354
+    },
+    {
+      "rank": 11,
+      "feature": "Fwd_Packets_s",
+      "mean_abs_shap": 0.013555345381486483,
+      "std_across_seeds": 0.00181035851655437
+    },
+    {
+      "rank": 12,
+      "feature": "act_data_pkt_fwd",
+      "mean_abs_shap": 0.010185005088524478,
+      "std_across_seeds": 0.0031871500343913545
+    },
+    {
+      "rank": 13,
+      "feature": "Flow_Packets_s",
+      "mean_abs_shap": 0.009206937313430199,
+      "std_across_seeds": 0.0016275493049484509
+    },
+    {
+      "rank": 14,
+      "feature": "Total_Length_of_Fwd_Packets",
+      "mean_abs_shap": 0.00893830980271481,
+      "std_across_seeds": 0.0020361412991570294
+    },
+    {
+      "rank": 15,
+      "feature": "Subflow_Fwd_Bytes",
+      "mean_abs_shap": 0.008806023255176612,
+      "std_across_seeds": 0.0019181228186334754
+    },
+    {
+      "rank": 16,
+      "feature": "Init_Win_bytes_backward",
+      "mean_abs_shap": 0.008679384764196283,
+      "std_across_seeds": 0.0025471515925977006
+    },
+    {
+      "rank": 17,
+      "feature": "Source_Port",
+      "mean_abs_shap": 0.008423515871699585,
+      "std_across_seeds": 0.0011818199117173364
+    },
+    {
+      "rank": 18,
+      "feature": "Flow_IAT_Max",
+      "mean_abs_shap": 0.008363734528022252,
+      "std_across_seeds": 0.0016867564389261925
+    },
+    {
+      "rank": 19,
+      "feature": "Average_Packet_Size",
+      "mean_abs_shap": 0.008029723009465192,
+      "std_across_seeds": 0.001947594798059733
+    },
+    {
+      "rank": 20,
+      "feature": "Flow_IAT_Mean",
+      "mean_abs_shap": 0.008017359270578504,
+      "std_across_seeds": 0.002652543039127411
+    },
+    {
+      "rank": 21,
+      "feature": "Max_Packet_Length",
+      "mean_abs_shap": 0.00774621022828309,
+      "std_across_seeds": 0.0015515690496409422
+    },
+    {
+      "rank": 22,
+      "feature": "Fwd_Packet_Length_Min",
+      "mean_abs_shap": 0.007499370400711627,
+      "std_across_seeds": 0.0018037525388775123
+    },
+    {
+      "rank": 23,
+      "feature": "Min_Packet_Length",
+      "mean_abs_shap": 0.007048735169733852,
+      "std_across_seeds": 0.0021178427764272406
+    },
+    {
+      "rank": 24,
+      "feature": "Packet_Length_Mean",
+      "mean_abs_shap": 0.006165341605879272,
+      "std_across_seeds": 0.0019098496202133734
+    },
+    {
+      "rank": 25,
+      "feature": "Flow_Duration",
+      "mean_abs_shap": 0.005430555256916793,
+      "std_across_seeds": 0.0006457680616443454
+    }
+  ],
+  "shap_seconds": 430.7,
+  "shap_full_vs_reduced": {
+    "reduced_set": "cut0.4_d29",
+    "n_reduced": 29,
+    "top10_overlap_count": 5,
+    "top10_overlap_features": [
+      "ACK_Flag_Count",
+      "Destination_Port",
+      "H_dst_ip",
+      "Init_Win_bytes_forward",
+      "Packet_Length_Variance"
+    ]
+  },
+  "total_runtime_s": 728.9
+}

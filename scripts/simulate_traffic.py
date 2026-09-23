@@ -43,7 +43,7 @@ def generate_mock_alert():
         "H_pkt_len": round(random.uniform(0.1, 0.6) if attack_type == "DDoS-ICMP" else random.uniform(1.8, 3.5), 3),
         "H_iat": round(random.uniform(0.2, 0.8), 3),
         "H_tcp_flags": round(random.uniform(0.1, 0.5) if attack_type == "DDoS-TCP" else random.uniform(1.5, 2.8), 3),
-        "H_ttl": 0.0
+        "H_src_port": 0.0
     }
     
     # Add some standard flow features

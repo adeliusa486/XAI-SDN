@@ -1,4 +1,4 @@
-"""Mininet topology, traffic generation and QoS measurement (R4.2).
+"""Mininet topology, traffic generation and QoS measurement.
 
 Runs inside WSL Ubuntu as root:
 

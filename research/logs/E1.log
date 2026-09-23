@@ -1,0 +1,112 @@
+
+Protocol A: train=2,513,556 test=1,077,238 (test benign 30,432)
+  Majority baseline            acc=0.97175 F1=0.49284 AP=0.97175 train=0.1s p50=0.0058ms thr=63,672,946/s
+  Decision Tree                acc=0.97714 F1=0.66811 AP=0.97769 train=10.9s p50=0.0304ms thr=11,775,512/s
+  Naive Bayes                  acc=0.98590 F1=0.89590 AP=0.99955 train=2.9s p50=0.1534ms thr=2,260,331/s
+C:\Users\adeel\xaisdn_revision\venv\Lib\site-packages\sklearn\linear_model\_logistic.py:1184: FutureWarning: 'n_jobs' has no effect since 1.8 and will be removed in 1.10. You provided 'n_jobs=-1', please leave it unspecified.
+  warnings.warn(msg, category=FutureWarning)
+  Logistic Regression          acc=0.98350 F1=0.80873 AP=0.95011 train=36.0s p50=0.1086ms thr=3,236,092/s
+C:\Users\adeel\OneDrive\Desktop\xai sdn full paper\REVISION_2026\03_experiments\e1_baselines_cpu.py:113: RuntimeWarning: overflow encountered in exp
+  return 1.0 / (1.0 + np.exp(-d))
+C:\Users\adeel\OneDrive\Desktop\xai sdn full paper\REVISION_2026\03_experiments\e1_baselines_cpu.py:113: RuntimeWarning: overflow encountered in exp
+  return 1.0 / (1.0 + np.exp(-d))
+C:\Users\adeel\OneDrive\Desktop\xai sdn full paper\REVISION_2026\03_experiments\e1_baselines_cpu.py:113: RuntimeWarning: overflow encountered in exp
+  return 1.0 / (1.0 + np.exp(-d))
+C:\Users\adeel\OneDrive\Desktop\xai sdn full paper\REVISION_2026\03_experiments\e1_baselines_cpu.py:113: RuntimeWarning: overflow encountered in exp
+  return 1.0 / (1.0 + np.exp(-d))
+C:\Users\adeel\OneDrive\Desktop\xai sdn full paper\REVISION_2026\03_experiments\e1_baselines_cpu.py:113: RuntimeWarning: overflow encountered in exp
+  return 1.0 / (1.0 + np.exp(-d))
+C:\Users\adeel\OneDrive\Desktop\xai sdn full paper\REVISION_2026\03_experiments\e1_baselines_cpu.py:113: RuntimeWarning: overflow encountered in exp
+  return 1.0 / (1.0 + np.exp(-d))
+C:\Users\adeel\OneDrive\Desktop\xai sdn full paper\REVISION_2026\03_experiments\e1_baselines_cpu.py:113: RuntimeWarning: overflow encountered in exp
+  return 1.0 / (1.0 + np.exp(-d))
+C:\Users\adeel\OneDrive\Desktop\xai sdn full paper\REVISION_2026\03_experiments\e1_baselines_cpu.py:113: RuntimeWarning: overflow encountered in exp
+  return 1.0 / (1.0 + np.exp(-d))
+C:\Users\adeel\OneDrive\Desktop\xai sdn full paper\REVISION_2026\03_experiments\e1_baselines_cpu.py:113: RuntimeWarning: overflow encountered in exp
+  return 1.0 / (1.0 + np.exp(-d))
+C:\Users\adeel\OneDrive\Desktop\xai sdn full paper\REVISION_2026\03_experiments\e1_baselines_cpu.py:113: RuntimeWarning: overflow encountered in exp
+  return 1.0 / (1.0 + np.exp(-d))
+C:\Users\adeel\OneDrive\Desktop\xai sdn full paper\REVISION_2026\03_experiments\e1_baselines_cpu.py:113: RuntimeWarning: overflow encountered in exp
+  return 1.0 / (1.0 + np.exp(-d))
+C:\Users\adeel\OneDrive\Desktop\xai sdn full paper\REVISION_2026\03_experiments\e1_baselines_cpu.py:113: RuntimeWarning: overflow encountered in exp
+  return 1.0 / (1.0 + np.exp(-d))
+C:\Users\adeel\OneDrive\Desktop\xai sdn full paper\REVISION_2026\03_experiments\e1_baselines_cpu.py:113: RuntimeWarning: overflow encountered in exp
+  return 1.0 / (1.0 + np.exp(-d))
+C:\Users\adeel\OneDrive\Desktop\xai sdn full paper\REVISION_2026\03_experiments\e1_baselines_cpu.py:113: RuntimeWarning: overflow encountered in exp
+  return 1.0 / (1.0 + np.exp(-d))
+C:\Users\adeel\OneDrive\Desktop\xai sdn full paper\REVISION_2026\03_experiments\e1_baselines_cpu.py:113: RuntimeWarning: overflow encountered in exp
+  return 1.0 / (1.0 + np.exp(-d))
+C:\Users\adeel\OneDrive\Desktop\xai sdn full paper\REVISION_2026\03_experiments\e1_baselines_cpu.py:113: RuntimeWarning: overflow encountered in exp
+  return 1.0 / (1.0 + np.exp(-d))
+C:\Users\adeel\OneDrive\Desktop\xai sdn full paper\REVISION_2026\03_experiments\e1_baselines_cpu.py:113: RuntimeWarning: overflow encountered in exp
+  return 1.0 / (1.0 + np.exp(-d))
+C:\Users\adeel\OneDrive\Desktop\xai sdn full paper\REVISION_2026\03_experiments\e1_baselines_cpu.py:113: RuntimeWarning: overflow encountered in exp
+  return 1.0 / (1.0 + np.exp(-d))
+C:\Users\adeel\OneDrive\Desktop\xai sdn full paper\REVISION_2026\03_experiments\e1_baselines_cpu.py:113: RuntimeWarning: overflow encountered in exp
+  return 1.0 / (1.0 + np.exp(-d))
+C:\Users\adeel\OneDrive\Desktop\xai sdn full paper\REVISION_2026\03_experiments\e1_baselines_cpu.py:113: RuntimeWarning: overflow encountered in exp
+  return 1.0 / (1.0 + np.exp(-d))
+C:\Users\adeel\OneDrive\Desktop\xai sdn full paper\REVISION_2026\03_experiments\e1_baselines_cpu.py:113: RuntimeWarning: overflow encountered in exp
+  return 1.0 / (1.0 + np.exp(-d))
+C:\Users\adeel\OneDrive\Desktop\xai sdn full paper\REVISION_2026\03_experiments\e1_baselines_cpu.py:113: RuntimeWarning: overflow encountered in exp
+  return 1.0 / (1.0 + np.exp(-d))
+C:\Users\adeel\OneDrive\Desktop\xai sdn full paper\REVISION_2026\03_experiments\e1_baselines_cpu.py:113: RuntimeWarning: overflow encountered in exp
+  return 1.0 / (1.0 + np.exp(-d))
+C:\Users\adeel\OneDrive\Desktop\xai sdn full paper\REVISION_2026\03_experiments\e1_baselines_cpu.py:113: RuntimeWarning: overflow encountered in exp
+  return 1.0 / (1.0 + np.exp(-d))
+C:\Users\adeel\OneDrive\Desktop\xai sdn full paper\REVISION_2026\03_experiments\e1_baselines_cpu.py:113: RuntimeWarning: overflow encountered in exp
+  return 1.0 / (1.0 + np.exp(-d))
+C:\Users\adeel\OneDrive\Desktop\xai sdn full paper\REVISION_2026\03_experiments\e1_baselines_cpu.py:113: RuntimeWarning: overflow encountered in exp
+  return 1.0 / (1.0 + np.exp(-d))
+C:\Users\adeel\OneDrive\Desktop\xai sdn full paper\REVISION_2026\03_experiments\e1_baselines_cpu.py:113: RuntimeWarning: overflow encountered in exp
+  return 1.0 / (1.0 + np.exp(-d))
+C:\Users\adeel\OneDrive\Desktop\xai sdn full paper\REVISION_2026\03_experiments\e1_baselines_cpu.py:113: RuntimeWarning: overflow encountered in exp
+  return 1.0 / (1.0 + np.exp(-d))
+C:\Users\adeel\OneDrive\Desktop\xai sdn full paper\REVISION_2026\03_experiments\e1_baselines_cpu.py:113: RuntimeWarning: overflow encountered in exp
+  return 1.0 / (1.0 + np.exp(-d))
+C:\Users\adeel\OneDrive\Desktop\xai sdn full paper\REVISION_2026\03_experiments\e1_baselines_cpu.py:113: RuntimeWarning: overflow encountered in exp
+  return 1.0 / (1.0 + np.exp(-d))
+C:\Users\adeel\OneDrive\Desktop\xai sdn full paper\REVISION_2026\03_experiments\e1_baselines_cpu.py:113: RuntimeWarning: overflow encountered in exp
+  return 1.0 / (1.0 + np.exp(-d))
+C:\Users\adeel\OneDrive\Desktop\xai sdn full paper\REVISION_2026\03_experiments\e1_baselines_cpu.py:113: RuntimeWarning: overflow encountered in exp
+  return 1.0 / (1.0 + np.exp(-d))
+C:\Users\adeel\OneDrive\Desktop\xai sdn full paper\REVISION_2026\03_experiments\e1_baselines_cpu.py:113: RuntimeWarning: overflow encountered in exp
+  return 1.0 / (1.0 + np.exp(-d))
+C:\Users\adeel\OneDrive\Desktop\xai sdn full paper\REVISION_2026\03_experiments\e1_baselines_cpu.py:113: RuntimeWarning: overflow encountered in exp
+  return 1.0 / (1.0 + np.exp(-d))
+C:\Users\adeel\OneDrive\Desktop\xai sdn full paper\REVISION_2026\03_experiments\e1_baselines_cpu.py:113: RuntimeWarning: overflow encountered in exp
+  return 1.0 / (1.0 + np.exp(-d))
+C:\Users\adeel\OneDrive\Desktop\xai sdn full paper\REVISION_2026\03_experiments\e1_baselines_cpu.py:113: RuntimeWarning: overflow encountered in exp
+  return 1.0 / (1.0 + np.exp(-d))
+C:\Users\adeel\OneDrive\Desktop\xai sdn full paper\REVISION_2026\03_experiments\e1_baselines_cpu.py:113: RuntimeWarning: overflow encountered in exp
+  return 1.0 / (1.0 + np.exp(-d))
+C:\Users\adeel\OneDrive\Desktop\xai sdn full paper\REVISION_2026\03_experiments\e1_baselines_cpu.py:113: RuntimeWarning: overflow encountered in exp
+  return 1.0 / (1.0 + np.exp(-d))
+C:\Users\adeel\OneDrive\Desktop\xai sdn full paper\REVISION_2026\03_experiments\e1_baselines_cpu.py:113: RuntimeWarning: overflow encountered in exp
+  return 1.0 / (1.0 + np.exp(-d))
+C:\Users\adeel\OneDrive\Desktop\xai sdn full paper\REVISION_2026\03_experiments\e1_baselines_cpu.py:113: RuntimeWarning: overflow encountered in exp
+  return 1.0 / (1.0 + np.exp(-d))
+C:\Users\adeel\OneDrive\Desktop\xai sdn full paper\REVISION_2026\03_experiments\e1_baselines_cpu.py:113: RuntimeWarning: overflow encountered in exp
+  return 1.0 / (1.0 + np.exp(-d))
+  Linear SVM                   acc=0.99641 F1=0.96825 AP=0.99365 train=6.4s p50=0.1181ms thr=3,309,851/s
+  XGBoost                      acc=0.99515 F1=0.95802 AP=0.99923 train=13.3s p50=0.4168ms thr=1,260,010/s
+  LightGBM                     acc=0.99759 F1=0.97888 AP=0.99999 train=5.9s p50=0.2551ms thr=764,706/s
+  XAI-SDN (Random Forest)      acc=0.99758 F1=0.97881 AP=0.99999 train=53.3s p50=7.0480ms thr=27,647/s
+
+Protocol B: train=100,000 test=40,000 (train benign 17, test benign 0)
+  fallback: train=100,000 test=40,000
+  Majority baseline            acc=0.97065 F1=0.49255 AP=0.97065 train=0.0s p50=0.0060ms thr=73,139,514/s
+  Decision Tree                acc=0.97957 F1=0.74278 AP=0.98047 train=0.3s p50=0.0302ms thr=10,808,766/s
+  Naive Bayes                  acc=0.98775 F1=0.90933 AP=0.99931 train=0.1s p50=0.1554ms thr=2,130,935/s
+C:\Users\adeel\xaisdn_revision\venv\Lib\site-packages\sklearn\linear_model\_logistic.py:1184: FutureWarning: 'n_jobs' has no effect since 1.8 and will be removed in 1.10. You provided 'n_jobs=-1', please leave it unspecified.
+  warnings.warn(msg, category=FutureWarning)
+  Logistic Regression          acc=0.98577 F1=0.84479 AP=0.95690 train=1.4s p50=0.1088ms thr=3,109,549/s
+C:\Users\adeel\xaisdn_revision\venv\Lib\site-packages\sklearn\svm\_base.py:1258: ConvergenceWarning: Liblinear failed to converge, increase the number of iterations.
+  warnings.warn(
+  Linear SVM                   acc=0.99247 F1=0.93237 AP=0.97808 train=51.4s p50=0.5261ms thr=645,230/s
+  XGBoost                      acc=0.99633 F1=0.96857 AP=0.99995 train=1.1s p50=1.1305ms thr=498,938/s
+  LightGBM                     acc=0.99610 F1=0.96649 AP=0.99596 train=2.5s p50=0.9868ms thr=232,440/s
+  XAI-SDN (Random Forest)      acc=0.99650 F1=0.97057 AP=0.99996 train=4.2s p50=7.3455ms thr=8,562/s
+  SVM (RBF)                    acc=0.99355 F1=0.94883 AP=0.99982 train=4.7s p50=0.1399ms thr=47,977/s
+
+Wrote C:\Users\adeel\OneDrive\Desktop\xai sdn full paper\REVISION_2026\04_results\E1_baselines_cpu.json

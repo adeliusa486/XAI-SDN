@@ -1,0 +1,731 @@
+{
+  "_provenance": {
+    "hardware": {
+      "cpu_name": "13th Gen Intel(R) Core(TM) i9-13900H",
+      "cpu_manufacturer": "GenuineIntel",
+      "cpu_cores": 14,
+      "cpu_logical": 20,
+      "cpu_max_clock_mhz": 2600,
+      "cpu_l2_cache_kb": 11776,
+      "cpu_l3_cache_kb": 24576,
+      "ram_total_bytes": 51150704640,
+      "ram_total_gb": 47.64,
+      "os_caption": "Microsoft Windows 11 Pro",
+      "os_version": "10.0.26120",
+      "os_build": "26120",
+      "os_arch": "64-bit",
+      "gpus": [
+        "Intel(R) Iris(R) Xe Graphics",
+        "NVIDIA GeForce RTX 4060 Laptop GPU"
+      ],
+      "machine_model": "Zenbook UX6404VV_UX6404VV"
+    },
+    "python": "3.11.9",
+    "platform": "Windows-10-10.0.26120-SP0",
+    "host": "ADEEL",
+    "libraries": {
+      "numpy": "2.3.5",
+      "pandas": "2.3.3",
+      "sklearn": "1.8.0",
+      "scipy": "1.17.1",
+      "shap": "0.51.0",
+      "xgboost": "3.2.0",
+      "lightgbm": "4.7.0",
+      "torch": "2.14.0+cpu",
+      "matplotlib": "3.10.9",
+      "statsmodels": "0.14.6"
+    },
+    "cpu_only": true,
+    "timestamp": "2026-09-21T09:30:07"
+  },
+  "experiment": "E14",
+  "objective": "ROC and precision-recall curves for every method",
+  "n_curve_points": 400,
+  "n_bootstrap": 150,
+  "curves": {
+    "E1/A/Decision_Tree": {
+      "experiment": "E1",
+      "protocol": "A",
+      "model": "Decision Tree",
+      "n": 1077238,
+      "positive_prevalence": 0.9717499754000509,
+      "roc_auc": 0.6075342396615256,
+      "average_precision": 0.9776901436164508,
+      "baseline_average_precision": 0.9717499754000509,
+      "bootstrap": {
+        "roc_auc": {
+          "mean": 0.6076326534683741,
+          "lo95": 0.6054127135031451,
+          "hi95": 0.6098107363293188
+        },
+        "average_precision": {
+          "mean": 0.977681947346393,
+          "lo95": 0.9773662264848253,
+          "hi95": 0.9779746094221599
+        },
+        "n_boot": 150
+      },
+      "operating_point": {
+        "selected_tau": 1.0,
+        "macro_f1_at_selected_tau": 0.6569220383427772,
+        "macro_f1_at_fixed_tau_0.70": 0.6569220383427772,
+        "false_positives": 23861,
+        "false_negatives": 757,
+        "n_eval": 538619
+      }
+    },
+    "E1/A/LightGBM": {
+      "experiment": "E1",
+      "protocol": "A",
+      "model": "LightGBM",
+      "n": 1077238,
+      "positive_prevalence": 0.9717499754000509,
+      "roc_auc": 0.999535408162542,
+      "average_precision": 0.9999866257815736,
+      "baseline_average_precision": 0.9717499754000509,
+      "bootstrap": {
+        "roc_auc": {
+          "mean": 0.9995351881657462,
+          "lo95": 0.9995110543728433,
+          "hi95": 0.999558165933347
+        },
+        "average_precision": {
+          "mean": 0.9999866110488582,
+          "lo95": 0.999985863586572,
+          "hi95": 0.9999872584224735
+        },
+        "n_boot": 150
+      },
+      "operating_point": {
+        "selected_tau": 0.999924,
+        "macro_f1_at_selected_tau": 0.9650307098286646,
+        "macro_f1_at_fixed_tau_0.70": 0.9780378479218437,
+        "false_positives": 2,
+        "false_negatives": 4239,
+        "n_eval": 538619
+      }
+    },
+    "E1/A/Linear_SVM": {
+      "experiment": "E1",
+      "protocol": "A",
+      "model": "Linear SVM",
+      "n": 1077238,
+      "positive_prevalence": 0.9717499754000509,
+      "roc_auc": 0.9655282750599118,
+      "average_precision": 0.993652619658223,
+      "baseline_average_precision": 0.9717499754000509,
+      "bootstrap": {
+        "roc_auc": {
+          "mean": 0.9654450202710237,
+          "lo95": 0.963855292858629,
+          "hi95": 0.9671189904439887
+        },
+        "average_precision": {
+          "mean": 0.9936371138832859,
+          "lo95": 0.9933871059180013,
+          "hi95": 0.9939221176243358
+        },
+        "n_boot": 150
+      },
+      "operating_point": {
+        "selected_tau": 0.688137,
+        "macro_f1_at_selected_tau": 0.9673647554581399,
+        "macro_f1_at_fixed_tau_0.70": 0.96714237338382,
+        "false_positives": 997,
+        "false_negatives": 2822,
+        "n_eval": 538619
+      }
+    },
+    "E1/A/Logistic_Regression": {
+      "experiment": "E1",
+      "protocol": "A",
+      "model": "Logistic Regression",
+      "n": 1077238,
+      "positive_prevalence": 0.9717499754000509,
+      "roc_auc": 0.6239626807548614,
+      "average_precision": 0.9730516885463811,
+      "baseline_average_precision": 0.9717499754000509,
+      "bootstrap": {
+        "roc_auc": {
+          "mean": 0.6237320976066137,
+          "lo95": 0.6193807602241601,
+          "hi95": 0.627851363649374
+        },
+        "average_precision": {
+          "mean": 0.9730197271730864,
+          "lo95": 0.972608220063422,
+          "hi95": 0.9734272617233337
+        },
+        "n_boot": 150
+      },
+      "operating_point": {
+        "selected_tau": 8.2e-05,
+        "macro_f1_at_selected_tau": 0.7766596614877739,
+        "macro_f1_at_fixed_tau_0.70": 0.8027422250862553,
+        "false_positives": 17336,
+        "false_negatives": 1823,
+        "n_eval": 538619
+      }
+    },
+    "E1/A/Majority_baseline": {
+      "experiment": "E1",
+      "protocol": "A",
+      "model": "Majority baseline",
+      "n": 1077238,
+      "positive_prevalence": 0.9717499754000509,
+      "roc_auc": 0.5,
+      "average_precision": 0.9717499754000509,
+      "baseline_average_precision": 0.9717499754000509,
+      "bootstrap": {
+        "roc_auc": {
+          "mean": 0.5,
+          "lo95": 0.5,
+          "hi95": 0.5
+        },
+        "average_precision": {
+          "mean": 0.9717328018506589,
+          "lo95": 0.9714114940245332,
+          "hi95": 0.9720265855827589
+        },
+        "n_boot": 150
+      },
+      "operating_point": {
+        "selected_tau": 1.0,
+        "macro_f1_at_selected_tau": 0.4856117718740987,
+        "macro_f1_at_fixed_tau_0.70": 0.4856117718740987,
+        "false_positives": 30132,
+        "false_negatives": 0,
+        "n_eval": 538619
+      }
+    },
+    "E1/A/Naive_Bayes": {
+      "experiment": "E1",
+      "protocol": "A",
+      "model": "Naive Bayes",
+      "n": 1077238,
+      "positive_prevalence": 0.9717499754000509,
+      "roc_auc": 0.9921659227503465,
+      "average_precision": 0.9995516333602574,
+      "baseline_average_precision": 0.9717499754000509,
+      "bootstrap": {
+        "roc_auc": {
+          "mean": 0.9921563685780228,
+          "lo95": 0.991693816840085,
+          "hi95": 0.9926185064892459
+        },
+        "average_precision": {
+          "mean": 0.999550791200475,
+          "lo95": 0.9995229539459729,
+          "hi95": 0.999577626439294
+        },
+        "n_boot": 150
+      },
+      "operating_point": {
+        "selected_tau": 0.0,
+        "macro_f1_at_selected_tau": 0.9430545035655078,
+        "macro_f1_at_fixed_tau_0.70": 0.9365906607052374,
+        "false_positives": 215,
+        "false_negatives": 6940,
+        "n_eval": 538619
+      }
+    },
+    "E1/A/XAI-SDN_Random_Forest": {
+      "experiment": "E1",
+      "protocol": "A",
+      "model": "XAI-SDN Random Forest",
+      "n": 1077238,
+      "positive_prevalence": 0.9717499754000509,
+      "roc_auc": 0.9997281264377706,
+      "average_precision": 0.999991896953794,
+      "baseline_average_precision": 0.9717499754000509,
+      "bootstrap": {
+        "roc_auc": {
+          "mean": 0.9997280225838758,
+          "lo95": 0.9997111350173333,
+          "hi95": 0.9997435354870438
+        },
+        "average_precision": {
+          "mean": 0.9999918884198594,
+          "lo95": 0.9999913907389315,
+          "hi95": 0.9999923602229039
+        },
+        "n_boot": 150
+      },
+      "operating_point": {
+        "selected_tau": 0.56,
+        "macro_f1_at_selected_tau": 0.9826653848549732,
+        "macro_f1_at_fixed_tau_0.70": 0.9777856209664935,
+        "false_positives": 94,
+        "false_negatives": 1935,
+        "n_eval": 538619
+      }
+    },
+    "E1/A/XGBoost": {
+      "experiment": "E1",
+      "protocol": "A",
+      "model": "XGBoost",
+      "n": 1077238,
+      "positive_prevalence": 0.9717499754000509,
+      "roc_auc": 0.9865110473276916,
+      "average_precision": 0.9992338802205728,
+      "baseline_average_precision": 0.9717499754000509,
+      "bootstrap": {
+        "roc_auc": {
+          "mean": 0.9865232710167341,
+          "lo95": 0.9856457964338851,
+          "hi95": 0.9873635220403754
+        },
+        "average_precision": {
+          "mean": 0.9992340755799634,
+          "lo95": 0.9991791403823346,
+          "hi95": 0.9992844908431378
+        },
+        "n_boot": 150
+      },
+      "operating_point": {
+        "selected_tau": 0.000114,
+        "macro_f1_at_selected_tau": 0.9601675582567664,
+        "macro_f1_at_fixed_tau_0.70": 0.9564685038841308,
+        "false_positives": 1083,
+        "false_negatives": 3629,
+        "n_eval": 538619
+      }
+    },
+    "E1/B/Decision_Tree": {
+      "experiment": "E1",
+      "protocol": "B",
+      "model": "Decision Tree",
+      "n": 40000,
+      "positive_prevalence": 0.97065,
+      "roc_auc": 0.6706300314573446,
+      "average_precision": 0.9804704897421663,
+      "baseline_average_precision": 0.97065,
+      "bootstrap": {
+        "roc_auc": {
+          "mean": 0.6703994736807354,
+          "lo95": 0.6588269466417829,
+          "hi95": 0.6817300687432836
+        },
+        "average_precision": {
+          "mean": 0.980452704617054,
+          "lo95": 0.9791880201457889,
+          "hi95": 0.9816370455699605
+        },
+        "n_boot": 150
+      },
+      "operating_point": {
+        "selected_tau": 1.0,
+        "macro_f1_at_selected_tau": 0.7407819349027314,
+        "macro_f1_at_fixed_tau_0.70": 0.7407819349027314,
+        "false_positives": 375,
+        "false_negatives": 20,
+        "n_eval": 20000
+      }
+    },
+    "E1/B/LightGBM": {
+      "experiment": "E1",
+      "protocol": "B",
+      "model": "LightGBM",
+      "n": 40000,
+      "positive_prevalence": 0.97065,
+      "roc_auc": 0.9828793772697144,
+      "average_precision": 0.9990085082457115,
+      "baseline_average_precision": 0.97065,
+      "bootstrap": {
+        "roc_auc": {
+          "mean": 0.9832491778440936,
+          "lo95": 0.9781311018155547,
+          "hi95": 0.9882598034832615
+        },
+        "average_precision": {
+          "mean": 0.999030102971797,
+          "lo95": 0.998722878447975,
+          "hi95": 0.9993253968875705
+        },
+        "n_boot": 150
+      },
+      "operating_point": {
+        "selected_tau": 0.999865,
+        "macro_f1_at_selected_tau": 0.966074392380802,
+        "macro_f1_at_fixed_tau_0.70": 0.9644873752619056,
+        "false_positives": 20,
+        "false_negatives": 57,
+        "n_eval": 20000
+      }
+    },
+    "E1/B/Linear_SVM": {
+      "experiment": "E1",
+      "protocol": "B",
+      "model": "Linear SVM",
+      "n": 40000,
+      "positive_prevalence": 0.97065,
+      "roc_auc": 0.8587665530158536,
+      "average_precision": 0.9780806955464783,
+      "baseline_average_precision": 0.97065,
+      "bootstrap": {
+        "roc_auc": {
+          "mean": 0.8587095729841316,
+          "lo95": 0.8374537758632636,
+          "hi95": 0.8784566123793854
+        },
+        "average_precision": {
+          "mean": 0.9781131176663675,
+          "lo95": 0.9753984468089321,
+          "hi95": 0.9812522655270578
+        },
+        "n_boot": 150
+      },
+      "operating_point": {
+        "selected_tau": 0.720479,
+        "macro_f1_at_selected_tau": 0.9349420969877305,
+        "macro_f1_at_fixed_tau_0.70": 0.9323770534872833,
+        "false_positives": 72,
+        "false_negatives": 71,
+        "n_eval": 20000
+      }
+    },
+    "E1/B/Logistic_Regression": {
+      "experiment": "E1",
+      "protocol": "B",
+      "model": "Logistic Regression",
+      "n": 40000,
+      "positive_prevalence": 0.97065,
+      "roc_auc": 0.8148954721414222,
+      "average_precision": 0.9889395223531219,
+      "baseline_average_precision": 0.97065,
+      "bootstrap": {
+        "roc_auc": {
+          "mean": 0.8149881539431681,
+          "lo95": 0.8018632784165275,
+          "hi95": 0.8282096039843051
+        },
+        "average_precision": {
+          "mean": 0.988942359423203,
+          "lo95": 0.9879724416530546,
+          "hi95": 0.9899103646857738
+        },
+        "n_boot": 150
+      },
+      "operating_point": {
+        "selected_tau": 0.999971,
+        "macro_f1_at_selected_tau": 0.8580515710382514,
+        "macro_f1_at_fixed_tau_0.70": 0.8395433425971806,
+        "false_positives": 219,
+        "false_negatives": 47,
+        "n_eval": 20000
+      }
+    },
+    "E1/B/Majority_baseline": {
+      "experiment": "E1",
+      "protocol": "B",
+      "model": "Majority baseline",
+      "n": 40000,
+      "positive_prevalence": 0.97065,
+      "roc_auc": 0.5,
+      "average_precision": 0.97065,
+      "baseline_average_precision": 0.97065,
+      "bootstrap": {
+        "roc_auc": {
+          "mean": 0.5,
+          "lo95": 0.5,
+          "hi95": 0.5
+        },
+        "average_precision": {
+          "mean": 0.9706418333333333,
+          "lo95": 0.9691475,
+          "hi95": 0.972231875
+        },
+        "n_boot": 150
+      },
+      "operating_point": {
+        "selected_tau": 1.0,
+        "macro_f1_at_selected_tau": 0.4928234518435868,
+        "macro_f1_at_fixed_tau_0.70": 0.4928234518435868,
+        "false_positives": 566,
+        "false_negatives": 0,
+        "n_eval": 20000
+      }
+    },
+    "E1/B/Naive_Bayes": {
+      "experiment": "E1",
+      "protocol": "B",
+      "model": "Naive Bayes",
+      "n": 40000,
+      "positive_prevalence": 0.97065,
+      "roc_auc": 0.9884615377865041,
+      "average_precision": 0.9993084628395377,
+      "baseline_average_precision": 0.97065,
+      "bootstrap": {
+        "roc_auc": {
+          "mean": 0.9885857082675218,
+          "lo95": 0.9852676834762107,
+          "hi95": 0.9922962782983322
+        },
+        "average_precision": {
+          "mean": 0.999315996674754,
+          "lo95": 0.999089812397015,
+          "hi95": 0.9995418813360324
+        },
+        "n_boot": 150
+      },
+      "operating_point": {
+        "selected_tau": 0.0,
+        "macro_f1_at_selected_tau": 0.9387283735667341,
+        "macro_f1_at_fixed_tau_0.70": 0.9089031758649453,
+        "false_positives": 9,
+        "false_negatives": 141,
+        "n_eval": 20000
+      }
+    },
+    "E1/B/SVM_RBF": {
+      "experiment": "E1",
+      "protocol": "B",
+      "model": "SVM RBF",
+      "n": 40000,
+      "positive_prevalence": 0.97065,
+      "roc_auc": 0.9969557755209083,
+      "average_precision": 0.9998220194213545,
+      "baseline_average_precision": 0.97065,
+      "bootstrap": {
+        "roc_auc": {
+          "mean": 0.9969526069027993,
+          "lo95": 0.9965530239976964,
+          "hi95": 0.9973306213634203
+        },
+        "average_precision": {
+          "mean": 0.9998218758635159,
+          "lo95": 0.9997947843455719,
+          "hi95": 0.9998489576106847
+        },
+        "n_boot": 150
+      },
+      "operating_point": {
+        "selected_tau": 0.583772,
+        "macro_f1_at_selected_tau": 0.9490366948948578,
+        "macro_f1_at_fixed_tau_0.70": 0.945347662686753,
+        "false_positives": 0,
+        "false_negatives": 124,
+        "n_eval": 20000
+      }
+    },
+    "E1/B/XAI-SDN_Random_Forest": {
+      "experiment": "E1",
+      "protocol": "B",
+      "model": "XAI-SDN Random Forest",
+      "n": 40000,
+      "positive_prevalence": 0.97065,
+      "roc_auc": 0.9986804250756289,
+      "average_precision": 0.9999603798215043,
+      "baseline_average_precision": 0.97065,
+      "bootstrap": {
+        "roc_auc": {
+          "mean": 0.9987007240081397,
+          "lo95": 0.9984462219954687,
+          "hi95": 0.9989827637668247
+        },
+        "average_precision": {
+          "mean": 0.9999609873912679,
+          "lo95": 0.999952870135112,
+          "hi95": 0.9999691937924505
+        },
+        "n_boot": 150
+      },
+      "operating_point": {
+        "selected_tau": 0.845,
+        "macro_f1_at_selected_tau": 0.9679645652211659,
+        "macro_f1_at_fixed_tau_0.70": 0.9692282881573182,
+        "false_positives": 0,
+        "false_negatives": 75,
+        "n_eval": 20000
+      }
+    },
+    "E1/B/XGBoost": {
+      "experiment": "E1",
+      "protocol": "B",
+      "model": "XGBoost",
+      "n": 40000,
+      "positive_prevalence": 0.97065,
+      "roc_auc": 0.9984243794727905,
+      "average_precision": 0.9999532593516027,
+      "baseline_average_precision": 0.97065,
+      "bootstrap": {
+        "roc_auc": {
+          "mean": 0.998437295145064,
+          "lo95": 0.9981037153783658,
+          "hi95": 0.9987782892168239
+        },
+        "average_precision": {
+          "mean": 0.9999536382345741,
+          "lo95": 0.9999432766150598,
+          "hi95": 0.9999641119423857
+        },
+        "n_boot": 150
+      },
+      "operating_point": {
+        "selected_tau": 0.920577,
+        "macro_f1_at_selected_tau": 0.975709550067996,
+        "macro_f1_at_fixed_tau_0.70": 0.9683561104878047,
+        "false_positives": 0,
+        "false_negatives": 56,
+        "n_eval": 20000
+      }
+    },
+    "E9/B/1D-CNN": {
+      "experiment": "E9",
+      "protocol": "B",
+      "model": "1D-CNN",
+      "n": 40000,
+      "positive_prevalence": 0.97065,
+      "roc_auc": 0.8447767245486372,
+      "average_precision": 0.990788418961018,
+      "baseline_average_precision": 0.97065,
+      "bootstrap": {
+        "roc_auc": {
+          "mean": 0.8449543651137956,
+          "lo95": 0.8311557530754868,
+          "hi95": 0.8591590048795785
+        },
+        "average_precision": {
+          "mean": 0.9907982619502195,
+          "lo95": 0.9897826162607423,
+          "hi95": 0.9918837825239752
+        },
+        "n_boot": 150
+      },
+      "operating_point": {
+        "selected_tau": 0.0,
+        "macro_f1_at_selected_tau": 0.7264501772998044,
+        "macro_f1_at_fixed_tau_0.70": 0.8274874745259813,
+        "false_positives": 738,
+        "false_negatives": 193,
+        "n_eval": 20000
+      }
+    },
+    "E9/B/Autoencoder": {
+      "experiment": "E9",
+      "protocol": "B",
+      "model": "Autoencoder",
+      "n": 40000,
+      "positive_prevalence": 0.97065,
+      "roc_auc": 0.00731545388673759,
+      "average_precision": 0.9657716182368121,
+      "baseline_average_precision": 0.97065,
+      "bootstrap": {
+        "roc_auc": {
+          "mean": 0.007279589679284207,
+          "lo95": 0.004886098602182438,
+          "hi95": 0.010153448938022324
+        },
+        "average_precision": {
+          "mean": 0.9657711524517286,
+          "lo95": 0.9640680488521514,
+          "hi95": 0.9676424028232038
+        },
+        "n_boot": 150
+      },
+      "operating_point": {
+        "selected_tau": 0.0,
+        "macro_f1_at_selected_tau": 0.4850271648170559,
+        "macro_f1_at_fixed_tau_0.70": 0.05504305002323964,
+        "false_positives": 1163,
+        "false_negatives": 0,
+        "n_eval": 20000
+      }
+    },
+    "E9/B/GNN": {
+      "experiment": "E9",
+      "protocol": "B",
+      "model": "GNN",
+      "n": 10000,
+      "positive_prevalence": 0.9712,
+      "roc_auc": 0.9972864325919825,
+      "average_precision": 0.9999210500670885,
+      "baseline_average_precision": 0.9712,
+      "bootstrap": {
+        "roc_auc": {
+          "mean": 0.9972732260616636,
+          "lo95": 0.9964534147806022,
+          "hi95": 0.9981222037286762
+        },
+        "average_precision": {
+          "mean": 0.9999208522442465,
+          "lo95": 0.9998933410138118,
+          "hi95": 0.9999480557895223
+        },
+        "n_boot": 150
+      },
+      "operating_point": {
+        "selected_tau": 0.5,
+        "macro_f1_at_selected_tau": 0.05446293494704992,
+        "macro_f1_at_fixed_tau_0.70": 0.05446293494704992,
+        "false_positives": 0,
+        "false_negatives": 4712,
+        "n_eval": 5000
+      }
+    },
+    "E9/B/LSTM": {
+      "experiment": "E9",
+      "protocol": "B",
+      "model": "LSTM",
+      "n": 39985,
+      "positive_prevalence": 0.970638989621108,
+      "roc_auc": 0.9963219300171182,
+      "average_precision": 0.9998909182023735,
+      "baseline_average_precision": 0.970638989621108,
+      "bootstrap": {
+        "roc_auc": {
+          "mean": 0.996328451680071,
+          "lo95": 0.9957570587777077,
+          "hi95": 0.9967665173816078
+        },
+        "average_precision": {
+          "mean": 0.9998910306568738,
+          "lo95": 0.9998733956616188,
+          "hi95": 0.9999067660648323
+        },
+        "n_boot": 150
+      },
+      "operating_point": {
+        "selected_tau": 0.03531,
+        "macro_f1_at_selected_tau": 0.4919534990093475,
+        "macro_f1_at_fixed_tau_0.70": 0.9090303793244658,
+        "false_positives": 1155,
+        "false_negatives": 0,
+        "n_eval": 19993
+      }
+    },
+    "E9/B/Transformer": {
+      "experiment": "E9",
+      "protocol": "B",
+      "model": "Transformer",
+      "n": 39985,
+      "positive_prevalence": 0.970638989621108,
+      "roc_auc": 0.9908605706675213,
+      "average_precision": 0.9997255822787159,
+      "baseline_average_precision": 0.970638989621108,
+      "bootstrap": {
+        "roc_auc": {
+          "mean": 0.9909098044253158,
+          "lo95": 0.9900790625490048,
+          "hi95": 0.9917061246410709
+        },
+        "average_precision": {
+          "mean": 0.999726845259774,
+          "lo95": 0.9996925148876525,
+          "hi95": 0.9997546040463694
+        },
+        "n_boot": 150
+      },
+      "operating_point": {
+        "selected_tau": 0.000976,
+        "macro_f1_at_selected_tau": 0.5254621913779315,
+        "macro_f1_at_fixed_tau_0.70": 0.9166216158688523,
+        "false_positives": 1114,
+        "false_negatives": 13,
+        "n_eval": 19993
+      }
+    }
+  },
+  "interpretation_note": "Under the test prevalence reported per row, a classifier that predicts at random attains an average precision equal to that prevalence and a ROC-AUC of 0.5. The gap between a model's ROC-AUC and its average precision is therefore the honest measure of how much the imbalance flatters the ROC curve, which is the point that matters for threshold selection.",
+  "total_runtime_s": 223.5
+}

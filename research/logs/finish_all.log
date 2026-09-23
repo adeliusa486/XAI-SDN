@@ -1,0 +1,10 @@
+[06:30:47] waiting for the main experiment queue to go idle
+[08:19:07] queue idle
+[08:19:07] re-running the queue to pick up failures
+[09:17:54] queue sweep done
+[09:17:54] results present: 17
+[09:17:54] start E4b
+[09:18:03] E4b finished rc=1 in 9s
+[09:18:03] start record_demo
+[09:18:41] record_demo finished rc=0 in 38s
+[09:18:41] ALL DONE

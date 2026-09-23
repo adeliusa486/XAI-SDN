@@ -1,0 +1,512 @@
+
+======================================================================
+[run ] E5  ->  C:\Users\adeel\OneDrive\Desktop\xai sdn full paper\REVISION_2026\08_logs\E5.log
+======================================================================
+[done] E5 rc=0 in 2529.0s
+
+======================================================================
+[run ] E12  ->  C:\Users\adeel\OneDrive\Desktop\xai sdn full paper\REVISION_2026\08_logs\E12.log
+======================================================================
+[done] E12 rc=0 in 137.9s
+
+======================================================================
+[run ] E11  ->  C:\Users\adeel\OneDrive\Desktop\xai sdn full paper\REVISION_2026\08_logs\E11.log
+======================================================================
+[done] E11 rc=0 in 109.8s
+
+======================================================================
+[run ] E6  ->  C:\Users\adeel\OneDrive\Desktop\xai sdn full paper\REVISION_2026\08_logs\E6.log
+======================================================================
+[done] E6 rc=0 in 732.4s
+
+======================================================================
+[run ] E15  ->  C:\Users\adeel\OneDrive\Desktop\xai sdn full paper\REVISION_2026\08_logs\E15.log
+======================================================================
+[done] E15 rc=0 in 1240.7s
+
+======================================================================
+[run ] E1  ->  C:\Users\adeel\OneDrive\Desktop\xai sdn full paper\REVISION_2026\08_logs\E1.log
+======================================================================
+[done] E1 rc=0 in 2864.2s
+
+======================================================================
+[run ] E9  ->  C:\Users\adeel\OneDrive\Desktop\xai sdn full paper\REVISION_2026\08_logs\E9.log
+======================================================================
+[done] E9 rc=0 in 615.8s
+
+======================================================================
+[run ] E14  ->  C:\Users\adeel\OneDrive\Desktop\xai sdn full paper\REVISION_2026\08_logs\E14.log
+======================================================================
+[done] E14 rc=0 in 958.1s
+
+======================================================================
+[run ] E13  ->  C:\Users\adeel\OneDrive\Desktop\xai sdn full paper\REVISION_2026\08_logs\E13.log
+======================================================================
+[done] E13 rc=0 in 123.2s
+
+======================================================================
+[run ] E10  ->  C:\Users\adeel\OneDrive\Desktop\xai sdn full paper\REVISION_2026\08_logs\E10.log
+======================================================================
+[done] E10 rc=0 in 245.5s
+
+======================================================================
+[run ] E3  ->  C:\Users\adeel\OneDrive\Desktop\xai sdn full paper\REVISION_2026\08_logs\E3.log
+======================================================================
+[FAIL] E3 rc=1 in 346.0s
+---- tail of log ----
+      features: (181860, 88) in 1.2s
+      Portmap_0311: n=181,860 benign=4,695 attack=177,165
+      building SYN_0112 from Syn.csv
+      loaded 1,582,681 rows x 85 cols in 10.1s
+      cleaned: 1,582,681 -> 1,380,096 (-202,317 nan/inf, -268 dup)
+      features: (1200000, 88) in 6.9s
+      SYN_0112: n=1,200,000 benign=367 attack=1,199,633
+    
+    A. zero-shot transfer from SYN_0311
+      source model fit in 21.5s
+      -> SYN_0311: acc=1.0000 macroF1=0.9947 FPR=0.020833333333333332 FNR=0.0
+      -> LDAP_0311: acc=0.9999 macroF1=0.9891 FPR=0.015992003998001 FNR=9.280951974836078e-05
+      -> NetBIOS_0311: acc=1.0000 macroF1=0.9529 FPR=0.006666666666666667 FNR=2.5003125390673835e-05
+      -> Portmap_0311: acc=0.9988 macroF1=0.9884 FPR=0.00617678381256656 FNR=0.0010555132221375554
+      -> SYN_0112: acc=0.7458 macroF1=0.4284 FPR=0.0027247956403269754 FNR=0.2542660963811432
+    
+    B. leave-one-vector-out
+    Traceback (most recent call last):
+      File "C:\Users\adeel\OneDrive\Desktop\xai sdn full paper\REVISION_2026\03_experiments\e3_cross_vector.py", line 254, in <module>
+        sys.exit(main())
+                 ^^^^^^
+      File "C:\Users\adeel\OneDrive\Desktop\xai sdn full paper\REVISION_2026\03_experiments\e3_cross_vector.py", line 196, in main
+        Xte, yte = data[held]
+        ^^^^^^^^
+    ValueError: too many values to unpack (expected 2)
+---- continuing to the next experiment ----
+
+======================================================================
+[run ] E2  ->  C:\Users\adeel\OneDrive\Desktop\xai sdn full paper\REVISION_2026\08_logs\E2.log
+======================================================================
+[done] E2 rc=0 in 527.9s
+
+======================================================================
+[run ] E4  ->  C:\Users\adeel\OneDrive\Desktop\xai sdn full paper\REVISION_2026\08_logs\E4.log
+======================================================================
+[skip] E5: E5_leakage_audit.json already present
+
+======================================================================
+[run ] E5b  ->  C:\Users\adeel\OneDrive\Desktop\xai sdn full paper\REVISION_2026\08_logs\E5b.log
+======================================================================
+[done] E5b rc=0 in 65.9s
+
+======================================================================
+[run ] E17  ->  C:\Users\adeel\OneDrive\Desktop\xai sdn full paper\REVISION_2026\08_logs\E17.log
+======================================================================
+[FAIL] E17 rc=1073807364 in 783.4s
+---- tail of log ----
+    loaded (3590794, 88), chronological cut at 2,513,556
+    Computing entropy over a scrambled arrival order...
+      19.1s
+      [natural      seed=  42] d=88 acc=0.997579 F1=0.978813 AP=0.999992 FPR=0.000953
+      [natural      seed= 123] d=88 acc=0.997686 F1=0.979706 AP=0.999988 FPR=0.001249
+      [natural      seed= 456] d=88 acc=0.997671 F1=0.979581 AP=0.999988 FPR=0.001249
+      [natural      seed= 789] d=88 acc=0.997577 F1=0.978789 AP=0.999994 FPR=0.001380
+      [natural      seed=1024] d=88 acc=0.997551 F1=0.978575 AP=0.999991 FPR=0.001183
+      [scrambled    seed=  42] d=88 acc=0.997653 F1=0.979435 AP=0.999998 FPR=0.001084
+      [scrambled    seed= 123] d=88 acc=0.997565 F1=0.978697 AP=0.999998 FPR=0.000920
+      [scrambled    seed= 456] d=88 acc=0.997590 F1=0.978905 AP=0.999998 FPR=0.001052
+      [scrambled    seed= 789] d=88 acc=0.997549 F1=0.978554 AP=0.999998 FPR=0.001413
+---- continuing to the next experiment ----
+[skip] E12: E12_pr_threshold.json already present
+[skip] E11: E11_entropy_numerics.json already present
+[skip] E6: E6_collinearity_shap_stability.json already present
+[skip] E15: E15_protocol.json already present
+
+======================================================================
+[run ] E1  ->  C:\Users\adeel\OneDrive\Desktop\xai sdn full paper\REVISION_2026\08_logs\E1.log
+======================================================================
+[FAIL] E1 rc=3221226091 in 0.1s
+---- tail of log ----
+---- continuing to the next experiment ----
+
+======================================================================
+[run ] E9  ->  C:\Users\adeel\OneDrive\Desktop\xai sdn full paper\REVISION_2026\08_logs\E9.log
+======================================================================
+[FAIL] E9 rc=3221226091 in 0.1s
+---- tail of log ----
+---- continuing to the next experiment ----
+
+======================================================================
+[run ] E14  ->  C:\Users\adeel\OneDrive\Desktop\xai sdn full paper\REVISION_2026\08_logs\E14.log
+======================================================================
+[FAIL] E14 rc=3221226091 in 0.1s
+---- tail of log ----
+---- continuing to the next experiment ----
+[skip] E13: E13_case_studies.json already present
+
+======================================================================
+[run ] E10  ->  C:\Users\adeel\OneDrive\Desktop\xai sdn full paper\REVISION_2026\08_logs\E10.log
+======================================================================
+[FAIL] E10 rc=3221226091 in 0.1s
+---- tail of log ----
+---- continuing to the next experiment ----
+
+======================================================================
+[run ] E3  ->  C:\Users\adeel\OneDrive\Desktop\xai sdn full paper\REVISION_2026\08_logs\E3.log
+======================================================================
+[FAIL] E3 rc=3221226091 in 0.1s
+---- tail of log ----
+---- continuing to the next experiment ----
+
+======================================================================
+[run ] E2  ->  C:\Users\adeel\OneDrive\Desktop\xai sdn full paper\REVISION_2026\08_logs\E2.log
+======================================================================
+[FAIL] E2 rc=3221226091 in 0.1s
+---- tail of log ----
+---- continuing to the next experiment ----
+
+======================================================================
+[run ] E4  ->  C:\Users\adeel\OneDrive\Desktop\xai sdn full paper\REVISION_2026\08_logs\E4.log
+======================================================================
+[skip] E5: E5_leakage_audit.json already present
+[skip] E5b: E5b_duplicate_leakage.json already present
+
+======================================================================
+[run ] E17  ->  C:\Users\adeel\OneDrive\Desktop\xai sdn full paper\REVISION_2026\08_logs\E17.log
+======================================================================
+[skip] E5: E5_leakage_audit.json already present
+[skip] E5b: E5b_duplicate_leakage.json already present
+
+======================================================================
+[run ] E17  ->  C:\Users\adeel\OneDrive\Desktop\xai sdn full paper\REVISION_2026\08_logs\E17.log
+======================================================================
+[FAIL] E17 rc=4294967295 in 621.5s
+---- tail of log ----
+    loaded (3590794, 88), chronological cut at 2,513,556
+      loaded cached scrambled-order entropy
+      [natural      seed=  42] d=88 acc=0.997579 F1=0.978813 AP=0.999992 FPR=0.000953
+      [natural      seed= 123] d=88 acc=0.997686 F1=0.979706 AP=0.999988 FPR=0.001249
+      [natural      seed= 456] d=88 acc=0.997671 F1=0.979581 AP=0.999988 FPR=0.001249
+      [natural      seed= 789] d=88 acc=0.997577 F1=0.978789 AP=0.999994 FPR=0.001380
+      [natural      seed=1024] d=88 acc=0.997551 F1=0.978575 AP=0.999991 FPR=0.001183
+      [scrambled    seed=  42] d=88 acc=0.997653 F1=0.979435 AP=0.999998 FPR=0.001084
+      [scrambled    seed= 123] d=88 acc=0.997565 F1=0.978697 AP=0.999998 FPR=0.000920
+      [scrambled    seed= 456] d=88 acc=0.997590 F1=0.978905 AP=0.999998 FPR=0.001052
+---- continuing to the next experiment ----
+[skip] E12: E12_pr_threshold.json already present
+[skip] E11: E11_entropy_numerics.json already present
+[skip] E6: E6_collinearity_shap_stability.json already present
+[skip] E15: E15_protocol.json already present
+
+======================================================================
+[run ] E1  ->  C:\Users\adeel\OneDrive\Desktop\xai sdn full paper\REVISION_2026\08_logs\E1.log
+======================================================================
+[FAIL] E1 rc=4294967295 in 1902.6s
+---- tail of log ----
+    
+    Protocol A: train=2,513,556 test=1,077,238 (test benign 30,432)
+      Majority baseline            acc=0.97175 F1=0.49284 AP=0.97175 train=0.1s p50=0.0057ms thr=65,032,539/s
+      Decision Tree                acc=0.97714 F1=0.66811 AP=0.97769 train=11.0s p50=0.0295ms thr=12,121,121/s
+      Naive Bayes                  acc=0.98590 F1=0.89590 AP=0.99955 train=2.8s p50=0.1527ms thr=2,294,885/s
+    C:\Users\adeel\xaisdn_revision\venv\Lib\site-packages\sklearn\linear_model\_logistic.py:1184: FutureWarning: 'n_jobs' has no effect since 1.8 and will be removed in 1.10. You provided 'n_jobs=-1', please leave it unspecified.
+      warnings.warn(msg, category=FutureWarning)
+      Logistic Regression          acc=0.98350 F1=0.80873 AP=0.95011 train=32.6s p50=0.1077ms thr=3,428,297/s
+---- continuing to the next experiment ----
+
+======================================================================
+[run ] E9  ->  C:\Users\adeel\OneDrive\Desktop\xai sdn full paper\REVISION_2026\08_logs\E9.log
+======================================================================
+[done] E9 rc=0 in 623.2s
+
+======================================================================
+[run ] E14  ->  C:\Users\adeel\OneDrive\Desktop\xai sdn full paper\REVISION_2026\08_logs\E14.log
+======================================================================
+[done] E14 rc=0 in 410.1s
+[skip] E13: E13_case_studies.json already present
+
+======================================================================
+[run ] E10  ->  C:\Users\adeel\OneDrive\Desktop\xai sdn full paper\REVISION_2026\08_logs\E10.log
+======================================================================
+[done] E10 rc=0 in 229.0s
+
+======================================================================
+[run ] E3  ->  C:\Users\adeel\OneDrive\Desktop\xai sdn full paper\REVISION_2026\08_logs\E3.log
+======================================================================
+[done] E3 rc=0 in 1461.7s
+
+======================================================================
+[run ] E2  ->  C:\Users\adeel\OneDrive\Desktop\xai sdn full paper\REVISION_2026\08_logs\E2.log
+======================================================================
+[done] E2 rc=0 in 665.1s
+
+======================================================================
+[run ] E4  ->  C:\Users\adeel\OneDrive\Desktop\xai sdn full paper\REVISION_2026\08_logs\E4.log
+======================================================================
+[FAIL] E4 rc=15 in 2469.1s
+---- tail of log ----
+    E8: TCAM policy grid
+      cap= 1024 agg=exact     ev=hard installs=38,234 peak= 1,024 overflow=37,210 hit_rate=0.044
+      cap= 1024 agg=exact     ev=idle installs=38,235 peak= 1,024 overflow=37,211 hit_rate=0.044
+      cap= 1024 agg=exact     ev=lru  installs=38,235 peak= 1,024 overflow=37,211 hit_rate=0.044
+      cap= 1024 agg=exact     ev=lfu  installs=38,348 peak= 1,024 overflow=37,324 hit_rate=0.041
+      cap= 1024 agg=prefix24  ev=hard installs=38,234 peak= 1,024 overflow=37,210 hit_rate=0.044
+      cap= 1024 agg=prefix24  ev=idle installs=38,235 peak= 1,024 overflow=37,211 hit_rate=0.044
+      cap= 1024 agg=prefix24  ev=lru  installs=38,235 peak= 1,024 overflow=37,211 hit_rate=0.044
+      cap= 1024 agg=prefix24  ev=lfu  installs=38,348 peak= 1,024 overflow=37,324 hit_rate=0.041
+      cap= 1024 agg=prefix16  ev=hard installs=38,234 peak= 1,024 overflow=37,210 hit_rate=0.044
+      cap= 1024 agg=prefix16  ev=idle installs=38,235 peak= 1,024 overflow=37,211 hit_rate=0.044
+      cap= 1024 agg=prefix16  ev=lru  installs=38,235 peak= 1,024 overflow=37,211 hit_rate=0.044
+      cap= 1024 agg=prefix16  ev=lfu  installs=38,348 peak= 1,024 overflow=37,324 hit_rate=0.041
+      cap= 4096 agg=exact     ev=hard installs=36,543 peak= 4,096 overflow=32,447 hit_rate=0.086
+      cap= 4096 agg=exact     ev=idle installs=36,536 peak= 4,096 overflow=32,440 hit_rate=0.087
+      cap= 4096 agg=exact     ev=lru  installs=36,536 peak= 4,096 overflow=32,440 hit_rate=0.087
+      cap= 4096 agg=exact     ev=lfu  installs=36,505 peak= 4,096 overflow=32,409 hit_rate=0.087
+      cap= 4096 agg=prefix24  ev=hard installs=36,543 peak= 4,096 overflow=32,447 hit_rate=0.086
+      cap= 4096 agg=prefix24  ev=idle installs=36,536 peak= 4,096 overflow=32,440 hit_rate=0.087
+      cap= 4096 agg=prefix24  ev=lru  installs=36,536 peak= 4,096 overflow=32,440 hit_rate=0.087
+      cap= 4096 agg=prefix24  ev=lfu  installs=36,505 peak= 4,096 overflow=32,409 hit_rate=0.087
+      cap= 4096 agg=prefix16  ev=hard installs=36,543 peak= 4,096 overflow=32,447 hit_rate=0.086
+      cap= 4096 agg=prefix16  ev=idle installs=36,536 peak= 4,096 overflow=32,440 hit_rate=0.087
+      cap= 4096 agg=prefix16  ev=lru  installs=36,536 peak= 4,096 overflow=32,440 hit_rate=0.087
+      cap= 4096 agg=prefix16  ev=lfu  installs=36,505 peak= 4,096 overflow=32,409 hit_rate=0.087
+---- continuing to the next experiment ----
+
+queue finished
+{
+  "E5": "already-complete",
+  "E12": "already-complete",
+  "E11": "already-complete",
+  "E6": "already-complete",
+  "E15": "already-complete",
+  "E13": "already-complete",
+  "E5b": "already-complete",
+  "E17": "failed",
+  "E1": "failed",
+  "E9": "done",
+  "E14": "done",
+  "E10": "done",
+  "E3": "done",
+  "E2": "done",
+  "E4": "failed"
+}
+[skip] E5: E5_leakage_audit.json already present
+[skip] E5b: E5b_duplicate_leakage.json already present
+
+======================================================================
+[run ] E17  ->  C:\Users\adeel\OneDrive\Desktop\xai sdn full paper\REVISION_2026\08_logs\E17.log
+======================================================================
+[done] E17 rc=0 in 1240.2s
+[skip] E12: E12_pr_threshold.json already present
+[skip] E11: E11_entropy_numerics.json already present
+[skip] E6: E6_collinearity_shap_stability.json already present
+[skip] E15: E15_protocol.json already present
+
+======================================================================
+[run ] E1  ->  C:\Users\adeel\OneDrive\Desktop\xai sdn full paper\REVISION_2026\08_logs\E1.log
+======================================================================
+[done] E1 rc=0 in 308.9s
+
+======================================================================
+[run ] E9  ->  C:\Users\adeel\OneDrive\Desktop\xai sdn full paper\REVISION_2026\08_logs\E9.log
+======================================================================
+[done] E9 rc=0 in 228.1s
+
+======================================================================
+[run ] E14  ->  C:\Users\adeel\OneDrive\Desktop\xai sdn full paper\REVISION_2026\08_logs\E14.log
+======================================================================
+[FAIL] E14 rc=4294967295 in 229.2s
+---- tail of log ----
+    found 22 score files
+      E1/A/Decision_Tree                           AUC=0.607534 AP=0.977690 | F1@tau*=0.6569 (tau*=1.000) vs F1@0.70=0.6569
+      E1/A/LightGBM                                AUC=0.999535 AP=0.999987 | F1@tau*=0.9584 (tau*=1.000) vs F1@0.70=0.9780
+---- continuing to the next experiment ----
+[skip] E13: E13_case_studies.json already present
+
+======================================================================
+[run ] E10  ->  C:\Users\adeel\OneDrive\Desktop\xai sdn full paper\REVISION_2026\08_logs\E10.log
+======================================================================
+[done] E10 rc=0 in 138.0s
+[skip] E3: E3_cross_vector.json already present
+[stale] E2: e2_cross_dataset.py is newer than E2_cross_dataset.json, re-running
+
+======================================================================
+[run ] E2  ->  C:\Users\adeel\OneDrive\Desktop\xai sdn full paper\REVISION_2026\08_logs\E2.log
+======================================================================
+[done] E2 rc=0 in 428.0s
+
+======================================================================
+[run ] E4  ->  C:\Users\adeel\OneDrive\Desktop\xai sdn full paper\REVISION_2026\08_logs\E4.log
+======================================================================
+[FAIL] E4 rc=4294967295 in 955.0s
+---- tail of log ----
+    C:\Users\adeel\xaisdn_revision\venv\Lib\site-packages\sklearn\utils\parallel.py:144: UserWarning: `sklearn.utils.parallel.delayed` should be used with `sklearn.utils.parallel.Parallel` to make it possible to propagate the scikit-learn configuration of the current thread to the joblib workers.
+      warnings.warn(
+    C:\Users\adeel\xaisdn_revision\venv\Lib\site-packages\sklearn\utils\parallel.py:144: UserWarning: `sklearn.utils.parallel.delayed` should be used with `sklearn.utils.parallel.Parallel` to make it possible to propagate the scikit-learn configuration of the current thread to the joblib workers.
+      warnings.warn(
+    C:\Users\adeel\xaisdn_revision\venv\Lib\site-packages\sklearn\utils\parallel.py:144: UserWarning: `sklearn.utils.parallel.delayed` should be used with `sklearn.utils.parallel.Parallel` to make it possible to propagate the scikit-learn configuration of the current thread to the joblib workers.
+      warnings.warn(
+    C:\Users\adeel\xaisdn_revision\venv\Lib\site-packages\sklearn\utils\parallel.py:144: UserWarning: `sklearn.utils.parallel.delayed` should be used with `sklearn.utils.parallel.Parallel` to make it possible to propagate the scikit-learn configuration of the current thread to the joblib workers.
+      warnings.warn(
+    C:\Users\adeel\xaisdn_revision\venv\Lib\site-packages\sklearn\utils\parallel.py:144: UserWarning: `sklearn.utils.parallel.delayed` should be used with `sklearn.utils.parallel.Parallel` to make it possible to propagate the scikit-learn configuration of the current thread to the joblib workers.
+      warnings.warn(
+        CPU mean=95.3% max=125.0%  RSS max=0.23 GB
+        decide p50=4.0473 ms p99=29.1804 ms  RTT p50=4.6766 ms
+      QoS: background p95 RTT 22.988 ms -> 25.279 ms
+    
+    E7: offered-rate sweep
+      rate 500/s
+    Exception in thread Thread-1 (handle):
+    Traceback (most recent call last):
+      File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.11_3.11.2544.0_x64__qbz5n2kfra8p0\Lib\threading.py", line 1045, in _bootstrap_inner
+        self.run()
+      File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.11_3.11.2544.0_x64__qbz5n2kfra8p0\Lib\threading.py", line 982, in run
+        self._target(*self._args, **self._kwargs)
+      File "C:\Users\adeel\OneDrive\Desktop\xai sdn full paper\REVISION_2026\03_experiments\e4_controller_testbed.py", line 137, in handle
+        sock.sendall(msg)
+    ConnectionResetError: [WinError 10054] An existing connection was forcibly closed by the remote host
+---- continuing to the next experiment ----
+[skip] E8b: E8b_tcam_policy.json already present
+
+queue finished
+{
+  "E5": "already-complete",
+  "E12": "already-complete",
+  "E11": "already-complete",
+  "E6": "already-complete",
+  "E15": "already-complete",
+  "E13": "already-complete",
+  "E5b": "already-complete",
+  "E17": "done",
+  "E1": "done",
+  "E9": "done",
+  "E14": "failed",
+  "E10": "done",
+  "E3": "already-complete",
+  "E2": "done",
+  "E4": "failed",
+  "E8b": "already-complete"
+}
+[skip] E5: E5_leakage_audit.json already present
+[skip] E5b: E5b_duplicate_leakage.json already present
+[skip] E17: E17_entropy_contribution.json already present
+[skip] E12: E12_pr_threshold.json already present
+[skip] E11: E11_entropy_numerics.json already present
+[skip] E6: E6_collinearity_shap_stability.json already present
+[skip] E15: E15_protocol.json already present
+[skip] E1: E1_baselines_cpu.json already present
+[skip] E9: E9_deep_baselines.json already present
+
+======================================================================
+[run ] E14  ->  C:\Users\adeel\OneDrive\Desktop\xai sdn full paper\REVISION_2026\08_logs\E14.log
+======================================================================
+[done] E14 rc=0 in 227.0s
+[skip] E13: E13_case_studies.json already present
+[skip] E10: E10_explanation_budget.json already present
+[skip] E3: E3_cross_vector.json already present
+[skip] E2: E2_cross_dataset.json already present
+
+======================================================================
+[run ] E4  ->  C:\Users\adeel\OneDrive\Desktop\xai sdn full paper\REVISION_2026\08_logs\E4.log
+======================================================================
+[FAIL] E4 rc=1 in 216.3s
+---- tail of log ----
+      warnings.warn(
+    C:\Users\adeel\xaisdn_revision\venv\Lib\site-packages\sklearn\utils\parallel.py:144: UserWarning: `sklearn.utils.parallel.delayed` should be used with `sklearn.utils.parallel.Parallel` to make it possible to propagate the scikit-learn configuration of the current thread to the joblib workers.
+      warnings.warn(
+    C:\Users\adeel\xaisdn_revision\venv\Lib\site-packages\sklearn\utils\parallel.py:144: UserWarning: `sklearn.utils.parallel.delayed` should be used with `sklearn.utils.parallel.Parallel` to make it possible to propagate the scikit-learn configuration of the current thread to the joblib workers.
+      warnings.warn(
+    C:\Users\adeel\xaisdn_revision\venv\Lib\site-packages\sklearn\utils\parallel.py:144: UserWarning: `sklearn.utils.parallel.delayed` should be used with `sklearn.utils.parallel.Parallel` to make it possible to propagate the scikit-learn configuration of the current thread to the joblib workers.
+      warnings.warn(
+    C:\Users\adeel\xaisdn_revision\venv\Lib\site-packages\sklearn\utils\parallel.py:144: UserWarning: `sklearn.utils.parallel.delayed` should be used with `sklearn.utils.parallel.Parallel` to make it possible to propagate the scikit-learn configuration of the current thread to the joblib workers.
+      warnings.warn(
+    C:\Users\adeel\xaisdn_revision\venv\Lib\site-packages\sklearn\utils\parallel.py:144: UserWarning: `sklearn.utils.parallel.delayed` should be used with `sklearn.utils.parallel.Parallel` to make it possible to propagate the scikit-learn configuration of the current thread to the joblib workers.
+      warnings.warn(
+    C:\Users\adeel\xaisdn_revision\venv\Lib\site-packages\sklearn\utils\parallel.py:144: UserWarning: `sklearn.utils.parallel.delayed` should be used with `sklearn.utils.parallel.Parallel` to make it possible to propagate the scikit-learn configuration of the current thread to the joblib workers.
+      warnings.warn(
+    C:\Users\adeel\xaisdn_revision\venv\Lib\site-packages\sklearn\utils\parallel.py:144: UserWarning: `sklearn.utils.parallel.delayed` should be used with `sklearn.utils.parallel.Parallel` to make it possible to propagate the scikit-learn configuration of the current thread to the joblib workers.
+      warnings.warn(
+    C:\Users\adeel\xaisdn_revision\venv\Lib\site-packages\sklearn\utils\parallel.py:144: UserWarning: `sklearn.utils.parallel.delayed` should be used with `sklearn.utils.parallel.Parallel` to make it possible to propagate the scikit-learn configuration of the current thread to the joblib workers.
+      warnings.warn(
+    C:\Users\adeel\xaisdn_revision\venv\Lib\site-packages\sklearn\utils\parallel.py:144: UserWarning: `sklearn.utils.parallel.delayed` should be used with `sklearn.utils.parallel.Parallel` to make it possible to propagate the scikit-learn configuration of the current thread to the joblib workers.
+      warnings.warn(
+    C:\Users\adeel\xaisdn_revision\venv\Lib\site-packages\sklearn\utils\parallel.py:144: UserWarning: `sklearn.utils.parallel.delayed` should be used with `sklearn.utils.parallel.Parallel` to make it possible to propagate the scikit-learn configuration of the current thread to the joblib workers.
+      warnings.warn(
+    C:\Users\adeel\xaisdn_revision\venv\Lib\site-packages\sklearn\utils\parallel.py:144: UserWarning: `sklearn.utils.parallel.delayed` should be used with `sklearn.utils.parallel.Parallel` to make it possible to propagate the scikit-learn configuration of the current thread to the joblib workers.
+      warnings.warn(
+    C:\Users\adeel\xaisdn_revision\venv\Lib\site-packages\sklearn\utils\parallel.py:144: UserWarning: `sklearn.utils.parallel.delayed` should be used with `sklearn.utils.parallel.Parallel` to make it possible to propagate the scikit-learn configuration of the current thread to the joblib workers.
+      warnings.warn(
+---- continuing to the next experiment ----
+[skip] E8b: E8b_tcam_policy.json already present
+
+======================================================================
+[run ] E19  ->  C:\Users\adeel\OneDrive\Desktop\xai sdn full paper\REVISION_2026\08_logs\E19.log
+======================================================================
+[done] E19 rc=0 in 121.4s
+
+======================================================================
+[run ] E20  ->  C:\Users\adeel\OneDrive\Desktop\xai sdn full paper\REVISION_2026\08_logs\E20.log
+======================================================================
+[done] E20 rc=0 in 363.7s
+
+======================================================================
+[run ] E21  ->  C:\Users\adeel\OneDrive\Desktop\xai sdn full paper\REVISION_2026\08_logs\E21.log
+======================================================================
+[done] E21 rc=0 in 559.2s
+
+======================================================================
+[run ] E22  ->  C:\Users\adeel\OneDrive\Desktop\xai sdn full paper\REVISION_2026\08_logs\E22.log
+======================================================================
+[FAIL] E22 rc=4294967295 in 356.2s
+---- tail of log ----
+    train 2,262,199 (benign 533) | val 251,356 (benign 49) | test 400,000 (benign 170)
+      depth=        8 trees= 25  size=    0.14 MB  leaves=       35  val F1=1.0000  test F1=0.9885  p50=0.9151 ms
+      depth=        8 trees= 50  size=    0.27 MB  leaves=       33  val F1=1.0000  test F1=0.9885  p50=1.6756 ms
+      depth=        8 trees=100  size=    0.54 MB  leaves=       33  val F1=1.0000  test F1=0.9816  p50=3.2004 ms
+      depth=        8 trees=200  size=    1.06 MB  leaves=       33  val F1=1.0000  test F1=0.9775  p50=6.1351 ms
+      depth=       12 trees= 25  size=    0.17 MB  leaves=       41  val F1=1.0000  test F1=0.9985  p50=0.8797 ms
+      depth=       12 trees= 50  size=    0.33 MB  leaves=       41  val F1=1.0000  test F1=0.9985  p50=1.6190 ms
+      depth=       12 trees=100  size=    0.66 MB  leaves=       41  val F1=1.0000  test F1=0.9985  p50=3.1509 ms
+      depth=       12 trees=200  size=    1.34 MB  leaves=       42  val F1=1.0000  test F1=0.9985  p50=6.1240 ms
+      depth=       16 trees= 25  size=    0.18 MB  leaves=       45  val F1=1.0000  test F1=0.9985  p50=0.8682 ms
+      depth=       16 trees= 50  size=    0.36 MB  leaves=       45  val F1=1.0000  test F1=0.9985  p50=1.6296 ms
+      depth=       16 trees=100  size=    0.71 MB  leaves=       45  val F1=1.0000  test F1=0.9985  p50=4.7748 ms
+---- continuing to the next experiment ----
+
+queue finished
+{
+  "E5": "already-complete",
+  "E12": "already-complete",
+  "E11": "already-complete",
+  "E6": "already-complete",
+  "E15": "already-complete",
+  "E13": "already-complete",
+  "E5b": "already-complete",
+  "E17": "already-complete",
+  "E1": "already-complete",
+  "E9": "already-complete",
+  "E14": "done",
+  "E10": "already-complete",
+  "E3": "already-complete",
+  "E2": "already-complete",
+  "E4": "failed",
+  "E8b": "already-complete",
+  "E19": "done",
+  "E20": "done",
+  "E21": "done",
+  "E22": "failed"
+}
+[skip] E5: E5_leakage_audit.json already present
+[skip] E5b: E5b_duplicate_leakage.json already present
+[skip] E17: E17_entropy_contribution.json already present
+[skip] E12: E12_pr_threshold.json already present
+[skip] E11: E11_entropy_numerics.json already present
+[skip] E6: E6_collinearity_shap_stability.json already present
+[skip] E15: E15_protocol.json already present
+[skip] E1: E1_baselines_cpu.json already present
+[skip] E9: E9_deep_baselines.json already present
+[skip] E14: E14_roc_pr_curves.json already present
+[skip] E13: E13_case_studies.json already present
+[skip] E10: E10_explanation_budget.json already present
+[skip] E3: E3_cross_vector.json already present
+[skip] E2: E2_cross_dataset.json already present
+
+======================================================================
+[run ] E4  ->  C:\Users\adeel\OneDrive\Desktop\xai sdn full paper\REVISION_2026\08_logs\E4.log
+======================================================================

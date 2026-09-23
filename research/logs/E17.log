@@ -1,0 +1,42 @@
+loaded (3590794, 88), chronological cut at 2,513,556
+  loaded cached scrambled-order entropy
+  [natural      seed=  42] d=88 acc=0.997579 F1=0.978813 AP=0.999992 FPR=0.000953
+  [natural      seed= 123] d=88 acc=0.997686 F1=0.979706 AP=0.999988 FPR=0.001249
+  [natural      seed= 456] d=88 acc=0.997671 F1=0.979581 AP=0.999988 FPR=0.001249
+  [natural      seed= 789] d=88 acc=0.997577 F1=0.978789 AP=0.999994 FPR=0.001380
+  [natural      seed=1024] d=88 acc=0.997551 F1=0.978575 AP=0.999991 FPR=0.001183
+  [scrambled    seed=  42] d=88 acc=0.997653 F1=0.979435 AP=0.999998 FPR=0.001084
+  [scrambled    seed= 123] d=88 acc=0.997565 F1=0.978697 AP=0.999998 FPR=0.000920
+  [scrambled    seed= 456] d=88 acc=0.997590 F1=0.978905 AP=0.999998 FPR=0.001052
+  [scrambled    seed= 789] d=88 acc=0.997549 F1=0.978554 AP=0.999998 FPR=0.001413
+  [scrambled    seed=1024] d=88 acc=0.997564 F1=0.978688 AP=0.999998 FPR=0.000986
+  [cic_only     seed=  42] d=80 acc=0.997857 F1=0.981166 AP=0.999998 FPR=0.000822
+  [cic_only     seed= 123] d=80 acc=0.998160 F1=0.983743 AP=0.999998 FPR=0.000920
+  [cic_only     seed= 456] d=80 acc=0.998051 F1=0.982806 AP=0.999998 FPR=0.000953
+  [cic_only     seed= 789] d=80 acc=0.998045 F1=0.982758 AP=0.999998 FPR=0.000986
+  [cic_only     seed=1024] d=80 acc=0.998142 F1=0.983590 AP=0.999998 FPR=0.001052
+  [entropy_only seed=  42] d= 8 acc=0.969225 F1=0.493179 AP=0.998800 FPR=0.998916
+  [entropy_only seed= 123] d= 8 acc=0.968932 F1=0.493124 AP=0.998867 FPR=0.998883
+  [entropy_only seed= 456] d= 8 acc=0.968867 F1=0.493135 AP=0.999287 FPR=0.998850
+  [entropy_only seed= 789] d= 8 acc=0.968879 F1=0.493198 AP=0.999059 FPR=0.998784
+  [entropy_only seed=1024] d= 8 acc=0.968749 F1=0.493100 AP=0.998736 FPR=0.998850
+
+macro F1 by variant (mean +/- std over 5 seeds):
+  natural      d=88  97.9093 +/- 0.0513
+  scrambled    d=88  97.8856 +/- 0.0347
+  cic_only     d=80  98.2813 +/- 0.1023
+  entropy_only d= 8  49.3147 +/- 0.0040
+
+paired comparisons (macro F1):
+  natural vs cic_only          delta=-0.3720 pp  p=0.0625
+  natural vs scrambled         delta=+0.0237 pp  p=0.4375
+  scrambled vs cic_only        delta=-0.3957 pp  p=0.0625
+  natural vs entropy_only      delta=+48.5946 pp  p=0.0625
+  cic_only vs entropy_only     delta=+48.9666 pp  p=0.0625
+
+VERDICT (in distribution): The entropy augmentation does NOT improve in-distribution detection under the chronological protocol. The flow statistics alone match or exceed the full feature set. The claim that the entropy features improve accuracy is not supported in this setting and must be restated.
+VERDICT (temporal coherence): Destroying the temporal coherence of the entropy features while holding the split fixed does not measurably change performance. The collapse in single-feature AUC observed in E5 therefore reflects the loss of arrival-order information in the features themselves rather than a change in what the classifier can do with the full representation.
+
+Note: this experiment measures in-distribution contribution only. Whether the entropy features help under transfer to other attack vectors, capture days or corpora is answered by E3 and E2.
+
+Wrote C:\Users\adeel\OneDrive\Desktop\xai sdn full paper\REVISION_2026\04_results\E17_entropy_contribution.json

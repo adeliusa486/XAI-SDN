@@ -1,0 +1,659 @@
+{
+ "package": "Supplementary_XAI-SDN",
+ "manuscript": "Access-2026-39885",
+ "built": "2026-09-23T21:14:06",
+ "file_count": 130,
+ "total_bytes": 3727270,
+ "files": [
+  {
+   "path": "S1_Extended_Experimental_Details/collinearity/E6_pearson.csv",
+   "bytes": 127858,
+   "sha256": "11319c9b937b11962b01c6a0035e74313fd29e48a351ebcd74ab68d85b442bb6"
+  },
+  {
+   "path": "S1_Extended_Experimental_Details/collinearity/E6_vif.csv",
+   "bytes": 2702,
+   "sha256": "ba4079cd3c64d0720712899fb3b040749bb4cab46a8e75dc503ab05a88a030b4"
+  },
+  {
+   "path": "S1_Extended_Experimental_Details/leakage/E16_feature_audit.json",
+   "bytes": 3747,
+   "sha256": "e14ecdeca18d6f781453017f37396e6e2f2a983535edda4544a3d99533b9a607"
+  },
+  {
+   "path": "S1_Extended_Experimental_Details/leakage/E16_feature_specification.csv",
+   "bytes": 920,
+   "sha256": "a6f5955e881eed8f9276bbc226ccb0428a85f2d4251e9c17543e256196753c46"
+  },
+  {
+   "path": "S1_Extended_Experimental_Details/leakage/E16_feature_statistics.csv",
+   "bytes": 22885,
+   "sha256": "5c51f1a4a660901425e09c2a4fc7250a29567a3492ea0168429c78eef1e41a37"
+  },
+  {
+   "path": "S1_Extended_Experimental_Details/leakage/E5_distribution_checks.csv",
+   "bytes": 5593,
+   "sha256": "bc31fb5361dfc255e3fad0fe2f3926f1f5b1de2d1b2cdd253b8549ae28466be4"
+  },
+  {
+   "path": "S1_Extended_Experimental_Details/leakage/E5_leakage_audit.json",
+   "bytes": 12143,
+   "sha256": "b0b1f0235a40b315665a58321158ecdf9d84fe4171c1c577724a881cb3a60cd2"
+  },
+  {
+   "path": "S1_Extended_Experimental_Details/leakage/E5_progressive_removal.csv",
+   "bytes": 1464,
+   "sha256": "2b7a3088fd886f038a890e8502c5d9953f28c51b8c3be19ecef256b82e92831f"
+  },
+  {
+   "path": "S1_Extended_Experimental_Details/leakage/E5_single_feature_separability.csv",
+   "bytes": 5003,
+   "sha256": "5dcbe9b03bb9c43933e789e9ab791eaed0a796dc7a3b359a27165b4422a436f6"
+  },
+  {
+   "path": "S1_Extended_Experimental_Details/leakage/E5b_duplicate_leakage.json",
+   "bytes": 3162,
+   "sha256": "0f0e2dc607c94bec5ebfaa5d75e76a543de11eabd9892990e864b3198f7f4f0c"
+  },
+  {
+   "path": "S1_Extended_Experimental_Details/leakage/E5b_straddle.csv",
+   "bytes": 362,
+   "sha256": "98472780d54d1c3548c595e3f9f0da44c6af4d32890f11a39ef3bc6e7fe26d17"
+  },
+  {
+   "path": "S1_Extended_Experimental_Details/shap_stability/E19_shap_sample.json",
+   "bytes": 3440,
+   "sha256": "1dcbaf292131d43a1241588cd00b0f6836df73370d428bec20dc955fd48ec393"
+  },
+  {
+   "path": "S1_Extended_Experimental_Details/shap_stability/E6_collinearity_shap_stability.json",
+   "bytes": 17825,
+   "sha256": "823cd248df36162e341df318f46137e96b2e7f8ad1db03a419b3779f231330e2"
+  },
+  {
+   "path": "S1_Extended_Experimental_Details/shap_stability/E6_global_shap.csv",
+   "bytes": 4929,
+   "sha256": "a5ebf4aba954630fc3752adb084797c0280f651f4866e2870f73231d8a6835a0"
+  },
+  {
+   "path": "S1_Extended_Experimental_Details/threshold/E12_pr_threshold.json",
+   "bytes": 10373,
+   "sha256": "f3bb80e7786cde34f46bb8cf4b1b70b02249e60f239b4f38074084ce1fbe0846"
+  },
+  {
+   "path": "S1_Extended_Experimental_Details/threshold/E12_test_pr_curve.csv",
+   "bytes": 8021,
+   "sha256": "89113a84215411cabca3f1cafd0e0761f8232c95e96c725d97593997b1792983"
+  },
+  {
+   "path": "S1_Extended_Experimental_Details/threshold/E12_validation_pr_curve.csv",
+   "bytes": 729,
+   "sha256": "179e0b656d9eec0397ead2617089956da84be3fb574c5b386cecc1023e11a01f"
+  },
+  {
+   "path": "S1_Extended_Experimental_Details/threshold/E12_validation_roc_curve.csv",
+   "bytes": 466,
+   "sha256": "fe08e547cf8103e711173f136914329776e6ea61c011de100518d88177a48aca"
+  },
+  {
+   "path": "S1_Extended_Experimental_Details/threshold/E12_validation_sweep.csv",
+   "bytes": 1684,
+   "sha256": "3a0feda2ba4c30411ad3d510557b96f4fb41ac2dcb5b363dfb843ffdff64669a"
+  },
+  {
+   "path": "S1_Extended_Experimental_Details/transfer/E20_few_shot_transfer.json",
+   "bytes": 32451,
+   "sha256": "d7d0a4ed11964b788b02442aa9f35a43f83e174bf07d9350bab1debd8b891e48"
+  },
+  {
+   "path": "S1_Extended_Experimental_Details/transfer/E20_transfer_budget.csv",
+   "bytes": 8274,
+   "sha256": "519b84b9f37e3cadeecd60c7f05711a51eb113d30e7eb37dd524e1dee10ad24e"
+  },
+  {
+   "path": "S1_Extended_Experimental_Details/transfer/E21_entropy_under_shift.csv",
+   "bytes": 12037,
+   "sha256": "60f263c2dd570d024db31afe943a2c00e4762dd8399e00366dafe8dc4d8071ac"
+  },
+  {
+   "path": "S1_Extended_Experimental_Details/transfer/E21_entropy_under_shift.json",
+   "bytes": 4531,
+   "sha256": "e5645b5a9f3d3db43b1680efa1b6a9488f18c8ba3467de26af066bc1b2ba5af8"
+  },
+  {
+   "path": "S1_Extended_Experimental_Details/transfer/E2_cross_dataset.csv",
+   "bytes": 1385,
+   "sha256": "1472032384e58ec7fea231d2546507dd140c22afee268adfa7e91c382dc41637"
+  },
+  {
+   "path": "S1_Extended_Experimental_Details/transfer/E2_cross_dataset.json",
+   "bytes": 11567,
+   "sha256": "6e8a4faf59e95f78887f83aa51e0898be2a66d3dd57d1508c60f1d7db923a7ee"
+  },
+  {
+   "path": "S1_Extended_Experimental_Details/transfer/E2_schema_map.csv",
+   "bytes": 7609,
+   "sha256": "4559299bfb0902a8062ae9bb0177d2bbbc60b2482a33751e392ce887519028e6"
+  },
+  {
+   "path": "S1_Extended_Experimental_Details/transfer/E3_cross_vector.json",
+   "bytes": 16467,
+   "sha256": "349ab7b4617484cd9372d9b7cc2a2b064315fd8448e96b417fcf932f0b19a45f"
+  },
+  {
+   "path": "S1_Extended_Experimental_Details/transfer/E3_transfer_matrix.csv",
+   "bytes": 3115,
+   "sha256": "927bd02142b98a7176f88ffe2c787f30207c583209eac25c8f6a92f15b784218"
+  },
+  {
+   "path": "S2_Mininet_OpenFlow_Testbed/controller/e4_controller_testbed.py",
+   "bytes": 27093,
+   "sha256": "eecbddd1d46a3591c2fa22fdfec05db841920af2ed090e18fd17869885c2f5b2"
+  },
+  {
+   "path": "S2_Mininet_OpenFlow_Testbed/controller/e4b_mininet_testbed.py",
+   "bytes": 13017,
+   "sha256": "cb94bc18aec4f439ff6af6a1aa75507d0a316077d52cf99e804f13458b856f24"
+  },
+  {
+   "path": "S2_Mininet_OpenFlow_Testbed/controller/of_testbed.py",
+   "bytes": 13030,
+   "sha256": "7ecf1831bfb34502877fa264fc5af3ca90971817e77a8b5366ba1a5b354d1bfb"
+  },
+  {
+   "path": "S2_Mininet_OpenFlow_Testbed/evidence/KNOWN_ISSUES.md",
+   "bytes": 874,
+   "sha256": "90c196aaf772dacb739d70f3df5482f965214928bd81b5504571dbcbb8277363"
+  },
+  {
+   "path": "S2_Mininet_OpenFlow_Testbed/evidence/detect__controller_tail.txt",
+   "bytes": 68,
+   "sha256": "b0dbe8cfaa450c14b21528f3aec92e1d55535d9e46a350e3c2ebc6f9e38b8081"
+  },
+  {
+   "path": "S2_Mininet_OpenFlow_Testbed/evidence/detect__flow_table.txt",
+   "bytes": 41,
+   "sha256": "1e3d36bdfda7a1abeb84e2675760c914637e6f95e411b0b91fd6f694c6ebf892"
+  },
+  {
+   "path": "S2_Mininet_OpenFlow_Testbed/evidence/detect__mn_version.txt",
+   "bytes": 37,
+   "sha256": "1edaa9a0e5c27dbc4833f8dbfc714ecc8bf460126a89e8967af26ac15ba5cb08"
+  },
+  {
+   "path": "S2_Mininet_OpenFlow_Testbed/evidence/detect__ofctl_show.txt",
+   "bytes": 41,
+   "sha256": "1e3d36bdfda7a1abeb84e2675760c914637e6f95e411b0b91fd6f694c6ebf892"
+  },
+  {
+   "path": "S2_Mininet_OpenFlow_Testbed/evidence/detect__ovs_show.txt",
+   "bytes": 62,
+   "sha256": "bfb1f4d3b486be004918d0ecd85333e12c2987c2508df5f40ad489e252b9f28b"
+  },
+  {
+   "path": "S2_Mininet_OpenFlow_Testbed/evidence/detect_explain__controller_tail.txt",
+   "bytes": 68,
+   "sha256": "b0dbe8cfaa450c14b21528f3aec92e1d55535d9e46a350e3c2ebc6f9e38b8081"
+  },
+  {
+   "path": "S2_Mininet_OpenFlow_Testbed/evidence/detect_explain__flow_table.txt",
+   "bytes": 41,
+   "sha256": "1e3d36bdfda7a1abeb84e2675760c914637e6f95e411b0b91fd6f694c6ebf892"
+  },
+  {
+   "path": "S2_Mininet_OpenFlow_Testbed/evidence/detect_explain__mn_version.txt",
+   "bytes": 37,
+   "sha256": "1edaa9a0e5c27dbc4833f8dbfc714ecc8bf460126a89e8967af26ac15ba5cb08"
+  },
+  {
+   "path": "S2_Mininet_OpenFlow_Testbed/evidence/detect_explain__ofctl_show.txt",
+   "bytes": 41,
+   "sha256": "1e3d36bdfda7a1abeb84e2675760c914637e6f95e411b0b91fd6f694c6ebf892"
+  },
+  {
+   "path": "S2_Mininet_OpenFlow_Testbed/evidence/detect_explain__ovs_show.txt",
+   "bytes": 62,
+   "sha256": "bfb1f4d3b486be004918d0ecd85333e12c2987c2508df5f40ad489e252b9f28b"
+  },
+  {
+   "path": "S2_Mininet_OpenFlow_Testbed/evidence/live_demo_transcript.txt",
+   "bytes": 5357,
+   "sha256": "874acbbc0a412804c1d4b6f21b63d6f71648c446cb89606c06ed153a0196b5fd"
+  },
+  {
+   "path": "S2_Mininet_OpenFlow_Testbed/evidence/mininet_step01.png",
+   "bytes": 11235,
+   "sha256": "160bd34ef63f6cfb4db4eb3d9adc0d16c0b76a4bd72646973bcc05e0eeb55589"
+  },
+  {
+   "path": "S2_Mininet_OpenFlow_Testbed/evidence/mininet_step02.png",
+   "bytes": 33084,
+   "sha256": "5faab1d10f9cf7f99341748632deb223c5f2a92cb746cec37eac2fd3650c660d"
+  },
+  {
+   "path": "S2_Mininet_OpenFlow_Testbed/evidence/mininet_step03.png",
+   "bytes": 55242,
+   "sha256": "b4d96dcce219d9a11a631770a62177e1531b614c4a560deb300c999352af2096"
+  },
+  {
+   "path": "S2_Mininet_OpenFlow_Testbed/evidence/mininet_step04.png",
+   "bytes": 102700,
+   "sha256": "ba33d5e899a5a44c2c42275a125ee3c24c3faa2e3144596cd6aa46c96410ad51"
+  },
+  {
+   "path": "S2_Mininet_OpenFlow_Testbed/evidence/mininet_step05.png",
+   "bytes": 100448,
+   "sha256": "db792eda1d84337d9971e206569d63325534c5ab8fe09f1715e03e8df248e98a"
+  },
+  {
+   "path": "S2_Mininet_OpenFlow_Testbed/evidence/mininet_step06.png",
+   "bytes": 101900,
+   "sha256": "f58e04b870afbe82b8df86b13922108d1b0e97e43ec10ec779e03f44073090ea"
+  },
+  {
+   "path": "S2_Mininet_OpenFlow_Testbed/evidence/mininet_step07.png",
+   "bytes": 64564,
+   "sha256": "10d6536269a0329520ac92e31cea3b942885329e1f6ecc39b9895c0cbf77a61a"
+  },
+  {
+   "path": "S2_Mininet_OpenFlow_Testbed/evidence/no_controller__controller_tail.txt",
+   "bytes": 68,
+   "sha256": "b0dbe8cfaa450c14b21528f3aec92e1d55535d9e46a350e3c2ebc6f9e38b8081"
+  },
+  {
+   "path": "S2_Mininet_OpenFlow_Testbed/evidence/no_controller__flow_table.txt",
+   "bytes": 41,
+   "sha256": "1e3d36bdfda7a1abeb84e2675760c914637e6f95e411b0b91fd6f694c6ebf892"
+  },
+  {
+   "path": "S2_Mininet_OpenFlow_Testbed/evidence/no_controller__mn_version.txt",
+   "bytes": 37,
+   "sha256": "1edaa9a0e5c27dbc4833f8dbfc714ecc8bf460126a89e8967af26ac15ba5cb08"
+  },
+  {
+   "path": "S2_Mininet_OpenFlow_Testbed/evidence/no_controller__ofctl_show.txt",
+   "bytes": 41,
+   "sha256": "1e3d36bdfda7a1abeb84e2675760c914637e6f95e411b0b91fd6f694c6ebf892"
+  },
+  {
+   "path": "S2_Mininet_OpenFlow_Testbed/evidence/no_controller__ovs_show.txt",
+   "bytes": 62,
+   "sha256": "bfb1f4d3b486be004918d0ecd85333e12c2987c2508df5f40ad489e252b9f28b"
+  },
+  {
+   "path": "S2_Mininet_OpenFlow_Testbed/ovs/setup_mininet.sh",
+   "bytes": 2866,
+   "sha256": "992e40831cb5960e6d0c1f87e258d5483923f15d15420eeb97864b0230e0a348"
+  },
+  {
+   "path": "S2_Mininet_OpenFlow_Testbed/rate_sweeps/E4_controller_testbed.json",
+   "bytes": 13299,
+   "sha256": "0c71047f47684607ce0d05ffc3a63d50a44bdfb4b417614ef88db806ee57e57e"
+  },
+  {
+   "path": "S2_Mininet_OpenFlow_Testbed/rate_sweeps/E4_timeseries_detection_only.csv",
+   "bytes": 27803,
+   "sha256": "82f8b52931f8371d769302606ce5fc8e99860cf0830780d3767078a64d943ba9"
+  },
+  {
+   "path": "S2_Mininet_OpenFlow_Testbed/rate_sweeps/E4_timeseries_with_explanations.csv",
+   "bytes": 27592,
+   "sha256": "b02d1cdbb370488062c1ff8f383fe1de98ef154096ff0f698553e68a7df58a7c"
+  },
+  {
+   "path": "S2_Mininet_OpenFlow_Testbed/rate_sweeps/E4b_PROVENANCE.md",
+   "bytes": 1647,
+   "sha256": "c5daa53e43fe9a2a17d504cd0e0ac9b9a6e8ba2aceb5f37cd0413f6c7f79e552"
+  },
+  {
+   "path": "S2_Mininet_OpenFlow_Testbed/rate_sweeps/E4b_mininet_testbed.json",
+   "bytes": 11675,
+   "sha256": "83ccbad8e70ec727cc6ca1a06c14bbd185858050cdbe727e954c72042ed71c8b"
+  },
+  {
+   "path": "S2_Mininet_OpenFlow_Testbed/rate_sweeps/E7_rate_sweep.csv",
+   "bytes": 788,
+   "sha256": "c57f2fa86fce7b0a5a51f544199fae8ce6987008c748685c2bddd5320199a2bd"
+  },
+  {
+   "path": "S2_Mininet_OpenFlow_Testbed/run_instructions/README.md",
+   "bytes": 4648,
+   "sha256": "41545ef489c253be2eadfd5adeebf41d0f8e322f58ba63bfa47cf287861fbf47"
+  },
+  {
+   "path": "S2_Mininet_OpenFlow_Testbed/tcam_evaluation/E8b_occupancy.csv",
+   "bytes": 540531,
+   "sha256": "4bffa545fb37bf29950bfa770fa4cfc2408f499349205e15a1c864c5af6fd31e"
+  },
+  {
+   "path": "S2_Mininet_OpenFlow_Testbed/tcam_evaluation/E8b_tcam_grid.csv",
+   "bytes": 5161,
+   "sha256": "c0a76ecd595669c6215f1d06789a2751a4ae824c0a8ea2c5a3af7cda6d051478"
+  },
+  {
+   "path": "S2_Mininet_OpenFlow_Testbed/tcam_evaluation/E8b_tcam_policy.json",
+   "bytes": 30240,
+   "sha256": "ac4370652717baba5e239c985e7ac4109603fbb8c3753e5c9520bbe088ea730f"
+  },
+  {
+   "path": "S2_Mininet_OpenFlow_Testbed/tcam_evaluation/e8b_tcam_policy.py",
+   "bytes": 7869,
+   "sha256": "d79f42968cd476f0d0525ba87a96f6f613f0f792e6a3f42e58bebcf41e62e447"
+  },
+  {
+   "path": "S2_Mininet_OpenFlow_Testbed/topology/run_topology.py",
+   "bytes": 6835,
+   "sha256": "3ba49858a011e13941004349ac3762af9c8a876097bb859d70a0bcac462315a4"
+  },
+  {
+   "path": "S2_Mininet_OpenFlow_Testbed/traffic_generation/record_demo.py",
+   "bytes": 8831,
+   "sha256": "05949f34b4b5450562462fcd05d3a08efb929025ed3a788a342a1d881307b938"
+  },
+  {
+   "path": "S3_Complete_Experiment_Results/E0_baseline_reproduction.json",
+   "bytes": 10332,
+   "sha256": "339455ee89cc0391982c624eab3a9f2ad0b22b7f6a28e22355af919c92992e4c"
+  },
+  {
+   "path": "S3_Complete_Experiment_Results/E10_explanation_budget.json",
+   "bytes": 12963,
+   "sha256": "b59d1f6cd37f43783c018d674017bfc547444a8b037fcdc3c71cfb8803609727"
+  },
+  {
+   "path": "S3_Complete_Experiment_Results/E10_frontier.csv",
+   "bytes": 2044,
+   "sha256": "cfbc53cece741962a4f3c4e42aeb8bb0c4f57163475c4e436a7d1ce727368679"
+  },
+  {
+   "path": "S3_Complete_Experiment_Results/E11_drift_curve.csv",
+   "bytes": 75948,
+   "sha256": "8bf53ef267535926c4612785b84d84c56b2c8d5a0c5550b61ecff744b0129c1f"
+  },
+  {
+   "path": "S3_Complete_Experiment_Results/E11_entropy_numerics.json",
+   "bytes": 4805,
+   "sha256": "30e221b05f99e71f644a110e9a5309897fa62732692a43e0c875199763ec7152"
+  },
+  {
+   "path": "S3_Complete_Experiment_Results/E13_case_studies.csv",
+   "bytes": 3110,
+   "sha256": "6de66e4b4b295a3be0c24751a0ff26ff8e4a3dc9567395e5860b56fb47e92778"
+  },
+  {
+   "path": "S3_Complete_Experiment_Results/E13_case_studies.json",
+   "bytes": 11742,
+   "sha256": "5bb6ff28fd328e8bc366fecba6766b418c3af1cceb080fc6002335f5a6f1c9a5"
+  },
+  {
+   "path": "S3_Complete_Experiment_Results/E14_auc_summary.csv",
+   "bytes": 7826,
+   "sha256": "b7bf47a010c52605ea9211d7431f40779ba11c5c95e1ef7d1e157ba8d08f2cfd"
+  },
+  {
+   "path": "S3_Complete_Experiment_Results/E14_curves.csv",
+   "bytes": 626798,
+   "sha256": "ba1536d026ea0c9f30593e73ce9dcbad288efb9647c4c9ed4ab4e9fd13a372c8"
+  },
+  {
+   "path": "S3_Complete_Experiment_Results/E14_roc_pr_curves.json",
+   "bytes": 22669,
+   "sha256": "5d3b7f8a59e773d6deafebd993cd3fc71590e11f7a3b497f051ebf301b623f24"
+  },
+  {
+   "path": "S3_Complete_Experiment_Results/E15_nested_cv_folds.csv",
+   "bytes": 1097,
+   "sha256": "a18b6fbf0abb8b3d06a899f17594f8845fbaea5b020ae5a25f9c9544b333b1df"
+  },
+  {
+   "path": "S3_Complete_Experiment_Results/E15_protocol.json",
+   "bytes": 69613,
+   "sha256": "5da7b4d0a5e22ec77673b487d2f29d37527205ca7203d2fbf3afec610e98fbb7"
+  },
+  {
+   "path": "S3_Complete_Experiment_Results/E17_entropy_contribution.json",
+   "bytes": 8116,
+   "sha256": "22b2166a8610ddb080ceabe6ca26abcf2980e119eeaa3a01ef9652b9fe8fefb7"
+  },
+  {
+   "path": "S3_Complete_Experiment_Results/E17_variants.csv",
+   "bytes": 2902,
+   "sha256": "0259997bbd92c9cab32e947440c6d03dc62ff60890d76dde501d5555c79e3e34"
+  },
+  {
+   "path": "S3_Complete_Experiment_Results/E18_temporal_structure.json",
+   "bytes": 3832,
+   "sha256": "20a0317f147f422c87228812344c35fd0501ea90497230fe644325a8ecf39900"
+  },
+  {
+   "path": "S3_Complete_Experiment_Results/E18_timeline.csv",
+   "bytes": 1533,
+   "sha256": "b9c6ba781711b378228d96349af360db6685fc1af7d0b97f9845faa7ff9f5d6f"
+  },
+  {
+   "path": "S3_Complete_Experiment_Results/E1_baselines_cpu.csv",
+   "bytes": 5980,
+   "sha256": "4dc67a071d747bf9539ce92bf459bd6f8b07242a2ec3ce164db28ce80ed98d76"
+  },
+  {
+   "path": "S3_Complete_Experiment_Results/E1_baselines_cpu.json",
+   "bytes": 28680,
+   "sha256": "2dae1dd0e1f88b615b8348bdcfa04409d260d248d077a737f404fc5623646d51"
+  },
+  {
+   "path": "S3_Complete_Experiment_Results/E22_model_size_pareto.json",
+   "bytes": 30507,
+   "sha256": "e1b61b50f119dcdf72e3f9f84fb8a4ae8f920406c76a916a39347e779e546a65"
+  },
+  {
+   "path": "S3_Complete_Experiment_Results/E22_size_pareto.csv",
+   "bytes": 7084,
+   "sha256": "8f581e4f0a5559693b7319c2e1fb89baa6324736c1fa842f1c59b6789f875696"
+  },
+  {
+   "path": "S3_Complete_Experiment_Results/E23_latency_verification.json",
+   "bytes": 2791,
+   "sha256": "5a75b4fedf77c7e538b0849f26a03fe263f56b832c2d5c37c44c4d0ba09b3350"
+  },
+  {
+   "path": "S3_Complete_Experiment_Results/E9_deep_baselines.csv",
+   "bytes": 2812,
+   "sha256": "1c1d8b982c8bc1bf412efb7eb8fbb0398d1115c8e97e5a8f7efc509f5412b834"
+  },
+  {
+   "path": "S3_Complete_Experiment_Results/E9_deep_baselines.json",
+   "bytes": 8794,
+   "sha256": "e68ebf84829ca3a515e78f89d97195609e466deef7757d923242ee8813de5c1e"
+  },
+  {
+   "path": "S5_Additional_Figures/entropyengine_standalone.pdf",
+   "bytes": 138858,
+   "sha256": "e81b9cbb69dc39119cc3e112dbcf77054e662984efd5ca7bbfa540e3d9b2bfb1"
+  },
+  {
+   "path": "S5_Additional_Figures/fig10.pdf",
+   "bytes": 375178,
+   "sha256": "5e114fc74383b9c09df07ecfe37ba62de018cf06e275b3d579fd70f4e4217408"
+  },
+  {
+   "path": "S5_Additional_Figures/fig1_architecture.pdf",
+   "bytes": 72919,
+   "sha256": "0c074411d0fe4e6716d13b5d22e1bf15d8fe4c8c5d9dbddcc33522d0f5000500"
+  },
+  {
+   "path": "S5_Additional_Figures/fig_mininet.pdf",
+   "bytes": 30807,
+   "sha256": "d015b324ba5c99023488b619a1c3ae581d2040ec36eec783c12cbf54f59fb02f"
+  },
+  {
+   "path": "S5_Additional_Figures/fig_rocpr.pdf",
+   "bytes": 35029,
+   "sha256": "bfd20db09425d1af878425cb2125cb8015f31b736207899efb7284f3dcb41518"
+  },
+  {
+   "path": "S6_Environment/E4b_PROVENANCE.md",
+   "bytes": 1647,
+   "sha256": "c5daa53e43fe9a2a17d504cd0e0ac9b9a6e8ba2aceb5f37cd0413f6c7f79e552"
+  },
+  {
+   "path": "S6_Environment/environment.yml",
+   "bytes": 166,
+   "sha256": "e48b60405cf8457d1cde228df443f2e243c94910eee6e6c56af82422d7f3e4c4"
+  },
+  {
+   "path": "S6_Environment/requirements-lock.txt",
+   "bytes": 234960,
+   "sha256": "2f3030d68c750a8dc552cc80c45f2fdd144356edfe7138ec0f41c7de959d120b"
+  },
+  {
+   "path": "S6_Environment/requirements.txt",
+   "bytes": 3621,
+   "sha256": "b2dcba862ec2a24065cafc042fcb57a0631a136e881b8066106b420ec01bc395"
+  },
+  {
+   "path": "S7_Reproducibility/data.py",
+   "bytes": 13337,
+   "sha256": "7b54a676aa7fbcad7390c4d752ebbcfbbda2d5be687908feb05727081cf1d77b"
+  },
+  {
+   "path": "S7_Reproducibility/download_data.py",
+   "bytes": 4996,
+   "sha256": "4cb63e26fc5f22145d366e33f78cb9a1b9c08a3787082d49266975a66008f64b"
+  },
+  {
+   "path": "S7_Reproducibility/paths.py",
+   "bytes": 3130,
+   "sha256": "070eb5a744391da2bbe3d7fec1cd2e49c7236c277bf999cd9c9ae34ded2f0f4d"
+  },
+  {
+   "path": "S7_Reproducibility/run_queue.py",
+   "bytes": 5504,
+   "sha256": "931814079897785cd4d3aeae3d3482ca5fefb4e38bd85868132bbf3abf618406"
+  },
+  {
+   "path": "S7_Reproducibility/experiment_scripts/e0_baseline_reproduction.py",
+   "bytes": 8314,
+   "sha256": "fae73fef5a2a96d8cb4bdf3354113bb29950840e26006a23da32f3869f963b9f"
+  },
+  {
+   "path": "S7_Reproducibility/experiment_scripts/e10_explanation_budget.py",
+   "bytes": 13792,
+   "sha256": "941734db0a360b46f106ac632325a695fb811b88ac5c18d6dc290faad91e234b"
+  },
+  {
+   "path": "S7_Reproducibility/experiment_scripts/e11_entropy_numerics.py",
+   "bytes": 11543,
+   "sha256": "7c1f69f7b48486f7d6c1b080bcce07f61f1de338f69f44d8c472e75034eaa825"
+  },
+  {
+   "path": "S7_Reproducibility/experiment_scripts/e12_pr_threshold.py",
+   "bytes": 9742,
+   "sha256": "c78d881fb9b5a1e7f244ac154cbdc6a2ca85806fdc527f2229929b9349f936ab"
+  },
+  {
+   "path": "S7_Reproducibility/experiment_scripts/e13_case_studies.py",
+   "bytes": 7739,
+   "sha256": "c80b665a8db72adec0265d016ba02e64058ab0c8fe33c980451b46e47e5b6700"
+  },
+  {
+   "path": "S7_Reproducibility/experiment_scripts/e14_roc_pr_curves.py",
+   "bytes": 9227,
+   "sha256": "0e31d619dcc79f43478161164cda02c011c7702f8055b06442529646c76cd65f"
+  },
+  {
+   "path": "S7_Reproducibility/experiment_scripts/e15_protocol.py",
+   "bytes": 8787,
+   "sha256": "3c486c15216008b498f6ba1c44666843a2a7b67926d3422e9940ad32eb6f1c36"
+  },
+  {
+   "path": "S7_Reproducibility/experiment_scripts/e16_feature_audit.py",
+   "bytes": 11336,
+   "sha256": "4c7b6547b57a4ad4f2445fb92670beceef21b09a9b1b3347bc3f40b1b9a37930"
+  },
+  {
+   "path": "S7_Reproducibility/experiment_scripts/e17_entropy_contribution.py",
+   "bytes": 11362,
+   "sha256": "0c7e09b5b408c92e0ceaea23f5f10d4049746cca2778a8563527dd7a8455f542"
+  },
+  {
+   "path": "S7_Reproducibility/experiment_scripts/e18_temporal_structure.py",
+   "bytes": 8122,
+   "sha256": "c6774852c66387fa3d306aedd2340350f6807ecf3f946346244ffd5f2e85af32"
+  },
+  {
+   "path": "S7_Reproducibility/experiment_scripts/e19_shap_sample.py",
+   "bytes": 4625,
+   "sha256": "8548f1dde0f2561adc4907edc04fd6ecf59a19d7d9983ea45150491cab031790"
+  },
+  {
+   "path": "S7_Reproducibility/experiment_scripts/e1_baselines_cpu.py",
+   "bytes": 16140,
+   "sha256": "04c24b2f0a122a613a3ce9ff05304269fa4a5ee1f3f11a6fc3a3492c7413c986"
+  },
+  {
+   "path": "S7_Reproducibility/experiment_scripts/e20_few_shot_transfer.py",
+   "bytes": 12479,
+   "sha256": "9ff06cf3ddb10cb10a227f91346b1861b1237aa9705a7e3077638b0c905c0689"
+  },
+  {
+   "path": "S7_Reproducibility/experiment_scripts/e21_entropy_under_shift.py",
+   "bytes": 11001,
+   "sha256": "23e051108ba7eb086c9a644460f53b4e84dcd7c71ed1652fb55ad7851c7562c4"
+  },
+  {
+   "path": "S7_Reproducibility/experiment_scripts/e22_model_size_pareto.py",
+   "bytes": 10568,
+   "sha256": "095f99040647cde78054baac5bccf840dc619ba0f20155684fa8bef34ca1ada1"
+  },
+  {
+   "path": "S7_Reproducibility/experiment_scripts/e23_latency_verification.py",
+   "bytes": 6360,
+   "sha256": "16b65597866993b3bb2c0899df95f14b64ef7cfe1849d2c43e30c15c28833d43"
+  },
+  {
+   "path": "S7_Reproducibility/experiment_scripts/e2_cross_dataset.py",
+   "bytes": 18536,
+   "sha256": "8b993ab86e2aaace4f8af8b9313c6896ee124e98a193cf959810d4949b82a24c"
+  },
+  {
+   "path": "S7_Reproducibility/experiment_scripts/e3_cross_vector.py",
+   "bytes": 12427,
+   "sha256": "d167305e4022f22b3f23f17274aee0fc157cf8a988c9796744ede80c45a5b0cf"
+  },
+  {
+   "path": "S7_Reproducibility/experiment_scripts/e4_controller_testbed.py",
+   "bytes": 27093,
+   "sha256": "eecbddd1d46a3591c2fa22fdfec05db841920af2ed090e18fd17869885c2f5b2"
+  },
+  {
+   "path": "S7_Reproducibility/experiment_scripts/e4b_mininet_testbed.py",
+   "bytes": 13017,
+   "sha256": "cb94bc18aec4f439ff6af6a1aa75507d0a316077d52cf99e804f13458b856f24"
+  },
+  {
+   "path": "S7_Reproducibility/experiment_scripts/e5_leakage_audit.py",
+   "bytes": 20206,
+   "sha256": "c1dac3b266a534c01f727366681841edbfaa43f54b5afa8b5b9e2e4ca22ee4b1"
+  },
+  {
+   "path": "S7_Reproducibility/experiment_scripts/e5b_duplicate_leakage.py",
+   "bytes": 7466,
+   "sha256": "8feaf908434422d872e07353a31089198205d5bcee9dfb4a7c8b298fec16c79f"
+  },
+  {
+   "path": "S7_Reproducibility/experiment_scripts/e6_collinearity_shap_stability.py",
+   "bytes": 13417,
+   "sha256": "08e92e382690e08d6ec68df880b4966d12d501cea502943879549402db116efb"
+  },
+  {
+   "path": "S7_Reproducibility/experiment_scripts/e8b_tcam_policy.py",
+   "bytes": 7869,
+   "sha256": "d79f42968cd476f0d0525ba87a96f6f613f0f792e6a3f42e58bebcf41e62e447"
+  },
+  {
+   "path": "S7_Reproducibility/experiment_scripts/e9_deep_baselines.py",
+   "bytes": 24154,
+   "sha256": "6a2f53366ea6726458f1e0709632f426f0dd70e823c9424887232e2ad1012fa4"
+  }
+ ]
+}

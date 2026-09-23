@@ -1,0 +1,41 @@
+loaded (3590794, 88)
+Correlation structure...
+C:\Users\adeel\xaisdn_revision\venv\Lib\site-packages\numpy\lib\_function_base_impl.py:3065: RuntimeWarning: invalid value encountered in divide
+  c /= stddev[:, None]
+C:\Users\adeel\xaisdn_revision\venv\Lib\site-packages\numpy\lib\_function_base_impl.py:3066: RuntimeWarning: invalid value encountered in divide
+  c /= stddev[None, :]
+  2.5s
+  |r|>=0.95 pairs: 61 of 3828
+VIF and conditioning...
+  VIF>10: 55/76, condition number=3.89e+16
+Correlation clustering and reduced feature sets...
+  [full 88] d=88 acc=0.997579 F1=0.978813 AP=0.999992 lat=0.00219 ms
+  [cut0.05_d50] d=50 acc=0.997706 F1=0.979879 AP=0.999989 lat=0.00113 ms
+  [cut0.1_d45] d=45 acc=0.997670 F1=0.979568 AP=0.999989 lat=0.00136 ms
+  [cut0.2_d41] d=41 acc=0.997660 F1=0.979469 AP=0.999989 lat=0.00153 ms
+  [cut0.4_d29] d=29 acc=0.997198 F1=0.975342 AP=0.999991 lat=0.00145 ms
+SHAP attribution stability...
+  stability fits on 600,000 flows (79 benign)
+  seed 1/10
+  seed 2/10
+  seed 3/10
+  seed 4/10
+  seed 5/10
+  seed 6/10
+  seed 7/10
+  seed 8/10
+  seed 9/10
+  seed 10/10
+  bootstrap 1/10
+  bootstrap 2/10
+  bootstrap 3/10
+  bootstrap 4/10
+  bootstrap 5/10
+  bootstrap 6/10
+  bootstrap 7/10
+  bootstrap 8/10
+  bootstrap 9/10
+  bootstrap 10/10
+  seed top-10 Jaccard=0.710, bootstrap top-10 Jaccard=0.654
+
+Wrote C:\Users\adeel\OneDrive\Desktop\xai sdn full paper\REVISION_2026\04_results\E6_collinearity_shap_stability.json

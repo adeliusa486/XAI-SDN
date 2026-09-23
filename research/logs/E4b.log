@@ -1,0 +1,12 @@
+staging files into WSL...
+
+=== condition: no_controller ===
+
+=== condition: detect ===
+  throughput retained under attack: None
+  RTT inflation: None  added loss: None%
+  flow table: {'entries': 0, 'drop_rules': 0}
+
+=== condition: detect_explain ===
+
+Wrote C:\Users\adeel\OneDrive\Desktop\xai sdn full paper\REVISION_2026\04_results\E4b_mininet_testbed.json

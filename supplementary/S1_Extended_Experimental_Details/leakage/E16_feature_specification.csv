@@ -1,0 +1,10 @@
+feature,source_column,transformation,bin_width,units
+H_src_ip,Source IP,Shannon entropy over the sliding window of source addresses,none (categorical),bits
+H_dst_ip,Destination IP,Shannon entropy over destination addresses,none (categorical),bits
+H_dst_port,Destination Port,Shannon entropy over destination port numbers,none (integer),bits
+H_proto,Protocol,Shannon entropy over IP protocol numbers,none (integer),bits
+H_pkt_len,Packet Length Mean,"floor-binned, then Shannon entropy",10 bytes,bits
+H_iat,Flow IAT Mean,"floor-binned, then Shannon entropy",1000 microseconds,bits
+H_tcp_flags,SYN Flag Count,Shannon entropy over SYN flag counts,none (integer),bits
+"H_ttl [SUBMITTED, DEFECTIVE]",none - hard-coded constant 64,"Shannon entropy of a constant, therefore identically zero",5 TTL units (inoperative),bits
+H_src_port [REPAIRED],Source Port,Shannon entropy over source port numbers,none (integer),bits

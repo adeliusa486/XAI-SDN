@@ -1,0 +1,391 @@
+{
+  "_provenance": {
+    "hardware": {
+      "cpu_name": "13th Gen Intel(R) Core(TM) i9-13900H",
+      "cpu_manufacturer": "GenuineIntel",
+      "cpu_cores": 14,
+      "cpu_logical": 20,
+      "cpu_max_clock_mhz": 2600,
+      "cpu_l2_cache_kb": 11776,
+      "cpu_l3_cache_kb": 24576,
+      "ram_total_bytes": 51150704640,
+      "ram_total_gb": 47.64,
+      "os_caption": "Microsoft Windows 11 Pro",
+      "os_version": "10.0.26120",
+      "os_build": "26120",
+      "os_arch": "64-bit",
+      "gpus": [
+        "Intel(R) Iris(R) Xe Graphics",
+        "NVIDIA GeForce RTX 4060 Laptop GPU"
+      ],
+      "machine_model": "Zenbook UX6404VV_UX6404VV"
+    },
+    "python": "3.11.9",
+    "platform": "Windows-10-10.0.26120-SP0",
+    "host": "ADEEL",
+    "libraries": {
+      "numpy": "2.3.5",
+      "pandas": "2.3.3",
+      "sklearn": "1.8.0",
+      "scipy": "1.17.1",
+      "shap": "0.51.0",
+      "xgboost": "3.2.0",
+      "lightgbm": "4.7.0",
+      "torch": "2.14.0+cpu",
+      "matplotlib": "3.10.9",
+      "statsmodels": "0.14.6"
+    },
+    "cpu_only": true,
+    "timestamp": "2026-09-21T01:47:30"
+  },
+  "experiment": "E0",
+  "objective": "reproduce submitted headline numbers",
+  "targets": {
+    "n_train": 2514862,
+    "n_test": 1077798,
+    "test_benign": 9311,
+    "test_attack": 1068487,
+    "accuracy": 0.999987,
+    "macro_f1": 0.999621,
+    "fpr": 0.000537,
+    "fnr": 8.4e-06,
+    "auc_roc": 1.0
+  },
+  "source_file": {
+    "path": "C:\\Users\\adeel\\xaisdn_revision\\data\\CICDDoS2019\\03-11\\Syn.csv",
+    "bytes": 1877372065
+  },
+  "cleaning": {
+    "rows_in": 4320541,
+    "n_cic_features_present": 80,
+    "missing_cic_features": [],
+    "nan_cells_total": 566152,
+    "nan_top_columns": {
+      "Flow_Packets_s": 283076,
+      "Flow_Bytes_s": 283076
+    },
+    "rows_dropped_nan_inf": 283076,
+    "rows_dropped_duplicate": 446671,
+    "label_counts": {
+      "Syn": 3559780,
+      "BENIGN": 31014
+    },
+    "rows_out": 3590794
+  },
+  "cleaned_totals": {
+    "n": 3590794,
+    "benign": 31014,
+    "attack": 3559780,
+    "benign_pct": 0.86371
+  },
+  "cleaned_total_matches_paper": false,
+  "feature_names": [
+    "Destination_Port",
+    "Flow_Duration",
+    "Total_Fwd_Packets",
+    "Total_Backward_Packets",
+    "Total_Length_of_Fwd_Packets",
+    "Total_Length_of_Bwd_Packets",
+    "Fwd_Packet_Length_Max",
+    "Fwd_Packet_Length_Min",
+    "Fwd_Packet_Length_Mean",
+    "Fwd_Packet_Length_Std",
+    "Bwd_Packet_Length_Max",
+    "Bwd_Packet_Length_Min",
+    "Bwd_Packet_Length_Mean",
+    "Bwd_Packet_Length_Std",
+    "Flow_Bytes_s",
+    "Flow_Packets_s",
+    "Flow_IAT_Mean",
+    "Flow_IAT_Std",
+    "Flow_IAT_Max",
+    "Flow_IAT_Min",
+    "Fwd_IAT_Total",
+    "Fwd_IAT_Mean",
+    "Fwd_IAT_Std",
+    "Fwd_IAT_Max",
+    "Fwd_IAT_Min",
+    "Bwd_IAT_Total",
+    "Bwd_IAT_Mean",
+    "Bwd_IAT_Std",
+    "Bwd_IAT_Max",
+    "Bwd_IAT_Min",
+    "Fwd_PSH_Flags",
+    "Bwd_PSH_Flags",
+    "Fwd_URG_Flags",
+    "Bwd_URG_Flags",
+    "Fwd_Header_Length",
+    "Bwd_Header_Length",
+    "Fwd_Packets_s",
+    "Bwd_Packets_s",
+    "Min_Packet_Length",
+    "Max_Packet_Length",
+    "Packet_Length_Mean",
+    "Packet_Length_Std",
+    "Packet_Length_Variance",
+    "FIN_Flag_Count",
+    "SYN_Flag_Count",
+    "RST_Flag_Count",
+    "PSH_Flag_Count",
+    "ACK_Flag_Count",
+    "URG_Flag_Count",
+    "CWE_Flag_Count",
+    "ECE_Flag_Count",
+    "Down_Up_Ratio",
+    "Average_Packet_Size",
+    "Avg_Fwd_Segment_Size",
+    "Avg_Bwd_Segment_Size",
+    "Fwd_Header_Length_2",
+    "Fwd_Avg_Bytes_Bulk",
+    "Fwd_Avg_Packets_Bulk",
+    "Fwd_Avg_Bulk_Rate",
+    "Bwd_Avg_Bytes_Bulk",
+    "Bwd_Avg_Packets_Bulk",
+    "Bwd_Avg_Bulk_Rate",
+    "Subflow_Fwd_Packets",
+    "Subflow_Fwd_Bytes",
+    "Subflow_Bwd_Packets",
+    "Subflow_Bwd_Bytes",
+    "Init_Win_bytes_forward",
+    "Init_Win_bytes_backward",
+    "act_data_pkt_fwd",
+    "min_seg_size_forward",
+    "Active_Mean",
+    "Active_Std",
+    "Active_Max",
+    "Active_Min",
+    "Idle_Mean",
+    "Idle_Std",
+    "Idle_Max",
+    "Idle_Min",
+    "Protocol",
+    "Source_Port",
+    "H_src_ip",
+    "H_dst_ip",
+    "H_dst_port",
+    "H_proto",
+    "H_pkt_len",
+    "H_iat",
+    "H_tcp_flags",
+    "H_ttl"
+  ],
+  "n_features": 88,
+  "entropy_feature_stats": {
+    "H_src_ip": {
+      "min": 0.0,
+      "max": 4.199130535125732,
+      "mean": 0.03393888846039772,
+      "std": 0.31133994460105896,
+      "n_unique": 27751
+    },
+    "H_dst_ip": {
+      "min": 0.0,
+      "max": 5.839285373687744,
+      "mean": 0.049384281039237976,
+      "std": 0.46335697174072266,
+      "n_unique": 32547
+    },
+    "H_dst_port": {
+      "min": 0.0,
+      "max": 9.947784423828125,
+      "mean": 9.830503463745117,
+      "std": 0.5510887503623962,
+      "n_unique": 28681
+    },
+    "H_proto": {
+      "min": 0.0,
+      "max": 1.1396123170852661,
+      "mean": 0.011826956644654274,
+      "std": 0.09835154563188553,
+      "n_unique": 5420
+    },
+    "H_pkt_len": {
+      "min": 0.0,
+      "max": 4.446780681610107,
+      "mean": 0.03978359326720238,
+      "std": 0.36059969663619995,
+      "n_unique": 29719
+    },
+    "H_iat": {
+      "min": 0.0,
+      "max": 6.1717987060546875,
+      "mean": 1.3791083097457886,
+      "std": 1.6281968355178833,
+      "n_unique": 44992
+    },
+    "H_tcp_flags": {
+      "min": 0.0,
+      "max": 0.13005883991718292,
+      "mean": 0.0021335380151867867,
+      "std": 0.008864108473062515,
+      "n_unique": 196
+    },
+    "H_ttl": {
+      "min": 0.0,
+      "max": 1.7763568394002505e-15,
+      "mean": 3.6607614716267295e-20,
+      "std": 7.223225658943756e-18,
+      "n_unique": 4
+    }
+  },
+  "H_ttl_is_constant_zero": false,
+  "runs": {
+    "stratified": {
+      "split": "stratified",
+      "seed": 42,
+      "n_train": 2513555,
+      "n_test": 1077239,
+      "train_benign": 21710,
+      "train_attack": 2491845,
+      "test_benign": 9304,
+      "test_attack": 1067935,
+      "test_benign_pct": 0.8637,
+      "train_time_s": 183.7,
+      "inference_time_s": 4.525,
+      "inference_latency_ms_per_flow": 0.0042,
+      "metrics_at_tau": {
+        "accuracy": 0.9999814340178921,
+        "macro_f1": 0.9994584917402546,
+        "auc_roc": 0.999999992803994,
+        "avg_precision": 0.9999999999359925,
+        "fpr": 0.0,
+        "fnr": 1.8727731556695865e-05,
+        "confusion": {
+          "tn": 9304,
+          "fp": 0,
+          "fn": 20,
+          "tp": 1067915
+        },
+        "per_class": {
+          "benign": {
+            "precision": 0.9978549978549979,
+            "recall": 1.0,
+            "f1": 0.9989263474339704,
+            "support": 9304
+          },
+          "attack": {
+            "precision": 1.0,
+            "recall": 0.9999812722684434,
+            "f1": 0.9999906360465388,
+            "support": 1067935
+          }
+        }
+      },
+      "metrics_argmax": {
+        "accuracy": 0.9999888604107352,
+        "macro_f1": 0.9996749220549581,
+        "auc_roc": 0.999999992803994,
+        "avg_precision": 0.9999999999359925,
+        "fpr": 0.00010748065348237318,
+        "fnr": 1.0300252356182727e-05,
+        "confusion": {
+          "tn": 9303,
+          "fp": 1,
+          "fn": 11,
+          "tp": 1067924
+        },
+        "per_class": {
+          "benign": {
+            "precision": 0.9988189821773674,
+            "recall": 0.9998925193465176,
+            "f1": 0.9993554624556881,
+            "support": 9304
+          },
+          "attack": {
+            "precision": 0.9999990636046538,
+            "recall": 0.9999896997476438,
+            "f1": 0.9999943816542283,
+            "support": 1067935
+          }
+        }
+      },
+      "tau": 0.7
+    },
+    "temporal": {
+      "split": "temporal",
+      "seed": 42,
+      "n_train": 2513556,
+      "n_test": 1077238,
+      "train_benign": 582,
+      "train_attack": 2512974,
+      "test_benign": 30432,
+      "test_attack": 1046806,
+      "test_benign_pct": 2.825,
+      "train_time_s": 128.16,
+      "inference_time_s": 3.965,
+      "inference_latency_ms_per_flow": 0.003681,
+      "metrics_at_tau": {
+        "accuracy": 0.9975381484871495,
+        "macro_f1": 0.9784668582413877,
+        "auc_roc": 0.999720552418153,
+        "avg_precision": 0.999991693547707,
+        "fpr": 0.0011172450052576235,
+        "fnr": 0.002500940957541321,
+        "confusion": {
+          "tn": 30398,
+          "fp": 34,
+          "fn": 2618,
+          "tp": 1044188
+        },
+        "per_class": {
+          "benign": {
+            "precision": 0.9207051126726435,
+            "recall": 0.9988827549947423,
+            "f1": 0.9582019921825747,
+            "support": 30432
+          },
+          "attack": {
+            "precision": 0.9999674398738966,
+            "recall": 0.9974990590424587,
+            "f1": 0.9987317243002006,
+            "support": 1046806
+          }
+        }
+      },
+      "metrics_argmax": {
+        "accuracy": 0.9980468568691413,
+        "macro_f1": 0.9827262513004755,
+        "auc_roc": 0.999720552418153,
+        "avg_precision": 0.999991693547707,
+        "fpr": 0.003943217665615142,
+        "fnr": 0.001895289098457594,
+        "confusion": {
+          "tn": 30312,
+          "fp": 120,
+          "fn": 1984,
+          "tp": 1044822
+        },
+        "per_class": {
+          "benign": {
+            "precision": 0.9385682437453554,
+            "recall": 0.9960567823343849,
+            "f1": 0.9664583599030736,
+            "support": 30432
+          },
+          "attack": {
+            "precision": 0.9998851610902806,
+            "recall": 0.9981047109015424,
+            "f1": 0.9989941426978776,
+            "support": 1046806
+          }
+        }
+      },
+      "tau": 0.7
+    }
+  },
+  "verdict": {
+    "stratified": {
+      "reproduces_counts": false,
+      "acc_delta_pp": -0.000557,
+      "macro_f1_delta_pp": -0.016251,
+      "fpr_delta_pp": -0.0537
+    },
+    "temporal": {
+      "reproduces_counts": false,
+      "acc_delta_pp": -0.244885,
+      "macro_f1_delta_pp": -2.115414,
+      "fpr_delta_pp": 0.058025
+    }
+  },
+  "total_runtime_s": 443.1
+}

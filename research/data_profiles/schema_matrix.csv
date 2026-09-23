@@ -1,0 +1,89 @@
+canonical_feature,CICDDoS2019_0311_Syn,CICDDoS2019_0311_LDAP,CICDDoS2019_0311_NetBIOS,CICDDoS2019_0311_Portmap,CICDDoS2019_0112_Syn,InSDN,CICIDS2017_DDoS,CICIDS2017_Benign
+Destination_Port,1,1,1,1,1,1,1,1
+Flow_Duration,1,1,1,1,1,1,1,1
+Total_Fwd_Packets,1,1,1,1,1,1,1,1
+Total_Backward_Packets,1,1,1,1,1,1,1,1
+Total_Length_of_Fwd_Packets,1,1,1,1,1,1,1,1
+Total_Length_of_Bwd_Packets,1,1,1,1,1,1,1,1
+Fwd_Packet_Length_Max,1,1,1,1,1,1,1,1
+Fwd_Packet_Length_Min,1,1,1,1,1,1,1,1
+Fwd_Packet_Length_Mean,1,1,1,1,1,1,1,1
+Fwd_Packet_Length_Std,1,1,1,1,1,1,1,1
+Bwd_Packet_Length_Max,1,1,1,1,1,1,1,1
+Bwd_Packet_Length_Min,1,1,1,1,1,1,1,1
+Bwd_Packet_Length_Mean,1,1,1,1,1,1,1,1
+Bwd_Packet_Length_Std,1,1,1,1,1,1,1,1
+Flow_Bytes_s,1,1,1,1,1,1,1,1
+Flow_Packets_s,1,1,1,1,1,1,1,1
+Flow_IAT_Mean,1,1,1,1,1,1,1,1
+Flow_IAT_Std,1,1,1,1,1,1,1,1
+Flow_IAT_Max,1,1,1,1,1,1,1,1
+Flow_IAT_Min,1,1,1,1,1,1,1,1
+Fwd_IAT_Total,1,1,1,1,1,1,1,1
+Fwd_IAT_Mean,1,1,1,1,1,1,1,1
+Fwd_IAT_Std,1,1,1,1,1,1,1,1
+Fwd_IAT_Max,1,1,1,1,1,1,1,1
+Fwd_IAT_Min,1,1,1,1,1,1,1,1
+Bwd_IAT_Total,1,1,1,1,1,1,1,1
+Bwd_IAT_Mean,1,1,1,1,1,1,1,1
+Bwd_IAT_Std,1,1,1,1,1,1,1,1
+Bwd_IAT_Max,1,1,1,1,1,1,1,1
+Bwd_IAT_Min,1,1,1,1,1,1,1,1
+Fwd_PSH_Flags,1,1,1,1,1,1,1,1
+Bwd_PSH_Flags,1,1,1,1,1,1,1,1
+Fwd_URG_Flags,1,1,1,1,1,1,1,1
+Bwd_URG_Flags,1,1,1,1,1,1,1,1
+Fwd_Header_Length,1,1,1,1,1,1,1,1
+Bwd_Header_Length,1,1,1,1,1,1,1,1
+Fwd_Packets_s,1,1,1,1,1,1,1,1
+Bwd_Packets_s,1,1,1,1,1,1,1,1
+Min_Packet_Length,1,1,1,1,1,1,1,1
+Max_Packet_Length,1,1,1,1,1,1,1,1
+Packet_Length_Mean,1,1,1,1,1,1,1,1
+Packet_Length_Std,1,1,1,1,1,1,1,1
+Packet_Length_Variance,1,1,1,1,1,1,1,1
+FIN_Flag_Count,1,1,1,1,1,1,1,1
+SYN_Flag_Count,1,1,1,1,1,1,1,1
+RST_Flag_Count,1,1,1,1,1,1,1,1
+PSH_Flag_Count,1,1,1,1,1,1,1,1
+ACK_Flag_Count,1,1,1,1,1,1,1,1
+URG_Flag_Count,1,1,1,1,1,1,1,1
+CWE_Flag_Count,1,1,1,1,1,1,1,1
+ECE_Flag_Count,1,1,1,1,1,1,1,1
+Down_Up_Ratio,1,1,1,1,1,1,1,1
+Average_Packet_Size,1,1,1,1,1,1,1,1
+Avg_Fwd_Segment_Size,1,1,1,1,1,1,1,1
+Avg_Bwd_Segment_Size,1,1,1,1,1,1,1,1
+Fwd_Header_Length_2,1,1,1,1,1,0,1,1
+Fwd_Avg_Bytes_Bulk,1,1,1,1,1,1,1,1
+Fwd_Avg_Packets_Bulk,1,1,1,1,1,1,1,1
+Fwd_Avg_Bulk_Rate,1,1,1,1,1,1,1,1
+Bwd_Avg_Bytes_Bulk,1,1,1,1,1,1,1,1
+Bwd_Avg_Packets_Bulk,1,1,1,1,1,1,1,1
+Bwd_Avg_Bulk_Rate,1,1,1,1,1,1,1,1
+Subflow_Fwd_Packets,1,1,1,1,1,1,1,1
+Subflow_Fwd_Bytes,1,1,1,1,1,1,1,1
+Subflow_Bwd_Packets,1,1,1,1,1,1,1,1
+Subflow_Bwd_Bytes,1,1,1,1,1,1,1,1
+Init_Win_bytes_forward,1,1,1,1,1,1,1,1
+Init_Win_bytes_backward,1,1,1,1,1,1,1,1
+act_data_pkt_fwd,1,1,1,1,1,1,1,1
+min_seg_size_forward,1,1,1,1,1,1,1,1
+Active_Mean,1,1,1,1,1,1,1,1
+Active_Std,1,1,1,1,1,1,1,1
+Active_Max,1,1,1,1,1,1,1,1
+Active_Min,1,1,1,1,1,1,1,1
+Idle_Mean,1,1,1,1,1,1,1,1
+Idle_Std,1,1,1,1,1,1,1,1
+Idle_Max,1,1,1,1,1,1,1,1
+Idle_Min,1,1,1,1,1,1,1,1
+Protocol,1,1,1,1,1,1,0,0
+Source_Port,1,1,1,1,1,1,0,0
+H_src_ip (requires Source_IP),1,1,1,1,1,1,0,0
+H_dst_ip (requires Destination_IP),1,1,1,1,1,1,0,0
+H_dst_port (requires Destination_Port),1,1,1,1,1,1,1,1
+H_proto (requires Protocol),1,1,1,1,1,1,0,0
+H_pkt_len (requires Packet_Length_Mean),1,1,1,1,1,1,1,1
+H_iat (requires Flow_IAT_Mean),1,1,1,1,1,1,1,1
+H_tcp_flags (requires SYN_Flag_Count),1,1,1,1,1,1,1,1
+H_src_port (requires Source_Port),1,1,1,1,1,1,0,0

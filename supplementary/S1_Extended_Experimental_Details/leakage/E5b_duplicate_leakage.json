@@ -1,0 +1,91 @@
+{
+  "_provenance": {
+    "hardware": {
+      "cpu_name": "13th Gen Intel(R) Core(TM) i9-13900H",
+      "cpu_manufacturer": "GenuineIntel",
+      "cpu_cores": 14,
+      "cpu_logical": 20,
+      "cpu_max_clock_mhz": 2600,
+      "cpu_l2_cache_kb": 11776,
+      "cpu_l3_cache_kb": 24576,
+      "ram_total_bytes": 51150704640,
+      "ram_total_gb": 47.64,
+      "os_caption": "Microsoft Windows 11 Pro",
+      "os_version": "10.0.26120",
+      "os_build": "26120",
+      "os_arch": "64-bit",
+      "gpus": [
+        "Intel(R) Iris(R) Xe Graphics",
+        "NVIDIA GeForce RTX 4060 Laptop GPU"
+      ],
+      "machine_model": "Zenbook UX6404VV_UX6404VV"
+    },
+    "python": "3.11.9",
+    "platform": "Windows-10-10.0.26120-SP0",
+    "host": "ADEEL",
+    "libraries": {
+      "numpy": "2.3.5",
+      "pandas": "2.3.3",
+      "sklearn": "1.8.0",
+      "scipy": "1.17.1",
+      "shap": "0.51.0",
+      "xgboost": "3.2.0",
+      "lightgbm": "4.7.0",
+      "torch": "2.14.0+cpu",
+      "matplotlib": "3.10.9",
+      "statsmodels": "0.14.6"
+    },
+    "cpu_only": true,
+    "timestamp": "2026-09-21T05:34:30"
+  },
+  "experiment": "E5b",
+  "objective": "duplicate-driven leakage across the split boundary",
+  "raw": {
+    "rows_raw": 4320541,
+    "rows_after_nan_inf_drop": 4037465,
+    "dropped_nan_inf": 283076
+  },
+  "duplicates_before_cleaning": {
+    "n_rows": 4037465,
+    "n_distinct_feature_vectors": 3590794,
+    "n_duplicate_rows": 446671,
+    "duplicate_rate": 0.110632,
+    "largest_group": 5,
+    "groups_with_2_or_more": 445836,
+    "seconds": 16.6
+  },
+  "duplicates_benign_only": {
+    "n_benign": 35387,
+    "n_distinct": 31014,
+    "duplicate_rate": 0.123576,
+    "largest_group": 5
+  },
+  "straddle": [
+    {
+      "split": "stratified random 70/30",
+      "n_train": 2826225,
+      "n_test": 1211240,
+      "test_rows_with_identical_training_twin": 187580,
+      "straddle_rate": 0.154866,
+      "lookup_baseline_accuracy": 0.99276,
+      "lookup_accuracy_on_straddling_rows": 1.0,
+      "test_benign": 10616,
+      "benign_rows_with_training_twin": 1847,
+      "benign_straddle_rate": 0.173983
+    },
+    {
+      "split": "temporal 70/30",
+      "n_train": 2826226,
+      "n_test": 1211239,
+      "test_rows_with_identical_training_twin": 438,
+      "straddle_rate": 0.000362,
+      "lookup_baseline_accuracy": 0.971403,
+      "lookup_accuracy_on_straddling_rows": 1.0,
+      "test_benign": 34639,
+      "benign_rows_with_training_twin": 1,
+      "benign_straddle_rate": 2.9e-05
+    }
+  ],
+  "interpretation": "Before deduplication the partition contains 11.1% exactly duplicated feature vectors. Under the stratified random split that produced the submitted results, 15.5% of test rows have a feature-identical twin in the training partition, and a lookup table that learns nothing but the training labels of those twins already reaches 0.9928 accuracy. Under the temporal split the same lookup reaches 0.9714. The difference isolates how much of the reported performance was available to pure memorisation rather than to detection.",
+  "total_runtime_s": 61.0
+}

@@ -104,7 +104,7 @@ def _generate_class_samples(cls: str, n: int, rng: np.random.RandomState) -> pd.
         X_ent[:, 4] = rng.uniform(3.0, 5.0, size=n)  # H_pkt_len
         X_ent[:, 5] = rng.uniform(2.5, 4.5, size=n)  # H_iat
         X_ent[:, 6] = rng.uniform(1.5, 3.0, size=n)  # H_tcp_flags
-        X_ent[:, 7] = rng.uniform(2.0, 4.0, size=n)  # H_ttl
+        X_ent[:, 7] = rng.uniform(2.0, 4.0, size=n)  # H_src_port
 
     elif cls == "DDoS-UDP":
         # UDP flood: single source cluster → low src_ip entropy, single port
@@ -118,7 +118,7 @@ def _generate_class_samples(cls: str, n: int, rng: np.random.RandomState) -> pd.
         X_ent[:, 4] = rng.uniform(0.5, 1.5, size=n)  # H_pkt_len
         X_ent[:, 5] = rng.uniform(0.2, 1.0, size=n)  # H_iat
         X_ent[:, 6] = rng.uniform(0.0, 0.5, size=n)  # H_tcp_flags
-        X_ent[:, 7] = rng.uniform(0.1, 0.8, size=n)  # H_ttl
+        X_ent[:, 7] = rng.uniform(0.1, 0.8, size=n)  # H_src_port
 
     elif cls == "DDoS-TCP":
         # SYN flood: high SYN flags, low H_tcp_flags (only SYN)

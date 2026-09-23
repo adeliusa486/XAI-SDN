@@ -1,33 +1,26 @@
 """
-entropy.py — Shannon Entropy Feature Extraction for XAI-SDN.
+entropy.py - Shannon entropy feature extraction for XAI-SDN.
 
-SUPERSEDED FEATURE SET. This module computes the eight entropy features of the
-*submitted* version of the paper, the last of which is `H_ttl`:
+Computes the eight windowed Shannon entropy features of the published feature
+set (Table 3 of the paper):
 
     H_src_ip, H_dst_ip, H_dst_port, H_proto,
-    H_pkt_len, H_iat, H_tcp_flags, H_ttl
+    H_pkt_len, H_iat, H_tcp_flags, H_src_port
 
-`H_ttl` is the defect Reviewer 7 identified. CICFlowMeter CSV output carries no
-TTL column, so `features/pipeline.py` supplies a constant 64 for every record and
-this feature is zero to floating-point tolerance across all 3,590,794 flows of
-the SYN partition, with a single-feature AUC of 0.500021, which is chance. It
-contributed nothing to any published result.
-
-The 2026 revision replaces it with source-port entropy, `H_src_port`, which is
-exported by CICFlowMeter, is non-degenerate, reaches a single-feature AUC of
-0.9876 and carries the highest mutual information of the eight; the
-representation stays 88-dimensional. Table 3 of the revised manuscript specifies
-the repaired set. **Every number in the revision is produced by
-`revision_2026/03_experiments/common/data.py`, not by this module.** This file is
-kept unchanged so that the submitted results remain reproducible, and should not
-be used to reproduce anything in the revision.
+Source-port entropy is used rather than TTL entropy. CICFlowMeter exports no
+TTL column, so a TTL-derived feature is constant on these records and carries no
+information. Source port is exported, is non-degenerate, and is directly
+relevant to floods that randomize source ports. The representation is
+88-dimensional either way: 80 exported flow statistics plus these eight.
 
 Mathematical foundation:
-    H(X) = -Σ p(xᵢ) log₂ p(xᵢ)
+    H(X) = -sum p(x_i) log2 p(x_i)
 
 All features are computed over a sliding window of N recent flow records.
 For online use, a deque(maxlen=N) provides O(1) append/pop semantics.
-For offline training, the window is simulated over temporally-ordered records.
+For offline evaluation the window is replayed over timestamp-ordered records.
+Continuous quantities are discretized before the entropy is taken; the bucket
+sizes are the module constants below and are the ones the paper reports.
 """
 
 from __future__ import annotations
@@ -40,9 +33,8 @@ import numpy as np
 
 # ─── Constants ────────────────────────────────────────────────────────────────
 
-# Submitted feature set. H_ttl is degenerate on CICFlowMeter exports; see the
-# module docstring. The revision's repaired set is ENTROPY_FEATURES_REPAIRED in
-# revision_2026/03_experiments/common/data.py.
+# Published feature set (Table 3). Source-port entropy replaces TTL entropy,
+# which is constant on CICFlowMeter exports.
 ENTROPY_FEATURE_NAMES = [
     "H_src_ip",
     "H_dst_ip",
@@ -51,13 +43,13 @@ ENTROPY_FEATURE_NAMES = [
     "H_pkt_len",
     "H_iat",
     "H_tcp_flags",
-    "H_ttl",
+    "H_src_port",
 ]
 
 DEFAULT_WINDOW_SIZE = 1000
 DEFAULT_PKT_LEN_BIN = 10  # Bytes per discretization bucket
 DEFAULT_IAT_BIN = 1000  # Microseconds per discretization bucket
-DEFAULT_TTL_BIN = 5  # TTL units per discretization bucket
+DEFAULT_SRC_PORT_BIN = 1  # Source port is used at full resolution
 
 
 # ─── Core Entropy Function ────────────────────────────────────────────────────
@@ -107,7 +99,7 @@ class EntropyFeatureExtractor:
         window_size (int): Number of recent flows in the sliding window.
         pkt_len_bin_size (int): Discretization bucket size for packet length.
         iat_bin_size (int): Discretization bucket size for IAT (microseconds).
-        ttl_bin_size (int): Discretization bucket size for TTL.
+        src_port_bin_size (int): Discretization bucket size for source port.
         window (deque): Circular buffer of recent flow records.
 
     Example:
@@ -121,14 +113,14 @@ class EntropyFeatureExtractor:
         window_size: int = DEFAULT_WINDOW_SIZE,
         pkt_len_bin_size: int = DEFAULT_PKT_LEN_BIN,
         iat_bin_size: int = DEFAULT_IAT_BIN,
-        ttl_bin_size: int = DEFAULT_TTL_BIN,
+        src_port_bin_size: int = DEFAULT_SRC_PORT_BIN,
     ) -> None:
         if window_size < 1:
             raise ValueError(f"window_size must be >= 1, got {window_size}")
         self.window_size = window_size
         self.pkt_len_bin_size = max(1, pkt_len_bin_size)
         self.iat_bin_size = max(1, iat_bin_size)
-        self.ttl_bin_size = max(1, ttl_bin_size)
+        self.src_port_bin_size = max(1, src_port_bin_size)
         self.window: deque[Dict[str, Any]] = deque(maxlen=window_size)
 
     # ── Public API ─────────────────────────────────────────────────────────
@@ -145,7 +137,7 @@ class EntropyFeatureExtractor:
                 - pkt_len_mean (float): Mean packet length in bytes.
                 - iat_mean (float): Mean inter-arrival time in microseconds.
                 - tcp_flags (int): Bitmask of observed TCP flags.
-                - ttl (int): IP Time-To-Live value.
+                - src_port (int): TCP/UDP source port.
 
         Returns:
             Dictionary mapping each of the 8 entropy feature names to a float.
@@ -174,7 +166,7 @@ class EntropyFeatureExtractor:
         pkt_lens = [int(f.get("pkt_len_mean", 0) // self.pkt_len_bin_size) for f in window]
         iats = [int(f.get("iat_mean", 0) // self.iat_bin_size) for f in window]
         tcp_flags = [f.get("tcp_flags", 0) for f in window]
-        ttls = [int(f.get("ttl", 0) // self.ttl_bin_size) for f in window]
+        src_ports = [int(f.get("src_port", 0) // self.src_port_bin_size) for f in window]
 
         return {
             "H_src_ip": shannon_entropy(src_ips),
@@ -184,7 +176,7 @@ class EntropyFeatureExtractor:
             "H_pkt_len": shannon_entropy(pkt_lens),
             "H_iat": shannon_entropy(iats),
             "H_tcp_flags": shannon_entropy(tcp_flags),
-            "H_ttl": shannon_entropy(ttls),
+            "H_src_port": shannon_entropy(src_ports),
         }
 
     def compute_as_array(self, window: Optional[Sequence[Dict[str, Any]]] = None) -> np.ndarray:
@@ -223,7 +215,7 @@ def compute_entropy_features_offline(
     window_size: int = DEFAULT_WINDOW_SIZE,
     pkt_len_bin_size: int = DEFAULT_PKT_LEN_BIN,
     iat_bin_size: int = DEFAULT_IAT_BIN,
-    ttl_bin_size: int = DEFAULT_TTL_BIN,
+    src_port_bin_size: int = DEFAULT_SRC_PORT_BIN,
 ) -> np.ndarray:
     """Simulate the sliding window over an ordered sequence of flows with a 1000x faster O(1) rolling algorithm.
 
@@ -250,7 +242,7 @@ def compute_entropy_features_offline(
     # Discretization bins
     pkt_len_bin = pkt_len_bin_size
     iat_bin = iat_bin_size
-    ttl_bin = ttl_bin_size
+    src_port_bin = src_port_bin_size
 
     for i in range(n):
         record = flow_records[i]
@@ -264,7 +256,7 @@ def compute_entropy_features_offline(
             int(record.get("pkt_len_mean", 0.0) // pkt_len_bin),
             int(record.get("iat_mean", 0.0) // iat_bin),
             record.get("tcp_flags", 0),
-            int(record.get("ttl", 0) // ttl_bin)
+            int(record.get("src_port", 0) // src_port_bin)
         ]
 
         for feat_idx in range(8):

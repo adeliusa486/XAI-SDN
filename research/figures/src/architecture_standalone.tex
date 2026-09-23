@@ -1,0 +1,21 @@
+% Figure 1: the XAI-SDN system architecture, drawn as vector TikZ.
+% The entropy module carries the qualified complexity claim (expected
+% amortized O(1)) so the figure agrees with the abstract, Sec. II-A,
+% Sec. IV, Sec. V-C and the Fig. 2 caption.
+% All six control-plane modules share one text width so the two rows form
+% a regular grid and no label overhangs its box or the controller frame.
+\documentclass[tikz,border=4pt]{standalone}
+\usepackage{amsmath,amssymb}
+\usepackage{xcolor}
+\usetikzlibrary{shapes.geometric, arrows.meta, positioning, fit, backgrounds, calc}
+
+\definecolor{xsdnblue}{RGB}{0,114,178}
+\definecolor{xsdnteal}{RGB}{0,158,115}
+\definecolor{xsdnorange}{RGB}{230,159,0}
+\definecolor{xsdnred}{RGB}{213,94,0}
+\definecolor{xsdngray}{RGB}{153,153,153}
+\definecolor{cmlow}{RGB}{240,248,255}
+
+\begin{document}
+\input{architecture_body}
+\end{document}
