@@ -75,3 +75,14 @@
 {"ts": "2026-09-21T09:57:22", "experiment": "E4", "status": "start"}
 {"ts": "2026-09-21T09:58:34", "experiment": "E4b", "status": "done", "result": "C:\\Users\\adeel\\OneDrive\\Desktop\\xai sdn full paper\\REVISION_2026\\04_results\\E4b_mininet_testbed.json", "runtime_s": 83.3}
 {"ts": "2026-09-21T11:14:33", "experiment": "E4", "status": "start"}
+{"ts": "2026-09-21T11:25:42", "experiment": "E4", "status": "done", "result": "C:\\Users\\adeel\\OneDrive\\Desktop\\xai sdn full paper\\REVISION_2026\\04_results\\E4_controller_testbed.json", "runtime_s": 661.6}
+{"ts": "2026-09-21T11:25:47", "experiment": "E22", "status": "start"}
+{"ts": "2026-09-21T11:45:34", "experiment": "E22", "status": "start"}
+{"ts": "2026-09-21T12:38:40", "experiment": "E22", "status": "done", "result": "C:\\Users\\adeel\\OneDrive\\Desktop\\xai sdn full paper\\REVISION_2026\\04_results\\E22_model_size_pareto.json", "runtime_s": 3184.1}
+{"ts": "2026-09-21T12:38:54", "experiment": "E23", "status": "start"}
+{"ts": "2026-09-21T12:43:40", "experiment": "E23", "status": "done", "result": "C:\\Users\\adeel\\OneDrive\\Desktop\\xai sdn full paper\\REVISION_2026\\04_results\\E23_latency_verification.json", "runtime_s": 278.3}
+{"ts": "2026-09-21T13:39:45", "experiment": "E4b", "status": "start"}
+{"ts": "2026-09-21T13:42:14", "experiment": "E4b", "status": "start"}
+{"ts": "2026-09-21T13:43:46", "experiment": "E4b", "status": "start"}
+{"ts": "2026-09-21T13:46:42", "experiment": "E4b", "status": "done", "result": "C:\\Users\\adeel\\OneDrive\\Desktop\\xai sdn full paper\\REVISION_2026\\04_results\\E4b_mininet_testbed.json", "runtime_s": 173.2, "detail": "ok"}
+{"ts": "2026-09-21T16:15:18", "experiment": "E22", "status": "start"}

@@ -278,22 +278,63 @@ def fig_rocpr() -> str | None:
 # fig_mininet: stills from the live demonstration
 # --------------------------------------------------------------------------- #
 def fig_mininet() -> str | None:
-    shots = sorted((HERE.parent / "mininet").glob("mininet_step*.png"))
-    if not shots:
-        return "no Mininet stills yet"
-    from PIL import Image
-    pick = [shots[0], shots[len(shots) // 2], shots[-1]] if len(shots) >= 3 else shots
-    ims = [Image.open(p) for p in pick]
+    """The emulated-network result (E4b).
+
+    The earlier version of this figure stacked raw terminal screenshots. Those
+    frames are dominated by repeated sch_htb quantum warnings from Mininet's
+    traffic shaper, which read as failures on the page, so the figure is built
+    from the measured values instead. The stills remain in the supplementary
+    video, where the surrounding context makes the warnings legible as noise.
+    """
+    d = load("E4b_mininet_testbed.json")
+    if not d or not d.get("results"):
+        return "no E4b result yet"
+    order = [("no_controller", "No detector"),
+             ("detect", "Detect"),
+             ("detect_explain", "Detect\n+ explain")]
+    idle, attack, pkt, labels = [], [], [], []
+    for key, lab in order:
+        r = (d["results"].get(key) or {})
+        mn, ctl = r.get("mininet") or {}, r.get("controller") or {}
+        if not mn.get("baseline"):
+            return f"condition {key} has no measurement"
+        idle.append(mn["baseline"]["iperf"]["throughput_mbps"])
+        attack.append(mn["under_attack"]["iperf"]["throughput_mbps"])
+        pkt.append(ctl.get("packet_in", 0))
+        labels.append(lab)
+
     S.okabe_style()
-    fig, axes = plt.subplots(len(ims), 1, figsize=(6.9, 2.5 * len(ims)))
-    axes = np.atleast_1d(axes)
-    for ax, im, p in zip(axes, ims, pick):
-        ax.imshow(im)
-        ax.set_axis_off()
-    plt.subplots_adjust(hspace=0.04)
-    plt.savefig(OUT / "fig_mininet.pdf", format="pdf", bbox_inches="tight", dpi=220)
-    plt.close()
-    print(f"  wrote {OUT / 'fig_mininet.pdf'} from {len(ims)} stills")
+    fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(7.1, 2.7))
+    x = np.arange(len(labels))
+    w = 0.38
+
+    ax1.bar(x - w / 2, idle, w, label="Network idle",
+            color=S.O_SKY, edgecolor="white", linewidth=0.8)
+    ax1.bar(x + w / 2, attack, w, label="Under SYN flood",
+            color=S.O_RED, edgecolor="white", linewidth=0.8)
+    for xi, v in zip(x + w / 2, attack):
+        ax1.annotate(f"{v:.0f}", (xi, v), textcoords="offset points",
+                     xytext=(0, 3), ha="center", fontsize=8 * S.SCALE)
+    ax1.set_xticks(x)
+    ax1.set_xticklabels(labels)
+    ax1.set_ylabel("Benign throughput (Mbit/s)")
+    ax1.set_ylim(0, max(idle + attack) * 1.34)
+    # above the axes, so it cannot sit on top of the annotated bars
+    ax1.legend(loc="upper center", bbox_to_anchor=(0.5, 1.21), ncol=2,
+               borderpad=0.3, handlelength=1.4, columnspacing=1.2)
+
+    ax2.bar(x, pkt, 0.55, color=S.O_BLUE, edgecolor="white", linewidth=0.8)
+    for xi, v in zip(x, pkt):
+        ax2.annotate(f"{v:,}", (xi, v), textcoords="offset points",
+                     xytext=(0, 3), ha="center", fontsize=8 * S.SCALE)
+    ax2.set_xticks(x)
+    ax2.set_xticklabels(labels)
+    ax2.set_ylabel("Packet-ins at controller")
+    ax2.set_ylim(0, max(pkt) * 1.28)
+    ax2.yaxis.set_major_formatter(
+        plt.FuncFormatter(lambda v, _: f"{v:,.0f}"))
+
+    S.save(OUT, "fig_mininet")
     return None
 
 

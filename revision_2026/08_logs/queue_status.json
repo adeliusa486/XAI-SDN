@@ -126,16 +126,19 @@
     "finished": "2026-09-21T09:01:59"
   },
   "E4": {
-    "status": "running",
+    "status": "already-complete",
     "started": "2026-09-21T11:14:31",
     "script": "e4_controller_testbed.py",
-    "log": "C:\\Users\\adeel\\OneDrive\\Desktop\\xai sdn full paper\\REVISION_2026\\08_logs\\E4.log"
+    "log": "C:\\Users\\adeel\\OneDrive\\Desktop\\xai sdn full paper\\REVISION_2026\\08_logs\\E4.log",
+    "returncode": 0,
+    "runtime_s": 672.2,
+    "finished": "2026-09-21T11:25:43"
   },
   "E8b": {
     "status": "already-complete"
   },
   "E19": {
-    "status": "done",
+    "status": "already-complete",
     "started": "2026-09-21T09:33:44",
     "script": "e19_shap_sample.py",
     "log": "C:\\Users\\adeel\\OneDrive\\Desktop\\xai sdn full paper\\REVISION_2026\\08_logs\\E19.log",
@@ -144,7 +147,7 @@
     "finished": "2026-09-21T09:35:45"
   },
   "E20": {
-    "status": "done",
+    "status": "already-complete",
     "started": "2026-09-21T09:35:45",
     "script": "e20_few_shot_transfer.py",
     "log": "C:\\Users\\adeel\\OneDrive\\Desktop\\xai sdn full paper\\REVISION_2026\\08_logs\\E20.log",
@@ -153,7 +156,7 @@
     "finished": "2026-09-21T09:41:49"
   },
   "E21": {
-    "status": "done",
+    "status": "already-complete",
     "started": "2026-09-21T09:41:49",
     "script": "e21_entropy_under_shift.py",
     "log": "C:\\Users\\adeel\\OneDrive\\Desktop\\xai sdn full paper\\REVISION_2026\\08_logs\\E21.log",
@@ -162,12 +165,12 @@
     "finished": "2026-09-21T09:51:08"
   },
   "E22": {
-    "status": "failed",
-    "started": "2026-09-21T09:51:08",
+    "status": "done",
+    "started": "2026-09-21T11:45:29",
     "script": "e22_model_size_pareto.py",
     "log": "C:\\Users\\adeel\\OneDrive\\Desktop\\xai sdn full paper\\REVISION_2026\\08_logs\\E22.log",
-    "returncode": 4294967295,
-    "runtime_s": 356.2,
-    "finished": "2026-09-21T09:57:04"
+    "returncode": 0,
+    "runtime_s": 3190.9,
+    "finished": "2026-09-21T12:38:40"
   }
 }

@@ -91,7 +91,12 @@ def main() -> int:
         h1, h2, h3 = net.get("h1"), net.get("h2"), net.get("h3")   # attacker, client, server
         time.sleep(3)
 
-        res["reachability_before"] = net.pingAll(timeout="1")
+        # net.pingAll returns the percentage of pings DROPPED, not reachability.
+        # Record it under a name that says so, and derive the reachability the
+        # field was previously read as.
+        loss = net.pingAll(timeout="1")
+        res["pingall_loss_percent"] = loss
+        res["reachability_percent"] = round(100.0 - (loss or 0.0), 2)
 
         h3.cmd("iperf3 -s -D -1 >/dev/null 2>&1")
         time.sleep(1)
@@ -119,11 +124,17 @@ def main() -> int:
         h1.cmd("pkill hping3 2>/dev/null")
 
         # --- flow table occupancy left behind -------------------------------
+        # This must run while the network is up. A dump issued after teardown
+        # returns "s1 is not a bridge or a socket", so the verbatim evidence the
+        # paper cites is captured here rather than by a later shell.
         s1 = net.get("s1")
         dump = s1.cmd("ovs-ofctl -O OpenFlow13 dump-flows s1 2>/dev/null")
         res["flow_table"] = {
             "entries": max(0, len(dump.strip().splitlines()) - 1),
             "drop_rules": dump.count("actions=drop"),
+            "dump_head": "\n".join(dump.strip().splitlines()[:20]),
+            "ofctl_show": s1.cmd(
+                "ovs-ofctl -O OpenFlow13 show s1 2>/dev/null").strip()[:1200],
         }
 
         b, u = res["baseline"], res["under_attack"]

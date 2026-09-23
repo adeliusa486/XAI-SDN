@@ -50,7 +50,14 @@ def _sized(base: dict) -> dict:
     return out
 
 
+# IEEE PDF eXpress flags Type 3 fonts, which is what matplotlib embeds by
+# default. Type 42 embeds the glyphs as TrueType instead: same drawing, same
+# metrics, but a font the IEEE production toolchain accepts.
+_TRUETYPE = {"pdf.fonttype": 42, "ps.fonttype": 42}
+
+
 def ieee_style() -> None:
+    plt.rcParams.update(_TRUETYPE)
     plt.rcParams.update(_sized({
         "font.family": "serif",
         "font.serif": ["Times New Roman", "Times", "DejaVu Serif"],
@@ -81,6 +88,7 @@ def ieee_style() -> None:
 
 
 def okabe_style() -> None:
+    plt.rcParams.update(_TRUETYPE)
     plt.rcParams.update(_sized({
         "font.family": "sans-serif",
         "font.sans-serif": ["Helvetica", "Arial", "DejaVu Sans"],

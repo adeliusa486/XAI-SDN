@@ -43,6 +43,7 @@ ORDER = [
     ("E20", "e20_few_shot_transfer.py",       "E20_few_shot_transfer.json"),
     ("E21", "e21_entropy_under_shift.py",     "E21_entropy_under_shift.json"),
     ("E22", "e22_model_size_pareto.py",       "E22_model_size_pareto.json"),
+    ("E23", "e23_latency_verification.py",   "E23_latency_verification.json"),
 ]
 
 STATUS = LOGS / "queue_status.json"

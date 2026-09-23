@@ -1,13 +1,15 @@
 """E22 - shrinking the forest: the accuracy, latency and memory frontier (R6.3, R3.3, R4.2).
 
 E1 measures a single-flow latency of 7.05 ms for the detector as configured in
-the submitted work, against 0.26 ms for LightGBM at the same macro F1. The cause
-is not the algorithm. It is that 200 trees were grown to unbounded depth on 2.5
-million flows, so each tree is enormous and a single-sample traversal is
-dominated by cache misses.
+the submitted work, against 0.26 ms for LightGBM at the same macro F1. The
+configuration was never chosen; 200 trees at unbounded depth are the library
+defaults. This run asks what bounding them costs.
 
-That configuration was never chosen; it is the scikit-learn default. This run
-asks what it costs to bound it. Depth and ensemble size are swept jointly and
+The hypothesis it was written to test, that unbounded depth on 2.5 million flows
+produces enormous trees whose traversal dominates the latency, turns out to be
+wrong: with 533 benign flows and class-balanced weighting the trees stop splitting
+early and average 46 leaves at every depth. Latency tracks the number of trees
+instead, at roughly 0.032 ms each. Depth and ensemble size are swept jointly and
 each configuration is reported with the four quantities an operator trades
 between: macro F1, false positive rate, single-flow latency, and the serialised
 model size that has to fit in the controller process.
@@ -46,7 +48,7 @@ SEED = 42
 TAU = 0.70
 DEPTHS = [8, 12, 16, 20, 24, None]
 N_TREES = [25, 50, 100, 200]
-LATENCY_PROBE = 400
+LATENCY_PROBE = 2000   # matches E1, so the two tables can be read together
 TEST_CAP = None        # evaluate on the whole test partition: capping it
                        # leaves 170 benign flows and a meaningless macro F1
 VAL_FRACTION = 0.10       # chronological tail of the training partition
@@ -65,10 +67,17 @@ def measure(clf, X, y, Xprobe) -> dict:
     pred = (proba >= TAU).astype(np.int8)
     tn, fp, fn, tp = confusion_matrix(y, pred, labels=[0, 1]).ravel()
 
-    lat = np.empty(LATENCY_PROBE)
+    # Probe the same way E1 does: a small contiguous slice with a warm-up call
+    # excluded. Probing across the whole test array instead spreads the rows over
+    # 380 MB and measures cache misses as much as inference, which made these
+    # figures incomparable with the baseline table they are meant to be read
+    # against.
+    probe = Xprobe[:LATENCY_PROBE]
+    lat = np.empty(len(probe))
     with serial_inference(clf):
-        for i in range(LATENCY_PROBE):
-            row = Xprobe[i:i + 1]
+        clf.predict_proba(probe[:1])          # warm up, excluded from timing
+        for i in range(len(probe)):
+            row = probe[i:i + 1]
             t = time.perf_counter()
             clf.predict_proba(row)
             lat[i] = (time.perf_counter() - t) * 1000.0

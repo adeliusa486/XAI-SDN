@@ -194,8 +194,8 @@ Gaspar et al.~\cite{gaspar2024xai}             & post-hoc & \texttimes & \textti
 \section{Threat model and problem formulation}
 \label{sec:threat}
 
-This section states what the defender observes, what the attacker controls, and
-how the detection task is formalized. It also fixes four terms that are easy to
+We set out here what the defender observes, what the attacker controls, and
+how the detection task is formalized. We also fix four terms that are easy to
 conflate, because the distinction between classifying a flow and explaining that
 classification carries most of the computational cost reported in
 Section~\ref{sec:results}.
@@ -346,7 +346,7 @@ Threshold-free performance is summarized by two curves rather than one. The area
 \section{Mathematical foundation}
 \label{sec:math}
 
-This section specifies the entropy features exactly: what each one summarizes, which exported field it is computed from, how continuous quantities are discretized, how the sliding window is maintained, what the update recurrence is, and what that recurrence costs in both time and numerical accuracy. The level of detail is deliberate. An entropy feature is only reproducible if the window semantics and the binning are stated, and its complexity claim is only meaningful if the supporting data structures are named.
+The entropy features are specified below in full: what each one summarizes, which exported field it is computed from, how continuous quantities are discretized, how the sliding window is maintained, what the update recurrence is, and what that recurrence costs in both time and numerical accuracy. The level of detail is deliberate. An entropy feature is only reproducible if the window semantics and the binning are stated, and its complexity claim is only meaningful if the supporting data structures are named.
 
 \subsection{Entropy feature extraction}
 Shannon entropy~\cite{shannon1948mathematical} measures how concentrated a discrete distribution is. Applied to a window of recent flows it summarizes the diversity of an attribute: source addresses, destination ports, protocol numbers, and so on. Concentration is often what a flood produces, so low entropy over a window may indicate an attack in progress and higher entropy is commonly associated with ordinary traffic. The relationship is statistical rather than deterministic, and it depends on the attribute chosen, the window length, the composition of the background traffic, and the attacker's strategy. We treat entropy as evidence for a classifier to weigh, not as a decision rule.
@@ -432,7 +432,7 @@ where $\{f_j\}_{j=1}^{80}$ are the CICFlowMeter statistics and $\{H_k\}$ the eig
 \section{Experimental setup}
 \label{sec:setup}
 
-This section states the corpora, the computing environment, the evaluation protocol, and the hyperparameter search. It is written so that every number reported later can be traced to a specific partition, a specific machine, and a specific selection procedure. Two matters that the earlier version of this work left implicit are made explicit here: how the train and test partitions are formed, and which observations were permitted to influence tuning.
+Four things are fixed before any result is reported: the corpora, the computing environment, the evaluation protocol, and the hyperparameter search. We state them so that every number reported later can be traced to a specific partition, a specific machine, and a specific selection procedure. Two matters that the earlier version of this work left implicit are made explicit here: how the train and test partitions are formed, and which observations were permitted to influence tuning.
 
 \subsection{Datasets}
 The primary corpus is the SYN-flood partition of CIC-DDoS2019~\cite{sharafaldin2019ddos}, the 1.87\,GB \texttt{03-11/Syn.csv} capture. It holds 4,320,541 exported flow records. Rows carrying missing or infinite values are removed (283,076 rows), duplicate feature vectors are collapsed (446,671 rows), and labels are mapped to a binary target, leaving 3,590,794 flows of which 31,014 are benign. Flows are then ordered by export timestamp.
@@ -1032,7 +1032,7 @@ Table~\ref{tab:transfer} and should not be read across. The comparison that
 matters is between conditions within the subsection, which share a test set.
 
 On CIC-IDS2017 the answer is encouraging and it is not flattering to transfer
-learning. One hundred labelled target flows, of which 35 are benign, take macro
+learning. One hundred labeled target flows, of which 35 are benign, take macro
 F1 from 0.3547 zero-shot to 0.9964, and five hundred take it to 0.9990. But the
 model that achieves this is trained on the target budget \emph{alone}. Joint
 training matches it and warm-starting from the source forest is actively harmful,
@@ -1048,8 +1048,8 @@ condition gives 0.7676 at five hundred flows and 0.7707 at fifty thousand. The
 reason is visible in the composition rather than the size of the budget. InSDN's
 chronological training partition holds 1,499 benign flows out of 156,360, so a
 stratified draw of fifty thousand contains 479 benign examples and a draw of a
-hundred contains five. What an operator has to supply is not $n$ labelled flows
-but $n$ labelled examples of the minority class, and on that corpus they are not
+hundred contains five. What an operator has to supply is not $n$ labeled flows
+but $n$ labeled examples of the minority class, and on that corpus they are not
 available at any budget. This is the same non-stationary benign class that
 Section~\ref{sec:benignstructure} documents for our own partition, and it is a
 property of how these captures are built rather than of the detector.
@@ -1205,7 +1205,7 @@ attribution should be told.
 \includegraphics[width=0.48\textwidth]{figures/fig10.pdf}
 \caption{Per-flow TreeSHAP attributions for the twelve highest-ranked features,
 1,500 test flows under the chronological protocol. Each point is one flow,
-positioned by its signed contribution to the DDoS score and coloured by that
+positioned by its signed contribution to the DDoS score and colored by that
 feature's value. Benign flows are over-represented in this sample, at 35\% rather
 than the 2.8\% of the test partition, because a sample drawn at the natural ratio
 shows one class only; no number in the text is computed from this sample.}
@@ -1226,35 +1226,30 @@ positives} and 2,579 false negatives, so the false positive shown is one of a
 very small population.
 
 \begin{table}[!t]
-\caption{Four real test flows with their strongest signed TreeSHAP contributions. Positive values push toward the DDoS class.}
+\caption{Four alerts drawn from actual test predictions, each shown with the
+three features contributing most to its score and the signed TreeSHAP value of
+each. Scores are the forest vote fraction; the threshold is 0.70.}
 \centering
 \label{tab:cases}
 \footnotesize
 \setlength{\tabcolsep}{3pt}
-\renewcommand{\arraystretch}{1.15}
-\begin{tabular}{@{}llrr@{}}
+\renewcommand{\arraystretch}{1.2}
+\begin{tabular}{@{}llp{4.9cm}@{}}
 \toprule
-\textbf{Case (score)} & \textbf{Feature} & \textbf{Value} & \textbf{SHAP} \\
+\textbf{Case} & \textbf{Score} & \textbf{Three largest contributions} \\
 \midrule
-\multirow{3}{*}{True positive (1.000)}
-  & $H_{\mathrm{src}}$      & 0.00     & $+0.088$ \\
-  & $H_{\mathrm{dst}}$      & 0.00     & $+0.080$ \\
-  & ACK\_Flag\_Count        & 1        & $+0.047$ \\
-\midrule
-\multirow{3}{*}{False positive (0.780)}
-  & ACK\_Flag\_Count        & 0        & $-0.083$ \\
-  & Destination\_Port       & 53       & $-0.061$ \\
-  & Flow\_Bytes/s           & 5.8e7    & $+0.057$ \\
-\midrule
-\multirow{3}{*}{False negative (0.125)}
-  & ACK\_Flag\_Count        & 0        & $-0.091$ \\
-  & $H_{\mathrm{src}}$      & 2.74     & $-0.072$ \\
-  & $H_{\mathrm{dst}}$      & 4.26     & $-0.064$ \\
-\midrule
-\multirow{3}{*}{Borderline (0.700)}
-  & ACK\_Flag\_Count        & 0        & $-0.050$ \\
-  & $H_{\mathrm{src}}$      & 3.59     & $-0.042$ \\
-  & Flow\_Duration          & 1.12e8   & $+0.034$ \\
+True positive  & 1.000 & $H_{\mathrm{src}}{=}0.00$ $(+0.088)$;
+                         $H_{\mathrm{dst}}{=}0.00$ $(+0.080)$;
+                         ACK count${=}1$ $(+0.047)$ \\
+False positive & 0.780 & ACK count${=}0$ $(-0.083)$;
+                         dst port${=}53$ $(-0.061)$;
+                         bytes/s${=}5.8{\times}10^{7}$ $(+0.057)$ \\
+False negative & 0.125 & ACK count${=}0$ $(-0.091)$;
+                         $H_{\mathrm{src}}{=}2.74$ $(-0.072)$;
+                         $H_{\mathrm{dst}}{=}4.26$ $(-0.064)$ \\
+Borderline     & 0.700 & ACK count${=}0$ $(-0.050)$;
+                         $H_{\mathrm{src}}{=}3.59$ $(-0.042)$;
+                         duration${=}1.12{\times}10^{8}$ $(+0.034)$ \\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -1342,6 +1337,240 @@ we have not done, and we do not carry over the sweep reported in the earlier
 version of this manuscript, which was measured under the stratified split and
 is not comparable to anything reported here.
 
+\subsection{Live deployment on an emulated network}
+\label{sec:mininet}
+The testbed of Section~\ref{sec:deployment} is a control plane without a data
+plane: it measures what the controller costs, but no packet ever traverses a
+switch. Reviewer 4 asked for a proof of concept with live traffic, and the
+question it answers is a different one, namely whether the mitigation the
+detector installs actually protects anything.
+
+The topology is one Open vSwitch datapath speaking OpenFlow 1.3 to the detector
+running inside a controller process, with three hosts on 100\,Mbit links at 1\,ms
+delay: an attacker, a benign client, and a server. The benign client runs an
+iperf3 transfer and a ping series against the server, first with the network idle
+and then while the attacker runs a randomized-source SYN flood from hping3. Three
+conditions are compared. Detection is applied to TCP only, because the detector
+is trained on TCP flow records and scoring an ICMP packet would evaluate the model
+on a vector whose TCP fields are all zero.
+
+Table~\ref{tab:mininet} reports the result and Fig.~\ref{fig:mininet} shows the
+two comparisons that carry it. The first row is the one that
+matters. With no detector the flood costs the benign client 73\% of its
+throughput, falling from 95.39 to 25.78\,Mbit/s. With the detector the same flood
+costs it nothing measurable: 95.29 to 95.39\,Mbit/s, zero added packet loss, and
+a ping round-trip time that does not rise. The switch holds 997 drop rules
+against distinct spoofed sources by the end of the attack, against four flow
+entries and no drop rules in the undefended condition.
+
+Two further observations come out of the same run. Mitigation pays for its own
+control-plane cost: packet-in events reaching the controller fall from 40,160
+undefended to 2,335 with detection enabled, because the installed rules stop the
+flood at the switch, so the controller stops seeing it. And attributing every
+admitted alert costs 21\% more decision latency, 10.84\,ms against 13.12\,ms at
+the median, and 34\% more resident memory, with no measurable difference in
+delivered quality of service. That is the same trade
+Section~\ref{sec:latency} quantifies offline, now visible on a data path.
+
+This is a three-host emulation and we do not present it as more. It cannot
+exhibit multi-datapath rule distribution, controller failover, or the traffic
+patterns of an operational fabric, and Section~\ref{sec:limitations} says so. What
+it does establish is that the mitigation path works end to end against live
+traffic, which no offline measurement in this paper can.
+
+\begin{figure}[!t]
+\centering
+\includegraphics[width=\columnwidth]{figures/fig_mininet.pdf}
+\caption{The emulated network under a randomized-source SYN flood. Left: benign
+iperf3 throughput with the network idle and during the flood, for each of the
+three conditions. Right: packet-in events reaching the controller over the same
+run. Installing drop rules at the switch both preserves the benign transfer and
+removes most of the control-plane load the flood would otherwise impose.}
+\label{fig:mininet}
+\end{figure}
+
+\begin{table}[!t]
+\caption{Emulated network under a randomized-source SYN flood. Throughput is a
+100\,Mbit/s iperf3 transfer by the benign client; the flow table is read at the
+end of the attack. The undefended row uses the same learning-switch controller
+with detection disabled, so the comparison isolates the detector rather than the
+presence of a controller.}
+\centering
+\label{tab:mininet}
+\footnotesize
+\setlength{\tabcolsep}{3.5pt}
+\renewcommand{\arraystretch}{1.15}
+\begin{tabular}{@{}lrrr@{}}
+\toprule
+ & \textbf{No detector} & \textbf{Detect} & \textbf{Detect\,+\,explain} \\
+\midrule
+Throughput idle (Mbit/s)      & 95.39 & 95.29 & 95.31 \\
+Throughput under attack       & \textbf{25.78} & \textbf{95.39} & \textbf{95.60} \\
+Fraction retained             & \textbf{0.270} & \textbf{1.001} & \textbf{1.003} \\
+Added packet loss (\%)        & 0.0 & 0.0 & 0.0 \\
+\midrule
+Flow entries / drop rules     & 4 / 0 & 999 / 997 & 621 / 619 \\
+Packet-ins at controller      & 40,160 & 2,335 & 1,788 \\
+\midrule
+Controller CPU (\% of a core) & 32.5 & 101.0 & 100.9 \\
+Controller memory (MB)        & 58 & 190 & 255 \\
+Decision latency p50 (ms)     & n/a & 10.84 & 13.12 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Model size, latency and what the configuration actually costs}
+\label{sec:pareto}
+The detector inherits its configuration from the submitted work, where it was
+never chosen: 200 trees grown to unbounded depth are the library defaults. With a
+single-flow decision costing 7.05\,ms against 0.26\,ms for LightGBM at the same
+macro F1, the obvious hypothesis is that the trees are enormous and that bounding
+them would recover most of the gap. We swept depth and ensemble size jointly to
+test it. The hypothesis is wrong, and the way in which it is wrong is the useful
+part.
+
+The trees are not enormous. Across the whole grid, including unbounded depth,
+they average between 32.7 and 46.0 leaves, and the largest forest serializes to
+1.46\,MB. The cause is the class balance rather than the depth limit: with 533
+benign flows in a 2,262,199-flow training partition and class-balanced weighting,
+splitting stops early for want of minority examples, so an unbounded tree and a
+depth-8 tree end up nearly the same size. A reader who assumed, as we did, that
+the default configuration was pathological would have drawn the wrong conclusion
+from the latency figure.
+
+Detection quality is equally insensitive. Table~\ref{tab:pareto} reports the
+frontier, one row per ensemble size at three depths. Macro F1 across all 24
+configurations spans 0.9778 to 0.9799 and the false positive rate spans 0.09\% to 0.14\%.
+Neither depth nor ensemble size is load-bearing on this corpus, which is
+consistent with Section~\ref{sec:leakage}: the discriminative information is
+spread widely enough that the model has many routes to it.
+
+What does scale is memory, and with it latency. The ensemble size sets the
+serialized footprint almost linearly, from 0.14\,MB at 25 trees to 1.47\,MB at
+200. Taking the smallest configuration whose macro F1 is within 0.005 of the best
+gives depth 8 with 25 trees: a tenfold smaller model for a macro F1 change of
+$-0.0009$ and a false positive rate 0.02 percentage points higher. On a
+controller, or on the constrained gateway of Section~\ref{sec:sdiot}, that is
+worth taking on memory grounds alone, and it turns out to buy latency too.
+
+Latency needs a measurement the sweep cannot give. Each configuration in the
+sweep is timed immediately after being fitted, while the fitting thread pool is
+still winding down, and the resulting figures are non-monotonic in model size and
+differ by a factor of two between neighboring configurations. We therefore fitted
+only the two endpoint configurations in a single process and probed them
+alternately over five rounds, so that any machine state affects both equally.
+
+That gives 6.30\,ms for the inherited configuration against 0.89\,ms for the
+selected one, repeatable to within 5\% across rounds: a $7.0\times$ reduction for
+the $-0.0009$ macro F1 already noted. Latency is therefore close to linear in
+ensemble size, at 0.032\,ms per tree for the 200-tree forest and 0.035\,ms per
+tree for the 25-tree one, and almost independent of the depth limit, which is
+what the uniform 46-leaf tree size predicts. The order-of-magnitude gap against
+LightGBM in Table~\ref{tab:comparison} is a per-tree property of the prediction
+path rather than anything a change of ensemble size closes. Section~\ref{sec:latency}
+reports the batched rate of 35,715 flows/s, which is what the detector achieves
+when the per-call cost is amortized across a batch.
+
+One caveat applies to the selection. It was meant to be made on the validation
+block, but that block holds 49 benign flows out of 251,356 and every
+configuration scores identically on it, so validation cannot separate them. The
+choice above is therefore a reading of the frontier rather than a protocol-clean
+selection, and we label it as one. The corpus does not support model selection
+here for the same reason it does not support threshold selection
+(Section~\ref{sec:threshold}).
+
+\begin{table}[!t]
+\caption{Model-size frontier, chronological protocol, evaluated on all 1,077,238
+test flows. One row per ensemble size at three depths; the full grid of six
+depths is in the released results. Macro F1 spans 0.002 across every
+configuration measured.}
+\centering
+\label{tab:pareto}
+\footnotesize
+\setlength{\tabcolsep}{4pt}
+\renewcommand{\arraystretch}{1.15}
+\begin{tabular}{@{}lrrrrr@{}}
+\toprule
+\textbf{Depth} & \textbf{Trees} & \textbf{Size (MB)} & \textbf{Leaves/tree} &
+\textbf{Macro F1} & \textbf{FPR (\%)} \\
+\midrule
+\textbf{8} & \textbf{25} & \textbf{0.14} & \textbf{35.2} & \textbf{0.9782} & \textbf{0.12} \\
+8         & 200 & 1.06 & 32.7 & 0.9778 & 0.10 \\
+16        & 25  & 0.18 & 44.8 & 0.9799 & 0.14 \\
+16        & 200 & 1.44 & 45.0 & 0.9790 & 0.10 \\
+unbounded & 25  & 0.18 & 45.3 & 0.9799 & 0.12 \\
+unbounded & 200 & 1.46 & 46.0 & 0.9791 & 0.10 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Control-plane cost and the rate a controller can ingest}
+\label{sec:deployment}
+Every throughput figure so far is an offline one: features are read from a matrix
+and scored in a loop. Reviewer 3 asked how 60,000 novel flows per second are
+physically ingested without saturating the OpenFlow control channel, and that
+question cannot be answered offline. We therefore run the detector inside a
+controller process that exchanges genuine OpenFlow 1.3 messages with switch
+agents over TCP, with the encodings validated against the os-ken reference
+parser, and measure the controller itself rather than the model. Each session
+binds its own port, so a controller left behind by an earlier session cannot
+absorb the next one's traffic.
+
+At an offered rate of 3,000 packet-in events per second the controller saturates.
+It sustains 114 events per second end to end, including classification and rule
+installation, at 98.3\% of one core and 176\,MB resident, with a decision taking
+6.61\,ms at the median and 32.70\,ms at the 99th percentile. Turning on
+attribution for every alert halves the sustained rate to 61 events per second,
+nearly doubles the median decision to 11.33\,ms, and raises resident memory to
+234\,MB. Benign background traffic through the same controller pays for this: its
+95th-percentile round-trip time rises from 34.11\,ms to 41.16\,ms, an inflation
+of $1.21\times$. That is the quality-of-service cost of the security function,
+measured on unrelated flows rather than assumed to be negligible.
+
+Sweeping the offered rate locates the knee and shows what lies past it
+(Table~\ref{tab:saturation}). The controller reaches its maximum of 77 events per
+second at 500 offered. Above that, goodput does not plateau but collapses to
+roughly 35 events per second and stays there, while the median round-trip time
+nearly triples. Offering more work returns less, which is the behavior of a
+queue past saturation and not a gradual degradation an operator would notice from
+a throughput number alone.
+
+The answer to the reviewer's question follows directly and it is not the answer
+the submitted manuscript implied. A single controller instance on this hardware
+ingests at most 77 novel flows per second as individual table-miss events. The
+60,606 flows per second reported earlier was an offline feature-extraction and
+inference rate measured with no control channel present, and it is not an ingest
+rate. Reaching that order of magnitude at the control plane requires that the
+flows not arrive as individual packet-in events at all: switch-side aggregation,
+packet-in rate limiting, and sampled export are the mechanisms, and
+Section~\ref{sec:flowtable} quantifies what the first of them costs in flow-table
+occupancy. At the observed 386 bytes per packet-in, 60,000 events per second
+would also require 23\,MB/s on the control channel, which is a separate
+constraint from controller CPU and one that no aggregation policy removes.
+
+\begin{table}[!t]
+\caption{Offered-rate sweep on the OpenFlow testbed, detection without
+attribution. ``Achieved'' is the end-to-end rate including classification and
+rule installation. Goodput peaks at an offered rate of 500 and collapses above it. The 2,000, 8,000 and 16,000 rows lie on the same plateau and are in the released results.}
+\centering
+\label{tab:saturation}
+\footnotesize
+\setlength{\tabcolsep}{4pt}
+\renewcommand{\arraystretch}{1.15}
+\begin{tabular}{@{}rrrrrr@{}}
+\toprule
+\textbf{Offered} & \textbf{Achieved} & \textbf{Ratio} &
+\textbf{RTT p50} & \textbf{RTT p99} & \textbf{CPU} \\
+(/s) & (/s) & & (ms) & (ms) & (\%) \\
+\midrule
+\textbf{500}  & \textbf{77} & \textbf{0.155} & \textbf{10.20} & \textbf{38.00} & \textbf{92} \\
+1,000  & 34 & 0.034 & 27.46 & 49.17 & 89 \\
+4,000  & 34 & 0.009 & 27.59 & 57.12 & 88 \\
+32,000 & 35 & 0.001 & 26.92 & 48.68 & 91 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
 \subsection{Flow-table occupancy under mitigation}
 \label{sec:flowtable}
 Reviewer 3 asks what flow-rule aggregation and eviction keep a bounded TCAM from
@@ -1381,7 +1610,7 @@ escalate to it is a policy question the detector informs but does not settle.
 The second is that the source-spoofed case, which source-prefix aggregation
 exists to handle, cannot be observed in this export at all. It is measured
 separately in the emulated network of Section~\ref{sec:mininet}, where source
-addresses are randomised at the packet level and the table pressure therefore
+addresses are randomized at the packet level and the table pressure therefore
 falls on the source field as the reviewer's question assumes.
 
 \begin{table}[!t]
@@ -1461,11 +1690,13 @@ alert volume an analyst has to triage, that difference is the one that decides
 whether a detector is deployed.
 
 The second reading is that per-flow latency is where the Random Forest is worst.
-A single-flow decision costs 7.05\,ms against 0.26\,ms for LightGBM, because 200
-trees grown to unbounded depth on 2.5 million flows produce a very large model
-and a single-sample traversal is dominated by memory access rather than by
-arithmetic. Section~\ref{sec:pareto} treats that as the configuration defect it
-is, and reports what bounding the tree depth recovers.
+A single-flow decision costs 7.05\,ms against 0.26\,ms for LightGBM. Our first
+explanation for that, that unbounded tree depth on 2.5 million flows produces an
+oversized model, turned out to be wrong when we measured it:
+Section~\ref{sec:pareto} reports that the trees average 46 leaves and the whole
+forest serializes to 1.46\,MB. The gap is a property of the per-call prediction
+path rather than of the model, which bounds what any change of configuration can
+recover.
 
 The third is that we make no claim to a uniquely correct choice of classifier.
 LightGBM reaches the same macro F1 an order of magnitude faster and also admits
@@ -1539,7 +1770,7 @@ scores as well.
 The autoencoder is the most instructive row. Trained on benign flows only, as the
 method requires, it assigns \emph{lower} reconstruction error to attack flows than
 to benign ones: ROC-AUC 0.0073, which inverted is 0.9927. This is not an
-implementation defect. A randomised SYN flood is far more repetitive than benign
+implementation defect. A randomized SYN flood is far more repetitive than benign
 traffic, so a model fitted to benign flows reconstructs the attack better than it
 reconstructs its own training distribution. The premise of reconstruction-based
 anomaly detection, that the attack is the anomalous class, is false on a corpus
@@ -1599,7 +1830,7 @@ hardware.
 \section{Discussion}
 \label{sec:discussion}
 
-This section draws out what the measurements imply for deployment, situates the approach against deep-learning alternatives and against software-defined IoT with its additional constraints, and states plainly what the evidence does not support.
+What follows draws out the deployment consequences of the measurements, situates the approach against deep-learning alternatives and against software-defined IoT with its additional constraints, and states plainly what the evidence does not support.
 
 DDoS attacks on SDN controllers threaten infrastructure across enterprise, cloud, and telecommunications networks. A detector fast enough to keep pace with the control channel and transparent enough for an operator to sign off on lowers the practical barrier to deploying machine-learning defenses in these settings, where unexplained automated action is frequently the blocker rather than detection quality.
 
@@ -1626,7 +1857,7 @@ change the design problem~\cite{bhayo2023sdiot,gali2025qos}. Gateways are far
 weaker than the controller host used here and many are battery powered, so the
 binding figure is energy per decision rather than peak throughput, which favours
 a tree ensemble whose inference is comparisons rather than matrix arithmetic. The
-serialised forest is the constraint instead, and Section~\ref{sec:pareto} shows
+serialized forest is the constraint instead, and Section~\ref{sec:pareto} shows
 how far it can be shrunk. Window semantics also need re-deriving: a window of $N$
 flows spans a very different interval on a sensor network than on a datacenter
 link, so $N$ should be set from the intended time horizon rather than carried
@@ -1647,7 +1878,7 @@ classification sustains 35,715 flows/s and attributing every alert reduces that 
 Section~\ref{sec:latency} gives the frontier to choose a point on. The choice of
 episode granularity on that frontier is a policy decision with a real cost, since
 a coarse episode explains the flood rather than the flow. Model size matters more
-than we assumed: the configuration inherited from the submitted work serialises to
+than we assumed: the configuration inherited from the submitted work serializes to
 a forest large enough that a single-flow decision costs 7.05\,ms, and
 Section~\ref{sec:pareto} shows what bounding tree depth recovers. The rolling
 entropy engine, by contrast, is a fixed-size buffer plus hash maps and adds no
@@ -1668,7 +1899,7 @@ The following bound what this paper establishes. We state them as limits on the 
 
 \emph{The testbed is small.} Section~\ref{sec:deployment} runs the detector inside a controller process exchanging genuine OpenFlow 1.3 messages with switch agents over TCP, and Section~\ref{sec:mininet} runs it against an emulated network of three hosts and one Open vSwitch datapath under Mininet. Both are real control planes and neither is a network of operational scale. A single switch cannot exhibit multi-datapath rule distribution, controller failover, or the east-west traffic patterns of a datacenter fabric, and the QoS figures we report describe contention at one controller and one 100\,Mbit link rather than forwarding-path behavior under production load.
 
-\emph{Transferability is bounded by labelled minority traffic, not by labelled volume.} Section~\ref{sec:fewshot} shows that a hundred labelled flows from one target network are enough to reach 0.9964 macro F1, while fifty thousand from another are not enough to reach 0.90. The difference is the number of benign examples the target's own capture contains. An operator cannot infer the labelling cost of deployment from the flow count alone, and we cannot predict it from anything we measured.
+\emph{Transferability is bounded by labeled minority traffic, not by labeled volume.} Section~\ref{sec:fewshot} shows that a hundred labeled flows from one target network are enough to reach 0.9964 macro F1, while fifty thousand from another are not enough to reach 0.90. The difference is the number of benign examples the target's own capture contains. An operator cannot infer the labelling cost of deployment from the flow count alone, and we cannot predict it from anything we measured.
 
 \emph{The adaptive adversary is out of scope.} The threat model assumes an attacker who floods but does not optimize against the detector. An adversary who knows the feature set can rotate spoofed sources to hold per-window entropy near its benign value, and the distributional evidence degrades accordingly. We have not measured what that evasion costs the attacker in attack effectiveness, which is the quantity that would determine whether the defense remains useful under adaptation. This is the most consequential gap in the paper.
 
@@ -1718,7 +1949,7 @@ The authors declare that they have no known competing financial interests or per
 The authors gratefully acknowledge the support provided by the Higher Colleges of Technology (HCT), United Arab Emirates, toward the publication of this research in the IEEE Access journal. This support contributed significantly to the successful dissemination of the research findings.
 
 \section*{Data availability}
-The datasets, implementation code, trained-model artifacts, per-seed manifests, and experimental configuration files supporting this study are publicly available at: \url{https://anonymous.4open.science/r/XAI-SDN-1008/}
+The datasets, implementation code, trained-model artifacts, per-seed manifests, and experimental configuration files supporting this study are publicly available at: \url{https://github.com/adeliusa486/XAI-SDN}
 
 \bibliographystyle{IEEEtran}
 \bibliography{references}
