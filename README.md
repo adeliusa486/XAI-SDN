@@ -435,22 +435,6 @@ pytest tests/ -q
 
 ---
 
-## Citation
-
-The manuscript is under review at IEEE Access. Until it appears, please cite the
-repository:
-
-```bibtex
-@misc{ahmad_xaisdn,
-  author = {Ahmad, Adeel and Ali, Arshad and Shan, Rafi us and Hossain, Gahangir},
-  title  = {{XAI-SDN}: An explainable entropy-guided machine learning framework
-            for real-time {DDoS} detection in software defined networks},
-  note   = {Manuscript under review},
-  url    = {https://github.com/adeliusa486/xAI-SDN}
-}
-```
-
----
 
 ## License
 
