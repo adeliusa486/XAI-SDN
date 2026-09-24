@@ -420,7 +420,7 @@ Detection quality is reported from the confusion matrix, treating DDoS as the po
 \end{equation}
 We also report per-class precision $P_c$ and recall $R_c$, their harmonic mean $\mathrm{F1}_c = 2P_cR_c/(P_c+R_c)$, and macro F1, the unweighted mean of the per-class $\mathrm{F1}_c$, which is the accuracy-like summary that does not collapse to the majority class under severe imbalance.
 
-Threshold-free performance is summarized by two curves rather than one. The area under the receiver operating characteristic curve (ROC-AUC) is reported for continuity with prior work, and the average precision (AP), the area under the precision--recall curve, is reported because it is the informative quantity at the class ratio evaluated here. The distinction is not cosmetic. A classifier drawing at random attains ROC-AUC $0.5$ regardless of prevalence, but attains AP equal to the positive prevalence, which on our test partition is above $0.97$. A ROC-AUC near unity is therefore close to uninformative on this data, whereas AP, precision, and the absolute count of false alarms are not. For the same reason, threshold selection in Section~\ref{sec:results} is performed on the precision--recall plane rather than on the false negative rate, which is normalized by the majority class and moves negligibly as individual errors are added or removed.
+Threshold-free performance is summarized by two curves rather than one. The area under the receiver operating characteristic curve (ROC-AUC) is reported for continuity with prior work, and the average precision (AP), the area under the precision--recall curve, is reported because it is the informative quantity at the class ratio evaluated here. The distinction is not cosmetic. A classifier drawing at random attains ROC-AUC $0.5$ regardless of prevalence, but attains AP equal to the positive prevalence, which on our test partition is above $0.97$. ROC-AUC therefore remains a useful prevalence-independent measure of ranking discrimination, but at this class ratio it does not characterize the precision or the false-alarm burden at the operating point actually deployed, whereas AP, precision, and the absolute count of false alarms do. For the same reason, threshold selection in Section~\ref{sec:results} is performed on the precision--recall plane rather than on the false negative rate, which is normalized by the majority class and moves negligibly as individual errors are added or removed.
 
 \section{Mathematical foundation}
 \label{sec:math}
@@ -642,7 +642,7 @@ False negative rate (\%)  & 0.0019    & 0.2501 \\
 \label{sec:chrono}
 Table~\ref{tab:results} reports the operating point of the full 88-dimensional detector on the chronological test partition of 1,077,238 flows, of which 30,432 are benign. Accuracy is 99.7579\%, macro F1 is 97.8813\%, ROC-AUC is 0.999728, and average precision is 0.999992. The false positive rate is 0.0953\% and the false negative rate is 0.2464\%.
 
-The gap between ROC-AUC and macro F1 is the point made in Section~\ref{sec:setup} in concrete form. At 97.2\% positive prevalence a ROC-AUC of 0.9997 is close to uninformative, because the measure is insensitive to the minority class that the operator actually cares about. Macro F1 and the absolute false-alarm count are the figures that discriminate between models here, and they are what we report throughout. The lower half of Table~\ref{tab:results} gives the per-class breakdown, where the asymmetry is plain: the majority class is detected almost perfectly while the benign class carries essentially all of the error.
+The gap between ROC-AUC and macro F1 is the point made in Section~\ref{sec:setup} in concrete form. At 97.2\% positive prevalence a ROC-AUC of 0.9997 still reports genuine ranking quality, but it is insensitive to the minority class the operator actually cares about, so it does not by itself characterize the false-alarm burden at the deployed threshold. Macro F1, average precision and the absolute false-alarm count are the figures that discriminate between models here, and they are what we report throughout, alongside ROC-AUC rather than in place of it. The lower half of Table~\ref{tab:results} gives the per-class breakdown, where the asymmetry is plain: the majority class is detected almost perfectly while the benign class carries essentially all of the error.
 
 \begin{table*}[!t]
 \caption{Detection performance on the chronological test partition, repaired
@@ -1841,9 +1841,10 @@ on the full partition; the cap is marked in the table and stated here because a
 model that cannot be trained at the deployment scale is a deployment fact rather
 than an inconvenience to be hidden.
 
-Three readings follow, and only the first is favorable to us. The detector
-attains the joint-highest macro F1, 97.88\%, statistically indistinguishable
-from LightGBM at 97.89\%. It attains the lowest false positive rate of any
+Three readings follow, and only the first is favorable to us. The detector and
+LightGBM reach nearly identical macro F1, 97.88\% against 97.89\%; we report the
+two figures rather than calling them equivalent, because no paired significance
+test was run on this single-run comparison. It attains the lowest false positive rate of any
 method tested by a factor of four, 0.095\% against 0.371\% for LightGBM, which
 over the 1,077,238-flow test partition is 29 false alarms against 113. At an
 alert volume an analyst has to triage, that difference is the one that decides
